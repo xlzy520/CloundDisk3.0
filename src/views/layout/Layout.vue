@@ -45,10 +45,10 @@ export default {
 }
 </script>
 
-<style  lang="less" scoped>
-  @import "../../styles/mixin.less";
+<style rel="stylesheet/scss" lang="scss" scoped>
+  @import "src/styles/mixin.scss";
   .app-wrapper {
-    .clearfix;
+    @include clearfix;
     position: relative;
     height: 100%;
     width: 100%;
