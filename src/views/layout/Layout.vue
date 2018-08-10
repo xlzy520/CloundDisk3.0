@@ -48,7 +48,7 @@ export default {
 <style  lang="less" scoped>
   @import "../../styles/mixin.less";
   .app-wrapper {
-    @include clearfix;
+    .clearfix;
     position: relative;
     height: 100%;
     width: 100%;
