@@ -5,9 +5,65 @@
     <link rel="shortcut icon" href="favicon.ico">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>东经云盘</title>
+    <style>
+      .ie-must-go-die {
+        position: fixed;
+        left: 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background: #fff url("//activity.hdslb.com/blackboard/static/20180416/b8f2b74d0482aed61472c7065dc1ed56/images/m6kmoznp0p.jpg") center/cover no-repeat;
+      }
+      .ie-must-go-die .ie-container {
+        position: absolute;
+        top: 30%;
+        left: 25%;
+        text-align: center;
+        color: #c99;
+        line-height: 1;
+        font-size: 16px;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimSun, sans-serif;
+
+      }
+      .ie-must-go-die .ie-container h1 {
+        font-size: 28px;
+        margin-bottom: 36px;
+      }
+      .ie-must-go-die .ie-container p {
+        font-size: 16px;
+        line-height: 24px;
+        margin-bottom: 16px;
+      }
+      .ie-must-go-die .ie-container a {
+        display: block;
+        color: inherit;
+        text-decoration: none;
+      }
+      .ie-must-go-die .ie-container a:hover{
+        color: initial;
+        text-decoration: underline;
+      }
+    </style>
   </head>
   <body>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
+  <script>
+    if (!!window.ActiveXObject || 'ActiveXObject' in window) {
+      document.getElementsByTagName('body')[0].innerHTML = '<div class="ie-must-go-die">\n' +
+        '      <div class="ie-container">\n' +
+        '        <h1>\n' +
+        '          您正在IE的世界中\n' +
+        '        </h1>\n' +
+        '        <p>\n' +
+        '          世界永远在变幻，正因如此，未来才变得绚烂。我们也不能裹足不前。\n' +
+        '        </p>\n' +
+        '        <a href="https://ie.sogou.com/" target="_blank">\n' +
+        '          您可以点击此处，下载搜狗浏览器后再次访问本页面。\n' +
+        '        </a>\n' +
+        '      </div>\n' +
+        '    </div>'
+    }
+  </script>
 </html>
