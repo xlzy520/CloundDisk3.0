@@ -23,7 +23,7 @@
         <el-input name="password"
                   :type="pwdType"
                   @keyup.enter.native="handleLogin"
-                  v-model="loginForm.password"
+                  v-model.trim="loginForm.password"
                   maxlength="30"
                   clearable
                   autoComplete="on"
