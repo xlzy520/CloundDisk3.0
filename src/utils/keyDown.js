@@ -366,10 +366,13 @@ var run = (function() {
     keysInfo = kb.init()
 
     window.onkeydown = function(e) {
+      console.log(e)
       if ((e.keyCode >= 49 && e.keyCode <= 59) || (e.keyCode >= 96 && e.keyCode <= 105)) {
-        key = e.key
-        kb.press(key)
-        c.addWord(key, 100, 'rgba(225,225,225,1.0)', keysInfo[key].x, keysInfo[key].y, divY - 20)
+        if (e.target.type !== 'password') {
+          key = e.key
+          kb.press(key)
+          c.addWord(key, 100, 'rgba(225,225,225,1.0)', keysInfo[key].x, keysInfo[key].y, divY - 20)
+        }
       }
     }
     window.onkeyup = function() {
