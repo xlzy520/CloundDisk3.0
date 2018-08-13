@@ -1,6 +1,10 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
+    <div class="logo">
+      <img src="@/assets/logo/logo.png" width="32" height="32" class="logo__img">
+      <h2 class="logo__title">东经云盘</h2>
+    </div>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
@@ -57,6 +61,17 @@ export default {
     height: 50px;
     float: left;
     padding: 0 10px;
+  }
+  .logo{
+    display: inline-block;
+    margin: auto;
+    width: 100px;
+    &__logo{
+
+    }
+    &__title{
+      color: #fff;
+    }
   }
   .screenfull {
     position: absolute;
