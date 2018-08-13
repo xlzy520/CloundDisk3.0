@@ -1,5 +1,7 @@
 <template>
   <div class="login-container">
+    <canvas id="cvs_bg" style="position: absolute;z-index: 1" width="1443" height="596"></canvas>
+    <canvas id="cvs_key" style="position: absolute;"></canvas>
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
       <h3 class="title">东经云盘</h3>
       <el-form-item prop="username">
@@ -21,10 +23,6 @@
           Sign in
         </el-button>
       </el-form-item>
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: admin</span>
-      </div>
     </el-form>
   </div>
 </template>
@@ -86,6 +84,10 @@ export default {
         }
       })
     }
+  },
+  mounted() {
+    import('@/utils/keyDown')
+    import('@/utils/canvasLogin')
   }
 }
 </script>
@@ -102,9 +104,9 @@ $light_gray:#eee;
     width: 85%;
     input {
       background: transparent;
-      border: 0px;
+      border: 0;
       -webkit-appearance: none;
-      border-radius: 0px;
+      border-radius: 0;
       padding: 12px 5px 12px 15px;
       color: $light_gray;
       height: 47px;
@@ -139,17 +141,8 @@ $light_gray:#eee;
     right: 0;
     width: 520px;
     padding: 35px 35px 15px 35px;
-    margin: 120px auto;
-  }
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
-    span {
-      &:first-of-type {
-        margin-right: 16px;
-      }
-    }
+    margin: 90px auto;
+    z-index: 3;
   }
   .svg-container {
     padding: 6px 5px 6px 15px;
