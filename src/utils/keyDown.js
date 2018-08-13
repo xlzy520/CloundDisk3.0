@@ -5,7 +5,6 @@ var ctx, cvs
 window.onload = function() {
   var clientWidth = document.body.clientWidth
   var clientHeight = document.documentElement.clientHeight || window.screen.height || document.body.clientHeight
-  console.log(clientHeight)
   cvs = document.getElementById('cvs_key')
   cvsWidth = clientWidth
   cvsHigh = clientHeight
@@ -366,7 +365,6 @@ var run = (function() {
     keysInfo = kb.init()
 
     window.onkeydown = function(e) {
-      console.log(e)
       if ((e.keyCode >= 49 && e.keyCode <= 59) || (e.keyCode >= 96 && e.keyCode <= 105)) {
         if (e.target.type !== 'password') {
           key = e.key
