@@ -232,7 +232,7 @@ class KeyBoard {
     this.fontSize = keySize / 2
 
     this.keyWords = []
-    this.keyWords[0] = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
+    this.keyWords[0] = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
     this.keys = []
     this.keysInfo = {}
   }
@@ -366,8 +366,8 @@ var run = (function() {
     keysInfo = kb.init()
 
     window.onkeydown = function(e) {
-      if (e.keyCode >= 49 && e.keyCode <= 59) {
-        key = String.fromCharCode(e.keyCode).toUpperCase()
+      if ((e.keyCode >= 49 && e.keyCode <= 59) || (e.keyCode >= 96 && e.keyCode <= 105)) {
+        key = e.key
         kb.press(key)
         c.addWord(key, 100, 'rgba(225,225,225,1.0)', keysInfo[key].x, keysInfo[key].y, divY - 20)
       }
