@@ -20,7 +20,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
-          Sign in
+          登录
         </el-button>
       </el-form-item>
     </el-form>
@@ -126,7 +126,7 @@ $light_gray:#eee;
 
 </style>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss">
 $bg:#2d3a4b;
 $dark_gray:#889aa4;
 $light_gray:#eee;
