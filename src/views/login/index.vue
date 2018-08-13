@@ -2,20 +2,32 @@
   <div class="login-container">
     <canvas id="cvs_bg" style="position: absolute;z-index: 1" width="1443" height="596"></canvas>
     <canvas id="cvs_key" style="position: absolute;"></canvas>
-    <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
+    <el-form class="login-form" autoComplete="on" status-icon :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
       <h3 class="title">东经云盘</h3>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="请输入账号" />
+        <el-input name="username"
+                  type="text"
+                  v-model.trim="loginForm.username"
+                  autoComplete="on"
+                  maxlength="30"
+                  clearable
+                  placeholder="请输入账号" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password"></svg-icon>
         </span>
-        <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
-          placeholder="请输入密码"></el-input>
+        <el-input name="password"
+                  :type="pwdType"
+                  @keyup.enter.native="handleLogin"
+                  v-model="loginForm.password"
+                  maxlength="30"
+                  clearable
+                  autoComplete="on"
+                  placeholder="请输入密码"/>
           <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
       </el-form-item>
       <el-form-item>
@@ -53,8 +65,14 @@ export default {
         password: 'admin'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePass }]
+        username: [
+          { required: true, trigger: 'blur', validator: validateUsername },
+          { min: 5, max: 30, message: '长度在 5 到 30 个字符', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, trigger: 'blur', validator: validatePass },
+          { min: 5, max: 30, message: '长度在 5 到 30 个字符', trigger: 'blur' }
+        ]
       },
       loading: false,
       pwdType: 'password'
@@ -111,14 +129,14 @@ $light_gray:#eee;
       color: $light_gray;
       height: 47px;
       &:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
+        -webkit-box-shadow: 0 0 0 1000px $bg inset !important;
         -webkit-text-fill-color: #fff !important;
       }
     }
   }
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
-    background: rgba(0, 0, 0, 0.1);
+    background: #283443;
     border-radius: 5px;
     color: #454545;
   }
@@ -159,7 +177,7 @@ $light_gray:#eee;
     font-size: 26px;
     font-weight: 400;
     color: $light_gray;
-    margin: 0px auto 40px auto;
+    margin: 0 auto 40px auto;
     text-align: center;
     font-weight: bold;
   }
