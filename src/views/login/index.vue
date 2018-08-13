@@ -52,11 +52,11 @@ export default {
       loginRules: {
         username: [
           { required: true, trigger: 'blur' },
-          { min: 5, max: 30, message: '长度在 5 到 30 个字符', trigger: 'blur' }
+          { min: 5, max: 30, message: '长度在 5 到 30 个字符', trigger: 'change' }
         ],
         password: [
           { required: true, trigger: 'blur' },
-          { min: 5, max: 30, message: '长度在 5 到 30 个字符', trigger: 'blur' }
+          { min: 5, max: 30, message: '长度在 5 到 30 个字符', trigger: 'change' }
         ]
       },
       loading: false,
