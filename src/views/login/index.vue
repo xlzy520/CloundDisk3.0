@@ -155,6 +155,7 @@ $light_gray:#eee;
     }
   }
   .title {
+    user-select: none;
     font-size: 26px;
     font-weight: 400;
     color: $light_gray;
