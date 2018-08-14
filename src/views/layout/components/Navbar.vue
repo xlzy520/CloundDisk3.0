@@ -1,7 +1,20 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
-    <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
+    <hamburger class="hamburger-container"
+               :toggleClick="toggleSideBar"
+               :isActive="sidebar.opened">
+    </hamburger>
     <breadcrumb></breadcrumb>
+    <div class="uploadCreate clearfix">
+      <el-button type="primary" class="nav__upload">
+        <i class="el-icon-upload el-icon--left"></i>
+        上传
+      </el-button>
+      <el-button type="primary" class="nav__create">
+        <i class="el-icon-plus el-icon--left"></i>
+        新建
+      </el-button>
+    </div>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
@@ -64,6 +77,11 @@ export default {
     height: 50px;
     float: left;
     padding: 0 10px;
+  }
+  .uploadCreate{
+    position: absolute;
+    display: inline-block;
+    right: 20vw;
   }
   .screenfull {
     position: absolute;
