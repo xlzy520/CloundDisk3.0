@@ -1,10 +1,7 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-    <div class="logo">
-      <img src="@/assets/logo/logo.png" width="32" height="32" class="logo__img">
-      <span class="logo__title">东经云盘</span>
-    </div>
+    <breadcrumb></breadcrumb>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
@@ -31,11 +28,12 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-
 export default {
   components: {
-    Hamburger
+    Hamburger,
+    Breadcrumb
   },
   computed: {
     ...mapGetters([
@@ -66,20 +64,6 @@ export default {
     height: 50px;
     float: left;
     padding: 0 10px;
-  }
-  .logo{
-    display: inline-block;
-    margin: auto;
-    width: 120px;
-    vertical-align: middle;
-    &__img{
-      vertical-align: middle;
-    }
-    &__title{
-      font-size: 21px;
-      color: #31ba78;
-      vertical-align: middle;
-    }
   }
   .screenfull {
     position: absolute;

@@ -9,6 +9,10 @@
       text-color="#bfcbd9"
       active-text-color="#409EFF"
     >
+      <div class="logo">
+        <img src="@/assets/logo/logo.png" width="36" height="36" class="logo__img">
+        <span class="logo__title">东经云盘</span>
+      </div>
       <sidebar-item v-for="route in routes" :key="route.name" :item="route" :base-path="route.path"></sidebar-item>
     </el-menu>
   </el-scrollbar>
@@ -33,3 +37,23 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  .logo{
+    display: inline-block;
+    margin: 15px 0 15px -10px;
+    cursor: default;
+    text-align: center;
+    width: 100%;
+    line-height: 1;
+    vertical-align: middle;
+    &__img{
+      vertical-align: middle;
+    }
+    &__title{
+      font-size: 24px;
+      color: #31ba78;
+      vertical-align: middle;
+    }
+  }
+</style>
