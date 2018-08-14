@@ -26,13 +26,13 @@ export const constantRouterMap = [
   { path: '/404', component: () => import('@/views/404'), hidden: true },
 
   {
-    path: '/',
+    path: '',
     component: Layout,
     redirect: '/allDoc/index',
-    name: 'allDoc',
     hidden: true,
     children: [{
       path: 'index',
+      name: 'allDoc',
       component: () => import('@/views/allDoc/index')
     }]
   },
@@ -40,7 +40,6 @@ export const constantRouterMap = [
     path: '/allDoc',
     component: Layout,
     redirect: '/allDoc/index',
-    name: 'allDoc',
     children: [
       {
         path: 'index',
@@ -57,7 +56,6 @@ export const constantRouterMap = [
     path: '/documentation',
     component: Layout,
     redirect: '/documentation/index',
-    name: 'documentation',
     children: [
       {
         path: 'index',
