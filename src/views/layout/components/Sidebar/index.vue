@@ -9,7 +9,7 @@
       text-color="#bfcbd9"
       active-text-color="#409EFF"
     >
-      <div class="logo">
+      <div class="logo" v-show="!isCollapse">
         <img src="@/assets/logo/logo.png" width="36" height="36" class="logo__img">
         <span class="logo__title">东经云盘</span>
       </div>
@@ -48,6 +48,7 @@ export default {
     line-height: 1;
     vertical-align: middle;
     &__img{
+      margin-right: 5px;
       vertical-align: middle;
     }
     &__title{
