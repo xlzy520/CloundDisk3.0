@@ -3,7 +3,7 @@
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <div class="logo">
       <img src="@/assets/logo/logo.png" width="32" height="32" class="logo__img">
-      <h2 class="logo__title">东经云盘</h2>
+      <span class="logo__title">东经云盘</span>
     </div>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
@@ -65,12 +65,15 @@ export default {
   .logo{
     display: inline-block;
     margin: auto;
-    width: 100px;
-    &__logo{
-
+    width: 120px;
+    vertical-align: middle;
+    &__img{
+      vertical-align: middle;
     }
     &__title{
-      color: #fff;
+      font-size: 21px;
+      color: #31ba78;
+      vertical-align: middle;
     }
   }
   .screenfull {
