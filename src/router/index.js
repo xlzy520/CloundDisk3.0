@@ -28,12 +28,12 @@ export const constantRouterMap = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
-    name: 'Dashboard',
+    redirect: '/allDoc/index',
+    name: 'allDoc',
     hidden: true,
     children: [{
-      path: 'dashboard',
-      component: () => import('@/views/dashboard/index')
+      path: 'index',
+      component: () => import('@/views/allDoc/index')
     }]
   },
   {
