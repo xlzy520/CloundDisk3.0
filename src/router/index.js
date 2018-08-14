@@ -36,7 +36,40 @@ export const constantRouterMap = [
       component: () => import('@/views/dashboard/index')
     }]
   },
-
+  {
+    path: '/allDoc',
+    component: Layout,
+    redirect: '/allDoc/index',
+    name: 'allDoc',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/allDoc/index'),
+        name: '全部文件',
+        meta: {
+          title: '全部文件',
+          icon: 'allDoc'
+        }
+      }
+    ]
+  },
+  {
+    path: '/documentation',
+    component: Layout,
+    redirect: '/documentation/index',
+    name: 'documentation',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/documentation/index'),
+        name: 'documentation',
+        meta: {
+          title: '文档',
+          icon: 'documentation'
+        }
+      }
+    ]
+  },
   {
     path: '/nested',
     component: Layout,
