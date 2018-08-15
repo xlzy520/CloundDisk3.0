@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
-export function login(username, password) {
+export function login(name, password) {
   return request({
-    url: '/user/login',
+    url: '/djcpsdocument/login/adminlogin.do',
     method: 'post',
     data: {
-      username,
+      name,
       password
     }
   })
