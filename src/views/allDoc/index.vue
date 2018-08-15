@@ -6,11 +6,14 @@
       :externalLink="externalLink"
       codeStyle="monokai-sublime"
       :scrollStyle="true"
-      class="preview-container"/>
+      class="preview-container"
+      :style="width"
+    />
   </div>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   import '@/styles/markdown.css'
   import { getDocInfo } from '@/api/documentation'
   export default {
@@ -69,15 +72,20 @@
         }
       }
     },
-    async mounted() {
-      try {
-        const docInfo = await getDocInfo('20180815_RD_MARKDOWN_NFwyw')
-        this.value = docInfo.data.file
-      } catch (e) {
-        this.message(e)
+    computed: {
+      ...mapGetters([
+        'sidebar'
+      ]),
+      width() {
+        if (this.sidebar.opened) {
+          return 'width: 68vw'
+        }
       }
+    },
+    async mounted() {
+      const docInfo = await getDocInfo('20180815_RD_MARKDOWN_NFwyw')
+      this.value = docInfo.data.file
     }
-
   }
 </script>
 
@@ -86,7 +94,7 @@
     position: absolute;
     right: 1px;
     bottom: 1px;
-    width: 60em;
+    width: 80vw;
     height: 85vh;
   }
   .v-note-wrapper .v-note-panel .v-note-edit.divarea-wrapper.scroll-style::-webkit-scrollbar-thumb{
