@@ -28,7 +28,7 @@
                   clearable
                   autoComplete="on"
                   placeholder="请输入密码"/>
-          <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
+          <span class="show-pwd" @click="showPwd"><svg-icon :icon-class="eye" /></span>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
@@ -60,6 +60,7 @@ export default {
         ]
       },
       loading: false,
+      eye: 'eye_close',
       pwdType: 'password'
     }
   },
@@ -67,8 +68,10 @@ export default {
     showPwd() {
       if (this.pwdType === 'password') {
         this.pwdType = ''
+        this.eye = 'eye_open'
       } else {
         this.pwdType = 'password'
+        this.eye = 'eye_close'
       }
     },
     handleLogin() {
