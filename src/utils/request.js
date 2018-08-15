@@ -35,7 +35,7 @@ service.interceptors.response.use(
         duration: 5 * 1000
       })
     }
-    if (res.code !== 0) {
+    if (res.code !== 100000) {
       Message({
         message: res.msg,
         type: 'error',
