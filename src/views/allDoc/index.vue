@@ -12,7 +12,7 @@
 
 <script>
   import '@/styles/markdown.css'
-
+  import { getDocInfo } from '@/api/documentation'
   export default {
     name: 'AllDoc',
     data() {
@@ -67,6 +67,14 @@
           subfield: true, // 单双栏模式
           preview: true // 预览
         }
+      }
+    },
+    async mounted() {
+      try {
+        const docInfo = await getDocInfo('20180815_RD_MARKDOWN_NFwyw')
+        this.value = docInfo.data.file
+      } catch (e) {
+        this.message(e)
       }
     }
 
