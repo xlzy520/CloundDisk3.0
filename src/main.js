@@ -1,7 +1,5 @@
 import Vue from 'vue'
 
-import 'normalize.css/normalize.css'// A modern alternative to CSS resets
-
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
@@ -12,9 +10,14 @@ import router from './router'
 import store from './store'
 
 import '@/icons' // icon
+
 import '@/permission' // permission control
 
+import mavonEditor from 'mavon-editor'
+import 'mavon-editor/dist/css/index.css'
+
 Vue.use(ElementUI)
+Vue.use(mavonEditor)
 
 Vue.config.productionTip = false
 
