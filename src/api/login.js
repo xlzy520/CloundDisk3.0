@@ -11,11 +11,10 @@ export function login(name, password) {
   })
 }
 
-export function getInfo(token) {
+export function getInfo() {
   return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
+    url: '/api_zhq/djcpsdocument/login/getInfo.do',
+    method: 'post'
   })
 }
 

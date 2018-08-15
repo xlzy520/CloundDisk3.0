@@ -64,6 +64,9 @@ export default {
         location.reload() // 为了重新实例化vue-router对象 避免bug
       })
     }
+  },
+  mounted() {
+    this.$store.dispatch('GetInfo')
   }
 }
 </script>
