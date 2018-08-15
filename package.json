@@ -17,6 +17,7 @@
     "element-ui": "2.3.4",
     "js-cookie": "2.2.0",
     "mavon-editor": "^2.6.15",
+    "md5": "^2.2.1",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
     "vue": "2.5.10",
