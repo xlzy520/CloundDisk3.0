@@ -6,8 +6,7 @@ const user = {
   state: {
     token: getToken(),
     name: '',
-    avatar: '',
-    roles: []
+    avatar: ''
   },
 
   mutations: {
@@ -32,9 +31,11 @@ const user = {
       const password = md5(userInfo.password)
       return new Promise((resolve, reject) => {
         login(username, password).then(response => {
-          const data = response.data
+          const data = response.data[0]
           setToken(data.token)
           commit('SET_TOKEN', data.token)
+          commit('SET_NAME', data.userName)
+          commit('SET_AVATAR', data.userIco)
           resolve()
         }).catch(error => {
           reject(error)
