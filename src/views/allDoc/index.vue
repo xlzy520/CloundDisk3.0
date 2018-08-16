@@ -4,6 +4,7 @@
       <div class="list"></div>
       <div class="detail-container">
         <div class="detail">
+
           <mavon-editor
             v-model="value"
             :toolbars="toolbars"
@@ -82,15 +83,8 @@
     }
   }
 </script>
-
 <style lang="scss">
-  @mixin absolute{
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-  }
+  @import "@/styles/mixin.scss";
   .viewport{
    @include absolute;
     min-width: 520px;
@@ -110,6 +104,9 @@
         .detail{
           @include absolute;
           background-color: #eee;
+          .v-note-wrapper.markdown-body{
+            height: 83vh;
+          }
         }
       }
     }
