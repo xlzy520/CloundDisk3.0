@@ -52,22 +52,6 @@ export const constantRouterMap = [
       }
     ]
   },
-  // {
-  //   path: '/documentation',
-  //   component: Layout,
-  //   redirect: '/documentation/index',
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/documentation/index'),
-  //       name: 'documentation',
-  //       meta: {
-  //         title: '文档',
-  //         icon: 'documentation'
-  //       }
-  //     }
-  //   ]
-  // },
 
   { path: '*', redirect: '/404', hidden: true }
 ]
