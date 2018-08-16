@@ -4,7 +4,7 @@
       <div class="list"></div>
       <div class="detail-container">
         <div class="detail">
-
+          <detail-header></detail-header>
           <mavon-editor
             v-model="value"
             :toolbars="toolbars"
@@ -21,8 +21,10 @@
 <script>
   import '@/styles/markdown.css'
   import { getDocInfo } from '@/api/documentation'
+  import DetailHeader from '@/components/DetailHeader'
   export default {
     name: 'AllDoc',
+    components: { DetailHeader },
     data() {
       return {
         value: '',
@@ -85,6 +87,7 @@
 </script>
 <style lang="scss">
   @import "@/styles/mixin.scss";
+  @import "@/styles/variables.scss";
   .viewport{
    @include absolute;
     min-width: 520px;
@@ -112,10 +115,10 @@
     }
   }
   .v-note-wrapper .v-note-panel .v-note-edit.divarea-wrapper.scroll-style::-webkit-scrollbar-thumb{
-    background-color: #409eff!important;
+    background-color: $scrollbarBlue!important;
   }
   .v-note-wrapper .v-note-panel .v-note-show .v-show-content.scroll-style::-webkit-scrollbar-thumb,
   .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html.scroll-style::-webkit-scrollbar-thumb{
-    background-color: #67c23a!important;
+    background-color: $scrollbarGreen!important;
   }
 </style>
