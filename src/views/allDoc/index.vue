@@ -1,19 +1,23 @@
 <template>
-  <div class="preview-area">
-    <mavon-editor
-      v-model="value"
-      :toolbars="toolbars"
-      :externalLink="externalLink"
-      codeStyle="monokai-sublime"
-      :scrollStyle="true"
-      class="preview-container"
-      :style="width"
-    />
+  <div class="viewport">
+    <div class="list-detail">
+      <div class="list"></div>
+      <div class="detail-container">
+        <div class="detail">
+          <mavon-editor
+            v-model="value"
+            :toolbars="toolbars"
+            :externalLink="externalLink"
+            codeStyle="monokai-sublime"
+            :scrollStyle="true"
+          />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
   import '@/styles/markdown.css'
   import { getDocInfo } from '@/api/documentation'
   export default {
@@ -72,16 +76,6 @@
         }
       }
     },
-    computed: {
-      ...mapGetters([
-        'sidebar'
-      ]),
-      width() {
-        if (this.sidebar.opened) {
-          return 'width: 68vw'
-        }
-      }
-    },
     async mounted() {
       const docInfo = await getDocInfo('20180815_RD_MARKDOWN_NFwyw')
       this.value = docInfo.data.file
@@ -89,13 +83,36 @@
   }
 </script>
 
-<style>
-  .v-note-wrapper.markdown-body.preview-container{
+<style lang="scss">
+  @mixin absolute{
     position: absolute;
-    right: 1px;
-    bottom: 1px;
-    width: 80vw;
-    height: 85vh;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+  .viewport{
+   @include absolute;
+    min-width: 520px;
+    z-index: 2;
+    .list-detail{
+      @include absolute;
+      .list{
+        position: relative;
+        width: 342px;
+        height: 100%;
+        border-right: 1px solid #e0e1e5;
+        background-color: #eee;
+      }
+      .detail-container{
+        @include absolute;
+        left: 281px;
+        .detail{
+          @include absolute;
+          background-color: #eee;
+        }
+      }
+    }
   }
   .v-note-wrapper .v-note-panel .v-note-edit.divarea-wrapper.scroll-style::-webkit-scrollbar-thumb{
     background-color: #409eff!important;
