@@ -47,10 +47,8 @@
 </template>
 
 <script>
-  import listHeader from './listHeader'
   export default {
     name: 'fileList',
-    components: { listHeader },
     data() {
       return {
         tableData: []
