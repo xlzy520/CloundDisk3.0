@@ -47,10 +47,10 @@
   }
   .hideSidebar {
     .sidebar-container {
-      width: 36px !important;
+      width: 0 !important;
     }
     .main-container {
-      margin-left: 36px;
+      margin-left: 0;
     }
     .submenu-title-noDropdown {
       padding-left: 10px !important;
