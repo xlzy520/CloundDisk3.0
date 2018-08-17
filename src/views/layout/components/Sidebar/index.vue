@@ -5,41 +5,111 @@
       :show-timeout="200"
       :default-active="$route.path"
       :collapse="isCollapse"
-      background-color="#304156"
-      text-color="#bfcbd9"
+      background-color="rgba(145,212,143,.5)"
+      text-color="#063873"
       active-text-color="#409EFF"
     >
       <div class="logo" v-show="!isCollapse">
         <img src="@/assets/logo/logo.png" width="36" height="36" class="logo__img">
         <span class="logo__title">东经云盘</span>
       </div>
-      <sidebar-item v-for="route in routes" :key="route.name" :item="route" :base-path="route.path"></sidebar-item>
+      <el-tree
+        :data="data"
+        :props="defaultProps"
+        node-key="id"
+        :indent="10"
+        @node-click="handleNodeClick">
+        <span class="custom-tree-node" slot-scope="{node,data}">
+          <svg-icon  icon-class="folder"></svg-icon>
+          <span>{{ node.label }}</span>
+        </span>
+      </el-tree>
+      <!--<sidebar-item -->
+        <!--v-for="route in routes" -->
+        <!--:key="route.name" -->
+        <!--:item="route" -->
+        <!--:base-path="route.path">-->
+      <!--</sidebar-item>-->
     </el-menu>
   </el-scrollbar>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import SidebarItem from './SidebarItem'
+  import { mapGetters } from 'vuex'
+  import SidebarItem from './SidebarItem'
 
-export default {
-  components: { SidebarItem },
-  computed: {
-    ...mapGetters([
-      'sidebar'
-    ]),
-    routes() {
-      return this.$router.options.routes
+  export default {
+    data() {
+      return {
+        data: [
+          {
+            label: '公司文件',
+            children: [{
+              icon: 'hahahah',
+              label: '二级 1-1',
+              children: [{
+                label: '三级 1-1-1'
+              }]
+            }]
+          }, {
+            label: '个人文件夹',
+            children: [{
+              label: '二级 2-1',
+              children: [{
+                label: '三级 2-1-1'
+              }]
+            }, {
+              label: '二级 2-2',
+              children: [{
+                label: '三级 2-2-1'
+              }]
+            }]
+          }
+        ],
+        defaultProps: {
+          children: 'children',
+          label: 'label'
+        }
+      }
     },
-    isCollapse() {
-      return !this.sidebar.opened
+    components: { SidebarItem },
+    computed: {
+      ...mapGetters([
+        'sidebar'
+      ]),
+      routes() {
+        return this.$router.options.routes
+      },
+      isCollapse() {
+        return !this.sidebar.opened
+      }
+    },
+    methods: {
+      handleNodeClick(data) {
+        console.log(data)
+      }
     }
   }
-}
 </script>
 
 <style lang="scss">
-  .logo{
+  .custom-tree-node {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    padding-right: 8px;
+    .svg-icon {
+      width: 2em!important;
+      height: 2em!important;
+      vertical-align: -0.15em;
+      fill: currentColor;
+      overflow: hidden;
+      margin-right: 0!important;
+    }
+  }
+
+  .logo {
     display: inline-block;
     margin: 15px 0 15px -10px;
     cursor: default;
@@ -47,11 +117,11 @@ export default {
     width: 100%;
     line-height: 1;
     vertical-align: middle;
-    &__img{
+    &__img {
       margin-right: 5px;
       vertical-align: middle;
     }
-    &__title{
+    &__title {
       font-size: 24px;
       color: #31ba78;
       vertical-align: middle;
