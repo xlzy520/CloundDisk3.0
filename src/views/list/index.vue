@@ -55,8 +55,8 @@ export default {
     }
   },
   async mounted() {
-    const res = await getCategory('1002')
-    console.log(res)
+    const CategoryInfo = await getCategory('1002')
+    console.log(CategoryInfo)
   }
 }
 </script>
