@@ -16,8 +16,8 @@
       <el-tree
         :data="data"
         :props="defaultProps"
-        node-key="id"
         :indent="10"
+        :expand-on-click-node="false"
         @node-click="handleNodeClick">
         <span class="custom-tree-node" slot-scope="{node,data}">
           <svg-icon  icon-class="folder"></svg-icon>
