@@ -16,6 +16,9 @@
       <div class="list-crumb">
         <el-breadcrumb separator-class="el-icon-arrow-right">
           <el-breadcrumb-item :to="{ path: '/' }">公司文件</el-breadcrumb-item>
+          <!--<el-breadcrumb-item>活动管理</el-breadcrumb-item>-->
+          <!--<el-breadcrumb-item>活动列表</el-breadcrumb-item>-->
+          <!--<el-breadcrumb-item>活动详情</el-breadcrumb-item>-->
         </el-breadcrumb>
       </div>
     </div>
@@ -44,6 +47,7 @@
 </template>
 
 <script>
+  import { getCategory } from '@/api/file'
   export default {
     name: 'fileList',
     data() {
@@ -51,19 +55,17 @@
         tableData: []
       }
     },
-    mounted() {
-      // 初始获取下一级文件列表
-      this.$http.post('/api/djcpsdocument/category/getCategory.do').then(res => {
-        this.tableData = res.data.data
-        this.fcategoryid = res.data.data[0].fcategoryid
-      })
+    // 初始获取顶层文件列表
+    async mounted() {
+      const CategoryInfo = await getCategory('1002')
+      this.tableData = CategoryInfo.data.data
+      console.log(CategoryInfo)
     },
     methods: {
       // 点击获取下一级文件列表
-      nextDir(fcategoryid) {
-        this.$http.post('/api/djcpsdocument/category/getCategory.do', { fcategoryid: fcategoryid }).then(res => {
-          this.tableData = res.data.data
-        })
+      async nextDir(fcategoryid) {
+        const CategoryInfo = await getCategory(fcategoryid)
+        this.tableData = CategoryInfo.data.data
       },
       // 点击预览
       seeDir(fcategoryid) {

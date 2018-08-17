@@ -8,9 +8,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'AppMain',
   computed: {
+    ...mapGetters([
+      'sidebar'
+    ])
     // key() {
     //   return this.$route.name !== undefined ? this.$route.name + +new Date() : this.$route + +new Date()
     // }
