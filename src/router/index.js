@@ -28,25 +28,24 @@ export const constantRouterMap = [
   {
     path: '',
     component: Layout,
-    redirect: '/allDoc/index',
+    redirect: '/list/index',
     hidden: true,
     children: [{
       path: 'index',
-      name: 'allDoc',
-      component: () => import('@/views/allDoc/index')
+      component: () => import('@/views/list/index')
     }]
   },
   {
-    path: '/allDoc',
+    path: '/list',
     component: Layout,
-    redirect: '/allDoc/index',
+    redirect: '/list/index',
     children: [
       {
         path: 'index',
         component: () => import('@/views/list/index'),
-        name: '全部文件',
+        name: '文件列表',
         meta: {
-          title: '全部文件',
+          title: '文件列表',
           icon: 'allDoc'
         }
       }

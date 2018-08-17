@@ -9,7 +9,7 @@
         </el-tooltip>
         <el-tooltip class="item" effect="dark" content="缩略图" placement="bottom">
           <div class="action-item" @click="showThumbnail">
-            <svg-icon icon-class="list2" className="icon" />
+            <svg-icon icon-class="abbr" className="icon" />
           </div>
         </el-tooltip>
       </div>
@@ -71,8 +71,8 @@ export default {
     padding-right: 80px;
     .action-item {
       .icon {
-        width: 32px;
-        height: 32px;
+        width: 24px;
+        height: 24px;
         margin: 0 10px;
         cursor: pointer;
       }
