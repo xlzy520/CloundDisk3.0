@@ -7,3 +7,13 @@ export function getDocInfo(id) {
     params: { id }
   })
 }
+
+export function getCategory(id) {
+  return request({
+    url: '/api_py/djcpsdocument/category/getCategory.do',
+    method: 'post',
+    data: {
+      fcategoryid: id
+    }
+  })
+}

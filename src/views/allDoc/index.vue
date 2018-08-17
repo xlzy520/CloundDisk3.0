@@ -21,7 +21,7 @@
 
 <script>
   import '@/styles/markdown.css'
-  import { getDocInfo } from '@/api/documentation'
+  import { getDocInfo } from '@/api/file'
   import DetailHeader from '@/components/DetailHeader'
   export default {
     name: 'AllDoc',

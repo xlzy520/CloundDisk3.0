@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import request from '@/utils/request'
+import { getCategory } from '@/api/file'
 import Thumbnail from './components/Thumbnail'
 import List from './components/List'
 export default {
@@ -54,13 +54,9 @@ export default {
       this.component = 'Thumbnail'
     }
   },
-  mounted() {
-    request({
-      url: '/api_py/djcpsdocument/category/getCategory.do',
-      method: 'post'
-    }).then((data) => {
-      console.log(data)
-    })
+  async mounted() {
+    const res = await getCategory('1002')
+    console.log(res)
   }
 }
 </script>
