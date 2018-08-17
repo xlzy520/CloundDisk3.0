@@ -43,7 +43,8 @@ export const constantRouterMap = [
     children: [
       {
         path: 'index',
-        component: () => import('@/views/allDoc/index'),
+        // component: () => import('@/views/allDoc/index'),
+        component: () => import('@/views/list/index'),
         name: '全部文件',
         meta: {
           title: '全部文件',
