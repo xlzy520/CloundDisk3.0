@@ -1,9 +1,12 @@
 <template>
   <div class="list">
+    <div class="hd">
+      <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+    </div>
     <ul>
       <li v-for="(item, index) in list" :key="index">
         <div :class="['box', item.checked ? 'box-hover' : '']">
-          <el-checkbox v-model="item.checked"></el-checkbox>
+          <el-checkbox v-model="item.checked" @change="handleCheckItemChange"></el-checkbox>
           <a href="#">
             <svg-icon :icon-class="item.type ? 'folder' : 'file-markdown-fill'" className="icon" />
           </a>
@@ -24,7 +27,21 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      checkAll: false,
+      isIndeterminate: false
+    }
+  },
+  methods: {
+    handleCheckAllChange(val) {
+      this.list.forEach(item => { item.checked = val })
+      this.isIndeterminate = false
+    },
+    handleCheckItemChange(val) {
+      const checkedCount = this.list.filter(item => item.checked).length
+      this.checkAll = checkedCount === this.list.length
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.list.length
+    }
   }
 }
 </script>
@@ -34,6 +51,9 @@ export default {
     width: 92%;
     margin: 20px auto;
     justify-content: center;
+    .hd {
+      line-height: 48px;
+    }
     ul {
       list-style: none;
       display: flex;

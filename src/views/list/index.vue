@@ -1,6 +1,19 @@
 <template>
   <div>
     <div class="hd">
+      <div class="topbt">
+        <el-button type="primary" size="mini">刷新</el-button>
+        <el-button type="primary" size="mini">上传文件</el-button>
+        <el-button type="primary" size="mini">新建文件夹</el-button>
+        <el-button type="primary" size="mini">预览</el-button>
+        <el-button type="primary" size="mini">下载</el-button>
+        <el-button type="primary" size="mini">更新</el-button>
+        <el-button type="primary" size="mini">版本</el-button>
+        <el-button type="primary" size="mini">重命名</el-button>
+        <el-button type="primary" size="mini">删除</el-button>
+        <el-button type="primary" size="mini">外部链接</el-button>
+        <el-button type="primary" size="mini">详情</el-button>
+      </div>
       <div class="action-wrap">
         <el-tooltip class="item" effect="dark" content="列表" placement="bottom">
           <div class="action-item" @click="showList">
@@ -63,12 +76,21 @@ export default {
 
 <style scoped lang="scss">
 .hd {
+  display: flex;
+  justify-content: space-between;
+  width: 92%;
+  margin: 10px auto 0;
+  .topbt {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 48px;
+  }
   .action-wrap {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     height: 48px;
-    padding-right: 80px;
     .action-item {
       .icon {
         width: 32px;
