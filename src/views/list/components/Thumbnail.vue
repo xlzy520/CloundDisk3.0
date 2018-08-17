@@ -52,6 +52,9 @@ export default {
         }
         .box {
           position: absolute;
+          a{
+            display: block;
+          }
           &:hover {
             background: #F4F4F4;
             .el-checkbox {
