@@ -49,29 +49,29 @@
 <script>
   import listHeader from './listHeader'
   export default {
-    name: "fileList",
-    components:{listHeader},
+    name: 'fileList',
+    components: { listHeader },
     data() {
       return {
-        tableData:[],
+        tableData: []
       }
     },
-    mounted(){
-      //初始获取下一级文件列表
-      this.$http.post('/api/djcpsdocument/category/getCategory.do').then(res =>{
+    mounted() {
+      // 初始获取下一级文件列表
+      this.$http.post('/api/djcpsdocument/category/getCategory.do').then(res => {
         this.tableData = res.data.data
-        this.fcategoryid=res.data.data[0].fcategoryid
+        this.fcategoryid = res.data.data[0].fcategoryid
       })
     },
-    methods:{
-      //点击获取下一级文件列表
-      nextDir(fcategoryid){
-        this.$http.post('/api/djcpsdocument/category/getCategory.do',{fcategoryid:fcategoryid}).then(res =>{
+    methods: {
+      // 点击获取下一级文件列表
+      nextDir(fcategoryid) {
+        this.$http.post('/api/djcpsdocument/category/getCategory.do', { fcategoryid: fcategoryid }).then(res => {
           this.tableData = res.data.data
         })
       },
-      //点击预览
-      seeDir(fcategoryid){
+      // 点击预览
+      seeDir(fcategoryid) {
 
       }
     }
