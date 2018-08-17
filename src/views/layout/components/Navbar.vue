@@ -4,7 +4,6 @@
                :toggleClick="toggleSideBar"
                :isActive="sidebar.opened">
     </hamburger>
-    <breadcrumb></breadcrumb>
     <div class="uploadCreate clearfix">
       <el-button type="primary" class="nav__upload">
         <i class="el-icon-upload el-icon--left"></i>
@@ -41,12 +40,10 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 export default {
   components: {
-    Hamburger,
-    Breadcrumb
+    Hamburger
   },
   computed: {
     ...mapGetters([
