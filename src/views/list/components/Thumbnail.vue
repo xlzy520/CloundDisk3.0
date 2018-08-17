@@ -8,9 +8,9 @@
         <div :class="['box', item.checked ? 'box-hover' : '']">
           <el-checkbox v-model="item.checked" @change="handleCheckItemChange"></el-checkbox>
           <a href="#">
-            <svg-icon :icon-class="item.type ? 'folder' : 'file-markdown-fill'" className="icon" />
+            <svg-icon :icon-class="item.type ? 'folder' : 'markdown'" className="icon" />
           </a>
-          <h3><a href="#">文件夹</a></h3>
+          <span><a href="#">文件夹</a></span>
         </div>
       </li>
     </ul>
@@ -65,7 +65,7 @@ export default {
       text-align: center;
       li {
         width: 115px;
-        height: 150px;
+        height: 140px;
         margin: 0 10px;
         .box-hover {
           background: #F4F4F4;
@@ -75,6 +75,9 @@ export default {
         }
         .box {
           position: absolute;
+          a{
+            display: block;
+          }
           &:hover {
             background: #F4F4F4;
             .el-checkbox {
@@ -87,7 +90,7 @@ export default {
             right: 6px;
             top: 6px;
           }
-          h3 {
+          span {
             overflow:hidden;
             text-overflow:ellipsis;
             display:-webkit-box;
