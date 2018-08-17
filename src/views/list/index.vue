@@ -2,12 +2,16 @@
   <div>
     <div class="hd">
       <div class="action-wrap">
-        <div class="action-item" @click="showList">
-          <svg-icon icon-class="list" className="icon" />
-        </div>
-        <div class="action-item" @click="showThumbnail">
-          <svg-icon icon-class="list2" className="icon" />
-        </div>
+        <el-tooltip class="item" effect="dark" content="列表" placement="bottom">
+          <div class="action-item" @click="showList">
+            <svg-icon icon-class="list" className="icon" />
+          </div>
+        </el-tooltip>
+        <el-tooltip class="item" effect="dark" content="缩略图" placement="bottom">
+          <div class="action-item" @click="showThumbnail">
+            <svg-icon icon-class="list2" className="icon" />
+          </div>
+        </el-tooltip>
       </div>
     </div>
     <component :is="component" :list="list"></component>
@@ -15,6 +19,7 @@
 </template>
 
 <script>
+import request from '@/utils/request'
 import Thumbnail from './components/Thumbnail'
 import List from './components/List'
 export default {
@@ -48,6 +53,14 @@ export default {
     showThumbnail() {
       this.component = 'Thumbnail'
     }
+  },
+  mounted() {
+    request({
+      url: '/api_py/djcpsdocument/category/getCategory.do',
+      method: 'post'
+    }).then((data) => {
+      console.log(data)
+    })
   }
 }
 </script>
