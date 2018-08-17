@@ -6,6 +6,7 @@
         <div class="detail">
           <detail-header></detail-header>
           <mavon-editor
+            v-show="false"
             v-model="value"
             :toolbars="toolbars"
             :externalLink="externalLink"

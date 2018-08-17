@@ -43,25 +43,12 @@
       return {
         data: [
           {
-            label: '公司文件',
+            label: '研发中心',
             children: [{
               icon: 'hahahah',
               label: '二级 1-1',
               children: [{
                 label: '三级 1-1-1'
-              }]
-            }]
-          }, {
-            label: '个人文件夹',
-            children: [{
-              label: '二级 2-1',
-              children: [{
-                label: '三级 2-1-1'
-              }]
-            }, {
-              label: '二级 2-2',
-              children: [{
-                label: '三级 2-2-1'
               }]
             }]
           }
