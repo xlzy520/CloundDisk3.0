@@ -4,15 +4,13 @@
                :toggleClick="toggleSideBar"
                :isActive="sidebar.opened">
     </hamburger>
-    <div class="uploadCreate clearfix">
-      <el-button type="primary" class="nav__upload">
-        <i class="el-icon-upload el-icon--left"></i>
-        上传
-      </el-button>
-      <el-button type="primary" class="nav__create">
-        <i class="el-icon-plus el-icon--left"></i>
-        新建
-      </el-button>
+    <div class="search">
+      <div  class="searchform">
+        <input value class="search-keyword" placeholder="搜索一下"/>
+        <button class="search-submit">
+          <i class="el-icon-search"></i>
+        </button>
+      </div>
     </div>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
@@ -76,10 +74,55 @@ export default {
     float: left;
     padding: 0 10px;
   }
-  .uploadCreate{
+  .search {
     position: absolute;
-    display: inline-block;
-    right: 20vw;
+    bottom: 1vh;
+    right: 10vw;
+    width: 268px;
+    height: 36px;
+    padding: 2px 2px 2px 2px;
+    background-color: rgba(165, 165, 165, .12);
+    border-radius: 6px;
+    font-size: 12px;
+    z-index: 10;
+    .searchform {
+      background-color: #fff;
+      background-color: hsla(0, 0%, 100%, .88);
+      display: block;
+      height: 32px;
+      border-radius: 4px;
+      transition: background-color .2s;
+      .search-keyword {
+        float: left;
+        width: 200px;
+        outline: none;
+        border-radius: 4px;
+        height: 32px;
+        line-height: 32px;
+        border: 0;
+        padding: 0 12px;
+        background-color: transparent;
+        font-size: 12px;
+        color: #222;
+        overflow: hidden;
+      }
+      .search-submit {
+        position: absolute;
+        display: block;
+        right: 0;
+        width: 48px;
+        height: 32px;
+        border: 0;
+        outline: none;
+        background-color: transparent;
+        font-size: 21px;
+        cursor: pointer;
+        color: #00a5db;
+        &:hover {
+          color: #ff4e8e;
+        }
+      }
+    }
   }
   .screenfull {
     position: absolute;
