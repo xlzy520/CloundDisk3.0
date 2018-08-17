@@ -42,6 +42,9 @@ export default {
       this.checkAll = checkedCount === this.list.length
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.list.length
     }
+  },
+  mounted() {
+    this.handleCheckItemChange()
   }
 }
 </script>
