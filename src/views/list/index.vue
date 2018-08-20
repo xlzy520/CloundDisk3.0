@@ -14,7 +14,7 @@ export default {
   name: 'list',
   data() {
     return {
-      component: 'Thumbnail',
+      component: 'List',
       list: [
         { type: 1, checked: false },
         { type: 1, checked: false },
@@ -38,12 +38,6 @@ export default {
   methods: {
     list_type_toggle(component) {
       this.component = component
-    },
-    showList() {
-      this.component = 'List'
-    },
-    showThumbnail() {
-      this.component = 'Thumbnail'
     }
   },
   async mounted() {
