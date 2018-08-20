@@ -31,8 +31,6 @@ export default {
 
 <style scoped lang="scss">
   .list {
-    width: 92%;
-    margin: 20px auto;
     justify-content: center;
     ul {
       list-style: none;
