@@ -54,7 +54,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    background: #ccc9c921;
+    background: #fafafa;
     padding: 10px 20px 10px 20px;
     .list-btn {
       text-align: left;
@@ -72,7 +72,7 @@ export default {
       justify-content: flex-end;
       align-items: center;
       height: 28px;
-      padding-right: 80px;
+      padding-right: 40px;
       .action-item {
         .icon {
           width: 24px;
