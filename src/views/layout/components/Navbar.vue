@@ -11,7 +11,7 @@
     </div>
     <div class="search">
       <div  class="searchform">
-        <input value class="search-keyword" placeholder="搜索一下"/>
+        <input value class="search-keyword" placeholder="搜索一下" maxlength="40"/>
         <button class="search-submit">
           <i class="el-icon-search"></i>
         </button>
