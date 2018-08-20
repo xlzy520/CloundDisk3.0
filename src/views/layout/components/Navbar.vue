@@ -2,8 +2,13 @@
   <el-menu class="navbar" mode="horizontal">
     <hamburger class="hamburger-container"
                :toggleClick="toggleSideBar"
-               :isActive="sidebar.opened">
+               :isActive="sidebar.opened"
+    title="展开侧边栏">
     </hamburger>
+    <div class="nav__logo" v-show="!sidebar.opened">
+      <img src="@/assets/logo/logo.png" width="36" height="36" class="nav__logo__img">
+      <span class="nav__logo__title">东经云盘</span>
+    </div>
     <div class="search">
       <div  class="searchform">
         <input value class="search-keyword" placeholder="搜索一下"/>
@@ -73,6 +78,18 @@ export default {
     height: 50px;
     float: left;
     padding: 0 10px;
+  }
+  .nav__logo{
+    display: inline-block;
+    &__img{
+      float: left;
+      margin-top: 5px;
+      margin-right: 5px;
+    }
+    &__title{
+      float: right;
+      font-size: 20px;
+    }
   }
   .search {
     position: absolute;
