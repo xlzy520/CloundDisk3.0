@@ -9,7 +9,10 @@ const file = {
       {
         fileId: 0,
         fileName: '公司文件'
-      }
+      },
+      { fileId: 2, fileName: '示例-按部门' },
+      { fileId: 5, fileName: '销售部' },
+      { fileId: 26, fileName: '啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊' }
     ]
   },
   mutations: {
@@ -18,6 +21,12 @@ const file = {
     },
     GET_CATEGORY: (state, data) => {
       state.fileList = data
+    },
+    SET_PARENTID: (state, data) => {
+      state.parentId = data
+    },
+    SET_FOLDERNAV: (state, data) => {
+      state.folderNav.push(data)
     }
   },
   actions: {

@@ -11,7 +11,7 @@
 
         <el-table-column label="名称" sortable width="480px">
           <template slot-scope="scope">
-            <svg-icon icon-class="folder"></svg-icon>
+            <svg-icon :icon-class="scope.row.ffiletype===1? 'folder':scope.row.ffiletype"></svg-icon>
             <span v-if="scope.row.fparentid"
                   class="fileName"
                   @click="nextDir(scope.row.fcategoryid)">{{ scope.row.fname }}</span>
