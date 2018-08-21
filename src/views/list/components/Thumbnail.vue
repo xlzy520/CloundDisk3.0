@@ -12,6 +12,7 @@
         </div>
       </li>
     </ul>
+    <div class="empty-block" v-if="!fileList.length"><span class="empty-text">暂无数据</span></div>
   </div>
 </template>
 
@@ -19,13 +20,14 @@
 export default {
   name: 'Thumbnail',
   props: {
-    list: {
+    fileList: {
       type: Array,
       required: true
     }
   },
   data() {
     return {
+      list: [],
       checkAll: false,
       isIndeterminate: false,
       disabled: false
@@ -36,17 +38,27 @@ export default {
       this.list.forEach(item => { item.checked = val })
       this.isIndeterminate = false
     },
-    handleCheckItemChange(val) {
+    handleCheckItemChange() {
+      const totalLength = this.list.length
       const checkedCount = this.list.filter(item => item.checked).length
-      this.checkAll = checkedCount === this.list.length && this.list.length > 0
-      this.disabled = this.list.length === 0
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.list.length
+      this.checkAll = checkedCount === totalLength && totalLength > 0
+      this.disabled = totalLength === 0
+      this.isIndeterminate = checkedCount > 0 && checkedCount < totalLength
+      const folderCheckedCount = this.list.filter(item => (item.ffiletype === 1 && item.checked)).length
+      const fileCheckedCount = this.list.filter(item => item.ffiletype === 2 && item.checked).length
+      this.$emit('change_the_function', totalLength, folderCheckedCount, fileCheckedCount)
     },
     nextDir(fcategoryid) {
       this.$store.dispatch('GetCategory', fcategoryid).then(() => {
         this.handleCheckItemChange()
       })
     }
+  },
+  mounted() {
+    this.$store.dispatch('GetCategory', '1002').then(() => {
+      this.list = this.fileList
+      this.handleCheckItemChange()
+    })
   }
 }
 </script>
@@ -104,6 +116,20 @@ export default {
             height: 100px;
           }
         }
+      }
+    }
+    .empty-block {
+      position: relative;
+      min-height: 60px;
+      text-align: center;
+      width: 100%;
+      height: 100%;
+      .empty-text {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+        color: #909399;
       }
     }
   }

@@ -1,33 +1,8 @@
 <template>
   <div>
-    <div class="hd">
-      <div class="topbt">
-        <el-button type="primary" size="mini" icon="el-icon-refresh">刷新</el-button>
-        <el-button type="primary" size="mini" icon="el-icon-upload">上传文件</el-button>
-        <el-button type="primary" size="mini" icon="el-icon-plus">新建文件夹</el-button>
-        <el-button type="primary" size="mini" icon="el-icon-document">预览</el-button>
-        <el-button type="primary" size="mini" icon="el-icon-download">下载</el-button>
-        <el-button type="primary" size="mini" icon="el-icon-edit">更新</el-button>
-        <el-button type="primary" size="mini" icon="el-icon-tickets">版本</el-button>
-        <el-button type="primary" size="mini" icon="el-icon-edit-outline">重命名</el-button>
-        <el-button type="primary" size="mini" icon="el-icon-delete">删除</el-button>
-        <!--<el-button type="primary" size="mini">外部链接</el-button>-->
-        <el-button type="primary" size="mini" icon="el-icon-info">详情</el-button>
-      </div>
-      <div class="action-wrap">
-        <el-tooltip class="item" effect="dark" content="列表" placement="bottom">
-          <div class="action-item" @click="showList">
-            <svg-icon icon-class="list" className="icon" />
-          </div>
-        </el-tooltip>
-        <el-tooltip class="item" effect="dark" content="缩略图" placement="bottom">
-          <div class="action-item" @click="showThumbnail">
-            <svg-icon icon-class="abbr" className="icon" />
-          </div>
-        </el-tooltip>
-      </div>
-    </div>
-    <component :is="component" :list="list"></component>
+    <list-header @list_type_toggle="list_type_toggle" :isFolder="isFolder" :isFile="isFile" :isOther="isOther"></list-header>
+    <component :is="component" :fileList="fileList" @change_the_function="change_the_function"></component>
+    <upload-file></upload-file>
   </div>
 </template>
 
@@ -35,61 +10,57 @@
 import { mapGetters } from 'vuex'
 import Thumbnail from './components/Thumbnail'
 import List from './components/List'
+import ListHeader from '@/components/ListHeader'
+import UploadFile from '@/components/UploadFile'
 export default {
   name: 'list',
   data() {
     return {
-      component: 'Thumbnail'
+      component: 'List',
+      isFolder: false,
+      isFile: false,
+      isOther: false
     }
   },
   components: {
+    UploadFile,
     Thumbnail,
-    List
+    List,
+    ListHeader
+  },
+  methods: {
+    list_type_toggle(component) {
+      this.component = component
+    },
+    change_the_function(totalLength, folderCheckedCount, fileCheckedCount) {
+      console.log(totalLength, folderCheckedCount, fileCheckedCount)
+      if (totalLength === (folderCheckedCount + fileCheckedCount) && totalLength > 0 || folderCheckedCount && fileCheckedCount) {
+        this.isFolder = false
+        this.isFile = false
+        this.isOther = true
+      } else if (folderCheckedCount && !fileCheckedCount) {
+        this.isFolder = true
+        this.isFile = false
+        this.isOther = false
+      } else if (fileCheckedCount && !folderCheckedCount) {
+        this.isFolder = false
+        this.isFile = true
+        this.isOther = false
+      } else {
+        this.isFolder = false
+        this.isFile = false
+        this.isOther = false
+      }
+    }
   },
   computed: {
     ...mapGetters([
-      'list'
+      'fileList'
     ])
-  },
-  methods: {
-    showList() {
-      this.component = 'List'
-    },
-    showThumbnail() {
-      this.component = 'Thumbnail'
-    }
-  },
-  mounted() {
-    this.$store.dispatch('GetCategory', '1002')
   }
 }
 </script>
 
-<style scoped lang="scss">
-.hd {
-  display: flex;
-  justify-content: space-between;
-  width: 92%;
-  margin: 10px auto 0;
-  .topbt {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    height: 48px;
-  }
-  .action-wrap {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    height: 48px;
-    .action-item {
-      .icon {
-        width: 24px;
-        height: 24px;
-        margin: 0 10px;
-        cursor: pointer;
-      }
-    }
-  }
-}
+<style lang="scss">
+
 </style>
