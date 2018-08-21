@@ -2,17 +2,17 @@
   <div>
     <div class="hd">
       <div class="topbt">
-        <el-button type="primary" size="mini">刷新</el-button>
-        <el-button type="primary" size="mini">上传文件</el-button>
-        <el-button type="primary" size="mini">新建文件夹</el-button>
-        <el-button type="primary" size="mini">预览</el-button>
-        <el-button type="primary" size="mini">下载</el-button>
-        <el-button type="primary" size="mini">更新</el-button>
-        <el-button type="primary" size="mini">版本</el-button>
-        <el-button type="primary" size="mini">重命名</el-button>
-        <el-button type="primary" size="mini">删除</el-button>
-        <el-button type="primary" size="mini">外部链接</el-button>
-        <el-button type="primary" size="mini">详情</el-button>
+        <el-button type="primary" size="mini" icon="el-icon-refresh">刷新</el-button>
+        <el-button type="primary" size="mini" icon="el-icon-upload">上传文件</el-button>
+        <el-button type="primary" size="mini" icon="el-icon-plus">新建文件夹</el-button>
+        <el-button type="primary" size="mini" icon="el-icon-document">预览</el-button>
+        <el-button type="primary" size="mini" icon="el-icon-download">下载</el-button>
+        <el-button type="primary" size="mini" icon="el-icon-edit">更新</el-button>
+        <el-button type="primary" size="mini" icon="el-icon-tickets">版本</el-button>
+        <el-button type="primary" size="mini" icon="el-icon-edit-outline">重命名</el-button>
+        <el-button type="primary" size="mini" icon="el-icon-delete">删除</el-button>
+        <!--<el-button type="primary" size="mini">外部链接</el-button>-->
+        <el-button type="primary" size="mini" icon="el-icon-info">详情</el-button>
       </div>
       <div class="action-wrap">
         <el-tooltip class="item" effect="dark" content="列表" placement="bottom">
@@ -32,32 +32,24 @@
 </template>
 
 <script>
-import { getCategory } from '@/api/file'
+import { mapGetters } from 'vuex'
 import Thumbnail from './components/Thumbnail'
 import List from './components/List'
 export default {
   name: 'list',
   data() {
     return {
-      component: 'Thumbnail',
-      list: [
-        { type: 1, checked: false },
-        { type: 1, checked: false },
-        { type: 1, checked: false },
-        { type: 1, checked: false },
-        { type: 1, checked: false },
-        { type: 1, checked: false },
-        { type: 1, checked: false },
-        { type: 1, checked: false },
-        { type: 0, checked: false },
-        { type: 0, checked: false },
-        { type: 0, checked: false }
-      ]
+      component: 'Thumbnail'
     }
   },
   components: {
     Thumbnail,
     List
+  },
+  computed: {
+    ...mapGetters([
+      'list'
+    ])
   },
   methods: {
     showList() {
@@ -67,9 +59,8 @@ export default {
       this.component = 'Thumbnail'
     }
   },
-  async mounted() {
-    const CategoryInfo = await getCategory('1002')
-    console.log(CategoryInfo)
+  mounted() {
+    this.$store.dispatch('GetCategory', '1002')
   }
 }
 </script>
