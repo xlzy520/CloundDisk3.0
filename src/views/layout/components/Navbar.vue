@@ -14,7 +14,6 @@
       name="search"
       title="请输入搜索关键词"
       placeholder="请输入搜索关键词"
-      maxlength="40"
       v-model="searchValue">
 
     </md-input>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <list-header @list_type_toggle="list_type_toggle"></list-header>
-    <component :is="component" :list="list"></component>
+    <component :is="component" :FileList="FileList"></component>
     <upload-file></upload-file>
   </div>
 </template>
@@ -17,19 +17,7 @@ export default {
   data() {
     return {
       component: 'List',
-      list: [
-        { type: 1, checked: false },
-        { type: 1, checked: false },
-        { type: 1, checked: false },
-        { type: 1, checked: false },
-        { type: 1, checked: false },
-        { type: 1, checked: false },
-        { type: 1, checked: false },
-        { type: 1, checked: false },
-        { type: 0, checked: false },
-        { type: 0, checked: false },
-        { type: 0, checked: false }
-      ]
+      FileList: []
     }
   },
   components: {
@@ -45,6 +33,7 @@ export default {
   },
   async mounted() {
     const CategoryInfo = await getCategory('1002')
+    this.FileList = CategoryInfo.data
     console.log(CategoryInfo)
   }
 }

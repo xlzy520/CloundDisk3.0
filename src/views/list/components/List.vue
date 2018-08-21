@@ -1,15 +1,15 @@
 <template>
   <div class="file-content clearfix" ref="fileContent">
     <div class="file-list">
-      <el-table ref="multipleTable" :data="tableData" style="width: 100%"
+      <el-table ref="multipleTable" :data="FileList" style="width: 100%"
                 :default-sort="{prop: 'date', order: 'descending'}">
         <el-table-column type="selection" width="55"></el-table-column>
         <el-table-column label="名称" sortable width="480px">
           <template slot-scope="scope">
             <span v-if="scope.row.fparentid"
-                  @click="nextDir(scope.row.fcategoryid)">{{ scope.row.fcategoryname }}</span>
+                  @click="nextDir(scope.row.fcategoryid)">{{ scope.row.fname }}</span>
             <span v-else="!scope.row.fparentid"
-                  @click="seeDir(scope.row.fcategoryid)">{{ scope.row.fcategoryname }}</span>
+                  @click="seeDir(scope.row.fcategoryid)">{{ scope.row.fname }}</span>
           </template>
         </el-table-column>
         <!--<el-table-column prop="fupdatetime" label="修改时间" sortable width="165"></el-table-column>-->
@@ -31,23 +31,19 @@
   import { getCategory } from '@/api/file'
 
   export default {
-    name: 'fileList',
-    data() {
-      return {
-        tableData: []
+    name: 'List',
+    props: {
+      FileList: {
+        require: true,
+        type: Array
       }
-    },
-    // 初始获取顶层文件列表
-    async mounted() {
-      const CategoryInfo = await getCategory('1002')
-      this.tableData = CategoryInfo.data.listCategory
-      console.log(CategoryInfo)
     },
     methods: {
       // 点击获取下一级文件列表
       async nextDir(fcategoryid) {
+        console.log(fcategoryid)
         const CategoryInfo = await getCategory(fcategoryid)
-        this.tableData = CategoryInfo.data.listCategory
+        this.FileList = CategoryInfo.data
       },
       // 点击预览
       seeDir(fcategoryid) {
