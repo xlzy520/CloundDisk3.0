@@ -5,6 +5,7 @@ const file = {
     selectedData: [],
     uploadVisible: false,
     fileList: [],
+    showBtn: [],
     folderNav: [
       {
         fileId: -1,
@@ -27,6 +28,19 @@ const file = {
     },
     SET_FOLDERNAV: (state, data) => {
       state.folderNav.push(data)
+    },
+    // VISIBILITY_BTN
+    VISIBILITY_BTN: (state, rows) => {
+      if (rows.length === 1) {
+        state.showBtn = []
+        state.showBtn.push('' + rows[0].ffiletype)
+        // console.log(state.showBtn)
+      } else if (rows.length === 0) {
+        state.showBtn = []
+      } else {
+        state.showBtn = []
+        state.showBtn.push('3')
+      }
     }
   },
   actions: {
@@ -40,6 +54,9 @@ const file = {
     async Refresh({ commit }) {
       const Category = await getCategory(this.state.parentId)
       commit('GET_CATEGORY', Category.data)
+    },
+    VisibilityBtn: ({ commit }, rows) => {
+      commit('VISIBILITY_BTN', rows)
     }
   }
 }

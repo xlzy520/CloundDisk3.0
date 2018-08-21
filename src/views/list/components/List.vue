@@ -5,7 +5,8 @@
         ref="multipleTable"
         :data="fileList"
         style="width: 100%"
-        :default-sort="{prop: 'date', order: 'descending'}">
+        :default-sort="{prop: 'date', order: 'descending'}"
+        @selection-change="handleSelectionChange">
 
         <el-table-column type="selection" width="55"></el-table-column>
 
@@ -54,6 +55,10 @@
       // 点击预览
       seeDir(fcategoryid) {
 
+      },
+      handleSelectionChange(rows) {
+        this.$store.dispatch('VisibilityBtn', rows)
+        // console.log(rows)
       }
     }
   }

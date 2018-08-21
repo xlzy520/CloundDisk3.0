@@ -4,13 +4,14 @@
       <el-button type="primary" icon="el-icon-refresh" @click="refresh">刷新</el-button>
       <el-button type="primary" icon="el-icon-upload" @click="uploadFile">上传文件</el-button>
       <el-button type="primary" icon="el-icon-plus">新建文件夹</el-button>
-      <el-button type="primary" v-if="isFile" icon="el-icon-document">预览</el-button>
-      <el-button type="primary" v-if="isFile" icon="el-icon-download">下载</el-button>
-      <el-button type="primary" v-if="isFile" icon="el-icon-edit">更新</el-button>
-      <el-button type="primary" v-if="isFile" icon="el-icon-tickets">版本</el-button>
-      <el-button type="primary" v-if="isFolder || isFile" icon="el-icon-edit-outline">重命名</el-button>
-      <el-button type="primary" v-if="isFolder || isFile || isOther" icon="el-icon-delete">删除</el-button>
-      <el-button type="primary" v-if="isFolder || isFile" icon="el-icon-info">详情</el-button>
+      <el-button v-if="showBtn.indexOf('2')!=-1" type="primary" icon="el-icon-document">预览</el-button>
+      <el-button v-if="showBtn.indexOf('2')!=-1" type="primary" icon="el-icon-download">下载</el-button>
+      <el-button v-if="showBtn.indexOf('2')!=-1" type="primary" icon="el-icon-edit">更新</el-button>
+      <el-button v-if="showBtn.indexOf('2')!=-1" type="primary" icon="el-icon-tickets">版本</el-button>
+      <el-button v-if="showBtn.indexOf('1')!=-1" type="primary" icon="el-icon-edit-outline">重命名</el-button>
+      <el-button v-if="showBtn.indexOf('2')!=-1 || showBtn.indexOf('1')!=-1 || showBtn.indexOf('3')!=-1" type="primary" icon="el-icon-delete" ref="del">删除</el-button>
+      <el-button v-if="showBtn.indexOf('2')!=-1 || showBtn.indexOf('1')!=-1" type="primary" icon="el-icon-info">详情</el-button>
+    <!--<span>{{showBtn}}</span>-->
     </div>
     <div class="action-wrap">
       <el-tooltip class="item" effect="dark" content="列表" placement="bottom">
@@ -29,7 +30,7 @@
 </template>
 
 <script>
-
+import { mapGetters } from 'vuex'
 import Breadcrumb from '../Breadcrumb/index'
 export default {
   name: 'ListHeader',
@@ -38,6 +39,17 @@ export default {
     isFolder: false,
     isFile: false,
     isOther: false
+  },
+  // computed: {
+  //   showBtn() {
+  //     return this.$store.state.folderNav
+  //   }
+  // },
+  computed: {
+    ...mapGetters([
+      'showBtn',
+      'folderNav'
+    ])
   },
   methods: {
     typeShow(type) {
@@ -49,6 +61,9 @@ export default {
     refresh() {
       this.$store.dispatch('Refresh')
     }
+  },
+  mounted() {
+    console.log(this.showBtn)
   }
 }
 </script>
