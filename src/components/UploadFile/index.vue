@@ -52,7 +52,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'uploadVisible'
+      'uploadVisible',
+      'folderNav'
     ])
   },
   methods: {
@@ -66,7 +67,7 @@ export default {
       })
       this.$store.dispatch('ToggleUploadVisible')
       this.$refs.upload.clearFiles()
-      // Bus.$emit('reFresh')
+      this.$store.dispatch('Refresh')
     },
     onRemove(file, filelist) {
       this.fileList = filelist
@@ -98,7 +99,7 @@ export default {
         })
         this.$store.dispatch('ToggleUploadVisible')
         this.$refs.upload.clearFiles()
-        // Bus.$emit('reFresh')
+        this.$store.dispatch('Refresh')
       } else {
         let msg = response.msg
         if (msg == null || msg === '') {
@@ -113,14 +114,14 @@ export default {
         })
         this.$store.dispatch('ToggleUploadVisible')
         this.$refs.upload.clearFiles()
-        // Bus.$emit('reFresh')
+        this.$store.dispatch('Refresh')
       }
     },
     onFileChange(file, filelist) {
       this.fileList = filelist
 
       if (file.status === 'ready') {
-        // this.fileList = filelist;
+        this.$store.dispatch('Refresh')
         this.btDisable = false
         this.currentFile = file
         this.uploadUrl = ''
@@ -168,10 +169,11 @@ export default {
     //
     //   that.uploadUrl = '/app/file/upload-file/'
     //
-    //   var tip = ''
-    //   for (var i = 0; i < Bus.folderNav.length; ++i) {
-    //     tip += '/' + Bus.folderNav[i].fileName
-    //   }
+    let tip = ''
+    for (var i = 0; i < this.folderNav.length; ++i) {
+      tip += '/' + this.folderNav[i].fileName
+    }
+    this.tip = tip
     //   that.tip = tip
     //   that.currentFile = null
     //   that.fileList = []
