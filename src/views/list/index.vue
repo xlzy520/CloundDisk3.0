@@ -34,7 +34,7 @@ export default {
     },
     change_the_function(totalLength, folderCheckedCount, fileCheckedCount) {
       console.log(totalLength, folderCheckedCount, fileCheckedCount)
-      if (totalLength === (folderCheckedCount + fileCheckedCount) && totalLength > 0 || folderCheckedCount && fileCheckedCount) {
+      if (totalLength === (folderCheckedCount + fileCheckedCount) && totalLength > 0 || folderCheckedCount && fileCheckedCount || folderCheckedCount > 1 || fileCheckedCount > 1) {
         this.isFolder = false
         this.isFile = false
         this.isOther = true

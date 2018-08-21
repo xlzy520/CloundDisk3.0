@@ -37,6 +37,10 @@ export default {
     handleCheckAllChange(val) {
       this.list.forEach(item => { item.checked = val })
       this.isIndeterminate = false
+      const totalLength = this.list.length
+      const folderCheckedCount = this.list.filter(item => (item.ffiletype === 1 && item.checked)).length
+      const fileCheckedCount = this.list.filter(item => item.ffiletype === 2 && item.checked).length
+      this.$emit('change_the_function', totalLength, folderCheckedCount, fileCheckedCount)
     },
     handleCheckItemChange() {
       const totalLength = this.list.length

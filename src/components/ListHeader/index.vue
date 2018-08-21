@@ -4,10 +4,10 @@
       <el-button type="primary" icon="el-icon-refresh">刷新</el-button>
       <el-button type="primary" icon="el-icon-upload" @click="uploadFile">上传文件</el-button>
       <el-button type="primary" icon="el-icon-plus">新建文件夹</el-button>
-      <el-button type="primary" v-if="isFolder || isFile" icon="el-icon-document">预览</el-button>
-      <el-button type="primary" v-if="isFolder || isFile" icon="el-icon-download">下载</el-button>
-      <el-button type="primary" v-if="isFolder || isFile" icon="el-icon-edit">更新</el-button>
-      <el-button type="primary" v-if="isFolder || isFile" icon="el-icon-tickets">版本</el-button>
+      <el-button type="primary" v-if="isFile" icon="el-icon-document">预览</el-button>
+      <el-button type="primary" v-if="isFile" icon="el-icon-download">下载</el-button>
+      <el-button type="primary" v-if="isFile" icon="el-icon-edit">更新</el-button>
+      <el-button type="primary" v-if="isFile" icon="el-icon-tickets">版本</el-button>
       <el-button type="primary" v-if="isFolder || isFile" icon="el-icon-edit-outline">重命名</el-button>
       <el-button type="primary" v-if="isFolder || isFile || isOther" icon="el-icon-delete">删除</el-button>
       <el-button type="primary" v-if="isFolder || isFile" icon="el-icon-info">详情</el-button>
