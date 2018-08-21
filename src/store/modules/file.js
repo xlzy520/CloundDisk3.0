@@ -4,11 +4,7 @@ const file = {
   },
   mutations: {
     TOGGLE_UPLOADVISIBLE: state => {
-      if (state.uploadVisible) {
-        state.uploadVisible = false
-      } else {
-        state.uploadVisible = true
-      }
+      state.uploadVisible = !state.uploadVisible
     }
   },
   actions: {

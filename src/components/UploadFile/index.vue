@@ -13,7 +13,7 @@
       class="upload-demo"
       drag
       :action="uploadUrl"
-      :limit="4"
+      :limit="1"
       :on-success="uploadOk"
       :data="uploadData"
       :on-change="onFileChange"
@@ -25,10 +25,7 @@
     >
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-      <div class="el-upload__tip" slot="tip">
-        <span style="color: #888;padding-right: 2px;">当前文件夹：</span>
-        {{tip}}
-      </div>
+      <div class="el-upload__tip" slot="tip"><span style="color: #888;padding-right: 2px;">当前文件夹：</span>{{tip}}</div>
     </el-upload>
     <span slot="footer" class="dialog-footer">
                 <el-button size="small" type="primary" @click="submitUpload" :disabled="btDisable">开始上传</el-button>
@@ -41,14 +38,8 @@
 import { mapGetters } from 'vuex'
 export default {
   name: 'UploadFile',
-  computed: {
-    ...mapGetters([
-      'uploadVisible'
-    ])
-  },
   data() {
     return {
-      isVisible: false,
       isLoad: true,
       uploadUrl: '',
       tip: '',
@@ -59,8 +50,13 @@ export default {
       currentFile: null
     }
   },
+  computed: {
+    ...mapGetters([
+      'uploadVisible'
+    ])
+  },
   methods: {
-    onError(err, file, fileList) {
+    onError() {
       const msg = '文件上传出错：网络错误'
       this.$message({
         message: msg,
@@ -68,8 +64,9 @@ export default {
         type: 'error',
         duration: 6000
       })
-      this.isVisible = false
+      this.$store.dispatch('ToggleUploadVisible')
       this.$refs.upload.clearFiles()
+      // Bus.$emit('reFresh')
     },
     onRemove(file, filelist) {
       this.fileList = filelist
@@ -99,8 +96,9 @@ export default {
           type: 'success',
           duration: 2000
         })
-        this.isVisible = false
+        this.$store.dispatch('ToggleUploadVisible')
         this.$refs.upload.clearFiles()
+        // Bus.$emit('reFresh')
       } else {
         let msg = response.msg
         if (msg == null || msg === '') {
@@ -113,12 +111,25 @@ export default {
           type: 'error',
           duration: 6000
         })
-        this.isVisible = false
+        this.$store.dispatch('ToggleUploadVisible')
         this.$refs.upload.clearFiles()
+        // Bus.$emit('reFresh')
       }
     },
     onFileChange(file, filelist) {
       this.fileList = filelist
+
+      if (file.status === 'ready') {
+        // this.fileList = filelist;
+        this.btDisable = false
+        this.currentFile = file
+        this.uploadUrl = ''
+
+        this.uploadData = {
+          size: this.currentFile.size,
+          fileName: this.currentFile.name
+        }
+      }
     },
     quitDialog() {
       var uploadingFiles = []
@@ -133,7 +144,7 @@ export default {
           for (let v = 0; v < uploadingFiles.length; ++v) {
             this.$refs.upload.abort(uploadingFiles[v])
           }
-          this.isVisible = false
+          this.$store.dispatch('ToggleUploadVisible')
           this.$refs.upload.clearFiles()
         } else {
           return
@@ -144,10 +155,27 @@ export default {
           duration: 2000
         })
       }
-      this.isVisible = false
+      this.$store.dispatch('ToggleUploadVisible')
       this.$refs.upload.clearFiles()
     }
 
+  },
+  mounted() {
+    // var that = this
+    // Bus.$on('uploadFile', function() {
+    //   that.isVisible = true
+    //   that.btDisable = true
+    //
+    //   that.uploadUrl = '/app/file/upload-file/'
+    //
+    //   var tip = ''
+    //   for (var i = 0; i < Bus.folderNav.length; ++i) {
+    //     tip += '/' + Bus.folderNav[i].fileName
+    //   }
+    //   that.tip = tip
+    //   that.currentFile = null
+    //   that.fileList = []
+    // })
   }
 }
 </script>
