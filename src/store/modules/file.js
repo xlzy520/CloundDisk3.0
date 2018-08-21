@@ -1,8 +1,16 @@
 import { getCategory } from '@/api/file'
 const file = {
   state: {
+    parentId: '-1',
+    selectedData: [],
     uploadVisible: false,
-    fileList: []
+    fileList: [],
+    folderNav: [
+      {
+        fileId: 0,
+        fileName: '公司文件'
+      }
+    ]
   },
   mutations: {
     TOGGLE_UPLOADVISIBLE: state => {

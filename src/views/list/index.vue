@@ -32,7 +32,7 @@ export default {
     }
   },
   async mounted() {
-    const CategoryInfo = await getCategory('1002')
+    const CategoryInfo = await getCategory('-1')
     this.FileList = CategoryInfo.data
     console.log(CategoryInfo)
   }
