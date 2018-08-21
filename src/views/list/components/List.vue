@@ -3,7 +3,7 @@
     <div class="file-list">
       <el-table
         ref="multipleTable"
-        :data="FileList"
+        :data="fileList"
         style="width: 100%"
         :default-sort="{prop: 'date', order: 'descending'}">
 
@@ -41,7 +41,7 @@
   export default {
     name: 'List',
     props: {
-      FileList: {
+      fileList: {
         require: true,
         type: Array
       }

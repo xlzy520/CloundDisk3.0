@@ -4,7 +4,7 @@
       <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="disabled">全选</el-checkbox>
     </div>
     <ul>
-      <li v-for="(item, index) in FileList" :key="index">
+      <li v-for="(item, index) in list" :key="index">
         <div :class="['box', item.checked ? 'box-hover' : '']" @dblclick="nextDir(item.fcategoryid)">
           <el-checkbox v-model="item.checked" @change="handleCheckItemChange"></el-checkbox>
           <svg-icon :icon-class="item.ffiletype === 1 ? 'folder' : 'markdown'" className="icon" />
@@ -12,6 +12,7 @@
         </div>
       </li>
     </ul>
+    <div class="empty-block" v-if="!fileList.length"><span class="empty-text">暂无数据</span></div>
   </div>
 </template>
 
@@ -19,13 +20,14 @@
 export default {
   name: 'Thumbnail',
   props: {
-    FileList: {
+    fileList: {
       type: Array,
       required: true
     }
   },
   data() {
     return {
+      list: [],
       checkAll: false,
       isIndeterminate: false,
       disabled: false
@@ -33,20 +35,34 @@ export default {
   },
   methods: {
     handleCheckAllChange(val) {
-      this.FileList.forEach(item => { item.checked = val })
+      this.list.forEach(item => { item.checked = val })
       this.isIndeterminate = false
+      const totalLength = this.list.length
+      const folderCheckedCount = this.list.filter(item => (item.ffiletype === 1 && item.checked)).length
+      const fileCheckedCount = this.list.filter(item => item.ffiletype === 2 && item.checked).length
+      this.$emit('change_the_function', totalLength, folderCheckedCount, fileCheckedCount)
     },
-    handleCheckItemChange(val) {
-      const checkedCount = this.FileList.filter(item => item.checked).length
-      this.checkAll = checkedCount === this.FileList.length && this.FileList.length > 0
-      this.disabled = this.FileList.length === 0
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.FileList.length
+    handleCheckItemChange() {
+      const totalLength = this.list.length
+      const checkedCount = this.list.filter(item => item.checked).length
+      this.checkAll = checkedCount === totalLength && totalLength > 0
+      this.disabled = totalLength === 0
+      this.isIndeterminate = checkedCount > 0 && checkedCount < totalLength
+      const folderCheckedCount = this.list.filter(item => (item.ffiletype === 1 && item.checked)).length
+      const fileCheckedCount = this.list.filter(item => item.ffiletype === 2 && item.checked).length
+      this.$emit('change_the_function', totalLength, folderCheckedCount, fileCheckedCount)
     },
     nextDir(fcategoryid) {
       this.$store.dispatch('GetCategory', fcategoryid).then(() => {
         this.handleCheckItemChange()
       })
     }
+  },
+  mounted() {
+    this.$store.dispatch('GetCategory', '1002').then(() => {
+      this.list = this.fileList
+      this.handleCheckItemChange()
+    })
   }
 }
 </script>
