@@ -7,7 +7,7 @@ const file = {
     fileList: [],
     folderNav: [
       {
-        fileId: 0,
+        fileId: -1,
         fileName: '公司文件'
       },
       { fileId: 2, fileName: '示例-按部门' },
@@ -35,6 +35,10 @@ const file = {
     },
     async GetCategory({ commit }, fcategoryid) {
       const Category = await getCategory(fcategoryid)
+      commit('GET_CATEGORY', Category.data)
+    },
+    async Refresh({ commit }) {
+      const Category = await getCategory(this.state.parentId)
       commit('GET_CATEGORY', Category.data)
     }
   }
