@@ -9,7 +9,15 @@
       <img src="@/assets/logo/logo.png" width="36" height="36" class="nav__logo__img">
       <span class="nav__logo__title">东经云盘</span>
     </div>
-    <md-input icon="search" name="search" title="请输入搜索关键词" placeholder="请输入搜索关键词" v-model="searchValue"></md-input>
+    <md-input
+      icon="search"
+      name="search"
+      title="请输入搜索关键词"
+      placeholder="请输入搜索关键词"
+      maxlength="40"
+      v-model="searchValue">
+
+    </md-input>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img class="user-avatar" :src="'https://oa.djcps.com/DJOA/'+avatar">
