@@ -12,8 +12,8 @@
       ref="upload"
       class="upload-demo"
       drag
-      :action="uploadUrl"
-      :limit="1"
+      action="api_ldh/djcpsdocument/fileManager/uploadFile.do"
+      :limit="4"
       :on-success="uploadOk"
       :data="uploadData"
       :on-change="onFileChange"
@@ -41,7 +41,6 @@ export default {
   data() {
     return {
       isLoad: true,
-      uploadUrl: '',
       tip: '',
       detail: {},
       fileList: [],
@@ -124,7 +123,6 @@ export default {
         this.$store.dispatch('Refresh')
         this.btDisable = false
         this.currentFile = file
-        this.uploadUrl = ''
 
         this.uploadData = {
           size: this.currentFile.size,
@@ -162,22 +160,11 @@ export default {
 
   },
   mounted() {
-    // var that = this
-    // Bus.$on('uploadFile', function() {
-    //   that.isVisible = true
-    //   that.btDisable = true
-    //
-    //   that.uploadUrl = '/app/file/upload-file/'
-    //
     let tip = ''
     for (var i = 0; i < this.folderNav.length; ++i) {
       tip += '/' + this.folderNav[i].fileName
     }
     this.tip = tip
-    //   that.tip = tip
-    //   that.currentFile = null
-    //   that.fileList = []
-    // })
   }
 }
 </script>
