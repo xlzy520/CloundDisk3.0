@@ -49,7 +49,6 @@
     methods: {
       // 点击获取下一级文件列表
       async nextDir(fcategoryid) {
-        console.log(fcategoryid)
         const CategoryInfo = await getCategory(fcategoryid)
         this.FileList = CategoryInfo.data
       },

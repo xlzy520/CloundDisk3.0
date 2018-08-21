@@ -1,13 +1,14 @@
 <template>
   <div>
     <list-header @list_type_toggle="list_type_toggle"></list-header>
-    <component :is="component" :FileList="FileList"></component>
+    <component :is="component" :FileList="fileList"></component>
     <upload-file></upload-file>
   </div>
 </template>
 
 <script>
 import { getCategory } from '@/api/file'
+import { mapGetters } from 'vuex'
 import Thumbnail from './components/Thumbnail'
 import List from './components/List'
 import ListHeader from '@/components/ListHeader'
@@ -16,9 +17,13 @@ export default {
   name: 'list',
   data() {
     return {
-      component: 'List',
-      FileList: []
+      component: 'List'
     }
+  },
+  computed: {
+    ...mapGetters([
+      'fileList'
+    ])
   },
   components: {
     UploadFile,
