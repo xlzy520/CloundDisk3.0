@@ -91,7 +91,7 @@ CanvasAnimate.prototype.next = function() {
   this.Draw(this.list)
 }
 CanvasAnimate.prototype.drawRound = function(obj) {
-  const { x, y, r } = obj
+  const { x, y } = obj
   this.Dom.beginPath()
   this.Dom.arc(x, y, 1.5, 0, 2 * Math.PI)
   this.Dom.fillStyle = this.RoundColor
