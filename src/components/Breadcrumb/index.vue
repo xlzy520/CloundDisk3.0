@@ -30,8 +30,8 @@
       }
     },
     methods: {
-      jumpFolder(id) {
-        console.log('重新查询文件列表')
+      jumpFolder(fcategoryid) {
+        this.$store.dispatch('GetCategory', fcategoryid)
       }
     }
   }

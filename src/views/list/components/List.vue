@@ -36,7 +36,7 @@
 </template>
 
 <script>
-  import { getCategory } from '@/api/file'
+  // import { getCategory } from '@/api/file'
 
   export default {
     name: 'List',
@@ -49,8 +49,7 @@
     methods: {
       // 点击获取下一级文件列表
       async nextDir(fcategoryid) {
-        const CategoryInfo = await getCategory(fcategoryid)
-        this.FileList = CategoryInfo.data
+        this.$store.dispatch('GetCategory', fcategoryid)
       },
       // 点击预览
       seeDir(fcategoryid) {

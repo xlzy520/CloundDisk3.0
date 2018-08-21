@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import { getCategory } from '@/api/file'
 import { mapGetters } from 'vuex'
 import Thumbnail from './components/Thumbnail'
 import List from './components/List'
@@ -37,9 +36,7 @@ export default {
     }
   },
   async mounted() {
-    const CategoryInfo = await getCategory('-1')
-    this.FileList = CategoryInfo.data
-    console.log(CategoryInfo)
+    this.$store.dispatch('GetCategory', '-1')
   }
 }
 </script>
