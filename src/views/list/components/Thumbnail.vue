@@ -1,13 +1,14 @@
 <template>
   <div class="list">
+    <div class="hd">
+      <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="disabled">全选</el-checkbox>
+    </div>
     <ul>
-      <li v-for="(item, index) in list" :key="index">
-        <div :class="['box', item.checked ? 'box-hover' : '']">
-          <el-checkbox v-model="item.checked"></el-checkbox>
-          <a href="#">
-            <svg-icon :icon-class="item.type ? 'folder' : 'markdown'" className="icon" />
-          </a>
-          <span><a href="#">文件夹</a></span>
+      <li v-for="(item, index) in FileList" :key="index">
+        <div :class="['box', item.checked ? 'box-hover' : '']" @dblclick="nextDir(item.fcategoryid)">
+          <el-checkbox v-model="item.checked" @change="handleCheckItemChange"></el-checkbox>
+          <svg-icon :icon-class="item.ffiletype === 1 ? 'folder' : 'markdown'" className="icon" />
+          <span>{{item.fname}}</span>
         </div>
       </li>
     </ul>
@@ -18,13 +19,34 @@
 export default {
   name: 'Thumbnail',
   props: {
-    list: {
+    FileList: {
       type: Array,
       required: true
     }
   },
   data() {
-    return {}
+    return {
+      checkAll: false,
+      isIndeterminate: false,
+      disabled: false
+    }
+  },
+  methods: {
+    handleCheckAllChange(val) {
+      this.FileList.forEach(item => { item.checked = val })
+      this.isIndeterminate = false
+    },
+    handleCheckItemChange(val) {
+      const checkedCount = this.FileList.filter(item => item.checked).length
+      this.checkAll = checkedCount === this.FileList.length && this.FileList.length > 0
+      this.disabled = this.FileList.length === 0
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.FileList.length
+    },
+    nextDir(fcategoryid) {
+      this.$store.dispatch('GetCategory', fcategoryid).then(() => {
+        this.handleCheckItemChange()
+      })
+    }
   }
 }
 </script>
