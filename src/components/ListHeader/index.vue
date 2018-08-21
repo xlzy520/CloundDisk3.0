@@ -10,7 +10,7 @@
       <el-button type="primary" icon="el-icon-tickets">版本</el-button>
       <el-button type="primary" icon="el-icon-edit-outline">重命名</el-button>
       <el-button type="primary" icon="el-icon-delete">删除</el-button>
-      <el-button type="primary" icon="el-icon-info">详情</el-button>
+      <el-button type="primary" icon="el-icon-info" @click="detail">详情</el-button>
     </div>
     <div class="action-wrap">
       <el-tooltip class="item" effect="dark" content="列表" placement="bottom">
