@@ -3,6 +3,7 @@
     <list-header @list_type_toggle="list_type_toggle" :isFolder="isFolder" :isFile="isFile" :isOther="isOther"></list-header>
     <component :is="component" :fileList="fileList" @change_the_function="change_the_function"></component>
     <upload-file></upload-file>
+    <detail></detail>
   </div>
 </template>
 
@@ -12,6 +13,7 @@ import Thumbnail from './components/Thumbnail'
 import List from './components/List'
 import ListHeader from '@/components/ListHeader'
 import UploadFile from '@/components/UploadFile'
+import Detail from '@/components/Detail/index'
 export default {
   name: 'list',
   data() {
@@ -28,6 +30,7 @@ export default {
     ])
   },
   components: {
+    Detail,
     UploadFile,
     Thumbnail,
     List,

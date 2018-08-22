@@ -10,7 +10,7 @@ const file = {
         'fparentid': '1002',
         'foperator': 'panyang',
         'foperatorid': '1003',
-        'ffiletype': 1,
+        'ffiletype': 2,
         'fname': 'hehe',
         'fcategorystatus': 1,
         'fsortorder': 0,
@@ -19,6 +19,7 @@ const file = {
       }
     ],
     uploadVisible: false,
+    detailVisible: false,
     fileList: [],
     folderNav: [
       {
@@ -34,6 +35,9 @@ const file = {
     TOGGLE_UPLOADVISIBLE: state => {
       state.uploadVisible = !state.uploadVisible
     },
+    TOGGLE_DETAILVISIBLE: state => {
+      state.detailVisible = !state.detailVisible
+    },
     GET_CATEGORY: (state, data) => {
       state.fileList = data
     },
@@ -47,6 +51,9 @@ const file = {
   actions: {
     ToggleUploadVisible: ({ commit }) => {
       commit('TOGGLE_UPLOADVISIBLE')
+    },
+    ToggleDetailVisible: ({ commit }) => {
+      commit('TOGGLE_DETAILVISIBLE')
     },
     async GetCategory({ commit }, fcategoryid) {
       // const Category = await getCategory(fcategoryid)
