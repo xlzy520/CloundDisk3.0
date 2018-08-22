@@ -7,9 +7,8 @@
         style="width: 100%"
         :default-sort="{prop: 'date', order: 'descending'}"
         @selection-change="handleSelectionChange">
-
         <el-table-column type="selection" width="55"></el-table-column>
-
+        <!--<el-table-column type="selection" width="55" v-show="selectedData.fcategoryid === fileList.fcategoryid"></el-table-column>-->
         <el-table-column label="名称" sortable width="480px">
           <template slot-scope="scope">
             <svg-icon :icon-class="scope.row.ffiletype===1? 'folder':scope.row.ffiletype"></svg-icon>
@@ -38,7 +37,7 @@
 
 <script>
   // import { getCategory } from '@/api/file'
-
+  import { mapGetters } from 'vuex'
   export default {
     name: 'List',
     props: {
@@ -46,6 +45,12 @@
         require: true,
         type: Array
       }
+    },
+    computed: {
+      ...mapGetters([
+        'selectedData',
+        'selectedIndex'
+      ])
     },
     methods: {
       // 点击获取下一级文件列表
@@ -58,8 +63,15 @@
       },
       handleSelectionChange(rows) {
         this.$store.dispatch('VisibilityBtn', rows)
-        // console.log(rows)
+      },
+      checked() {
+        this.selectedIndex.forEach(index => {
+          this.$refs.multipleTable.toggleRowSelection(this.fileList[index], true)
+        })
       }
+    },
+    mounted() {
+      this.checked()
     }
   }
 </script>

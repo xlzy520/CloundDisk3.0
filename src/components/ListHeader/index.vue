@@ -35,20 +35,17 @@ import Breadcrumb from '../Breadcrumb/index'
 export default {
   name: 'ListHeader',
   components: { Breadcrumb },
-  props: {
-    isFolder: false,
-    isFile: false,
-    isOther: false
-  },
-  data() {
-    return {
-      _showBtn: []
-    }
-  },
+  // props: {
+  //   isFolder: false,
+  //   isFile: false,
+  //   isOther: false
+  // },
   computed: {
     ...mapGetters([
       'showBtn',
-      'folderNav'
+      'selectedData',
+      'fileList',
+      'selectedIndex'
     ])
   },
   methods: {

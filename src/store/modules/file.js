@@ -1,8 +1,10 @@
 import { getCategory } from '@/api/file'
+
 const file = {
   state: {
     parentId: '-1',
     selectedData: [],
+    selectedIndex: [],
     uploadVisible: false,
     fileList: [],
     showBtn: [],
@@ -31,10 +33,22 @@ const file = {
     },
     // VISIBILITY_BTN
     VISIBILITY_BTN: (state, rows) => {
+      state.selectedData = []
+      state.selectedIndex = []
+      rows.forEach(item => { state.selectedData.push(item) })
+      // console.log(state.fileList)
+      state.fileList.forEach((list, index) => {
+        state.selectedData.forEach(item => {
+          if (item.fcategoryid === list.fcategoryid) {
+            // state.selectedIndex = []
+            state.selectedIndex.push(index)
+          }
+        })
+      })
+      // console.log(state.selectedIndex)
       if (rows.length === 1) {
         state.showBtn = []
         state.showBtn.push('' + rows[0].ffiletype)
-        // console.log(state.showBtn)
       } else if (rows.length === 0) {
         state.showBtn = []
       } else {
@@ -49,7 +63,55 @@ const file = {
     },
     async GetCategory({ commit }, fcategoryid) {
       // const Category = await getCategory(fcategoryid)
-      commit('GET_CATEGORY', [{ 'rowid': 100004, 'fcategoryid': 'c328517b-ddde-40a0-bb55-07f502efcccd', 'fparentid': '1002', 'foperator': 'panyang', 'foperatorid': '1003', 'ffiletype': 1, 'fname': '团购文档', 'fcategorystatus': 1, 'fsortorder': 0, 'fcreatetime': '2018-08-20 13:55:43.0', 'fupdatetime': '2018-08-20 13:55:43.0' }, { 'rowid': 100020, 'fcategoryid': 'c9dd22ae-ff41-4ce9-9e48-690502f5b8d3', 'fparentid': '1002', 'foperator': 'panyang', 'foperatorid': '1003', 'ffiletype': 1, 'fname': 'hehe', 'fcategorystatus': 1, 'fsortorder': 0, 'fcreatetime': '2018-08-20 14:30:07.0', 'fupdatetime': '2018-08-20 14:30:07.0' }, { 'rowid': 100021, 'fcategoryid': '9d1420d3-e943-48ae-96e9-4d55c1b9c9be', 'fparentid': '1002', 'foperator': 'panyang', 'foperatorid': '1003', 'ffiletype': 1, 'fname': 'hehe', 'fcategorystatus': 1, 'fsortorder': 0, 'fcreatetime': '2018-08-20 14:43:11.0', 'fupdatetime': '2018-08-20 14:43:11.0' }, { 'rowid': 100022, 'fcategoryid': '4e62ce11-d9f4-4c67-aae9-930d8b3ff585', 'fparentid': '1002', 'foperator': 'panyang', 'foperatorid': '1003', 'ffiletype': 1, 'fname': 'hehe', 'fcategorystatus': 1, 'fsortorder': 0, 'fcreatetime': '2018-08-20 15:03:37.0', 'fupdatetime': '2018-08-20 15:03:37.0' }])
+      commit('GET_CATEGORY', [{
+        'rowid': 100004,
+        'fcategoryid': 'c328517b-ddde-40a0-bb55-07f502efcccd',
+        'fparentid': '1002',
+        'foperator': 'panyang',
+        'foperatorid': '1003',
+        'ffiletype': 1,
+        'fname': '团购文档',
+        'fcategorystatus': 1,
+        'fsortorder': 0,
+        'fcreatetime': '2018-08-20 13:55:43.0',
+        'fupdatetime': '2018-08-20 13:55:43.0'
+      }, {
+        'rowid': 100020,
+        'fcategoryid': 'c9dd22ae-ff41-4ce9-9e48-690502f5b8d3',
+        'fparentid': '1002',
+        'foperator': 'panyang',
+        'foperatorid': '1003',
+        'ffiletype': 1,
+        'fname': 'hehe',
+        'fcategorystatus': 1,
+        'fsortorder': 0,
+        'fcreatetime': '2018-08-20 14:30:07.0',
+        'fupdatetime': '2018-08-20 14:30:07.0'
+      }, {
+        'rowid': 100021,
+        'fcategoryid': '9d1420d3-e943-48ae-96e9-4d55c1b9c9be',
+        'fparentid': '1002',
+        'foperator': 'panyang',
+        'foperatorid': '1003',
+        'ffiletype': 1,
+        'fname': 'hehe',
+        'fcategorystatus': 1,
+        'fsortorder': 0,
+        'fcreatetime': '2018-08-20 14:43:11.0',
+        'fupdatetime': '2018-08-20 14:43:11.0'
+      }, {
+        'rowid': 100022,
+        'fcategoryid': '4e62ce11-d9f4-4c67-aae9-930d8b3ff585',
+        'fparentid': '1002',
+        'foperator': 'panyang',
+        'foperatorid': '1003',
+        'ffiletype': 1,
+        'fname': 'hehe',
+        'fcategorystatus': 1,
+        'fsortorder': 0,
+        'fcreatetime': '2018-08-20 15:03:37.0',
+        'fupdatetime': '2018-08-20 15:03:37.0'
+      }])
     },
     async Refresh({ commit }) {
       const Category = await getCategory(this.state.parentId)
