@@ -2,8 +2,9 @@ import { getCategory } from '@/api/file'
 const file = {
   state: {
     parentId: '-1',
-    selectedData: [],
+    selectedData: [{"rowid":100004,"fcategoryid":"c328517b-ddde-40a0-bb55-07f502efcccd","fparentid":"1002","foperator":"panyang","foperatorid":"1003","ffiletype":1,"fname":"团购文档","fcategorystatus":1,"fsortorder":0,"fcreatetime":"2018-08-20 13:55:43.0","fupdatetime":"2018-08-20 13:55:43.0"}],
     uploadVisible: false,
+    deleteVisible: false,
     fileList: [],
     folderNav: [
       {
@@ -19,6 +20,9 @@ const file = {
     TOGGLE_UPLOADVISIBLE: state => {
       state.uploadVisible = !state.uploadVisible
     },
+    TOGGLE_DELETEVISIBLE: state => {
+      state.deleteVisible = !state.deleteVisible
+    },
     GET_CATEGORY: (state, data) => {
       state.fileList = data
     },
@@ -32,6 +36,9 @@ const file = {
   actions: {
     ToggleUploadVisible: ({ commit }) => {
       commit('TOGGLE_UPLOADVISIBLE')
+    },
+    ToggleDeleteVisible: ({ commit }) => {
+      commit('TOGGLE_DELETEVISIBLE')
     },
     // async GetCategory({ commit }, fcategoryid) {
     //   const Category = await getCategory(fcategoryid)

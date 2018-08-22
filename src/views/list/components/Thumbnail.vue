@@ -6,7 +6,7 @@
     <ul>
       <li v-for="(item, index) in list" :key="index">
         <div :class="['box', item.checked ? 'box-hover' : '']" @dblclick="nextDir(item.fcategoryid)">
-          <el-checkbox v-model="item.checked" @change="handleCheckItemChange"></el-checkbox>
+          <div @dblclick.stop="() => {}"><el-checkbox v-model="item.checked" @change="handleCheckItemChange"></el-checkbox></div>
           <svg-icon :icon-class="item.ffiletype === 1 ? 'folder' : 'markdown'" className="icon" />
           <span>{{item.fname}}</span>
         </div>
@@ -72,9 +72,6 @@ export default {
     width: 92%;
     margin: 20px auto;
     justify-content: center;
-    .hd {
-      line-height: 48px;
-    }
     ul {
       list-style: none;
       display: flex;
