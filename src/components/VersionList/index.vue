@@ -19,8 +19,8 @@
             label="版本号">
           </el-table-column>
           <el-table-column
-            prop="fupdater"
-            label="修改人"
+            prop="fcreator"
+            label="创建人"
             width="90">
           </el-table-column>
           <el-table-column
@@ -47,8 +47,11 @@
             width="80"
             label="操作">
             <template slot-scope="scope">
-              <a href="javascript:void(0)" @click="downloadFile(scope.row.fattribution)">下载</a>
-              <a href="javascript:void(0)" @click="downloadFile(scope.row.fattribution)" title="设为最新版本">回退</a>
+              <a href="javascript:void(0)" @click="downloadFile(scope.row.filesgin)">下载</a>
+              <a
+                href="javascript:void(0)"
+                @click="rollBack(scope.row.filesgin)"
+                title="设为最新版本" v-if="!scope.row.fdisplay">回退</a>
             </template>
           </el-table-column>
         </el-table>
@@ -63,7 +66,7 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import { getVersionList } from '@/api/file'
+  import { getVersionList, versionRollback } from '@/api/file'
   export default {
     name: 'VersionList',
     computed: {
@@ -91,16 +94,23 @@
       downloadFile(id) {
 
       },
-
-      requestData() {
-
+      rollBack(newVer) {
+        if (this.selectedData.length === 1) {
+          versionRollback(this.tableData[0].filesgin, newVer)
+          setTimeout(() => {
+            this.requestData()
+          }, 100)
+        }
+      },
+      async requestData() {
+        if (this.selectedData.length === 1) {
+          const versionListInfo = await getVersionList(this.selectedData[0].fname, this.selectedData[0].fcategoryid)
+          this.tableData = versionListInfo.data
+        }
       }
     },
-    async mounted() {
-      if (this.selectedData.length === 1) {
-        const versionListInfo = await getVersionList(this.selectedData[0].fname, this.selectedData[0].fcategoryid)
-        this.tableData = versionListInfo.data
-      }
+    mounted() {
+      this.requestData()
     }
   }
 </script>

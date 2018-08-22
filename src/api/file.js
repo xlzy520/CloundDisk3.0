@@ -24,7 +24,17 @@ export function getVersionList(fname, id) {
     method: 'post',
     data: {
       fname: 2,
-      fcategoryid: 1
+      fcategoryid: 2
+    }
+  })
+}
+export function versionRollback(oldVer, newVer) {
+  return request({
+    url: '/api_lw/djcpsdocument/version/versionBack.do',
+    method: 'post',
+    data: {
+      oldDisplayFileSgin: oldVer,
+      newDisplayFileSgin: newVer
     }
   })
 }

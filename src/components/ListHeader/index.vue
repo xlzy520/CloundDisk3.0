@@ -6,7 +6,7 @@
       <el-button type="primary" icon="el-icon-plus">新建文件夹</el-button>
       <el-button type="primary"  icon="el-icon-document">预览</el-button>
       <el-button type="primary"  icon="el-icon-download">下载</el-button>
-      <el-button type="primary"  icon="el-icon-edit">更新</el-button>
+      <el-button type="primary"  icon="el-icon-edit" @click="fileUpdate">更新</el-button>
       <el-button type="primary"  icon="el-icon-tickets" @click="showVersion">版本</el-button>
       <el-button type="primary"  icon="el-icon-edit-outline">重命名</el-button>
       <el-button type="primary" icon="el-icon-delete">删除</el-button>
@@ -54,6 +54,9 @@ export default {
     },
     showVersion() {
       this.$store.dispatch('ToggleVersionVisible')
+    },
+    fileUpdate() {
+
     }
   }
 }
