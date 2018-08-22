@@ -17,3 +17,13 @@ export function getCategory(id) {
     }
   })
 }
+
+export function deleteCategory(id) {
+  return request({
+    url: '/api_py/djcpsdocument/category/deleteCategory.do',
+    method: 'post',
+    data: {
+      fcategoryid: id
+    }
+  })
+}

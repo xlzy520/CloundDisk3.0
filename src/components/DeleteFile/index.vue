@@ -39,6 +39,7 @@
 
 <script>
   import { mapGetters } from 'vuex'
+  import { deleteCategory } from '@/api/file'
   export default {
     name: 'DeleteFile',
     data() {
@@ -60,7 +61,15 @@
         }
         this.$store.dispatch('ToggleDeleteVisible')
       },
-      submitForm() {},
+      submitForm() {
+        deleteCategory('603b0db0-7474-4ecc-9e78-ecf4974522b3')
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+      },
       fileIcon(filetype) {
         if (filetype === 1) {
           return 'folder'

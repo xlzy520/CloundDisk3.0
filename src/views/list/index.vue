@@ -9,7 +9,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Thumbnail from './components/Thumbnail'
+import Thumbnail from './components/Thumbnail2'
 import List from './components/List'
 import ListHeader from '@/components/ListHeader'
 import UploadFile from '@/components/UploadFile'
