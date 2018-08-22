@@ -4,7 +4,7 @@
     :visible.sync="uploadVisible"
     :modal-append-to-body="false"
     custom-class="upload-file"
-    :close-on-click-modal="false"
+    :close-on-click-modal="true"
     :close-on-press-escape="false"
     :show-close="false"
     width="400px">
@@ -50,8 +50,15 @@ export default {
     }
   },
   computed: {
+    uploadVisible: {
+      get() {
+        return this.$store.state.file.uploadVisible
+      },
+      set() {
+
+      }
+    },
     ...mapGetters([
-      'uploadVisible',
       'folderNav'
     ])
   },
