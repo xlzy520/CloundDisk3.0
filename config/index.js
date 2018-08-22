@@ -25,7 +25,13 @@ module.exports = {
         target: 'http://192.168.12.66:8080/',
         changeOrigin: true,
         pathRewrite:{'^/api_py': ''}
-      }
+      },
+      '/api_lw':{
+        target: 'http://192.168.2.169:8080/',
+        changeOrigin: true,
+        pathRewrite:{'^/api_lw': ''}
+      },
+      
     },
 
     // Various Dev Server settings

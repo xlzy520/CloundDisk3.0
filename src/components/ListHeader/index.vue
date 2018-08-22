@@ -7,7 +7,7 @@
       <el-button type="primary"  icon="el-icon-document">预览</el-button>
       <el-button type="primary"  icon="el-icon-download">下载</el-button>
       <el-button type="primary"  icon="el-icon-edit">更新</el-button>
-      <el-button type="primary"  icon="el-icon-tickets">版本</el-button>
+      <el-button type="primary"  icon="el-icon-tickets" @click="showVersion">版本</el-button>
       <el-button type="primary"  icon="el-icon-edit-outline">重命名</el-button>
       <el-button type="primary" icon="el-icon-delete">删除</el-button>
       <el-button type="primary"  icon="el-icon-info" @click="getDetail">详情</el-button>
@@ -51,6 +51,9 @@ export default {
     },
     getDetail() {
       this.$store.dispatch('ToggleDetailVisible')
+    },
+    showVersion() {
+      this.$store.dispatch('ToggleVersionVisible')
     }
   }
 }

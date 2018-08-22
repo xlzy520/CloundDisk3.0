@@ -17,3 +17,14 @@ export function getCategory(id) {
     }
   })
 }
+
+export function getVersionList(fname, id) {
+  return request({
+    url: '/api_lw/djcpsdocument/version/getAllVersion.do',
+    method: 'post',
+    data: {
+      fname: 2,
+      fcategoryid: 1
+    }
+  })
+}

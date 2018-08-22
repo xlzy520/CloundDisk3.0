@@ -20,6 +20,7 @@ const file = {
     ],
     uploadVisible: false,
     detailVisible: false,
+    versionVisible: false,
     fileList: [],
     folderNav: [
       {
@@ -38,6 +39,9 @@ const file = {
     TOGGLE_DETAILVISIBLE: state => {
       state.detailVisible = !state.detailVisible
     },
+    TOGGLE_VERSIONVISIBLE: state => {
+      state.versionVisible = !state.versionVisible
+    },
     GET_CATEGORY: (state, data) => {
       state.fileList = data
     },
@@ -54,6 +58,9 @@ const file = {
     },
     ToggleDetailVisible: ({ commit }) => {
       commit('TOGGLE_DETAILVISIBLE')
+    },
+    ToggleVersionVisible: ({ commit }) => {
+      commit('TOGGLE_VERSIONVISIBLE')
     },
     async GetCategory({ commit }, fcategoryid) {
       // const Category = await getCategory(fcategoryid)

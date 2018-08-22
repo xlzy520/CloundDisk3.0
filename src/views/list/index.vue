@@ -4,6 +4,7 @@
     <component :is="component" :fileList="fileList" @change_the_function="change_the_function"></component>
     <upload-file></upload-file>
     <detail></detail>
+    <version-list></version-list>
   </div>
 </template>
 
@@ -14,6 +15,7 @@ import List from './components/List'
 import ListHeader from '@/components/ListHeader'
 import UploadFile from '@/components/UploadFile'
 import Detail from '@/components/Detail/index'
+import VersionList from '@/components/VersionList/index'
 export default {
   name: 'list',
   data() {
@@ -30,6 +32,7 @@ export default {
     ])
   },
   components: {
+    VersionList,
     Detail,
     UploadFile,
     Thumbnail,

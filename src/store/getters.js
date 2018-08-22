@@ -9,6 +9,7 @@ const getters = {
   fileList: state => state.file.fileList,
   folderNav: state => state.file.folderNav,
   detailVisible: state => state.file.detailVisible,
-  selectedData: state => state.file.selectedData
+  selectedData: state => state.file.selectedData,
+  versionVisible: state => state.file.versionVisible
 }
 export default getters
