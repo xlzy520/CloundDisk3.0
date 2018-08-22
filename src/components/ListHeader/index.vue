@@ -40,11 +40,11 @@ export default {
     isFile: false,
     isOther: false
   },
-  // computed: {
-  //   showBtn() {
-  //     return this.$store.state.folderNav
-  //   }
-  // },
+  data() {
+    return {
+      _showBtn: []
+    }
+  },
   computed: {
     ...mapGetters([
       'showBtn',
@@ -61,9 +61,6 @@ export default {
     refresh() {
       this.$store.dispatch('Refresh')
     }
-  },
-  mounted() {
-    console.log(this.showBtn)
   }
 }
 </script>
