@@ -58,6 +58,9 @@ export default {
     typeShow(type) {
       this.$emit('list_type_toggle', type)
     },
+    getDetail() {
+      this.$store.dispatch('ToggleDetailVisible')
+    },
     uploadFile() {
       this.$store.dispatch('ToggleUploadVisible')
     },
