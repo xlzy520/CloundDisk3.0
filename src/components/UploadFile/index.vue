@@ -12,7 +12,7 @@
       ref="upload"
       class="upload-demo"
       drag
-      action="api_ldh/djcpsdocument/fileManager/uploadFile.do"
+      :action="uploadFileUrl"
       :limit="4"
       :on-success="uploadOk"
       :data="uploadData"
@@ -26,11 +26,15 @@
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       <div class="el-upload__tip" slot="tip"><span style="color: #888;padding-right: 2px;">当前文件夹：</span>{{tip}}</div>
+      <div class="el-upload__tip" slot="tip"><span style="color: #888;padding-right: 2px;">要更新的文件：</span>{{tip}}</div>
     </el-upload>
+    <div class="file-desc-label">文件描述</div>
+    <el-input type="textarea" v-model="fileDesc"></el-input>
     <span slot="footer" class="dialog-footer">
-                <el-button size="small" type="primary" @click="submitUpload" :disabled="btDisable">开始上传</el-button>
-                <el-button @click="quitDialog" size="small">关 闭</el-button>
-              </span>
+      <el-button size="small" type="primary" @click="submitUpload" :disabled="btDisable">开始上传</el-button>
+      <el-button size="small" type="primary" @click="submitUpload" :disabled="btDisable">开始更新</el-button>
+      <el-button @click="quitDialog" size="small">关 闭</el-button>
+    </span>
   </el-dialog>
 </template>
 
@@ -46,7 +50,8 @@ export default {
       fileList: [],
       uploadData: {},
       btDisable: true,
-      currentFile: null
+      currentFile: null,
+      fileDesc: ''
     }
   },
   computed: {
@@ -55,12 +60,15 @@ export default {
         return this.$store.state.file.uploadVisible
       },
       set() {
-
       }
     },
     ...mapGetters([
-      'folderNav'
-    ])
+      'folderNav',
+      'parentId'
+    ]),
+    uploadFileUrl() {
+      return '/api_py/djcpsdocument/category/fileUpload.do?parentId=' + this.parentId
+    }
   },
   methods: {
     onError() {
@@ -194,5 +202,10 @@ export default {
   }
   .upload-file .el-upload-dragger .el-icon-upload {
     margin: 22px 0 16px;
+  }
+  .update-file .file-desc-label {
+    font-size: 14px;
+    margin: 5px 0 5px 0px;
+    color: #666;
   }
 </style>

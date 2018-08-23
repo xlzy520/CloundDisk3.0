@@ -10,6 +10,7 @@ const getters = {
   folderNav: state => state.file.folderNav,
   detailVisible: state => state.file.detailVisible,
   selectedData: state => state.file.selectedData,
-  versionVisible: state => state.file.versionVisible
+  versionVisible: state => state.file.versionVisible,
+  parentId: state => state.file.parentId
 }
 export default getters

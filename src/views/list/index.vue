@@ -67,7 +67,7 @@ export default {
     }
   },
   async mounted() {
-    this.$store.dispatch('GetCategory', '-1')
+    this.$store.dispatch('GetCategory', '0')
     console.log(1)
   }
 }

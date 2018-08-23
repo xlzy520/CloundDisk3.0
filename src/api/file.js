@@ -38,3 +38,13 @@ export function versionRollback(oldVer, newVer) {
     }
   })
 }
+
+export function uploadFile(parentId) {
+  return request({
+    url: '/api_py/djcpsdocument/category/fileUpload.do',
+    method: 'post',
+    data: {
+      parentId: parentId
+    }
+  })
+}

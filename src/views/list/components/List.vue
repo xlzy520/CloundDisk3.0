@@ -48,7 +48,7 @@
     },
     methods: {
       // 点击获取下一级文件列表
-      async nextDir(fcategoryid) {
+      nextDir(fcategoryid) {
         this.$store.dispatch('GetCategory', fcategoryid)
       },
       // 点击预览
