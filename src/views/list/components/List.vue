@@ -66,7 +66,8 @@
 
       },
       handleSelectionChange(rows) {
-        this.$store.dispatch('VisibilityBtn', rows)
+        // this.$store.dispatch('VisibilityBtn', rows)
+        this.$store.dispatch('GetSelectedData', rows)
       },
       checked() {
         this.selectedIndex.forEach(index => {
@@ -76,6 +77,9 @@
     },
     mounted() {
       this.checked()
+      this.selectedData.forEach(row => {
+        this.$refs.multipleTable.toggleRowSelection(row)
+      })
     }
   }
 </script>

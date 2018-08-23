@@ -1,7 +1,7 @@
 <template>
   <div class="list">
     <div class="hd">
-      <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+      <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="disabled">全选</el-checkbox>
     </div>
     <el-checkbox-group v-model="checkedData" @change="handleCheckItemChange">
       <ul>
@@ -31,7 +31,8 @@
       return {
         checkAll: false,
         checkedData: [],
-        isIndeterminate: false
+        isIndeterminate: false,
+        disabled: false
       }
     },
     methods: {
@@ -54,7 +55,19 @@
     },
     computed: mapGetters([
       'selectedData'
-    ])
+    ]),
+    mounted() {
+      this.checkedData = this.selectedData
+      const totalLength = this.fileList.length
+      const checkedDataLength = this.checkedData.length
+      if (totalLength === 0) {
+        this.disabled = true
+      } else if (checkedDataLength > 0 && checkedDataLength < totalLength) {
+        this.isIndeterminate = true
+      } else if (totalLength === checkedDataLength) {
+        this.checkAll = true
+      }
+    }
   }
 </script>
 
