@@ -58,6 +58,9 @@ const file = {
         state.showBtn = []
         state.showBtn.push('3')
       }
+    },
+    GET_SELECTEDDATA: (state, data) => {
+      state.selectedData = data
     }
   },
   actions: {
@@ -87,6 +90,9 @@ const file = {
     },
     VisibilityBtn: ({ commit }, rows) => {
       commit('VISIBILITY_BTN', rows)
+    },
+    GetSelectedData({ commit }, data) {
+      commit('GET_SELECTEDDATA', data)
     }
   }
 }

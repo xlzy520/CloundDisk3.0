@@ -6,7 +6,7 @@
     <el-checkbox-group v-model="checkedData" @change="handleCheckItemChange">
       <ul>
         <li v-for="(item, index) in fileList" :key="index">
-          <div class="box box-hover" @dblclick="nextDir(item.fcategoryid)">
+          <div class="box" :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''" @dblclick="nextDir(item.fcategoryid)">
             <div @dblclick.stop="() => {}"><el-checkbox :label="item"></el-checkbox></div>
             <svg-icon :icon-class="item.ffiletype === 1 ? 'folder' : 'markdown'" className="icon" />
             <span>{{item.fname}}</span>
@@ -14,11 +14,12 @@
         </li>
       </ul>
     </el-checkbox-group>
-    <div class="empty-block" v-if="!fileList.length && !loading"><span class="empty-text">暂无数据</span></div>
+    <div class="empty-block" v-if="!fileList.length"><span class="empty-text">暂无数据</span></div>
   </div>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   export default {
     props: {
       fileList: {
@@ -30,20 +31,30 @@
       return {
         checkAll: false,
         checkedData: [],
-        isIndeterminate: true
+        isIndeterminate: false
       }
     },
     methods: {
       handleCheckAllChange(val) {
         this.checkedData = val ? this.fileList : []
+        this.$store.dispatch('GetSelectedData',  this.checkedData)
         this.isIndeterminate = false
       },
       handleCheckItemChange(value) {
+        this.$store.dispatch('GetSelectedData',  value)
         const checkedCount = value.length
         this.checkAll = checkedCount === this.fileList.length
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.fileList.length
+      },
+      nextDir(fcategoryid) {
+        this.$store.dispatch('GetCategory', fcategoryid).then(() => {
+          this.handleCheckItemChange()
+        })
       }
-    }
+    },
+    computed: mapGetters([
+      'selectedData'
+    ])
   }
 </script>
 
