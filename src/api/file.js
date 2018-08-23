@@ -18,6 +18,16 @@ export function getCategory(id) {
   })
 }
 
+export function deleteCategory(categoryids) {
+  return request({
+    url: '/api_py/djcpsdocument/category/deleteCategory.do',
+    method: 'post',
+    data: {
+      list: categoryids
+    }
+  })
+}
+
 export function getVersionList(fname, id) {
   return request({
     url: '/api_lw/djcpsdocument/version/getAllVersion.do',
@@ -45,6 +55,17 @@ export function uploadFile(parentId) {
     method: 'post',
     data: {
       parentId: parentId
+    }
+  })
+}
+
+export function addCategory(parentid, name) {
+  return request({
+    url: '/api_py/djcpsdocument/category/addCategory.do',
+    method: 'post',
+    data: {
+      fparentid: parentid,
+      fname: name
     }
   })
 }

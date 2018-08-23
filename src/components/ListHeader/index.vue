@@ -3,7 +3,7 @@
     <div class="list-btn">
       <el-button type="primary" icon="el-icon-refresh" @click="refresh">刷新</el-button>
       <el-button type="primary" icon="el-icon-upload" @click="uploadFile">上传文件</el-button>
-      <el-button type="primary" icon="el-icon-plus">新建文件夹</el-button>
+      <el-button type="primary" icon="el-icon-plus" @click="newFolder">新建文件夹</el-button>
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-document">预览</el-button>
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-download">下载</el-button>
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-edit" @click="updateFile">更新</el-button>
@@ -32,6 +32,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Breadcrumb from '../Breadcrumb/index'
+import { addCategory } from '@/api/file'
 export default {
   name: 'ListHeader',
   components: { Breadcrumb },
@@ -40,7 +41,8 @@ export default {
       'showBtn',
       'selectedData',
       'fileList',
-      'isEditor'
+      'isEditor',
+      'parentId'
     ]),
     isShow() {
       const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length
@@ -77,6 +79,53 @@ export default {
       this.$store.dispatch('ToggleDeleteVisible')
     },
     rename() {
+      // this.$store.dispatch('NameEditVisible')
+      this.fileList.forEach((item, index) => {
+        if (index === this.selectedIndex[0]) {
+          this.$set(item, 'isEditor', true)
+        }
+      })
+      console.log(this.selectedIndex[0])
+    },
+    newFolder() {
+      this.$prompt('请输入文件夹名称', '新建文件夹', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^[^\/:*?"<>|]+$/,
+        inputErrorMessage: '文件夹名称格式不正确',
+        closeOnClickModal: false
+      }).then(({ value }) => {
+        addCategory(this.parentId, value)
+          .then(res => {
+            if (res.success) {
+              this.$message({
+                type: 'success',
+                message: res.msg
+              })
+              this.$store.dispatch('Refresh')
+            } else {
+              this.$message({
+                message: res.msg,
+                showClose: true,
+                type: 'error',
+                duration: 6000
+              })
+            }
+          })
+          .catch(() => {
+            this.$message({
+              message: '无法连接服务器',
+              showClose: true,
+              type: 'error',
+              duration: 6000
+            })
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        })
+      })
     }
   }
 }

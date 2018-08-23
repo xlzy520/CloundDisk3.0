@@ -57,8 +57,7 @@
     },
     computed: {
       ...mapGetters([
-        'selectedData',
-        'isEditor'
+        'selectedData'
       ])
     },
     methods: {

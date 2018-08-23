@@ -3,6 +3,7 @@
     <list-header @list_type_toggle="list_type_toggle"></list-header>
     <component :is="component" :fileList="fileList"></component>
     <upload-file></upload-file>
+    <delete-file/>
     <detail v-if="selectedData.length===1"></detail>
     <version-list v-if="selectedData.length===1"></version-list>
   </div>
@@ -14,6 +15,7 @@ import Thumbnail from './components/Thumbnail2'
 import List from './components/List'
 import ListHeader from '@/components/ListHeader'
 import UploadFile from '@/components/UploadFile'
+import DeleteFile from '@/components/DeleteFile'
 import Detail from '@/components/Detail/index'
 import VersionList from '@/components/VersionList/index'
 export default {
@@ -35,7 +37,8 @@ export default {
     UploadFile,
     Thumbnail,
     List,
-    ListHeader
+    ListHeader,
+    DeleteFile
   },
   methods: {
     list_type_toggle(component) {
