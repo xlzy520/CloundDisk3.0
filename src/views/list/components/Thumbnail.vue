@@ -41,6 +41,7 @@ export default {
       const folderCheckedCount = this.list.filter(item => (item.ffiletype === 1 && item.checked)).length
       const fileCheckedCount = this.list.filter(item => item.ffiletype === 2 && item.checked).length
       this.$emit('change_the_function', totalLength, folderCheckedCount, fileCheckedCount)
+      this.$store.dispatch('VisibilityBtn', this.list.filter(item => item.checked))
     },
     handleCheckItemChange() {
       const totalLength = this.list.length
@@ -51,6 +52,7 @@ export default {
       const folderCheckedCount = this.list.filter(item => (item.ffiletype === 1 && item.checked)).length
       const fileCheckedCount = this.list.filter(item => item.ffiletype === 2 && item.checked).length
       this.$emit('change_the_function', totalLength, folderCheckedCount, fileCheckedCount)
+      this.$store.dispatch('VisibilityBtn', this.list.filter(item => item.checked))
     },
     nextDir(fcategoryid) {
       this.$store.dispatch('GetCategory', fcategoryid).then(() => {

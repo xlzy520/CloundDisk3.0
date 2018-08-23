@@ -8,7 +8,9 @@ const getters = {
   uploadVisible: state => state.file.uploadVisible,
   deleteVisible: state => state.file.deleteVisible,
   fileList: state => state.file.fileList,
+  folderNav: state => state.file.folderNav,
+  showBtn: state => state.file.showBtn,
   selectedData: state => state.file.selectedData,
-  folderNav: state => state.file.folderNav
+  selectedIndex: state => state.file.selectedIndex
 }
 export default getters

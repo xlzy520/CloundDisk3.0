@@ -24,6 +24,11 @@ export default {
       isOther: false
     }
   },
+  computed: {
+    ...mapGetters([
+      'fileList'
+    ])
+  },
   components: {
     UploadFile,
     Thumbnail,
@@ -36,8 +41,10 @@ export default {
       this.component = component
     },
     change_the_function(totalLength, folderCheckedCount, fileCheckedCount) {
-      console.log(totalLength, folderCheckedCount, fileCheckedCount)
-      if (totalLength === (folderCheckedCount + fileCheckedCount) && totalLength > 0 || folderCheckedCount && fileCheckedCount || folderCheckedCount > 1 || fileCheckedCount > 1) {
+      // console.log(totalLength, folderCheckedCount, fileCheckedCount)
+      if (totalLength === (folderCheckedCount + fileCheckedCount) &&
+        totalLength > 0 || folderCheckedCount &&
+        fileCheckedCount || folderCheckedCount > 1 || fileCheckedCount > 1) {
         this.isFolder = false
         this.isFile = false
         this.isOther = true
@@ -56,10 +63,9 @@ export default {
       }
     }
   },
-  computed: {
-    ...mapGetters([
-      'fileList'
-    ])
+  async mounted() {
+    this.$store.dispatch('GetCategory', '-1')
+    console.log(1)
   }
 }
 </script>

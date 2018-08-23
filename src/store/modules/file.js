@@ -2,10 +2,12 @@ import { getCategory } from '@/api/file'
 const file = {
   state: {
     parentId: '-1',
-    selectedData: [{"rowid":100004,"fcategoryid":"c328517b-ddde-40a0-bb55-07f502efcccd","fparentid":"1002","foperator":"panyang","foperatorid":"1003","ffiletype":1,"fname":"团购文档","fcategorystatus":1,"fsortorder":0,"fcreatetime":"2018-08-20 13:55:43.0","fupdatetime":"2018-08-20 13:55:43.0"}],
+    selectedData: [],
+    selectedIndex: [],
     uploadVisible: false,
     deleteVisible: false,
     fileList: [],
+    showBtn: [],
     folderNav: [
       {
         fileId: -1,
@@ -31,6 +33,31 @@ const file = {
     },
     SET_FOLDERNAV: (state, data) => {
       state.folderNav.push(data)
+    },
+    // VISIBILITY_BTN
+    VISIBILITY_BTN: (state, rows) => {
+      state.selectedData = []
+      state.selectedIndex = []
+      rows.forEach(item => { state.selectedData.push(item) })
+      console.log(state.fileList)
+      state.fileList.forEach((list, index) => {
+        state.selectedData.forEach(item => {
+          if (item.fcategoryid === list.fcategoryid) {
+            // state.selectedIndex = []
+            state.selectedIndex.push(index)
+          }
+        })
+      })
+      // console.log(state.selectedIndex)
+      if (rows.length === 1) {
+        state.showBtn = []
+        state.showBtn.push('' + rows[0].ffiletype)
+      } else if (rows.length === 0) {
+        state.showBtn = []
+      } else {
+        state.showBtn = []
+        state.showBtn.push('3')
+      }
     }
   },
   actions: {
@@ -57,6 +84,9 @@ const file = {
     async Refresh({ commit }) {
       const Category = await getCategory(this.state.parentId)
       commit('GET_CATEGORY', Category.data)
+    },
+    VisibilityBtn: ({ commit }, rows) => {
+      commit('VISIBILITY_BTN', rows)
     }
   }
 }
