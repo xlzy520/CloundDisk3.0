@@ -4,13 +4,13 @@
       <el-button type="primary" icon="el-icon-refresh" @click="refresh">刷新</el-button>
       <el-button type="primary" icon="el-icon-upload" @click="uploadFile">上传文件</el-button>
       <el-button type="primary" icon="el-icon-plus">新建文件夹</el-button>
-      <el-button v-if="showBtn.indexOf('2')!=-1" type="primary" icon="el-icon-document">预览</el-button>
-      <el-button v-if="showBtn.indexOf('2')!=-1" type="primary" icon="el-icon-download">下载</el-button>
-      <el-button v-if="showBtn.indexOf('2')!=-1" type="primary" icon="el-icon-edit">更新</el-button>
-      <el-button v-if="showBtn.indexOf('2')!=-1" type="primary" icon="el-icon-tickets">版本</el-button>
-      <el-button v-if="showBtn.indexOf('1')!=-1" type="primary" icon="el-icon-edit-outline" @click="rename">重命名</el-button>
-      <el-button v-if="showBtn.indexOf('2')!=-1 || showBtn.indexOf('1')!=-1 || showBtn.indexOf('3')!=-1" type="primary" icon="el-icon-delete" ref="del">删除</el-button>
-      <el-button v-if="showBtn.indexOf('2')!=-1 || showBtn.indexOf('1')!=-1" type="primary" icon="el-icon-info">详情</el-button>
+      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-document">预览</el-button>
+      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-download">下载</el-button>
+      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-edit">更新</el-button>
+      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-tickets">版本</el-button>
+      <el-button type="primary" v-if="[1, 2].indexOf(isShow) > -1" icon="el-icon-edit-outline">重命名</el-button>
+      <el-button type="primary" v-if="[1, 2, 3].indexOf(isShow) > -1" icon="el-icon-delete" @click="deleteFile">删除</el-button>
+      <el-button type="primary" v-if="[1, 2].indexOf(isShow) > -1" icon="el-icon-info">详情</el-button>
     <!--<span>{{showBtn}}</span>-->
     </div>
     <div class="action-wrap">
@@ -35,11 +35,6 @@ import Breadcrumb from '../Breadcrumb/index'
 export default {
   name: 'ListHeader',
   components: { Breadcrumb },
-  // props: {
-  //   isFolder: false,
-  //   isFile: false,
-  //   isOther: false
-  // },
   computed: {
     ...mapGetters([
       'showBtn',
@@ -47,7 +42,18 @@ export default {
       'fileList',
       'selectedIndex',
       'isEditor'
-    ])
+    ]),
+    isShow() {
+      const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length
+      const fileCheckedCount = this.selectedData.filter(item => item.ffiletype === 2).length
+      if (this.selectedData.length > 1) {
+        return 3
+      } else if (folderCheckedCount === 1 && fileCheckedCount === 0) {
+        return 1
+      } else if (folderCheckedCount === 0 && fileCheckedCount === 1) {
+        return 2
+      }
+    }
   },
   methods: {
     typeShow(type) {
@@ -58,6 +64,9 @@ export default {
     },
     refresh() {
       this.$store.dispatch('Refresh')
+    },
+    deleteFile() {
+      this.$store.dispatch('ToggleDeleteVisible')
     },
     rename() {
       // this.$store.dispatch('NameEditVisible')
