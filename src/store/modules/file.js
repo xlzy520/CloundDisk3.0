@@ -2,27 +2,23 @@ import { getCategory } from '@/api/file'
 
 const file = {
   state: {
-    parentId: '-1',
+    parentId: '0',
     selectedData: [],
-    uploadVisible: false,
+    upload: {
+      visible: false,
+      type: ''
+    },
     deleteVisible: false,
     detailVisible: false,
     versionVisible: false,
-    fileList: [],
+    fileList: null,
     showBtn: [],
-    folderNav: [
-      {
-        fileId: -1,
-        fileName: '公司文件'
-      },
-      { fileId: 2, fileName: '示例-按部门' },
-      { fileId: 5, fileName: '销售部' },
-      { fileId: 26, fileName: '啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊啊' }
-    ]
+    folderNav: []
   },
   mutations: {
-    TOGGLE_UPLOADVISIBLE: state => {
-      state.uploadVisible = !state.uploadVisible
+    TOGGLE_UPLOADVISIBLE: (state, data) => {
+      state.upload.visible = !state.upload.visible
+      state.upload.type = data
     },
     TOGGLE_DELETEVISIBLE: state => {
       state.deleteVisible = !state.deleteVisible
@@ -36,19 +32,19 @@ const file = {
     GET_CATEGORY: (state, data) => {
       state.fileList = data
     },
-    SET_PARENTID: (state, data) => {
+    SET_PARENT_ID: (state, data) => {
       state.parentId = data
     },
     SET_FOLDERNAV: (state, data) => {
-      state.folderNav.push(data)
+      state.folderNav = data
     },
     GET_SELECTEDDATA: (state, data) => {
       state.selectedData = data
     }
   },
   actions: {
-    ToggleUploadVisible: ({ commit }) => {
-      commit('TOGGLE_UPLOADVISIBLE')
+    ToggleUploadVisible: ({ commit }, type) => {
+      commit('TOGGLE_UPLOADVISIBLE', type)
     },
     ToggleDeleteVisible: ({ commit }) => {
       commit('TOGGLE_DELETEVISIBLE')
@@ -62,9 +58,14 @@ const file = {
     async GetCategory({ commit }, fcategoryid) {
       const Category = await getCategory(fcategoryid)
       commit('GET_CATEGORY', Category.data.tableList)
+      commit('SET_FOLDERNAV', Category.data.navList)
+    },
+    SetParentId: ({ commit }, id) => {
+      commit('SET_PARENT_ID', id)
     },
     async Refresh({ commit }) {
-      const Category = await getCategory(this.state.parentId)
+      console.log(this)
+      const Category = await getCategory(this.getters.parentId)
       commit('GET_CATEGORY', Category.data)
     },
     GetSelectedData({ commit }, data) {
