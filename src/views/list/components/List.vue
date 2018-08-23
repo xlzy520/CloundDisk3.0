@@ -11,13 +11,16 @@
         <!--<el-table-column type="selection" width="55" v-show="selectedData.fcategoryid === fileList.fcategoryid"></el-table-column>-->
         <el-table-column label="名称" sortable width="480px">
           <template slot-scope="scope">
-            <svg-icon :icon-class="scope.row.ffiletype===1? 'folder':scope.row.ffiletype"></svg-icon>
-            <span v-if="scope.row.fparentid"
-                  class="fileName"
-                  @click="nextDir(scope.row.fcategoryid)">{{ scope.row.fname }}</span>
-            <span v-else="!scope.row.fparentid"
-                  class="fileName"
-                  @click="seeDir(scope.row.fcategoryid)">{{ scope.row.fname }}</span>
+            <div v-show="scope.row.isEditor"><el-input size="small" v-model="scope.row.fname" placeholder="请输入内容" ></el-input></div>
+            <div v-show="!scope.row.isEditor">
+              <svg-icon :icon-class="scope.row.ffiletype===1? 'folder':scope.row.ffiletype"></svg-icon>
+              <span v-if="scope.row.ffiletype === 1"
+                    class="fileName"
+                    @click="nextDir(scope.row.fcategoryid)">{{ scope.row.fname }}</span>
+              <span v-else="scope.row.ffiletype === 2"
+                    class="fileName"
+                    @click="seeDir(scope.row.fcategoryid)">{{ scope.row.fname }}</span>
+            </div>
           </template>
         </el-table-column>
         <!--<el-table-column prop="fupdatetime" label="修改时间" sortable width="165"></el-table-column>-->
@@ -49,7 +52,8 @@
     computed: {
       ...mapGetters([
         'selectedData',
-        'selectedIndex'
+        'selectedIndex',
+        'isEditor'
       ])
     },
     methods: {

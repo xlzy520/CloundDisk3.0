@@ -8,7 +8,7 @@
       <el-button v-if="showBtn.indexOf('2')!=-1" type="primary" icon="el-icon-download">下载</el-button>
       <el-button v-if="showBtn.indexOf('2')!=-1" type="primary" icon="el-icon-edit">更新</el-button>
       <el-button v-if="showBtn.indexOf('2')!=-1" type="primary" icon="el-icon-tickets">版本</el-button>
-      <el-button v-if="showBtn.indexOf('1')!=-1" type="primary" icon="el-icon-edit-outline">重命名</el-button>
+      <el-button v-if="showBtn.indexOf('1')!=-1" type="primary" icon="el-icon-edit-outline" @click="rename">重命名</el-button>
       <el-button v-if="showBtn.indexOf('2')!=-1 || showBtn.indexOf('1')!=-1 || showBtn.indexOf('3')!=-1" type="primary" icon="el-icon-delete" ref="del">删除</el-button>
       <el-button v-if="showBtn.indexOf('2')!=-1 || showBtn.indexOf('1')!=-1" type="primary" icon="el-icon-info">详情</el-button>
     <!--<span>{{showBtn}}</span>-->
@@ -45,7 +45,8 @@ export default {
       'showBtn',
       'selectedData',
       'fileList',
-      'selectedIndex'
+      'selectedIndex',
+      'isEditor'
     ])
   },
   methods: {
@@ -57,6 +58,15 @@ export default {
     },
     refresh() {
       this.$store.dispatch('Refresh')
+    },
+    rename() {
+      // this.$store.dispatch('NameEditVisible')
+      this.fileList.forEach((item, index) => {
+        if (index === this.selectedIndex[0]) {
+          this.$set(item, 'isEditor', true)
+        }
+      })
+      console.log(this.selectedIndex[0])
     }
   }
 }

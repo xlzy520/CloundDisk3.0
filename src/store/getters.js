@@ -10,6 +10,6 @@ const getters = {
   folderNav: state => state.file.folderNav,
   showBtn: state => state.file.showBtn,
   selectedData: state => state.file.selectedData,
-  selectedIndex: state => state.file.selectedIndex
+  selectedIndex: state => state.file.selectedIndex,
 }
 export default getters

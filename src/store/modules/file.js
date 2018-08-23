@@ -6,6 +6,7 @@ const file = {
     selectedData: [],
     selectedIndex: [],
     uploadVisible: false,
+    // isEditor: false,
     fileList: [],
     showBtn: [],
     folderNav: [
@@ -36,7 +37,7 @@ const file = {
       state.selectedData = []
       state.selectedIndex = []
       rows.forEach(item => { state.selectedData.push(item) })
-      // console.log(state.fileList)
+      console.log(state.fileList)
       state.fileList.forEach((list, index) => {
         state.selectedData.forEach(item => {
           if (item.fcategoryid === list.fcategoryid) {
