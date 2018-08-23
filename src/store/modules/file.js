@@ -3,7 +3,6 @@ const file = {
   state: {
     parentId: '-1',
     selectedData: [],
-    selectedIndex: [],
     uploadVisible: false,
     deleteVisible: false,
     fileList: [],
@@ -34,31 +33,6 @@ const file = {
     SET_FOLDERNAV: (state, data) => {
       state.folderNav.push(data)
     },
-    // VISIBILITY_BTN
-    VISIBILITY_BTN: (state, rows) => {
-      state.selectedData = []
-      state.selectedIndex = []
-      rows.forEach(item => { state.selectedData.push(item) })
-      console.log(state.fileList)
-      state.fileList.forEach((list, index) => {
-        state.selectedData.forEach(item => {
-          if (item.fcategoryid === list.fcategoryid) {
-            // state.selectedIndex = []
-            state.selectedIndex.push(index)
-          }
-        })
-      })
-      // console.log(state.selectedIndex)
-      if (rows.length === 1) {
-        state.showBtn = []
-        state.showBtn.push('' + rows[0].ffiletype)
-      } else if (rows.length === 0) {
-        state.showBtn = []
-      } else {
-        state.showBtn = []
-        state.showBtn.push('3')
-      }
-    },
     GET_SELECTEDDATA: (state, data) => {
       state.selectedData = data
     }
@@ -87,9 +61,6 @@ const file = {
     async Refresh({ commit }) {
       const Category = await getCategory(this.state.parentId)
       commit('GET_CATEGORY', Category.data)
-    },
-    VisibilityBtn: ({ commit }, rows) => {
-      commit('VISIBILITY_BTN', rows)
     },
     GetSelectedData({ commit }, data) {
       commit('GET_SELECTEDDATA', data)

@@ -72,17 +72,10 @@
 
       },
       handleSelectionChange(rows) {
-        // this.$store.dispatch('VisibilityBtn', rows)
         this.$store.dispatch('GetSelectedData', rows)
-      },
-      checked() {
-        this.selectedIndex.forEach(index => {
-          this.$refs.multipleTable.toggleRowSelection(this.fileList[index], true)
-        })
       }
     },
     mounted() {
-      this.checked()
       this.selectedData.forEach(row => {
         this.$refs.multipleTable.toggleRowSelection(row)
       })

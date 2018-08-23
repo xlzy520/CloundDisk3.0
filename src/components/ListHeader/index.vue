@@ -40,7 +40,6 @@ export default {
       'showBtn',
       'selectedData',
       'fileList',
-      'selectedIndex',
       'isEditor'
     ]),
     isShow() {
@@ -69,12 +68,6 @@ export default {
       this.$store.dispatch('ToggleDeleteVisible')
     },
     rename() {
-      // this.$store.dispatch('NameEditVisible')
-      this.fileList.forEach((item, index) => {
-        if (index === this.selectedIndex[0]) {
-          this.$set(item, 'isEditor', true)
-        }
-      })
     }
   }
 }
