@@ -19,7 +19,7 @@
               </span>
             </div>
             <div v-show="!scope.row.isEditor">
-              <svg-icon :icon-class="scope.row.ffiletype===1? 'folder':scope.row.ffiletype"></svg-icon>
+              <svg-icon :icon-class="scope.row.ffiletype===1? 'folder': 'markdown'"></svg-icon>
               <span v-if="scope.row.ffiletype === 1"
                     class="fileName"
                     @click="nextDir(scope.row.fcategoryid)">{{ scope.row.fname }}</span>
@@ -65,6 +65,7 @@
       // 点击获取下一级文件列表
       nextDir(fcategoryid) {
         this.$store.dispatch('GetCategory', fcategoryid)
+        this.$store.dispatch('SetParentId', fcategoryid)
       },
       // 点击预览
       seeDir(fcategoryid) {

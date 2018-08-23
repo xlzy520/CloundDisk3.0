@@ -66,7 +66,8 @@ const file = {
     async Refresh({ commit }) {
       console.log(this)
       const Category = await getCategory(this.getters.parentId)
-      commit('GET_CATEGORY', Category.data)
+      commit('GET_CATEGORY', Category.data.tableList)
+      commit('SET_FOLDERNAV', Category.data.navList)
     },
     GetSelectedData({ commit }, data) {
       commit('GET_SELECTEDDATA', data)

@@ -32,6 +32,7 @@
     methods: {
       jumpFolder(fcategoryid) {
         this.$store.dispatch('GetCategory', fcategoryid)
+        this.$store.dispatch('SetParentId', fcategoryid)
       }
     }
   }

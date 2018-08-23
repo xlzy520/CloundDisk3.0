@@ -6,7 +6,7 @@
       <el-button type="primary" icon="el-icon-plus">新建文件夹</el-button>
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-document">预览</el-button>
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-download">下载</el-button>
-      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-edit">更新</el-button>
+      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-edit" @click="updateFile">更新</el-button>
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-tickets" @click="showVersion">版本</el-button>
       <el-button type="primary" v-if="[1, 2].indexOf(isShow) > -1" icon="el-icon-edit-outline">重命名</el-button>
       <el-button type="primary" v-if="[1, 2, 3].indexOf(isShow) > -1" icon="el-icon-delete" @click="deleteFile">删除</el-button>
@@ -62,7 +62,10 @@ export default {
       this.$store.dispatch('ToggleDetailVisible')
     },
     uploadFile() {
-      this.$store.dispatch('ToggleUploadVisible')
+      this.$store.dispatch('ToggleUploadVisible', 'upload')
+    },
+    updateFile() {
+      this.$store.dispatch('ToggleUploadVisible', 'update')
     },
     showVersion() {
       this.$store.dispatch('ToggleVersionVisible')
