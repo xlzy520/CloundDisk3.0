@@ -11,7 +11,13 @@
         <!--<el-table-column type="selection" width="55" v-show="selectedData.fcategoryid === fileList.fcategoryid"></el-table-column>-->
         <el-table-column label="名称" sortable width="480px">
           <template slot-scope="scope">
-            <div v-show="scope.row.isEditor"><el-input size="small" v-model="scope.row.fname" placeholder="请输入内容" ></el-input></div>
+            <div v-show="scope.row.isEditor" class="rename-edit">
+              <el-input size="small" v-model="scope.row.fname" placeholder="请输入内容" ></el-input>
+              <span>
+                <el-button type="primary" icon="el-icon-check"></el-button>
+                <el-button type="primary" icon="el-icon-close"></el-button>
+              </span>
+            </div>
             <div v-show="!scope.row.isEditor">
               <svg-icon :icon-class="scope.row.ffiletype===1? 'folder':scope.row.ffiletype"></svg-icon>
               <span v-if="scope.row.ffiletype === 1"
@@ -84,6 +90,18 @@
   .file-content {
     width: 100%;
     min-width: 980px;
+  }
+  .rename-edit{
+    .el-button{
+      padding: 0;
+    }
+    .el-button--primary {
+      background-color: #409eff61;
+    }
+    .el-input{
+      width: 350px;
+      margin-right: 10px;
+    }
   }
   .fileName{
     cursor: pointer;

@@ -66,7 +66,6 @@ export default {
           this.$set(item, 'isEditor', true)
         }
       })
-      console.log(this.selectedIndex[0])
     }
   }
 }
