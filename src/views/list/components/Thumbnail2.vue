@@ -38,11 +38,11 @@
     methods: {
       handleCheckAllChange(val) {
         this.checkedData = val ? this.fileList : []
-        this.$store.dispatch('GetSelectedData',  this.checkedData)
+        this.$store.dispatch('GetSelectedData', this.checkedData)
         this.isIndeterminate = false
       },
       handleCheckItemChange(value) {
-        this.$store.dispatch('GetSelectedData',  value)
+        this.$store.dispatch('GetSelectedData', value)
         const checkedCount = value.length
         this.checkAll = checkedCount === this.fileList.length
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.fileList.length

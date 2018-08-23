@@ -26,7 +26,7 @@
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       <div class="el-upload__tip" slot="tip"><span style="color: #888;padding-right: 2px;">当前文件夹：</span>{{tip}}</div>
-      <div class="el-upload__tip" slot="tip"><span style="color: #888;padding-right: 2px;">要更新的文件：</span>{{tip}}</div>
+      <div class="el-upload__tip" slot="tip" v-if=""><span style="color: #888;padding-right: 2px;">要更新的文件：</span>{{tip}}</div>
     </el-upload>
     <div class="file-desc-label">文件描述</div>
     <el-input type="textarea" v-model="fileDesc"></el-input>
