@@ -18,12 +18,33 @@ export function getCategory(id) {
   })
 }
 
-export function deleteCategory(id) {
+export function getVersionList(fname, id) {
   return request({
-    url: '/api_py/djcpsdocument/category/deleteCategory.do',
+    url: '/api_lw/djcpsdocument/version/getAllVersion.do',
     method: 'post',
     data: {
-      fcategoryid: id
+      fname: 2,
+      fcategoryid: 2
+    }
+  })
+}
+export function versionRollback(oldVer, newVer) {
+  return request({
+    url: '/api_lw/djcpsdocument/version/versionBack.do',
+    method: 'post',
+    data: {
+      oldDisplayFileSgin: oldVer,
+      newDisplayFileSgin: newVer
+    }
+  })
+}
+
+export function uploadFile(parentId) {
+  return request({
+    url: '/api_py/djcpsdocument/category/fileUpload.do',
+    method: 'post',
+    data: {
+      parentId: parentId
     }
   })
 }

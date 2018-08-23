@@ -4,14 +4,13 @@
       <el-button type="primary" icon="el-icon-refresh" @click="refresh">刷新</el-button>
       <el-button type="primary" icon="el-icon-upload" @click="uploadFile">上传文件</el-button>
       <el-button type="primary" icon="el-icon-plus">新建文件夹</el-button>
-      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-document">预览</el-button>
-      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-download">下载</el-button>
-      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-edit">更新</el-button>
-      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-tickets">版本</el-button>
-      <el-button type="primary" v-if="[1, 2].indexOf(isShow) > -1" icon="el-icon-edit-outline">重命名</el-button>
-      <el-button type="primary" v-if="[1, 2, 3].indexOf(isShow) > -1" icon="el-icon-delete" @click="deleteFile">删除</el-button>
-      <el-button type="primary" v-if="[1, 2].indexOf(isShow) > -1" icon="el-icon-info">详情</el-button>
-    <!--<span>{{showBtn}}</span>-->
+      <el-button type="primary"  icon="el-icon-document">预览</el-button>
+      <el-button type="primary"  icon="el-icon-download">下载</el-button>
+      <el-button type="primary"  icon="el-icon-edit" @click="fileUpdate">更新</el-button>
+      <el-button type="primary"  icon="el-icon-tickets" @click="showVersion">版本</el-button>
+      <el-button type="primary"  icon="el-icon-edit-outline">重命名</el-button>
+      <el-button type="primary" icon="el-icon-delete">删除</el-button>
+      <el-button type="primary"  icon="el-icon-info" @click="getDetail">详情</el-button>
     </div>
     <div class="action-wrap">
       <el-tooltip class="item" effect="dark" content="列表" placement="bottom">
@@ -30,29 +29,15 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+
 import Breadcrumb from '../Breadcrumb/index'
 export default {
   name: 'ListHeader',
   components: { Breadcrumb },
-  computed: {
-    ...mapGetters([
-      'showBtn',
-      'selectedData',
-      'fileList',
-      'isEditor'
-    ]),
-    isShow() {
-      const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length
-      const fileCheckedCount = this.selectedData.filter(item => item.ffiletype === 2).length
-      if (this.selectedData.length > 1) {
-        return 3
-      } else if (folderCheckedCount === 1 && fileCheckedCount === 0) {
-        return 1
-      } else if (folderCheckedCount === 0 && fileCheckedCount === 1) {
-        return 2
-      }
-    }
+  props: {
+    isFolder: false,
+    isFile: false,
+    isOther: false
   },
   methods: {
     typeShow(type) {
@@ -64,10 +49,14 @@ export default {
     refresh() {
       this.$store.dispatch('Refresh')
     },
-    deleteFile() {
-      this.$store.dispatch('ToggleDeleteVisible')
+    getDetail() {
+      this.$store.dispatch('ToggleDetailVisible')
     },
-    rename() {
+    showVersion() {
+      this.$store.dispatch('ToggleVersionVisible')
+    },
+    fileUpdate() {
+
     }
   }
 }

@@ -22,14 +22,20 @@ module.exports = {
         pathRewrite:{'^/api_ldh': ''}
       },
       '/api_py':{
-        target: 'http://192.168.12.66:8080/',
+        target: 'http://192.168.12.227:8080/',
         changeOrigin: true,
         pathRewrite:{'^/api_py': ''}
-      }
+      },
+      '/api_lw':{
+        target: 'http://192.168.2.169:8080/',
+        changeOrigin: true,
+        pathRewrite:{'^/api_lw': ''}
+      },
+      
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '0.0.0.0', // can be overwritten by process.env.HOST
     port: 9528, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,
@@ -79,7 +85,7 @@ module.exports = {
      * then assetsPublicPath should be set to "/bar/".
      * In most cases please use '/' !!!
      */
-    assetsPublicPath: '/vueAdmin-template/', // If you are deployed on the root path, please use '/'
+    assetsPublicPath: './', // If you are deployed on the root path, please use '/'
 
     /**
      * Source Maps

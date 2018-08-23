@@ -4,7 +4,7 @@
     :visible.sync="uploadVisible"
     :modal-append-to-body="false"
     custom-class="upload-file"
-    :close-on-click-modal="false"
+    :close-on-click-modal="true"
     :close-on-press-escape="false"
     :show-close="false"
     width="400px">
@@ -12,8 +12,8 @@
       ref="upload"
       class="upload-demo"
       drag
-      :action="uploadUrl"
-      :limit="1"
+      :action="uploadFileUrl"
+      :limit="4"
       :on-success="uploadOk"
       :data="uploadData"
       :on-change="onFileChange"
@@ -26,11 +26,15 @@
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
       <div class="el-upload__tip" slot="tip"><span style="color: #888;padding-right: 2px;">当前文件夹：</span>{{tip}}</div>
+      <div class="el-upload__tip" slot="tip"><span style="color: #888;padding-right: 2px;">要更新的文件：</span>{{tip}}</div>
     </el-upload>
+    <div class="file-desc-label">文件描述</div>
+    <el-input type="textarea" v-model="fileDesc"></el-input>
     <span slot="footer" class="dialog-footer">
-                <el-button size="small" type="primary" @click="submitUpload" :disabled="btDisable">开始上传</el-button>
-                <el-button @click="quitDialog" size="small">关 闭</el-button>
-              </span>
+      <el-button size="small" type="primary" @click="submitUpload" :disabled="btDisable">开始上传</el-button>
+      <el-button size="small" type="primary" @click="submitUpload" :disabled="btDisable">开始更新</el-button>
+      <el-button @click="quitDialog" size="small">关 闭</el-button>
+    </span>
   </el-dialog>
 </template>
 
@@ -41,20 +45,30 @@ export default {
   data() {
     return {
       isLoad: true,
-      uploadUrl: '',
       tip: '',
       detail: {},
       fileList: [],
       uploadData: {},
       btDisable: true,
-      currentFile: null
+      currentFile: null,
+      fileDesc: ''
     }
   },
   computed: {
+    uploadVisible: {
+      get() {
+        return this.$store.state.file.uploadVisible
+      },
+      set() {
+      }
+    },
     ...mapGetters([
-      'uploadVisible',
-      'folderNav'
-    ])
+      'folderNav',
+      'parentId'
+    ]),
+    uploadFileUrl() {
+      return '/api_py/djcpsdocument/category/fileUpload.do?parentId=' + this.parentId
+    }
   },
   methods: {
     onError() {
@@ -124,7 +138,6 @@ export default {
         this.$store.dispatch('Refresh')
         this.btDisable = false
         this.currentFile = file
-        this.uploadUrl = ''
 
         this.uploadData = {
           size: this.currentFile.size,
@@ -162,22 +175,11 @@ export default {
 
   },
   mounted() {
-    // var that = this
-    // Bus.$on('uploadFile', function() {
-    //   that.isVisible = true
-    //   that.btDisable = true
-    //
-    //   that.uploadUrl = '/app/file/upload-file/'
-    //
     let tip = ''
     for (var i = 0; i < this.folderNav.length; ++i) {
       tip += '/' + this.folderNav[i].fileName
     }
     this.tip = tip
-    //   that.tip = tip
-    //   that.currentFile = null
-    //   that.fileList = []
-    // })
   }
 }
 </script>
@@ -200,5 +202,10 @@ export default {
   }
   .upload-file .el-upload-dragger .el-icon-upload {
     margin: 22px 0 16px;
+  }
+  .update-file .file-desc-label {
+    font-size: 14px;
+    margin: 5px 0 5px 0px;
+    color: #666;
   }
 </style>
