@@ -5,19 +5,28 @@
         ref="multipleTable"
         :data="fileList"
         style="width: 100%"
-        :default-sort="{prop: 'date', order: 'descending'}">
-
+        :default-sort="{prop: 'date', order: 'descending'}"
+        @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55"></el-table-column>
 
         <el-table-column label="名称" sortable width="480px">
           <template slot-scope="scope">
-            <svg-icon :icon-class="scope.row.ffiletype===1? 'folder':scope.row.ffiletype"></svg-icon>
-            <span v-if="scope.row.fparentid"
-                  class="fileName"
-                  @click="nextDir(scope.row.fcategoryid)">{{ scope.row.fname }}</span>
-            <span v-else="!scope.row.fparentid"
-                  class="fileName"
-                  @click="seeDir(scope.row.fcategoryid)">{{ scope.row.fname }}</span>
+            <div v-show="scope.row.isEditor" class="rename-edit">
+              <el-input size="small" v-model="scope.row.fname" placeholder="请输入内容" ></el-input>
+              <span>
+                <el-button type="primary" icon="el-icon-check"></el-button>
+                <el-button type="primary" icon="el-icon-close"></el-button>
+              </span>
+            </div>
+            <div v-show="!scope.row.isEditor">
+              <svg-icon :icon-class="scope.row.ffiletype===1? 'folder':scope.row.ffiletype"></svg-icon>
+              <span v-if="scope.row.ffiletype === 1"
+                    class="fileName"
+                    @click="nextDir(scope.row.fcategoryid)">{{ scope.row.fname }}</span>
+              <span v-else="scope.row.ffiletype === 2"
+                    class="fileName"
+                    @click="seeDir(scope.row.fcategoryid)">{{ scope.row.fname }}</span>
+            </div>
           </template>
         </el-table-column>
         <!--<el-table-column prop="fupdatetime" label="修改时间" sortable width="165"></el-table-column>-->
@@ -37,7 +46,7 @@
 
 <script>
   // import { getCategory } from '@/api/file'
-
+  import { mapGetters } from 'vuex'
   export default {
     name: 'List',
     props: {
@@ -45,6 +54,12 @@
         require: true,
         type: Array
       }
+    },
+    computed: {
+      ...mapGetters([
+        'selectedData',
+        'isEditor'
+      ])
     },
     methods: {
       // 点击获取下一级文件列表
@@ -54,7 +69,15 @@
       // 点击预览
       seeDir(fcategoryid) {
 
+      },
+      handleSelectionChange(rows) {
+        this.$store.dispatch('GetSelectedData', rows)
       }
+    },
+    mounted() {
+      this.selectedData.forEach(row => {
+        this.$refs.multipleTable.toggleRowSelection(row)
+      })
     }
   }
 </script>
@@ -63,6 +86,18 @@
   .file-content {
     width: 100%;
     min-width: 980px;
+  }
+  .rename-edit{
+    .el-button{
+      padding: 0;
+    }
+    .el-button--primary {
+      background-color: #409eff61;
+    }
+    .el-input{
+      width: 350px;
+      margin-right: 10px;
+    }
   }
   .fileName{
     cursor: pointer;

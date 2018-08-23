@@ -3,25 +3,11 @@ import { getCategory } from '@/api/file'
 const file = {
   state: {
     parentId: '-1',
-    selectedData: [
-      {
-        'rowid': 100020,
-        'fcategoryid': 'c9dd22ae-ff41-4ce9-9e48-690502f5b8d3',
-        'fparentid': '1002',
-        'foperator': 'panyang',
-        'foperatorid': '1003',
-        'ffiletype': 2,
-        'fname': 'hehe',
-        'fcategorystatus': 1,
-        'fsortorder': 0,
-        'fcreatetime': '2018-08-20 14:30:07.0',
-        'fupdatetime': '2018-08-20 14:30:07.0'
-      }
-    ],
+    selectedData: [],
     uploadVisible: false,
-    detailVisible: false,
-    versionVisible: false,
+    deleteVisible: false,
     fileList: [],
+    showBtn: [],
     folderNav: [
       {
         fileId: -1,
@@ -36,11 +22,8 @@ const file = {
     TOGGLE_UPLOADVISIBLE: state => {
       state.uploadVisible = !state.uploadVisible
     },
-    TOGGLE_DETAILVISIBLE: state => {
-      state.detailVisible = !state.detailVisible
-    },
-    TOGGLE_VERSIONVISIBLE: state => {
-      state.versionVisible = !state.versionVisible
+    TOGGLE_DELETEVISIBLE: state => {
+      state.deleteVisible = !state.deleteVisible
     },
     GET_CATEGORY: (state, data) => {
       state.fileList = data
@@ -50,14 +33,17 @@ const file = {
     },
     SET_FOLDERNAV: (state, data) => {
       state.folderNav.push(data)
+    },
+    GET_SELECTEDDATA: (state, data) => {
+      state.selectedData = data
     }
   },
   actions: {
     ToggleUploadVisible: ({ commit }) => {
       commit('TOGGLE_UPLOADVISIBLE')
     },
-    ToggleDetailVisible: ({ commit }) => {
-      commit('TOGGLE_DETAILVISIBLE')
+    ToggleDeleteVisible: ({ commit }) => {
+      commit('TOGGLE_DELETEVISIBLE')
     },
     ToggleVersionVisible: ({ commit }) => {
       commit('TOGGLE_VERSIONVISIBLE')
@@ -69,8 +55,10 @@ const file = {
     async Refresh({ commit }) {
       const Category = await getCategory(this.state.parentId)
       commit('GET_CATEGORY', Category.data)
+    },
+    GetSelectedData({ commit }, data) {
+      commit('GET_SELECTEDDATA', data)
     }
   }
 }
-
 export default file
