@@ -27,7 +27,7 @@
             width="145"
             label="修改时间">
             <template slot-scope="scope">
-              {{scope.row.fupdatetime | time}}
+              {{scope.row.fupdatetime}}
             </template>
           </el-table-column>
           <el-table-column
@@ -35,7 +35,7 @@
             label="文件长度"
             width="80">
             <template slot-scope="scope">
-              {{scope.row.size | fileSize}}
+              {{scope.row.size}}
             </template>
           </el-table-column>
           <el-table-column
@@ -94,12 +94,13 @@
       downloadFile(id) {
 
       },
-      rollBack(newVer) {
+      async rollBack(newVer) {
         if (this.selectedData.length === 1) {
-          versionRollback(this.tableData[0].filesgin, newVer)
-          setTimeout(() => {
+          const version = await versionRollback(this.tableData[0].filesgin, newVer)
+          if (version.success) {
             this.requestData()
-          }, 100)
+            // this.$store.dispatch('Refresh')  //刷新文件列表
+          }
         }
       },
       async requestData() {
