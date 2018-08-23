@@ -8,7 +8,7 @@
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-download">下载</el-button>
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-edit" @click="updateFile">更新</el-button>
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-tickets" @click="showVersion">版本</el-button>
-      <el-button type="primary" v-if="[1, 2].indexOf(isShow) > -1" icon="el-icon-edit-outline">重命名</el-button>
+      <el-button type="primary" v-if="[1, 2].indexOf(isShow) > -1" icon="el-icon-edit-outline" @click="rename">重命名</el-button>
       <el-button type="primary" v-if="[1, 2, 3].indexOf(isShow) > -1" icon="el-icon-delete" @click="deleteFile">删除</el-button>
       <el-button type="primary" v-if="[1, 2].indexOf(isShow) > -1" icon="el-icon-info" @click="getDetail">详情</el-button>
     <!--<span>{{showBtn}}</span>-->
@@ -41,7 +41,6 @@ export default {
       'showBtn',
       'selectedData',
       'fileList',
-      'isEditor',
       'parentId'
     ]),
     isShow() {
@@ -79,9 +78,8 @@ export default {
       this.$store.dispatch('ToggleDeleteVisible')
     },
     rename() {
-      // this.$store.dispatch('NameEditVisible')
-      this.fileList.forEach((item, index) => {
-        if (index === this.selectedIndex[0]) {
+      this.fileList.forEach(item => {
+        if (item.fcategoryid === this.selectedData[0].fcategoryid) {
           this.$set(item, 'isEditor', true)
         }
       })

@@ -64,7 +64,6 @@ const file = {
       commit('SET_PARENT_ID', id)
     },
     async Refresh({ commit }) {
-      console.log(this)
       const Category = await getCategory(this.getters.parentId)
       commit('GET_CATEGORY', Category.data.tableList)
       commit('SET_FOLDERNAV', Category.data.navList)

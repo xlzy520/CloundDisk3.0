@@ -9,7 +9,10 @@
           <div class="box" :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''" @dblclick="nextDir(item.fcategoryid)">
             <div @dblclick.stop="() => {}"><el-checkbox :label="item"></el-checkbox></div>
             <svg-icon :icon-class="item.ffiletype === 1 ? 'folder' : 'markdown'" className="icon" />
-            <span>{{item.fname}}</span>
+            <div v-show="item.isEditor">
+              <rename-file></rename-file>
+            </div>
+            <span v-show="!item.isEditor">{{item.fname}}</span>
           </div>
         </li>
       </ul>
@@ -19,6 +22,7 @@
 </template>
 
 <script>
+  import RenameFile from '@/components/RenameFile'
   import { mapGetters } from 'vuex'
   export default {
     props: {
@@ -27,6 +31,7 @@
         required: true
       }
     },
+    components: { RenameFile },
     data() {
       return {
         checkAll: false,

@@ -69,3 +69,15 @@ export function addCategory(parentid, name) {
     }
   })
 }
+
+export function renameFile(fid, fname, fparentid) {
+  return request({
+    url: '/api_py/djcpsdocument/category/setCategoryName.do',
+    method: 'post',
+    data: {
+      fcategoryid: fid,
+      fname: fname,
+      parentId: fparentid
+    }
+  })
+}
