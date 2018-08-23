@@ -7,11 +7,12 @@ const getters = {
   roles: state => state.user.roles,
   uploadVisible: state => state.file.uploadVisible,
   deleteVisible: state => state.file.deleteVisible,
+  detailVisible: state => state.file.detailVisible,
+  versionVisible: state => state.file.versionVisible,
   fileList: state => state.file.fileList,
   folderNav: state => state.file.folderNav,
   showBtn: state => state.file.showBtn,
   selectedData: state => state.file.selectedData,
-  versionVisible: state => state.file.versionVisible,
   parentId: state => state.file.parentId
 }
 export default getters

@@ -3,8 +3,8 @@
     <list-header @list_type_toggle="list_type_toggle"></list-header>
     <component :is="component" :fileList="fileList"></component>
     <upload-file></upload-file>
-    <detail></detail>
-    <version-list></version-list>
+    <detail v-if="selectedData.length===1"></detail>
+    <version-list v-if="selectedData.length===1"></version-list>
   </div>
 </template>
 
@@ -25,7 +25,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'fileList'
+      'fileList',
+      'selectedData'
     ])
   },
   components: {

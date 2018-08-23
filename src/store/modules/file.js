@@ -6,6 +6,8 @@ const file = {
     selectedData: [],
     uploadVisible: false,
     deleteVisible: false,
+    detailVisible: false,
+    versionVisible: false,
     fileList: [],
     showBtn: [],
     folderNav: [
@@ -24,6 +26,9 @@ const file = {
     },
     TOGGLE_DELETEVISIBLE: state => {
       state.deleteVisible = !state.deleteVisible
+    },
+    TOGGLE_DETAILVISIBLE: state => {
+      state.detailVisible = !state.detailVisible
     },
     GET_CATEGORY: (state, data) => {
       state.fileList = data
@@ -44,6 +49,9 @@ const file = {
     },
     ToggleDeleteVisible: ({ commit }) => {
       commit('TOGGLE_DELETEVISIBLE')
+    },
+    ToggleDetailVisible: ({ commit }) => {
+      commit('TOGGLE_DETAILVISIBLE')
     },
     ToggleVersionVisible: ({ commit }) => {
       commit('TOGGLE_VERSIONVISIBLE')

@@ -64,6 +64,9 @@ export default {
     uploadFile() {
       this.$store.dispatch('ToggleUploadVisible')
     },
+    showVersion() {
+      this.$store.dispatch('ToggleVersionVisible')
+    },
     refresh() {
       this.$store.dispatch('Refresh')
     },
