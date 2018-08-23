@@ -30,6 +30,9 @@ const file = {
     TOGGLE_DETAILVISIBLE: state => {
       state.detailVisible = !state.detailVisible
     },
+    TOGGLE_VERSIONVISIBLE: state => {
+      state.versionVisible = !state.versionVisible
+    },
     GET_CATEGORY: (state, data) => {
       state.fileList = data
     },
