@@ -26,16 +26,14 @@
             </div>
           </template>
         </el-table-column>
-        <!--<el-table-column prop="fupdatetime" label="修改时间" sortable width="165"></el-table-column>-->
         <el-table-column label="修改时间" sortable>
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
             <span style="margin-left: 1px">{{ scope.row.fupdatetime.split(':').slice(0,-1).join(':') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="size" label="大小" sortable></el-table-column>
+        <el-table-column prop="fsize" label="大小" sortable></el-table-column>
         <el-table-column prop="foperator" label="创建者"></el-table-column>
-        <el-table-column prop="describe" label="描述"></el-table-column>
       </el-table>
       </el-scrollbar>
     </div>
