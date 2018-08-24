@@ -27,7 +27,7 @@ module.exports = {
         pathRewrite:{'^/api_py': ''}
       },
       '/api_lw':{
-        target: 'http://192.168.2.169:8080/',
+        target: 'http://192.168.2.169:8081/',
         changeOrigin: true,
         pathRewrite:{'^/api_lw': ''}
       },
@@ -35,7 +35,7 @@ module.exports = {
         target: 'http://192.168.2.131:8080/',
         changeOrigin: true,
         pathRewrite:{'^/api_oyny': ''}
-      },
+      }
     },
 
     // Various Dev Server settings

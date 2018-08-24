@@ -28,13 +28,13 @@ export function deleteCategory(categoryids) {
   })
 }
 
-export function getVersionList(fname, id) {
+export function getVersionList(fname, fparentid) {
   return request({
     url: '/api_lw/djcpsdocument/version/getAllVersion.do',
     method: 'post',
     data: {
       fname: fname,
-      fcategoryid: id
+      fcategoryid: fparentid
     }
   })
 }
@@ -81,3 +81,17 @@ export function renameFile(fid, fname, fparentid) {
     }
   })
 }
+
+export function getSearchResult(searchValue, categoryName, sort, curPage) {
+  return request({
+    url: '/api_oyny/djcpsdocument/search/list.do',
+    method: 'post',
+    data: {
+      searchValue: searchValue,
+      categoryName: categoryName,
+      sort: 1,
+      curPage: 1
+    }
+  })
+}
+
