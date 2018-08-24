@@ -47,7 +47,6 @@ export default {
   data() {
     return {
       isLoad: true,
-      tip: '',
       detail: {},
       fileList: [],
       uploadData: {},
@@ -78,6 +77,13 @@ export default {
     },
     updateType() {
       return this.upload.type === 'update'
+    },
+    tip() {
+      let tip = ''
+      for (var i = 0; i < this.folderNav.length; ++i) {
+        tip += '/' + this.folderNav[i].fname
+      }
+      return tip
     }
   },
   methods: {
@@ -182,14 +188,6 @@ export default {
       this.$store.dispatch('ToggleUploadVisible')
       this.$refs.upload.clearFiles()
     }
-
-  },
-  mounted() {
-    let tip = ''
-    for (var i = 0; i < this.folderNav.length; ++i) {
-      tip += '/' + this.folderNav[i].fileName
-    }
-    this.tip = tip
   }
 }
 </script>
