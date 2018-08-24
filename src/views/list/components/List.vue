@@ -93,6 +93,9 @@
       color: #42b983;
     }
   }
+  .el-scrollbar__wrap {
+    overflow-x: hidden;
+  }
   .cell .svg-icon{
     width: 2em;
     height: 2em;

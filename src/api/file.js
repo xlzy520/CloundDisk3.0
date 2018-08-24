@@ -54,7 +54,7 @@ export function uploadFile(parentId) {
     url: '/api_py/djcpsdocument/category/fileUpload.do',
     method: 'post',
     data: {
-      parentId: parentId
+      fparentId: parentId
     }
   })
 }
@@ -77,7 +77,7 @@ export function renameFile(fid, fname, fparentid) {
     data: {
       fcategoryid: fid,
       fname: fname,
-      parentId: fparentid
+      fparentid: fparentid
     }
   })
 }

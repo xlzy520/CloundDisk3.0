@@ -138,6 +138,9 @@
         }
       }
     }
+    .el-scrollbar__wrap {
+      overflow-x: hidden;
+    }
     .empty-block {
       position: relative;
       min-height: 60px;
@@ -158,8 +161,5 @@
 <style scoped>
   .box >>> .el-checkbox .el-checkbox__label {
     display: none;
-  }
-  .el-scrollbar__wrap {
-    overflow-x: hidden;
   }
 </style>
