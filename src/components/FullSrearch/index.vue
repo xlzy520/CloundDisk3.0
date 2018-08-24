@@ -3,10 +3,10 @@
     <div class="fullsearch-top">
       <div class="left">
         关键词“<span style="color: #a00;">{{word}}</span>”的搜索结果
-        <a href="javascript:void(0)" class="clear-search" v-on:click="clearTable">清空搜索结果</a>
+        <a href="javascript:void(0)" class="clear-search" @click="clearTable">清空搜索结果</a>
       </div>
       <div class="right">
-        <a href="javascript:void(0)" v-on:click="backFileList">返回文件列表</a>
+        <a href="javascript:void(0)" @click="backFileList">返回文件列表</a>
       </div>
       <div class="clearfix"></div>
     </div>
@@ -20,7 +20,7 @@
       <el-table-column
         label="名称">
         <template slot-scope="scope">
-          <div class="title"><img v-bind:src="fileIcon(scope.row.fileName, scope.row.fileType)"><span
+          <div class="title"><img :src="fileIcon(scope.row.fileName, scope.row.fileType)"><span
             v-html="scope.row.fileName"></span></div>
           <div class="abstract"><span v-html="scope.row.abstract"></span></div>
         </template>
@@ -45,7 +45,7 @@
         width="100"
         label="操作">
         <template slot-scope="scope">
-          <a href="javascript:void(0)" v-on:click="jumpFileList(scope.row.parentId)">文件位置</a>
+          <a href="javascript:void(0)" @:click="jumpFileList(scope.row.parentId)">文件位置</a>
         </template>
       </el-table-column>
     </el-table>
@@ -53,12 +53,6 @@
 </template>
 
 <script>
-  import Bus from './bus.js'
-  import axios from 'axios'
-  import { getFileExtendName } from '../common.js'
-
-  axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
-  var qs = require('qs')
   export default {
     props: ['word', 'tHeight'],
     name: 'FullSearch',
@@ -71,83 +65,21 @@
 
     methods: {
       searchWord() {
-        var that = this
-
-        that.tableData = []
-        that.emptyTxt = '请稍候...'
-        var token = sessionStorage.getItem('token')
-        axios.post('/app/file/fullsearch', qs.stringify({
-          token: token,
-          word: that.word
-        })).then(function(response) {
-          // console.log(response)
-          that.emptyTxt = '暂无数据'
-          if (response.data.status !== '0') {
-            if (response.data.code !== '205') {
-              that.$message({
-                message: '服务器错误',
-                type: 'error',
-                duration: 3000
-              })
-            }
-            return
-          }
-          that.tableData = response.data.files
-          if (that.tableData == null) {
-            that.tableData = []
-          }
-          if (that.tableData.length > 0) {
-            Bus.hasSearchData = true
-          }
-        }).catch(function(response) {
-          // console.log(response);
-          that.$message({
-            message: '无法连接服务器',
-            type: 'error',
-            duration: 3000
-          })
-          that.emptyTxt = '暂无数据'
-        })
+        this.tableData = []
+        this.emptyTxt = '请稍候...'
       },
 
       clearTable() {
         this.tableData = []
-        Bus.hasSearchData = false
-        Bus.$emit('clearSearchWord')
       },
 
       backFileList() {
-        Bus.$emit('jumpFileList', -1)
+
       },
 
       jumpFileList(id) {
-        Bus.$emit('jumpFileList', id)
-      },
 
-      fileIcon(fileName, fileType) {
-        if (fileType === 1) {
-          return require('../assets/icon/fold.png')
-        }
-        const fileExtend = getFileExtendName(fileName)
-        if (fileExtend.length === 0) {
-          return require('../assets/icon/file.png')
-        }
-        if (Bus.icons.indexOf(fileExtend) === -1) {
-          return require('../assets/icon/file.png')
-        }
-        return require('../assets/icon/' + fileExtend + '.png')
       }
-    },
-
-    mounted() {
-      var that = this
-      Bus.$on('fullSearch2', function() {
-        Bus.hasSearchData = false
-        that.emptyTxt = '请稍候...'
-        setTimeout(function() {
-          that.searchWord()
-        }, 300)
-      })
     }
   }
 </script>
