@@ -18,6 +18,7 @@ import UploadFile from '@/components/UploadFile'
 import DeleteFile from '@/components/DeleteFile'
 import Detail from '@/components/Detail/index'
 import VersionList from '@/components/VersionList/index'
+import FullSearch from '@/components/FullSrearch/index'
 export default {
   name: 'list',
   data() {
@@ -32,6 +33,7 @@ export default {
     ])
   },
   components: {
+    FullSearch,
     VersionList,
     Detail,
     UploadFile,
