@@ -33,8 +33,8 @@ export function getVersionList(fname, id) {
     url: '/api_lw/djcpsdocument/version/getAllVersion.do',
     method: 'post',
     data: {
-      fname: 2,
-      fcategoryid: 2
+      fname: fname,
+      fcategoryid: id
     }
   })
 }
