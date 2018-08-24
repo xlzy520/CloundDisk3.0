@@ -14,6 +14,7 @@
       name="search"
       title="请输入搜索关键词"
       placeholder="请输入搜索关键词"
+      :keyEnterFunction="getSearchResult"
       v-model="searchValue">
 
     </md-input>
@@ -45,6 +46,7 @@
 import { mapGetters } from 'vuex'
 import Hamburger from '@/components/Hamburger'
 import MdInput from '@/components/MDinput'
+import { getSearchResult } from '@/api/file'
 export default {
   components: {
     MdInput,
@@ -70,6 +72,10 @@ export default {
       this.$store.dispatch('FedLogOut').then(() => {
         location.reload() // 为了重新实例化vue-router对象 避免bug
       })
+    },
+    getSearchResult() {
+      console.log(1111)
+      getSearchResult(this.searchValue)
     }
   }
 }

@@ -19,7 +19,7 @@
         @blur="handleMdBlur" @input="handleModelInput">
       <input v-if="type === 'text'" type="text" class="material-input" :name="name" :placeholder="fillPlaceHolder" v-model="currentValue"
         :readonly="readonly" :disabled="disabled" :autoComplete="autoComplete" :minlength="minlength" :maxlength="maxlength"
-        :required="required" @focus="handleMdFocus" @blur="handleMdBlur" @input="handleModelInput">
+        :required="required" @focus="handleMdFocus" @blur="handleMdBlur" @input="handleModelInput" @keyup.enter="keyEnterFunction">
       <span class="material-input-bar"></span>
       <label class="material-label">
         <slot></slot>
@@ -43,6 +43,7 @@ export default {
     value: [String, Number],
     placeholder: String,
     readonly: Boolean,
+    keyEnterFunction: Function,
     disabled: Boolean,
     min: String,
     max: String,
