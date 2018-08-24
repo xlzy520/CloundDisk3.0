@@ -44,14 +44,16 @@ export default {
       'parentId'
     ]),
     isShow() {
-      const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length
-      const fileCheckedCount = this.selectedData.filter(item => item.ffiletype === 2).length
-      if (this.selectedData.length > 1) {
-        return 3
-      } else if (folderCheckedCount === 1 && fileCheckedCount === 0) {
-        return 1
-      } else if (folderCheckedCount === 0 && fileCheckedCount === 1) {
-        return 2
+      if (this.selectedData) {
+        const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length
+        const fileCheckedCount = this.selectedData.filter(item => item.ffiletype === 2).length
+        if (this.selectedData.length > 1) {
+          return 3
+        } else if (folderCheckedCount === 1 && fileCheckedCount === 0) {
+          return 1
+        } else if (folderCheckedCount === 0 && fileCheckedCount === 1) {
+          return 2
+        }
       }
     }
   },
@@ -79,11 +81,12 @@ export default {
     },
     rename() {
       this.fileList.forEach(item => {
-        if (item.fcategoryid === this.selectedData[0].fcategoryid) {
-          this.$set(item, 'isEditor', true)
+        if (this.selectedData[0]) {
+          if (item.fcategoryid === this.selectedData[0].fcategoryid) {
+            this.$set(item, 'isEditor', true)
+          }
         }
       })
-      console.log(this.selectedIndex[0])
     },
     newFolder() {
       this.$prompt('请输入文件夹名称', '新建文件夹', {

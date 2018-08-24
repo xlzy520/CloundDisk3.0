@@ -1,6 +1,7 @@
 <template>
   <div class="file-content clearfix" ref="fileContent">
     <div class="file-list">
+      <el-scrollbar style="height: 80vh">
       <el-table
         ref="multipleTable"
         :data="fileList"
@@ -12,7 +13,7 @@
         <el-table-column label="名称" sortable width="480px">
           <template slot-scope="scope">
             <div v-show="scope.row.isEditor">
-             <rename-file v-if="selectedData.length > 1"></rename-file>
+             <rename-file v-if="selectedData.length >= 1"></rename-file>
             </div>
             <div v-show="!scope.row.isEditor">
               <svg-icon :icon-class="scope.row.ffiletype===1? 'folder': 'markdown'"></svg-icon>
@@ -36,6 +37,7 @@
         <el-table-column prop="foperator" label="创建者"></el-table-column>
         <el-table-column prop="describe" label="描述"></el-table-column>
       </el-table>
+      </el-scrollbar>
     </div>
   </div>
 </template>

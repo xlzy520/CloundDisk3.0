@@ -4,6 +4,7 @@
       <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="disabled">全选</el-checkbox>
     </div>
     <el-checkbox-group v-model="checkedData" @change="handleCheckItemChange">
+      <el-scrollbar tag="ul" style="height: 80vh">
       <ul>
         <li v-for="(item, index) in fileList" :key="index">
           <div class="box" :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''" @dblclick="nextDir(item.fcategoryid)">
@@ -16,6 +17,7 @@
           </div>
         </li>
       </ul>
+      </el-scrollbar>
     </el-checkbox-group>
     <div class="empty-block" v-if="!fileList.length"><span class="empty-text">暂无数据</span></div>
   </div>
@@ -82,6 +84,7 @@
     margin: 20px auto;
     justify-content: center;
     min-height: 200px;
+    overflow: hidden;
     .hd {
       .el-dropdown {
         margin-left: 20px;
@@ -155,5 +158,8 @@
 <style scoped>
   .box >>> .el-checkbox .el-checkbox__label {
     display: none;
+  }
+  .el-scrollbar__wrap {
+    overflow-x: hidden;
   }
 </style>
