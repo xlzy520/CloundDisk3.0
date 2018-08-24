@@ -11,7 +11,7 @@
             <div @dblclick.stop="() => {}"><el-checkbox :label="item"></el-checkbox></div>
             <svg-icon :icon-class="item.ffiletype === 1 ? 'folder' : 'markdown'" className="icon" />
             <div v-show="item.isEditor">
-              <rename-file></rename-file>
+              <rename-file v-if="selectedData.length >= 1"></rename-file>
             </div>
             <span v-show="!item.isEditor">{{item.fname}}</span>
           </div>
