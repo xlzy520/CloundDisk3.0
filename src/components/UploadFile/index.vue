@@ -70,7 +70,7 @@ export default {
       'upload'
     ]),
     uploadFileUrl() {
-      return '/api_py/djcpsdocument/category/fileUpload.do?fparentid=' + this.parentId
+      return '/api_py/djcpsdocument/category/fileUpload.do?'
     },
     title() {
       return this.upload.type === 'upload' ? '文件上传' : '文件更新'
@@ -121,7 +121,7 @@ export default {
       this.btDisable = true
     },
     uploadOk(response, file, filelist) {
-      if (response.code === '0') {
+      if (response.success === true) {
         this.$message({
           message: '文件上传成功',
           type: 'success',
@@ -156,8 +156,14 @@ export default {
         this.currentFile = file
 
         this.uploadData = {
-          size: this.currentFile.size,
-          fileName: this.currentFile.name
+          fparentid: this.parentId
+        }
+        if (this.selectedData.length === 1) {
+          this.uploadData = {
+            fparentid: this.parentId,
+            fcategoryid: this.selectedData[0].fcategoryid,
+            fremarks: 'hahah'
+          }
         }
       }
     },
