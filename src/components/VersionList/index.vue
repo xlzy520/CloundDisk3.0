@@ -105,7 +105,7 @@
       },
       async requestData() {
         if (this.selectedData.length === 1) {
-          const versionListInfo = await getVersionList(this.selectedData[0].fname, this.selectedData[0].fcategoryid)
+          const versionListInfo = await getVersionList(this.selectedData[0].fname, this.$store.getters.parentId)
           this.tableData = versionListInfo.data
         }
       }

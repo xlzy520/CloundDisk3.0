@@ -1,41 +1,39 @@
 <template>
   <div class="file-content clearfix" ref="fileContent">
     <div class="file-list">
+      <el-scrollbar style="height: 80vh">
       <el-table
         ref="multipleTable"
         :data="fileList"
         style="width: 100%"
+        highlight-current-row
         :default-sort="{prop: 'date', order: 'descending'}"
-        @selection-change="handleSelectionChange">
+        @selection-change="handleSelectionChange"
+        @row-click="clickRow">
         <el-table-column type="selection" width="55"></el-table-column>
-        <!--<el-table-column type="selection" width="55" v-show="selectedData.fcategoryid === fileList.fcategoryid"></el-table-column>-->
+
         <el-table-column label="名称" sortable width="480px">
           <template slot-scope="scope">
             <div v-show="scope.row.isEditor">
-             <rename-file></rename-file>
+             <rename-file v-if="selectedData.length >= 1" type="List"></rename-file>
             </div>
             <div v-show="!scope.row.isEditor">
-              <svg-icon :icon-class="scope.row.ffiletype===1? 'folder':scope.row.ffiletype"></svg-icon>
-              <span v-if="scope.row.ffiletype === 1"
-                    class="fileName"
-                    @click="nextDir(scope.row.fcategoryid)">{{ scope.row.fname }}</span>
-              <span v-else="scope.row.ffiletype === 2"
-                    class="fileName"
-                    @click="seeDir(scope.row.fcategoryid)">{{ scope.row.fname }}</span>
+              <svg-icon :icon-class="scope.row.ffiletype===1? 'folder': 'markdown'"></svg-icon>
+              <span class="fileName"
+                    @click="fileType(scope.row.ffiletype,scope.row.fcategoryid)">{{ scope.row.fname }}</span>
             </div>
           </template>
         </el-table-column>
-        <!--<el-table-column prop="fupdatetime" label="修改时间" sortable width="165"></el-table-column>-->
         <el-table-column label="修改时间" sortable>
           <template slot-scope="scope">
             <i class="el-icon-time"></i>
             <span style="margin-left: 1px">{{ scope.row.fupdatetime.split(':').slice(0,-1).join(':') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="size" label="大小" sortable></el-table-column>
+        <el-table-column prop="fsize" label="大小" sortable></el-table-column>
         <el-table-column prop="foperator" label="创建者"></el-table-column>
-        <el-table-column prop="describe" label="描述"></el-table-column>
       </el-table>
+      </el-scrollbar>
     </div>
   </div>
 </template>
@@ -54,21 +52,36 @@
     components: { RenameFile },
     computed: {
       ...mapGetters([
-        'selectedData',
-        'isEditor'
+        'selectedData'
       ])
     },
     methods: {
-      // 点击获取下一级文件列表
-      nextDir(fcategoryid) {
-        this.$store.dispatch('GetCategory', fcategoryid)
-      },
-      // 点击预览
-      seeDir(fcategoryid) {
-
+      fileType(type, fcategoryid) {
+        switch (type) {
+          case 1:
+            this.$store.dispatch('GetCategory', fcategoryid)
+            this.$store.dispatch('SetParentId', fcategoryid)
+            break
+          case 2:
+            this.$store.dispatch('TogglePreviewVisible')
+            this.$store.dispatch('GetDocInfo', fcategoryid)
+            break
+        }
       },
       handleSelectionChange(rows) {
         this.$store.dispatch('GetSelectedData', rows)
+        this.fileList.forEach(item => {
+          if (item.isEditor !== undefined) {
+            this.$set(item, 'isEditor', false)
+          }
+        })
+      },
+      clickRow(row) {
+        if (row.isEditor === true) {
+          this.$refs.multipleTable.toggleRowSelection(row, true)
+        } else {
+          this.$refs.multipleTable.toggleRowSelection(row)
+        }
       }
     },
     mounted() {
@@ -90,6 +103,9 @@
     &:hover{
       color: #42b983;
     }
+  }
+  .el-scrollbar__wrap {
+    overflow-x: hidden;
   }
   .cell .svg-icon{
     width: 2em;

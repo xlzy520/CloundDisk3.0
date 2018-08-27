@@ -15,9 +15,6 @@
         </div>
       </div>
       <div class="info-panel">
-        <span class="info" v-if="loading==true">
-          <i class="el-icon-loading"></i> 正在获取文件信息...
-        </span>
         <span class="info" v-if="deleting==true">
           <i class="el-icon-loading"></i> 正在删除...
         </span>
@@ -30,7 +27,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <span class="tooltip">{{err}}</span>
-        <el-button type="primary" @click="submitForm" size="small" :disabled="loading">开始删除</el-button>
+        <el-button type="primary" @click="submitForm" size="small">开始删除</el-button>
         <el-button @click="quitDialog" size="small">关闭</el-button>
       </span>
     </el-dialog>
@@ -45,7 +42,6 @@
     data() {
       return {
         err: '',
-        loading: true,
         deleteInfo: '',
         deleting: false
       }
@@ -62,12 +58,41 @@
         this.$store.dispatch('ToggleDeleteVisible')
       },
       submitForm() {
-        deleteCategory('603b0db0-7474-4ecc-9e78-ecf4974522b3')
+        this.deleting = true
+        const categoryids = []
+        this.selectedData.forEach(item => {
+          categoryids.push(item.fcategoryid)
+        })
+        deleteCategory(categoryids)
           .then(res => {
-            console.log(res)
+            this.$store.dispatch('ToggleDeleteVisible')
+            if (res.success) {
+              this.$message({
+                message: res.msg,
+                type: 'success',
+                duration: 2000
+              })
+              this.deleting = false
+              this.$store.dispatch('Refresh')
+            } else {
+              this.$message({
+                message: res.msg,
+                showClose: true,
+                type: 'error',
+                duration: 6000
+              })
+            }
           })
           .catch(err => {
             console.log(err)
+            this.deleting = false
+            this.$message({
+              message: '无法连接服务器',
+              showClose: true,
+              type: 'error',
+              duration: 6000
+            })
+            this.$store.dispatch('ToggleDeleteVisible')
           })
       },
       fileIcon(filetype) {

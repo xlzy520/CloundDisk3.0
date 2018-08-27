@@ -3,14 +3,14 @@
     <div class="list-btn">
       <el-button type="primary" icon="el-icon-refresh" @click="refresh">刷新</el-button>
       <el-button type="primary" icon="el-icon-upload" @click="uploadFile">上传文件</el-button>
-      <el-button type="primary" icon="el-icon-plus">新建文件夹</el-button>
-      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-document">预览</el-button>
+      <el-button type="primary" icon="el-icon-plus" @click="newFolder">新建文件夹</el-button>
+      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-document" @click="previewFile">预览</el-button>
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-download">下载</el-button>
-      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-edit">更新</el-button>
-      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-tickets">版本</el-button>
-      <el-button type="primary" v-if="[1].indexOf(isShow) > -1" icon="el-icon-edit-outline" @click="rename">重命名</el-button>
+      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-edit" @click="updateFile">更新</el-button>
+      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-tickets" @click="showVersion">版本</el-button>
+      <el-button type="primary" v-if="[1, 2].indexOf(isShow) > -1" icon="el-icon-edit-outline" @click="rename">重命名</el-button>
       <el-button type="primary" v-if="[1, 2, 3].indexOf(isShow) > -1" icon="el-icon-delete" @click="deleteFile">删除</el-button>
-      <el-button type="primary" v-if="[1, 2].indexOf(isShow) > -1" icon="el-icon-info">详情</el-button>
+      <el-button type="primary" v-if="[1, 2].indexOf(isShow) > -1" icon="el-icon-info" @click="getDetail">详情</el-button>
     </div>
     <div class="action-wrap">
       <el-tooltip class="item" effect="dark" content="列表" placement="bottom">
@@ -31,6 +31,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import Breadcrumb from '../Breadcrumb/index'
+import { addCategory } from '@/api/file'
 export default {
   name: 'ListHeader',
   components: { Breadcrumb },
@@ -39,7 +40,7 @@ export default {
       'showBtn',
       'selectedData',
       'fileList',
-      'isEditor'
+      'parentId'
     ]),
     isShow() {
       const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length
@@ -57,8 +58,17 @@ export default {
     typeShow(type) {
       this.$emit('list_type_toggle', type)
     },
+    getDetail() {
+      this.$store.dispatch('ToggleDetailVisible')
+    },
     uploadFile() {
-      this.$store.dispatch('ToggleUploadVisible')
+      this.$store.dispatch('ToggleUploadVisible', 'upload')
+    },
+    updateFile() {
+      this.$store.dispatch('ToggleUploadVisible', 'update')
+    },
+    showVersion() {
+      this.$store.dispatch('ToggleVersionVisible')
     },
     refresh() {
       this.$store.dispatch('Refresh')
@@ -66,20 +76,54 @@ export default {
     deleteFile() {
       this.$store.dispatch('ToggleDeleteVisible')
     },
-    getDetail() {
-      this.$store.dispatch('ToggleDetailVisible')
-    },
-    showVersion() {
-      this.$store.dispatch('ToggleVersionVisible')
-    },
-    fileUpdate() {
-    },
     rename() {
-      this.fileList.forEach(item => {
-        if (item.fcategoryid === this.selectedData[0].fcategoryid) {
-          this.$set(item, 'isEditor', true)
-        }
+      if (this.selectedData.length === 1) {
+        this.$set(this.selectedData[0], 'isEditor', true)
+      }
+    },
+    newFolder() {
+      this.$prompt('请输入文件夹名称', '新建文件夹', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputPattern: /^[^\/:*?"<>|]+$/,
+        inputErrorMessage: '文件夹名称格式不正确',
+        closeOnClickModal: false
+      }).then(({ value }) => {
+        addCategory(this.parentId, value)
+          .then(res => {
+            if (res.success) {
+              this.$message({
+                type: 'success',
+                message: res.msg
+              })
+              this.$store.dispatch('Refresh')
+            } else {
+              this.$message({
+                message: res.msg,
+                showClose: true,
+                type: 'error',
+                duration: 6000
+              })
+            }
+          })
+          .catch(() => {
+            this.$message({
+              message: '无法连接服务器',
+              showClose: true,
+              type: 'error',
+              duration: 6000
+            })
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消输入'
+        })
       })
+    },
+    previewFile() {
+      this.$store.dispatch('TogglePreviewVisible')
+      this.$store.dispatch('GetDocInfo')
     }
   }
 }

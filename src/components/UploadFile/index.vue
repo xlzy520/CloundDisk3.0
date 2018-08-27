@@ -1,7 +1,7 @@
 <template>
   <el-dialog
-    title="上传文件"
-    :visible.sync="uploadVisible"
+    :title="title"
+    :visible.sync="upload.visible"
     :modal-append-to-body="false"
     custom-class="upload-file"
     :close-on-click-modal="true"
@@ -22,17 +22,19 @@
       :on-exceed="onExceed"
       :show-file-list="true"
       :on-error="onError"
+      multiple
     >
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
-      <div class="el-upload__tip" slot="tip"><span style="color: #888;padding-right: 2px;">当前文件夹：</span>{{tip}}</div>
-      <div class="el-upload__tip" slot="tip"><span style="color: #888;padding-right: 2px;">要更新的文件：</span>{{tip}}</div>
+      <div class="el-upload__tip" slot="tip" v-if="!updateType"><span style="color: #888;padding-right: 2px;">当前文件夹：</span>{{tip}}</div>
+      <div class="el-upload__tip" slot="tip" v-if="updateType"><span style="color: #888;padding-right: 2px;">要更新的文件：</span>{{tip}}</div>
     </el-upload>
-    <div class="file-desc-label">文件描述</div>
-    <el-input type="textarea" v-model="fileDesc"></el-input>
+
+    <div class="file-desc-label" v-if="updateType">文件描述</div>
+    <el-input type="textarea" v-model="fileDesc" v-if="updateType"></el-input>
     <span slot="footer" class="dialog-footer">
-      <el-button size="small" type="primary" @click="submitUpload" :disabled="btDisable">开始上传</el-button>
-      <el-button size="small" type="primary" @click="submitUpload" :disabled="btDisable">开始更新</el-button>
+      <el-button size="small"  v-if="!updateType" type="primary" @click="submitUpload" :disabled="btDisable">开始上传</el-button>
+      <el-button size="small" v-if="updateType" type="primary" @click="submitUpload" :disabled="btDisable">开始更新</el-button>
       <el-button @click="quitDialog" size="small">关 闭</el-button>
     </span>
   </el-dialog>
@@ -45,7 +47,6 @@ export default {
   data() {
     return {
       isLoad: true,
-      tip: '',
       detail: {},
       fileList: [],
       uploadData: {},
@@ -64,10 +65,25 @@ export default {
     },
     ...mapGetters([
       'folderNav',
-      'parentId'
+      'parentId',
+      'selectedData',
+      'upload'
     ]),
     uploadFileUrl() {
-      return '/api_py/djcpsdocument/category/fileUpload.do?parentId=' + this.parentId
+      return '/api_zhq/djcpsdocument/category/fileUpload.do?'
+    },
+    title() {
+      return this.upload.type === 'upload' ? '文件上传' : '文件更新'
+    },
+    updateType() {
+      return this.upload.type === 'update'
+    },
+    tip() {
+      let tip = ''
+      for (var i = 0; i < this.folderNav.length; ++i) {
+        tip += '/' + this.folderNav[i].fname
+      }
+      return tip
     }
   },
   methods: {
@@ -105,7 +121,7 @@ export default {
       this.btDisable = true
     },
     uploadOk(response, file, filelist) {
-      if (response.code === '0') {
+      if (response.success === true) {
         this.$message({
           message: '文件上传成功',
           type: 'success',
@@ -140,8 +156,14 @@ export default {
         this.currentFile = file
 
         this.uploadData = {
-          size: this.currentFile.size,
-          fileName: this.currentFile.name
+          fparentid: this.parentId
+        }
+        if (this.selectedData.length === 1) {
+          this.uploadData = {
+            fparentid: this.parentId,
+            fcategoryid: this.selectedData[0].fcategoryid,
+            fremarks: 'hahah'
+          }
         }
       }
     },
@@ -172,14 +194,6 @@ export default {
       this.$store.dispatch('ToggleUploadVisible')
       this.$refs.upload.clearFiles()
     }
-
-  },
-  mounted() {
-    let tip = ''
-    for (var i = 0; i < this.folderNav.length; ++i) {
-      tip += '/' + this.folderNav[i].fileName
-    }
-    this.tip = tip
   }
 }
 </script>

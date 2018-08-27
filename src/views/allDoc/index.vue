@@ -1,34 +1,62 @@
 <template>
-  <div class="viewport">
-    <div class="list-detail">
-      <div class="list"></div>
-      <div class="detail-container">
-        <div class="detail">
-          <detail-header></detail-header>
-          <mavon-editor
-            v-show="false"
-            v-model="value"
-            :toolbars="toolbars"
-            :externalLink="externalLink"
-            codeStyle="monokai-sublime"
-            :scrollStyle="true"
-          />
+  <div class="markdown">
+    <el-dialog
+      :visible.sync="PreviewVisible"
+      :modal-append-to-body="false"
+      :show-close="false"
+      :close-on-press-escape="false"
+      :close-on-click-modal="false"
+      width="80vw">
+      <div class="previewFile">
+        <el-button @click="closeMkdown" class="close-mkdown">关闭</el-button>
+        <el-button @click="fileEdit" class="file-edit" v-show="isEditMk">编辑</el-button>
+        <el-button @click="saveFile" class="file-edit" v-show="!isEditMk">保存</el-button>
+      </div>
+      <div class="viewport">
+        <div class="list-detail">
+          <!--<div class="list"></div>-->
+          <!--<div class="detail-container">-->
+          <div class="detail">
+            <mavon-editor
+              v-model="docValue"
+              :toolbars="toolbars"
+              :externalLink="externalLink"
+              codeStyle="monokai-sublime"
+              :scrollStyle="true"
+              :subfield="isField"
+              :defaultOpen="isPreview"
+              :toolbarsFlag="barsFlag"
+            />
+          </div>
+          <!--</div>-->
         </div>
       </div>
-    </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   import '@/styles/markdown.css'
-  import { getDocInfo } from '@/api/file'
-  import DetailHeader from '@/components/DetailHeader'
+  import { updateDocInfo } from '@/api/file'
+
   export default {
-    name: 'AllDoc',
-    components: { DetailHeader },
+    name: 'allDoc',
+    computed: {
+      ...mapGetters([
+        'PreviewVisible',
+        'docValue',
+        'selectedData'
+      ])
+    },
     data() {
       return {
         value: '',
+        disabled: false,
+        isField: false, // 是否双栏
+        isPreview: 'preview', // 预览或编辑
+        barsFlag: false, // 是否显示工具栏
+        isEditMk: true,
         externalLink: {
           hljs_css: function(css) {
             // 这是你的代码高亮配色文件路径
@@ -67,7 +95,6 @@
           undo: true, // 上一步
           redo: true, // 下一步
           trash: true, // 清空
-          save: true, // 保存（触发events中的save事件）
           /* 1.4.2 */
           navigation: true, // 导航目录
           /* 2.1.8 */
@@ -80,46 +107,98 @@
         }
       }
     },
+    methods: {
+      closeMkdown() {
+        this.$store.dispatch('TogglePreviewVisible')
+        this.isField = false
+        this.barsFlag = false
+        this.isEditMk = true
+      },
+      fileEdit() {
+        this.isField = true
+        this.barsFlag = true
+        this.isEditMk = false
+      },
+      async saveFile() {
+        console.log(this.value)
+        const updateInfo = await updateDocInfo(this.value)
+        console.log(updateInfo)
+      }
+    },
     async mounted() {
-      const docInfo = await getDocInfo('20180815_RD_MARKDOWN_NFwyw')
-      this.value = docInfo.data.file
+      if (this.selectedData.length >= 1) {
+        this.value = this.docValue
+      }
     }
   }
 </script>
 <style lang="scss">
   @import "@/styles/mixin.scss";
   @import "@/styles/variables.scss";
-  .viewport{
-   @include absolute;
+
+  .markdown .el-dialog{
+    margin-top: 8vh!important;
+  }
+  .viewport {
+    @include absolute;
     min-width: 520px;
     z-index: 2;
-    .list-detail{
+    .list-detail {
       @include absolute;
-      .list{
+      .list {
         position: relative;
         width: 342px;
         height: 100%;
         border-right: 1px solid #e0e1e5;
         background-color: #eee;
       }
-      .detail-container{
+      .detail {
         @include absolute;
-        left: 281px;
-        .detail{
-          @include absolute;
-          background-color: #eee;
-          .v-note-wrapper.markdown-body{
-            height: 83vh;
-          }
+        background-color: #eee;
+        .markdown-body.v-note-wrapper {
+          height: 90vh;
         }
       }
     }
   }
-  .v-note-wrapper .v-note-panel .v-note-edit.divarea-wrapper.scroll-style::-webkit-scrollbar-thumb{
-    background-color: $scrollbarBlue!important;
+
+  .v-note-wrapper .v-note-panel .v-note-edit.divarea-wrapper.scroll-style::-webkit-scrollbar-thumb {
+    background-color: $scrollbarBlue !important;
   }
+
   .v-note-wrapper .v-note-panel .v-note-show .v-show-content.scroll-style::-webkit-scrollbar-thumb,
-  .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html.scroll-style::-webkit-scrollbar-thumb{
-    background-color: $scrollbarGreen!important;
+  .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html.scroll-style::-webkit-scrollbar-thumb {
+    background-color: $scrollbarGreen !important;
+  }
+
+  .v-note-wrapper .v-note-panel.shadow {
+    border-radius: 5px
+  }
+
+  .previewFile {
+    margin: -100px 30px;
+    .el-button {
+      float: right;
+      margin-right: 10px;
+    }
+  }
+  .v-note-wrapper .v-note-panel.shadow{border-radius: 5px}
+  .previewFile{
+    margin:-100px 30px;
+    /*position: relative;*/
+    .el-button{
+      float: right;
+      margin-right: 10px;
+    }
+    .close-mkdown{
+      position: fixed;
+      top: 150px;
+      right: 56px;
+    }
+    .file-edit{
+      position: fixed;
+      top: 100px;
+      right: 56px;
+    }
   }
 </style>

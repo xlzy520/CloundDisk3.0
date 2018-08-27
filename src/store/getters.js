@@ -5,12 +5,16 @@ const getters = {
   avatar: state => state.user.avatar,
   name: state => state.user.name,
   roles: state => state.user.roles,
-  uploadVisible: state => state.file.uploadVisible,
+  upload: state => state.file.upload,
+  deleteVisible: state => state.file.deleteVisible,
+  detailVisible: state => state.file.detailVisible,
+  versionVisible: state => state.file.versionVisible,
   fileList: state => state.file.fileList,
   folderNav: state => state.file.folderNav,
-  detailVisible: state => state.file.detailVisible,
+  showBtn: state => state.file.showBtn,
   selectedData: state => state.file.selectedData,
-  versionVisible: state => state.file.versionVisible,
-  parentId: state => state.file.parentId
+  parentId: state => state.file.parentId,
+  PreviewVisible: state => state.file.PreviewVisible,
+  docValue: state => state.file.docValue
 }
 export default getters

@@ -4,18 +4,20 @@
       <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="disabled">全选</el-checkbox>
     </div>
     <el-checkbox-group v-model="checkedData" @change="handleCheckItemChange">
+      <el-scrollbar tag="ul" style="height: 80vh">
       <ul>
         <li v-for="(item, index) in fileList" :key="index">
-          <div class="box" :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''" @dblclick="nextDir(item.fcategoryid)">
+          <div class="box" :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''" @dblclick="fileType(item.ffiletype,item.fcategoryid)">
             <div @dblclick.stop="() => {}"><el-checkbox :label="item"></el-checkbox></div>
             <svg-icon :icon-class="item.ffiletype === 1 ? 'folder' : 'markdown'" className="icon" />
             <div v-show="item.isEditor">
-              <rename-file></rename-file>
+              <rename-file v-if="selectedData.length >= 1" type="Thumbnail"></rename-file>
             </div>
             <span v-show="!item.isEditor">{{item.fname}}</span>
           </div>
         </li>
       </ul>
+      </el-scrollbar>
     </el-checkbox-group>
     <div class="empty-block" v-if="!fileList.length"><span class="empty-text">暂无数据</span></div>
   </div>
@@ -43,19 +45,28 @@
     methods: {
       handleCheckAllChange(val) {
         this.checkedData = val ? this.fileList : []
-        this.$store.dispatch('GetSelectedData',  this.checkedData)
+        this.$store.dispatch('GetSelectedData', this.checkedData)
         this.isIndeterminate = false
       },
       handleCheckItemChange(value) {
-        this.$store.dispatch('GetSelectedData',  value)
+        this.$store.dispatch('GetSelectedData', value)
         const checkedCount = value.length
         this.checkAll = checkedCount === this.fileList.length
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.fileList.length
       },
-      nextDir(fcategoryid) {
-        this.$store.dispatch('GetCategory', fcategoryid).then(() => {
-          this.handleCheckItemChange()
-        })
+      fileType(type, fcategoryid) {
+        switch (type) {
+          case 1:
+            this.$store.dispatch('GetCategory', fcategoryid).then(() => {
+              this.handleCheckItemChange()
+            })
+            this.$store.dispatch('SetParentId', fcategoryid)
+            break
+          case 2:
+            this.$store.dispatch('TogglePreviewVisible')
+            // this.$store.dispatch('GetDocInfo')
+            break
+        }
       }
     },
     computed: mapGetters([
@@ -82,6 +93,7 @@
     margin: 20px auto;
     justify-content: center;
     min-height: 200px;
+    overflow: hidden;
     .hd {
       .el-dropdown {
         margin-left: 20px;
@@ -134,6 +146,9 @@
           }
         }
       }
+    }
+    .el-scrollbar__wrap {
+      overflow-x: hidden;
     }
     .empty-block {
       position: relative;
