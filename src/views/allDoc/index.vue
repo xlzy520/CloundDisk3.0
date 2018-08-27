@@ -8,8 +8,9 @@
       :close-on-click-modal="false"
       width="80vw">
       <div class="previewFile">
-        <el-button @click="closeMkdown">关闭</el-button>
-        <el-button @click="fileEdit" :disabled="disabled">编辑</el-button>
+        <el-button @click="closeMkdown" class="close-mkdown">关闭</el-button>
+        <el-button @click="fileEdit" class="file-edit" v-show="isEditMk">编辑</el-button>
+        <el-button @click="saveFile" class="file-edit" v-show="!isEditMk">保存</el-button>
       </div>
       <div class="viewport">
         <div class="list-detail">
@@ -17,7 +18,7 @@
           <!--<div class="detail-container">-->
           <div class="detail">
             <mavon-editor
-              v-model="value"
+              v-model="docValue"
               :toolbars="toolbars"
               :externalLink="externalLink"
               codeStyle="monokai-sublime"
@@ -25,7 +26,6 @@
               :subfield="isField"
               :defaultOpen="isPreview"
               :toolbarsFlag="barsFlag"
-              @save="saveFile"
             />
           </div>
           <!--</div>-->
@@ -36,9 +36,9 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
+  import { mapGetters } from 'vuex'
   import '@/styles/markdown.css'
-  import {updateDocInfo} from '@/api/file'
+  import { updateDocInfo } from '@/api/file'
 
   export default {
     name: 'allDoc',
@@ -56,8 +56,9 @@
         isField: false, // 是否双栏
         isPreview: 'preview', // 预览或编辑
         barsFlag: false, // 是否显示工具栏
+        isEditMk: true,
         externalLink: {
-          hljs_css: function (css) {
+          hljs_css: function(css) {
             // 这是你的代码高亮配色文件路径
             return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/' + css + '.min.css'
           },
@@ -65,7 +66,7 @@
           // 我们没有设置`katex_js`, `hljs_js`, `hljs_lang`, `markdown_css`， `mavon-editor`会认为它的值为`true`，它会默认使用`cdnjs`相关外链加载
           katex_js: false,
           markdown_css: false,
-          hljs_js: function () {
+          hljs_js: function() {
             // 这是你的hljs文件路径
             return 'https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js'
           }
@@ -94,7 +95,6 @@
           undo: true, // 上一步
           redo: true, // 下一步
           trash: true, // 清空
-          save: true, // 保存（触发events中的save事件）
           /* 1.4.2 */
           navigation: true, // 导航目录
           /* 2.1.8 */
@@ -112,12 +112,12 @@
         this.$store.dispatch('TogglePreviewVisible')
         this.isField = false
         this.barsFlag = false
-        this.disabled = false
+        this.isEditMk = true
       },
       fileEdit() {
         this.isField = true
         this.barsFlag = true
-        this.disabled = true
+        this.isEditMk = false
       },
       async saveFile() {
         console.log(this.value)
@@ -180,6 +180,25 @@
     .el-button {
       float: right;
       margin-right: 10px;
+    }
+  }
+  .v-note-wrapper .v-note-panel.shadow{border-radius: 5px}
+  .previewFile{
+    margin:-100px 30px;
+    /*position: relative;*/
+    .el-button{
+      float: right;
+      margin-right: 10px;
+    }
+    .close-mkdown{
+      position: fixed;
+      top: 150px;
+      right: 56px;
+    }
+    .file-edit{
+      position: fixed;
+      top: 100px;
+      right: 56px;
     }
   }
 </style>

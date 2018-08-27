@@ -84,7 +84,7 @@ const file = {
     },
     async GetDocInfo({ commit }, fcategoryid) {
       const docInfo = await getDocInfo(fcategoryid)
-      commit('GET_DOC_INFO', docInfo)
+      commit('GET_DOC_INFO', docInfo.data.file)
     }
   }
 }
