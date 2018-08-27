@@ -16,8 +16,10 @@
       <el-tree
         :data="data"
         :props="defaultProps"
+        ref="folderTree"
         :indent="10"
         :expand-on-click-node="false"
+        @node-expand="nodeExpand"
         @node-click="handleNodeClick">
         <span class="custom-tree-node" slot-scope="{node,data}">
           <svg-icon  icon-class="folder"></svg-icon>
@@ -36,6 +38,7 @@
 
 <script>
   import { mapGetters } from 'vuex'
+  import { getCategory } from '@/api/file'
   import SidebarItem from './SidebarItem'
 
   export default {
@@ -44,16 +47,12 @@
         data: [
           {
             fname: '研发中心',
-            children: [{
-              fname: '二级 1-1',
-              children: [{
-                fname: '三级 1-1-1'
-              }]
-            }]
+            fcategoryid: '0',
+            childrenFolder: [{}]
           }
         ],
         defaultProps: {
-          children: 'children',
+          children: 'childrenFolder',
           label: 'fname'
         }
       }
@@ -70,7 +69,37 @@
     },
     methods: {
       handleNodeClick(data) {
-        console.log(this.fileList)
+        this.$store.dispatch('GetCategory', data.fcategoryid)
+      },
+      async nodeExpand(data, node) {
+        console.log(data)
+        console.log(node)
+        let arr = await getCategory(data.fcategoryid)
+        arr = arr.data.tableList
+        console.log(arr)
+        data.childrenFolder = []
+        console.log(data)
+        if (arr.length >= 1) {
+          for (const item of this.CreateFolderObj(arr)) {
+            this.$refs.folderTree.append(item, node)
+          }
+        } else {
+          node.isLeaf = true
+          data = []
+        }
+      },
+      getFolder(arr) {
+        return arr.filter((item) => {
+          return item.ffiletype === 1
+        })
+      },
+      CreateFolderObj(arr) {
+        const folderArr = this.getFolder(arr)
+        folderArr.map((item) => {
+          Object.defineProperties(item, { 'childrenFolder': { value: [{}], writable: true }})
+        })
+        console.log(folderArr)
+        return folderArr
       }
     }
   }

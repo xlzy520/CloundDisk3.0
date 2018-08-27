@@ -35,7 +35,7 @@
             label="文件长度"
             width="80">
             <template slot-scope="scope">
-              {{scope.row.size}}
+              {{scope.row.filesize}}
             </template>
           </el-table-column>
           <el-table-column
@@ -66,7 +66,7 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import { getVersionList, versionRollback } from '@/api/file'
+  import { getVersionList, versionRollback, downloadFile } from '@/api/file'
   export default {
     name: 'VersionList',
     computed: {
@@ -92,7 +92,7 @@
         this.$store.dispatch('ToggleVersionVisible')
       },
       downloadFile(id) {
-
+        downloadFile(id)
       },
       async rollBack(newVer) {
         if (this.selectedData.length === 1) {

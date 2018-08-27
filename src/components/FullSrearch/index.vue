@@ -36,7 +36,7 @@
         width="100"
         label="文件大小">
         <template slot-scope="scope">
-                    <span v-if="scope.row.fileType==2">
+                    <span v-if="scope.row.fileType===2">
                         {{scope.row.size | fileSize}}
                     </span>
         </template>

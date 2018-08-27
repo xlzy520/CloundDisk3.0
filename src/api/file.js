@@ -59,6 +59,16 @@ export function uploadFile(parentId) {
   })
 }
 
+export function downloadFile(id) {
+  return request({
+    url: '/api_zhq/djcpsdocument/fileManager/downloadFile.do',
+    method: 'post',
+    data: {
+      'id': id
+    }
+  })
+}
+
 export function addCategory(parentid, name) {
   return request({
     url: '/api_zhq/djcpsdocument/category/addCategory.do',
@@ -82,12 +92,12 @@ export function renameFile(fid, fname, fparentid) {
   })
 }
 
-export function getSearchResult(searchValue, categoryName, sort, curPage) {
+export function getSearchResult(queryString, categoryName, sort, curPage) {
   return request({
-    url: '/api_zhq/djcpsdocument/search/list.do',
+    url: '/api_oyny/djcpsdocument/search/list.do',
     method: 'post',
     data: {
-      searchValue: searchValue,
+      queryString: queryString,
       categoryName: categoryName,
       sort: 1,
       curPage: 1
