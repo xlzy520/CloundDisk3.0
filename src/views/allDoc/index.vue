@@ -58,7 +58,7 @@
         barsFlag: false, // 是否显示工具栏
         isEditMk: true,
         externalLink: {
-          hljs_css: function (css) {
+          hljs_css: function(css) {
             // 这是你的代码高亮配色文件路径
             return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/' + css + '.min.css'
           },
@@ -66,7 +66,7 @@
           // 我们没有设置`katex_js`, `hljs_js`, `hljs_lang`, `markdown_css`， `mavon-editor`会认为它的值为`true`，它会默认使用`cdnjs`相关外链加载
           katex_js: false,
           markdown_css: false,
-          hljs_js: function () {
+          hljs_js: function() {
             // 这是你的hljs文件路径
             return 'https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js'
           }
