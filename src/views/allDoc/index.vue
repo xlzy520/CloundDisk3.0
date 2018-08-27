@@ -1,20 +1,20 @@
 <template>
-  <div>
-  <el-dialog
-    :visible.sync="PreviewVisible"
-    :modal-append-to-body="false"
-    :show-close="false"
-    :close-on-press-escape="false"
-    :close-on-click-modal="false"
-    width="1200px">
-    <div class="previewFile">
-      <el-button @click="closeMkdown">关闭</el-button>
-      <el-button @click="fileEdit" :disabled="disabled">编辑</el-button>
-    </div>
-    <div class="viewport">
-      <div class="list-detail">
-        <!--<div class="list"></div>-->
-        <!--<div class="detail-container">-->
+  <div class="markdown">
+    <el-dialog
+      :visible.sync="PreviewVisible"
+      :modal-append-to-body="false"
+      :show-close="false"
+      :close-on-press-escape="false"
+      :close-on-click-modal="false"
+      width="80vw">
+      <div class="previewFile">
+        <el-button @click="closeMkdown">关闭</el-button>
+        <el-button @click="fileEdit" :disabled="disabled">编辑</el-button>
+      </div>
+      <div class="viewport">
+        <div class="list-detail">
+          <!--<div class="list"></div>-->
+          <!--<div class="detail-container">-->
           <div class="detail">
             <mavon-editor
               v-model="value"
@@ -28,17 +28,18 @@
               @save="saveFile"
             />
           </div>
-        <!--</div>-->
+          <!--</div>-->
+        </div>
       </div>
-    </div>
-  </el-dialog>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import {mapGetters} from 'vuex'
   import '@/styles/markdown.css'
-  import { updateDocInfo } from '@/api/file'
+  import {updateDocInfo} from '@/api/file'
+
   export default {
     name: 'allDoc',
     computed: {
@@ -56,7 +57,7 @@
         isPreview: 'preview', // 预览或编辑
         barsFlag: false, // 是否显示工具栏
         externalLink: {
-          hljs_css: function(css) {
+          hljs_css: function (css) {
             // 这是你的代码高亮配色文件路径
             return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/' + css + '.min.css'
           },
@@ -64,7 +65,7 @@
           // 我们没有设置`katex_js`, `hljs_js`, `hljs_lang`, `markdown_css`， `mavon-editor`会认为它的值为`true`，它会默认使用`cdnjs`相关外链加载
           katex_js: false,
           markdown_css: false,
-          hljs_js: function() {
+          hljs_js: function () {
             // 这是你的hljs文件路径
             return 'https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js'
           }
@@ -135,6 +136,9 @@
   @import "@/styles/mixin.scss";
   @import "@/styles/variables.scss";
 
+  .markdown .el-dialog{
+    margin-top: 8vh!important;
+  }
   .viewport {
     @include absolute;
     min-width: 520px;
@@ -148,15 +152,11 @@
         border-right: 1px solid #e0e1e5;
         background-color: #eee;
       }
-      .detail-container {
+      .detail {
         @include absolute;
-        left: 281px;
-        .detail {
-          @include absolute;
-          background-color: #eee;
-          .v-note-wrapper.markdown-body {
-            height: 83vh;
-          }
+        background-color: #eee;
+        .markdown-body.v-note-wrapper {
+          height: 90vh;
         }
       }
     }
