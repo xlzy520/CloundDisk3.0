@@ -1,5 +1,5 @@
 import { getCategory } from '@/api/file'
-
+import { getDocInfo } from '@/api/file'
 const file = {
   state: {
     parentId: '0',
@@ -12,8 +12,9 @@ const file = {
     detailVisible: false,
     versionVisible: false,
     fileList: null,
-    showBtn: [],
-    folderNav: []
+    folderNav: [],
+    PreviewVisible: false,
+    docValue: ''
   },
   mutations: {
     TOGGLE_UPLOADVISIBLE: (state, data) => {
@@ -29,6 +30,9 @@ const file = {
     TOGGLE_VERSIONVISIBLE: state => {
       state.versionVisible = !state.versionVisible
     },
+    TOGGLE_PREVIEWVISIBLE: state => {
+      state.PreviewVisible = !state.PreviewVisible
+    },
     GET_CATEGORY: (state, data) => {
       state.fileList = data
     },
@@ -40,6 +44,10 @@ const file = {
     },
     GET_SELECTEDDATA: (state, data) => {
       state.selectedData = data
+    },
+    GET_DOC_INFO: (state, data) => {
+      state.docValue = data
+      console.log(state.docValue)
     }
   },
   actions: {
@@ -54,6 +62,9 @@ const file = {
     },
     ToggleVersionVisible: ({ commit }) => {
       commit('TOGGLE_VERSIONVISIBLE')
+    },
+    TogglePreviewVisible: ({ commit }) => {
+      commit('TOGGLE_PREVIEWVISIBLE')
     },
     async GetCategory({ commit }, fcategoryid) {
       const Category = await getCategory(fcategoryid)
@@ -70,6 +81,10 @@ const file = {
     },
     GetSelectedData({ commit }, data) {
       commit('GET_SELECTEDDATA', data)
+    },
+    async GetDocInfo({ commit }, fcategoryid) {
+      const docInfo = await getDocInfo(fcategoryid)
+      commit('GET_DOC_INFO', docInfo)
     }
   }
 }

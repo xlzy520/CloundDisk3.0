@@ -1,34 +1,60 @@
 <template>
-  <div class="viewport">
-    <div class="list-detail">
-      <div class="list"></div>
-      <div class="detail-container">
-        <div class="detail">
-          <detail-header></detail-header>
-          <mavon-editor
-            v-show="false"
-            v-model="value"
-            :toolbars="toolbars"
-            :externalLink="externalLink"
-            codeStyle="monokai-sublime"
-            :scrollStyle="true"
-          />
-        </div>
+  <div>
+  <el-dialog
+    :visible.sync="PreviewVisible"
+    :modal-append-to-body="false"
+    :show-close="false"
+    :close-on-press-escape="false"
+    :close-on-click-modal="false"
+    width="1200px">
+    <div class="previewFile">
+      <el-button @click="closeMkdown">关闭</el-button>
+      <el-button @click="fileEdit" :disabled="disabled">编辑</el-button>
+    </div>
+    <div class="viewport">
+      <div class="list-detail">
+        <!--<div class="list"></div>-->
+        <!--<div class="detail-container">-->
+          <div class="detail">
+            <mavon-editor
+              v-model="value"
+              :toolbars="toolbars"
+              :externalLink="externalLink"
+              codeStyle="monokai-sublime"
+              :scrollStyle="true"
+              :subfield="isField"
+              :defaultOpen="isPreview"
+              :toolbarsFlag="barsFlag"
+              @save="saveFile"
+            />
+          </div>
+        <!--</div>-->
       </div>
     </div>
+  </el-dialog>
   </div>
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
   import '@/styles/markdown.css'
-  import { getDocInfo } from '@/api/file'
-  import DetailHeader from '@/components/DetailHeader'
+  import { updateDocInfo } from '@/api/file'
   export default {
-    name: 'AllDoc',
-    components: { DetailHeader },
+    name: 'allDoc',
+    computed: {
+      ...mapGetters([
+        'PreviewVisible',
+        'docValue',
+        'selectedData'
+      ])
+    },
     data() {
       return {
         value: '',
+        disabled: false,
+        isField: false, // 是否双栏
+        isPreview: 'preview', // 预览或编辑
+        barsFlag: false, // 是否显示工具栏
         externalLink: {
           hljs_css: function(css) {
             // 这是你的代码高亮配色文件路径
@@ -80,46 +106,80 @@
         }
       }
     },
+    methods: {
+      closeMkdown() {
+        this.$store.dispatch('TogglePreviewVisible')
+        this.isField = false
+        this.barsFlag = false
+        this.disabled = false
+      },
+      fileEdit() {
+        this.isField = true
+        this.barsFlag = true
+        this.disabled = true
+      },
+      async saveFile() {
+        console.log(this.value)
+        const updateInfo = await updateDocInfo(this.value)
+        console.log(updateInfo)
+      }
+    },
     async mounted() {
-      const docInfo = await getDocInfo('20180815_RD_MARKDOWN_NFwyw')
-      this.value = docInfo.data.file
+      if (this.selectedData.length >= 1) {
+        this.value = this.docValue
+      }
     }
   }
 </script>
 <style lang="scss">
   @import "@/styles/mixin.scss";
   @import "@/styles/variables.scss";
-  .viewport{
-   @include absolute;
+
+  .viewport {
+    @include absolute;
     min-width: 520px;
     z-index: 2;
-    .list-detail{
+    .list-detail {
       @include absolute;
-      .list{
+      .list {
         position: relative;
         width: 342px;
         height: 100%;
         border-right: 1px solid #e0e1e5;
         background-color: #eee;
       }
-      .detail-container{
+      .detail-container {
         @include absolute;
         left: 281px;
-        .detail{
+        .detail {
           @include absolute;
           background-color: #eee;
-          .v-note-wrapper.markdown-body{
+          .v-note-wrapper.markdown-body {
             height: 83vh;
           }
         }
       }
     }
   }
-  .v-note-wrapper .v-note-panel .v-note-edit.divarea-wrapper.scroll-style::-webkit-scrollbar-thumb{
-    background-color: $scrollbarBlue!important;
+
+  .v-note-wrapper .v-note-panel .v-note-edit.divarea-wrapper.scroll-style::-webkit-scrollbar-thumb {
+    background-color: $scrollbarBlue !important;
   }
+
   .v-note-wrapper .v-note-panel .v-note-show .v-show-content.scroll-style::-webkit-scrollbar-thumb,
-  .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html.scroll-style::-webkit-scrollbar-thumb{
-    background-color: $scrollbarGreen!important;
+  .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html.scroll-style::-webkit-scrollbar-thumb {
+    background-color: $scrollbarGreen !important;
+  }
+
+  .v-note-wrapper .v-note-panel.shadow {
+    border-radius: 5px
+  }
+
+  .previewFile {
+    margin: -100px 30px;
+    .el-button {
+      float: right;
+      margin-right: 10px;
+    }
   }
 </style>

@@ -6,6 +6,7 @@
     <delete-file/>
     <detail v-if="selectedData.length===1"></detail>
     <version-list v-if="selectedData.length===1"></version-list>
+    <all-doc></all-doc>
   </div>
 </template>
 
@@ -18,6 +19,7 @@ import UploadFile from '@/components/UploadFile'
 import DeleteFile from '@/components/DeleteFile'
 import Detail from '@/components/Detail/index'
 import VersionList from '@/components/VersionList/index'
+import allDoc from '@/views/allDoc/index'
 export default {
   name: 'list',
   data() {
@@ -38,7 +40,8 @@ export default {
     Thumbnail,
     List,
     ListHeader,
-    DeleteFile
+    DeleteFile,
+    allDoc
   },
   methods: {
     list_type_toggle(component) {

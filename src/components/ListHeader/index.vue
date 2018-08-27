@@ -4,14 +4,13 @@
       <el-button type="primary" icon="el-icon-refresh" @click="refresh">刷新</el-button>
       <el-button type="primary" icon="el-icon-upload" @click="uploadFile">上传文件</el-button>
       <el-button type="primary" icon="el-icon-plus" @click="newFolder">新建文件夹</el-button>
-      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-document">预览</el-button>
+      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-document" @click="previewFile">预览</el-button>
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-download">下载</el-button>
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-edit" @click="updateFile">更新</el-button>
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-tickets" @click="showVersion">版本</el-button>
       <el-button type="primary" v-if="[1, 2].indexOf(isShow) > -1" icon="el-icon-edit-outline" @click="rename">重命名</el-button>
       <el-button type="primary" v-if="[1, 2, 3].indexOf(isShow) > -1" icon="el-icon-delete" @click="deleteFile">删除</el-button>
       <el-button type="primary" v-if="[1, 2].indexOf(isShow) > -1" icon="el-icon-info" @click="getDetail">详情</el-button>
-    <!--<span>{{showBtn}}</span>-->
     </div>
     <div class="action-wrap">
       <el-tooltip class="item" effect="dark" content="列表" placement="bottom">
@@ -44,16 +43,14 @@ export default {
       'parentId'
     ]),
     isShow() {
-      if (this.selectedData) {
-        const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length
-        const fileCheckedCount = this.selectedData.filter(item => item.ffiletype === 2).length
-        if (this.selectedData.length > 1) {
-          return 3
-        } else if (folderCheckedCount === 1 && fileCheckedCount === 0) {
-          return 1
-        } else if (folderCheckedCount === 0 && fileCheckedCount === 1) {
-          return 2
-        }
+      const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length
+      const fileCheckedCount = this.selectedData.filter(item => item.ffiletype === 2).length
+      if (this.selectedData.length > 1) {
+        return 3
+      } else if (folderCheckedCount === 1 && fileCheckedCount === 0) {
+        return 1
+      } else if (folderCheckedCount === 0 && fileCheckedCount === 1) {
+        return 2
       }
     }
   },
@@ -80,13 +77,9 @@ export default {
       this.$store.dispatch('ToggleDeleteVisible')
     },
     rename() {
-      this.fileList.forEach(item => {
-        if (this.selectedData[0]) {
-          if (item.fcategoryid === this.selectedData[0].fcategoryid) {
-            this.$set(item, 'isEditor', true)
-          }
-        }
-      })
+      if (this.selectedData.length === 1) {
+        this.$set(this.selectedData[0], 'isEditor', true)
+      }
     },
     newFolder() {
       this.$prompt('请输入文件夹名称', '新建文件夹', {
@@ -127,6 +120,10 @@ export default {
           message: '取消输入'
         })
       })
+    },
+    previewFile() {
+      this.$store.dispatch('TogglePreviewVisible')
+      this.$store.dispatch('GetDocInfo')
     }
   }
 }
