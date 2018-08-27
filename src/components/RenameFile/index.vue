@@ -29,18 +29,18 @@
       async confirmEdit() {
         const row = this.selectedData
         if (row.length >= 1) {
-          const editInfo = await renameFile(row[0].fcategoryid, row[0].fname, row[0].fparentid)
-          if (editInfo.success) {
-            this.$message({
-              message: '文件夹重命名成功',
-              type: 'success'
-            })
-            row[0].isEditor = false
-          } else {
-            this.$message.error(editInfo.msg)
+          try {
+            const editInfo = await renameFile(row[0].fcategoryid, row[0].fname, row[0].fparentid)
+            if (editInfo.success) {
+              this.$message({
+                message: '文件夹重命名成功',
+                type: 'success'
+              })
+              row[0].isEditor = false
+            }
+          } catch (e) {
             row[0].isEditor = false
           }
-          console.log(editInfo)
         }
       },
       cancelEdit() {
