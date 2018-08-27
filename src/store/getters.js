@@ -14,6 +14,7 @@ const getters = {
   showBtn: state => state.file.showBtn,
   selectedData: state => state.file.selectedData,
   parentId: state => state.file.parentId,
-  PreviewVisible: state => state.file.PreviewVisible
+  PreviewVisible: state => state.file.PreviewVisible,
+  docValue: state => state.file.docValue
 }
 export default getters

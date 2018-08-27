@@ -17,7 +17,7 @@
           <!--<div class="detail-container">-->
           <div class="detail">
             <mavon-editor
-              v-model="value"
+              v-model="docValue.file"
               :toolbars="toolbars"
               :externalLink="externalLink"
               codeStyle="monokai-sublime"
@@ -36,9 +36,9 @@
 </template>
 
 <script>
-  import {mapGetters} from 'vuex'
+  import { mapGetters } from 'vuex'
   import '@/styles/markdown.css'
-  import {updateDocInfo} from '@/api/file'
+  import { updateDocInfo } from '@/api/file'
 
   export default {
     name: 'allDoc',
@@ -51,13 +51,12 @@
     },
     data() {
       return {
-        value: '',
         disabled: false,
         isField: false, // 是否双栏
         isPreview: 'preview', // 预览或编辑
         barsFlag: false, // 是否显示工具栏
         externalLink: {
-          hljs_css: function (css) {
+          hljs_css: function(css) {
             // 这是你的代码高亮配色文件路径
             return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/' + css + '.min.css'
           },
@@ -65,7 +64,7 @@
           // 我们没有设置`katex_js`, `hljs_js`, `hljs_lang`, `markdown_css`， `mavon-editor`会认为它的值为`true`，它会默认使用`cdnjs`相关外链加载
           katex_js: false,
           markdown_css: false,
-          hljs_js: function () {
+          hljs_js: function() {
             // 这是你的hljs文件路径
             return 'https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js'
           }
@@ -124,11 +123,6 @@
         const updateInfo = await updateDocInfo(this.value)
         console.log(updateInfo)
       }
-    },
-    async mounted() {
-      if (this.selectedData.length >= 1) {
-        this.value = this.docValue
-      }
     }
   }
 </script>
@@ -138,6 +132,9 @@
 
   .markdown .el-dialog{
     margin-top: 8vh!important;
+  }
+  .v-note-help-wrapper{
+    z-index: 3000!important;
   }
   .viewport {
     @include absolute;
