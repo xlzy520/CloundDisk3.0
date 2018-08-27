@@ -18,7 +18,7 @@
           <!--<div class="detail-container">-->
           <div class="detail">
             <mavon-editor
-              v-model="value"
+              v-model="docValue.file"
               :toolbars="toolbars"
               :externalLink="externalLink"
               codeStyle="monokai-sublime"
@@ -51,7 +51,6 @@
     },
     data() {
       return {
-        value: '',
         disabled: false,
         isField: false, // 是否双栏
         isPreview: 'preview', // 预览或编辑
