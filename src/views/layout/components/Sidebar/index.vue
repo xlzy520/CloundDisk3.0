@@ -43,37 +43,34 @@
       return {
         data: [
           {
-            label: '研发中心',
+            fname: '研发中心',
             children: [{
-              icon: 'hahahah',
-              label: '二级 1-1',
+              fname: '二级 1-1',
               children: [{
-                label: '三级 1-1-1'
+                fname: '三级 1-1-1'
               }]
             }]
           }
         ],
         defaultProps: {
           children: 'children',
-          label: 'label'
+          label: 'fname'
         }
       }
     },
     components: { SidebarItem },
     computed: {
       ...mapGetters([
-        'sidebar'
+        'sidebar',
+        'fileList'
       ]),
-      routes() {
-        return this.$router.options.routes
-      },
       isCollapse() {
         return !this.sidebar.opened
       }
     },
     methods: {
       handleNodeClick(data) {
-        console.log(data)
+        console.log(this.fileList)
       }
     }
   }

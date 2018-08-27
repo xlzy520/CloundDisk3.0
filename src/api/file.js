@@ -10,7 +10,7 @@ export function getDocInfo(id) {
 
 export function getCategory(id) {
   return request({
-    url: '/api_py/djcpsdocument/category/getCategory.do',
+    url: '/api_zhq/djcpsdocument/category/getCategory.do',
     method: 'post',
     data: {
       fcategoryid: id
@@ -20,7 +20,7 @@ export function getCategory(id) {
 
 export function deleteCategory(categoryids) {
   return request({
-    url: '/api_py/djcpsdocument/category/deleteCategory.do',
+    url: '/api_zhq/djcpsdocument/category/deleteCategory.do',
     method: 'post',
     data: {
       list: categoryids
@@ -30,7 +30,7 @@ export function deleteCategory(categoryids) {
 
 export function getVersionList(fname, fparentid) {
   return request({
-    url: '/api_lw/djcpsdocument/version/getAllVersion.do',
+    url: '/api_zhq/djcpsdocument/version/getAllVersion.do',
     method: 'post',
     data: {
       fname: fname,
@@ -40,7 +40,7 @@ export function getVersionList(fname, fparentid) {
 }
 export function versionRollback(oldVer, newVer) {
   return request({
-    url: '/api_lw/djcpsdocument/version/versionBack.do',
+    url: '/api_zhq/djcpsdocument/version/versionBack.do',
     method: 'post',
     data: {
       oldDisplayFileSgin: oldVer,
@@ -51,7 +51,7 @@ export function versionRollback(oldVer, newVer) {
 
 export function uploadFile(parentId) {
   return request({
-    url: '/api_py/djcpsdocument/category/fileUpload.do',
+    url: '/api_zhq/djcpsdocument/category/fileUpload.do',
     method: 'post',
     data: {
       fparentId: parentId
@@ -61,7 +61,7 @@ export function uploadFile(parentId) {
 
 export function addCategory(parentid, name) {
   return request({
-    url: '/api_py/djcpsdocument/category/addCategory.do',
+    url: '/api_zhq/djcpsdocument/category/addCategory.do',
     method: 'post',
     data: {
       fparentid: parentid,
@@ -72,7 +72,7 @@ export function addCategory(parentid, name) {
 
 export function renameFile(fid, fname, fparentid) {
   return request({
-    url: '/api_py/djcpsdocument/category/setCategoryName.do',
+    url: '/api_zhq/djcpsdocument/category/setCategoryName.do',
     method: 'post',
     data: {
       fcategoryid: fid,
@@ -84,7 +84,7 @@ export function renameFile(fid, fname, fparentid) {
 
 export function getSearchResult(searchValue, categoryName, sort, curPage) {
   return request({
-    url: '/api_oyny/djcpsdocument/search/list.do',
+    url: '/api_zhq/djcpsdocument/search/list.do',
     method: 'post',
     data: {
       searchValue: searchValue,
