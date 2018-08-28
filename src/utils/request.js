@@ -31,6 +31,7 @@ service.interceptors.response.use(
         type: 'error',
         duration: 2 * 1000
       })
+      console.log(1)
       // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
       return Promise.reject('error')
     } else {
@@ -38,7 +39,8 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error)// for debug
+    console.log(error)// for debug
+    error.message = error.message === 'timeout of 5000ms exceeded' ? '连接超时！' : error.message
     Message({
       message: error.message || error.msg,
       type: 'error',
