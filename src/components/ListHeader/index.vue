@@ -42,7 +42,6 @@ export default {
   components: { Breadcrumb },
   computed: {
     ...mapGetters([
-      'showBtn',
       'selectedData',
       'fileList',
       'parentId'

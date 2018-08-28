@@ -1,5 +1,4 @@
-import { getCategory } from '@/api/file'
-import { getDocInfo } from '@/api/file'
+import { getCategory, getDocInfo, getSearchResult } from '@/api/file'
 const file = {
   state: {
     parentId: '0',
@@ -14,7 +13,9 @@ const file = {
     fileList: null,
     folderNav: [],
     PreviewVisible: false,
-    docValue: ''
+    docValue: '',
+    searchList: null,
+    hasSearch: false
   },
   mutations: {
     TOGGLE_UPLOADVISIBLE: (state, data) => {
@@ -47,7 +48,12 @@ const file = {
     },
     GET_DOC_INFO: (state, data) => {
       state.docValue = data
-      console.log(state.docValue)
+    },
+    SETSEARCHLIST: (state, data) => {
+      state.searchList = data
+    },
+    TOGGLE_SEARCH: state => {
+      state.hasSearch = !state.hasSearch
     }
   },
   actions: {
@@ -85,6 +91,13 @@ const file = {
     async GetDocInfo({ commit }, fcategoryid) {
       const docInfo = await getDocInfo(fcategoryid)
       commit('GET_DOC_INFO', docInfo.data)
+    },
+    async SetSearchList({ commit }, queryString) {
+      const searchList = await getSearchResult(queryString)
+      commit('SETSEARCHLIST', searchList.data)
+    },
+    ToggleSearch({ commit }) {
+      commit('TOGGLE_SEARCH')
     }
   }
 }

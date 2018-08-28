@@ -30,8 +30,9 @@
             <span style="margin-left: 1px">{{ scope.row.fupdatetime.split(':').slice(0,-1).join(':') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="fsize" label="大小" sortable></el-table-column>
-        <el-table-column prop="foperator" label="创建者"></el-table-column>
+        <el-table-column prop="fsize" label="大小" sortable :formatter="sizeFormatter"></el-table-column>
+        <el-table-column prop="foperator" label="创建者" v-if="!hasSearch"></el-table-column>
+        <el-table-column prop="faddress" label="所在目录" v-if="hasSearch"></el-table-column>
       </el-table>
       </el-scrollbar>
     </div>
@@ -41,6 +42,7 @@
 <script>
   import RenameFile from '@/components/RenameFile'
   import { mapGetters } from 'vuex'
+  import { formatSize } from '@/utils/index'
   export default {
     name: 'List',
     props: {
@@ -52,17 +54,19 @@
     components: { RenameFile },
     computed: {
       ...mapGetters([
-        'selectedData'
+        'selectedData', 'hasSearch'
       ])
     },
     methods: {
       fileType(type, fcategoryid) {
         switch (type) {
           case 1:
+            event.stopPropagation()
             this.$store.dispatch('GetCategory', fcategoryid)
             this.$store.dispatch('SetParentId', fcategoryid)
             break
           case 2:
+            event.stopPropagation()
             this.$store.dispatch('TogglePreviewVisible')
             this.$store.dispatch('GetDocInfo', fcategoryid)
             break
@@ -81,6 +85,11 @@
           this.$refs.multipleTable.toggleRowSelection(row, true)
         } else {
           this.$refs.multipleTable.toggleRowSelection(row)
+        }
+      },
+      sizeFormatter(row) {
+        if (row.fsize !== null) {
+          return formatSize(Number(row.fsize.replace('B', '')))
         }
       }
     },

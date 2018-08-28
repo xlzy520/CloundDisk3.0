@@ -1,9 +1,9 @@
 <template>
   <div>
-    <list-header @list_type_toggle="list_type_toggle" v-show="component!=='search'"></list-header>
-    <component :is="component" :fileList="fileList"></component>
+    <list-header @list_type_toggle="list_type_toggle"></list-header>
+    <component :is="component" :fileList="List"></component>
     <upload-file></upload-file>
-    <delete-file/>
+    <delete-file></delete-file>
     <detail v-if="selectedData.length===1"></detail>
     <version-list v-if="selectedData.length===1"></version-list>
     <all-doc></all-doc>
@@ -12,14 +12,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Thumbnail from './components/Thumbnail2'
+import Thumbnail from './components/Thumbnail'
 import List from './components/List'
 import ListHeader from '@/components/ListHeader'
 import UploadFile from '@/components/UploadFile'
 import DeleteFile from '@/components/DeleteFile'
-import Detail from '@/components/Detail/index'
-import VersionList from '@/components/VersionList/index'
-import allDoc from '@/views/allDoc/index'
+import Detail from '@/components/Detail'
+import VersionList from '@/components/VersionList'
+import allDoc from '@/views/MDEditor'
 export default {
   name: 'list',
   data() {
@@ -30,8 +30,12 @@ export default {
   computed: {
     ...mapGetters([
       'fileList',
+      'searchList',
       'selectedData'
-    ])
+    ]),
+    List() {
+      return this.$store.getters.hasSearch === false ? this.fileList : this.searchList.bookList
+    }
   },
   components: {
     VersionList,
@@ -50,7 +54,6 @@ export default {
   },
   async mounted() {
     this.$store.dispatch('GetCategory', '0')
-    console.log(1)
   }
 }
 </script>

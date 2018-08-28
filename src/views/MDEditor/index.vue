@@ -14,8 +14,6 @@
       </div>
       <div class="viewport">
         <div class="list-detail">
-          <!--<div class="list"></div>-->
-          <!--<div class="detail-container">-->
           <div class="detail">
             <mavon-editor
               v-model="docValue.file"

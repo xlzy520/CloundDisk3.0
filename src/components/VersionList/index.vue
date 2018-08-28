@@ -31,6 +31,7 @@
           </el-table-column>
           <el-table-column
             prop="filesize"
+            :formatter="sizeFormatter"
             label="文件长度"
             width="80">
           </el-table-column>
@@ -64,6 +65,7 @@
   import { mapGetters } from 'vuex'
   import { getVersionList, versionRollback } from '@/api/file'
   import { parseTime } from '@/utils/index'
+  import { formatSize } from '@/utils/index'
   export default {
     name: 'VersionList',
     computed: {
@@ -109,6 +111,11 @@
       },
       formatterTime(row, column) {
         return parseTime(row.fupdatetime)
+      },
+      sizeFormatter(row) {
+        if (row.filesize !== null) {
+          return formatSize(Number(row.filesize.replace('B', '')))
+        }
       }
     },
     mounted() {

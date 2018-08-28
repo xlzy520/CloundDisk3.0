@@ -56,3 +56,33 @@ export function formatTime(time, option) {
     return d.getMonth() + 1 + '月' + d.getDate() + '日' + d.getHours() + '时' + d.getMinutes() + '分'
   }
 }
+
+export function formatSize(size) {
+  /**
+   * qint64 kb = 1024;
+   qint64 mb = kb * 1024;
+   qint64 gb = mb * 1024;
+
+   if (size >= gb) {
+        return QString::number(qRound(100*(double)size/gb)/100.0)+"GB";
+    } else if (size >= mb) {
+        return QString::number(qRound(100*(double)size/mb)/100.0)+"MB";
+    } else if (size >= kb) {
+        return QString::number(qRound(100*(double)size/kb)/100.0)+"KB";
+    } else {
+        return QString::number(size)+"B";
+    }
+   */
+  const kb = 1024
+  const mb = kb * 1024
+  const gb = mb * 1024
+  if (size >= gb) {
+    return (size / gb).toFixed(2) + 'GB'
+  } else if (size >= mb) {
+    return (size / mb).toFixed(2) + 'MB'
+  } else if (size >= kb) {
+    return (size / kb).toFixed(2) + 'KB'
+  } else {
+    return size + 'B'
+  }
+}

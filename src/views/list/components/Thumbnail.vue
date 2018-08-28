@@ -13,7 +13,9 @@
             <div v-show="item.isEditor">
               <rename-file v-if="selectedData.length >= 1" type="Thumbnail"></rename-file>
             </div>
-            <span v-show="!item.isEditor">{{item.fname}}</span>
+            <div class="fileName">
+              <span v-show="!item.isEditor">{{item.fname}}</span>
+            </div>
           </div>
         </li>
       </ul>
@@ -119,6 +121,8 @@
           }
         }
         .box {
+          width: 115px;
+          height: 140px;
           position: absolute;
           &:hover {
             background: #F4F4F4;
@@ -132,7 +136,7 @@
             right: 6px;
             top: 6px;
           }
-          span {
+          .fileName {
             font-size: 14px;
             overflow:hidden;
             text-overflow:ellipsis;
