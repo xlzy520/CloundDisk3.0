@@ -17,7 +17,7 @@
       <input v-if="type === 'tel'" type="tel" class="material-input" :name="name" :placeholder="fillPlaceHolder" v-model="currentValue"
         :readonly="readonly" :disabled="disabled" :autoComplete="autoComplete" :required="required" @focus="handleMdFocus"
         @blur="handleMdBlur" @input="handleModelInput">
-      <input v-if="type === 'text'" type="text" class="material-input" :name="name" :placeholder="fillPlaceHolder" v-model="currentValue"
+      <input v-if="type === 'text'" type="text" class="material-input" :name="name" :placeholder="placeholder" v-model="currentValue"
         :readonly="readonly" :disabled="disabled" :autoComplete="autoComplete" :minlength="minlength" :maxlength="maxlength" spellcheck="false"
         :required="required" @focus="handleMdFocus" @blur="handleMdBlur" @input="handleModelInput" @keyup.enter="keyEnterFunction">
       <span class="material-input-bar"></span>
