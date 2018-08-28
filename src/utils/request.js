@@ -39,7 +39,7 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log(error)// for debug
+    console.log(error.response)// for debug
     error.message = error.message === 'timeout of 5000ms exceeded' ? '连接超时！' : error.message
     Message({
       message: error.message || error.msg,
