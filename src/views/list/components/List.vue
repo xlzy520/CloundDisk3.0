@@ -59,10 +59,12 @@
       fileType(type, fcategoryid) {
         switch (type) {
           case 1:
+            event.stopPropagation()
             this.$store.dispatch('GetCategory', fcategoryid)
             this.$store.dispatch('SetParentId', fcategoryid)
             break
           case 2:
+            event.stopPropagation()
             this.$store.dispatch('TogglePreviewVisible')
             this.$store.dispatch('GetDocInfo', fcategoryid)
             break
