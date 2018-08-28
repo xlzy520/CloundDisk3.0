@@ -125,7 +125,6 @@ $light_gray:#eee;
   }
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
-    background: #283443;
     border-radius: 5px;
     color: #454545;
   }
