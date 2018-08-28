@@ -11,7 +11,7 @@
       width="430px">
       <div class="file-list">
         <div v-for="(item, index) in selectedData" :key="index" class="item">
-          <svg-icon :icon-class="fileIcon(item.ffiletype)" className="icon"/> <span class="item-name">{{item.fname}}</span>
+          <svg-icon :icon-class="item.ffiletype" className="icon"/> <span class="item-name">{{item.fname}}</span>
         </div>
       </div>
       <div class="info-panel">
@@ -94,13 +94,6 @@
             })
             this.$store.dispatch('ToggleDeleteVisible')
           })
-      },
-      fileIcon(filetype) {
-        if (filetype === 1) {
-          return 'folder'
-        } else if (filetype === 2) {
-          return 'markdown'
-        }
       }
     },
     computed: {
