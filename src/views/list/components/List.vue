@@ -18,7 +18,7 @@
              <rename-file v-if="selectedData.length >= 1" type="List"></rename-file>
             </div>
             <div v-show="!scope.row.isEditor">
-              <svg-icon :icon-class="scope.row.ffiletype===1? 'folder': 'markdown'"></svg-icon>
+              <svg-icon :icon-class="scope.row.ffiletype"></svg-icon>
               <span class="fileName"
                     @click="fileType(scope.row.ffiletype,scope.row.fcategoryid)">{{ scope.row.fname }}</span>
             </div>
