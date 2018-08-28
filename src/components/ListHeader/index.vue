@@ -132,7 +132,7 @@ export default {
     },
     downloadFile() {
       this.$refs.downloadBtn.href = '/api_ldh/djcpsdocument/fileManager/downloadFile.do?id=' + this.selectedData[0].fcategoryid
-      this.$refs.downloadBtn.download = 'hahhaha'
+      this.$refs.downloadBtn.download = this.selectedData[0].fname
     }
   }
 }
