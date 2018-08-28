@@ -64,7 +64,7 @@
             })
             this.$store.dispatch('SetParentId', fcategoryid)
             break
-          case 2:
+          case 3:
             this.$store.dispatch('TogglePreviewVisible')
             // this.$store.dispatch('GetDocInfo')
             break
