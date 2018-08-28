@@ -9,7 +9,7 @@
         <li v-for="(item, index) in fileList" :key="index">
           <div class="box" :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''" @dblclick="fileType(item.ffiletype,item.fcategoryid)">
             <div @dblclick.stop="() => {}"><el-checkbox :label="item"></el-checkbox></div>
-            <svg-icon :icon-class="item.ffiletype" className="icon" />
+            <svg-icon :icon-class="String(item.ffiletype)" className="icon" />
             <div v-show="item.isEditor">
               <rename-file v-if="selectedData.length >= 1" type="Thumbnail"></rename-file>
             </div>
