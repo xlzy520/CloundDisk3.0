@@ -61,11 +61,9 @@ export function uploadFile(parentId) {
 
 export function downloadFile(id) {
   return request({
-    url: '/api_zhq/djcpsdocument/fileManager/downloadFile.do',
-    method: 'post',
-    data: {
-      'id': id
-    }
+    url: '/api_ldh/djcpsdocument/fileManager/downloadFile.do',
+    method: 'get',
+    params: { id }
   })
 }
 
