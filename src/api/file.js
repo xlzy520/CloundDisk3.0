@@ -2,9 +2,9 @@ import request from '@/utils/request'
 
 export function getDocInfo(id) {
   return request({
-    url: '/api_zhq/djcpsdocument/fileManager/getFile.do',
+    url: '/api_ldh/djcpsdocument/fileManager/getFile.do',
     method: 'get',
-    params: { id }
+    params: { id: '20180829_RD_MARKDOWN_QKvut' }
   })
 }
 
@@ -50,13 +50,13 @@ export function versionRollback(oldVer, newVer) {
   })
 }
 
-export function uploadFile(parentId) {
+export function updateMarkdown(data) {
   return request({
     url: '/api_zhq/djcpsdocument/category/fileUpload.do',
     method: 'post',
-    data: {
-      fparentId: parentId
-    }
+    processData: false,
+    contentType: false,
+    data: data
   })
 }
 

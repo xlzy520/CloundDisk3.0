@@ -70,7 +70,7 @@ export default {
       'upload'
     ]),
     uploadFileUrl() {
-      return '/api_py/djcpsdocument/category/fileUpload.do?'
+      return '/api_ldh/djcpsdocument/category/fileUpload.do?'
     },
     title() {
       return this.upload.type === 'upload' ? '文件上传' : '文件更新'

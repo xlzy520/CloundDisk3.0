@@ -11,6 +11,7 @@
         <el-button @click="closeMkdown" class="close-mkdown">关闭</el-button>
         <el-button @click="fileEdit" class="file-edit" v-show="isEditMk">编辑</el-button>
         <el-button @click="saveFile" class="file-edit" v-show="!isEditMk">保存</el-button>
+        <a id="markdown"></a>
       </div>
       <div class="viewport">
         <div class="list-detail">
@@ -36,10 +37,10 @@
 <script>
   import { mapGetters } from 'vuex'
   import '@/styles/markdown.css'
-  import { updateDocInfo } from '@/api/file'
+  import { updateMarkdown } from '@/api/file'
 
   export default {
-    name: 'allDoc',
+    name: 'MDEditor',
     computed: {
       ...mapGetters([
         'PreviewVisible',
@@ -117,8 +118,19 @@
         this.isEditMk = false
       },
       async saveFile() {
-        console.log(this.value)
-        const updateInfo = await updateDocInfo(this.value)
+        console.log(this.docValue.file)
+        const markdownBlob = new Blob([this.docValue.file], { type: 'text/plain' })
+        const markdownFile = new File([markdownBlob], 'haha.md')
+        const markdownData = new FormData()
+        markdownData.append('file', markdownFile)
+        markdownData.append('fparentid', this.$store.getters.parentId)
+        markdownData.append('fcategoryid', this.docValue.id)
+        markdownData.append('remarks', 'hahaha')
+        const updateInfo = await updateMarkdown(markdownData)
+        // const markdownBtn = document.getElementById('markdown')
+        // markdownBtn.href = URL.createObjectURL(markdownContent)
+        // markdownBtn.download = '测试.md'
+        // markdownBtn.click()
         console.log(updateInfo)
       }
     },
