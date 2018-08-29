@@ -22,7 +22,7 @@
         @node-expand="nodeExpand"
         @node-click="handleNodeClick">
         <span class="custom-tree-node" slot-scope="{node,data}">
-          <svg-icon  icon-class="folder"></svg-icon>
+          <svg-icon  icon-class="1"></svg-icon>
           <span>{{ node.label }}</span>
         </span>
       </el-tree>
