@@ -10,7 +10,7 @@
         v-if="[2].indexOf(isShow) > -1"
         icon="el-icon-download"
         @click="downloadFile"
-        ref="downloadBtn">下载</a>
+        ref="downloadBtn"><i class="el-icon-download"></i>下载</a>
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-edit" @click="updateFile">更新</el-button>
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-tickets" @click="showVersion">版本</el-button>
       <el-button type="primary" v-if="[1, 2].indexOf(isShow) > -1" icon="el-icon-edit-outline" @click="rename">重命名</el-button>
@@ -48,7 +48,7 @@ export default {
     ]),
     isShow() {
       const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length
-      const fileCheckedCount = this.selectedData.filter(item => item.ffiletype === 2).length
+      const fileCheckedCount = this.selectedData.filter(item => item.ffiletype !== 1).length
       if (this.selectedData.length > 1) {
         return 3
       } else if (folderCheckedCount === 1 && fileCheckedCount === 0) {
