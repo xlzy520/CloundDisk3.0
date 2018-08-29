@@ -52,7 +52,7 @@ export function versionRollback(oldVer, newVer) {
 
 export function updateMarkdown(data) {
   return request({
-    url: '/api_zhq/djcpsdocument/category/fileUpload.do',
+    url: '/api_py/djcpsdocument/category/fileUpload.do',
     method: 'post',
     processData: false,
     contentType: false,

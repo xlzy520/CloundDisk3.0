@@ -11,7 +11,6 @@
         <el-button @click="closeMkdown" class="close-mkdown">关闭</el-button>
         <el-button @click="fileEdit" class="file-edit" v-show="isEditMk">编辑</el-button>
         <el-button @click="saveFile" class="file-edit" v-show="!isEditMk">保存</el-button>
-        <a id="markdown"></a>
       </div>
       <div class="viewport">
         <div class="list-detail">
@@ -38,7 +37,6 @@
   import { mapGetters } from 'vuex'
   import '@/styles/markdown.css'
   import { updateMarkdown } from '@/api/file'
-
   export default {
     name: 'MDEditor',
     computed: {
@@ -120,18 +118,24 @@
       async saveFile() {
         console.log(this.docValue.file)
         const markdownBlob = new Blob([this.docValue.file], { type: 'text/plain' })
-        const markdownFile = new File([markdownBlob], 'haha.md')
+        const markdownFile = new File([markdownBlob], this.docValue.name)
         const markdownData = new FormData()
         markdownData.append('file', markdownFile)
         markdownData.append('fparentid', this.$store.getters.parentId)
         markdownData.append('fcategoryid', this.docValue.id)
-        markdownData.append('remarks', 'hahaha')
-        const updateInfo = await updateMarkdown(markdownData)
-        // const markdownBtn = document.getElementById('markdown')
-        // markdownBtn.href = URL.createObjectURL(markdownContent)
-        // markdownBtn.download = '测试.md'
-        // markdownBtn.click()
-        console.log(updateInfo)
+        this.$prompt('请输入更新描述', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          center: true
+        }).then(({ value }) => {
+          markdownData.append('remarks', value)
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          })
+        })
+        updateMarkdown(markdownData)
       }
     },
     async mounted() {
