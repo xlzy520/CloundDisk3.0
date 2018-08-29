@@ -6,7 +6,7 @@
     <delete-file></delete-file>
     <detail v-if="selectedData.length===1"></detail>
     <version-list v-if="selectedData.length===1"></version-list>
-    <all-doc></all-doc>
+    <m-d-editor></m-d-editor>
   </div>
 </template>
 
@@ -19,7 +19,7 @@ import UploadFile from '@/components/UploadFile'
 import DeleteFile from '@/components/DeleteFile'
 import Detail from '@/components/Detail'
 import VersionList from '@/components/VersionList'
-import allDoc from '@/views/MDEditor'
+import MDEditor from '@/components/MDEditor'
 export default {
   name: 'list',
   data() {
@@ -45,7 +45,7 @@ export default {
     List,
     ListHeader,
     DeleteFile,
-    allDoc
+    MDEditor
   },
   methods: {
     list_type_toggle(component) {

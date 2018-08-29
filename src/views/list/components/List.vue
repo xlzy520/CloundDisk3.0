@@ -32,7 +32,11 @@
         </el-table-column>
         <el-table-column prop="fsize" label="大小" sortable :formatter="sizeFormatter"></el-table-column>
         <el-table-column prop="foperator" label="创建者" v-if="!hasSearch"></el-table-column>
-        <el-table-column prop="faddress" label="所在目录" v-if="hasSearch"></el-table-column>
+        <el-table-column label="所在目录" v-if="hasSearch">
+          <template slot-scope="scope">
+            <span class="fileAddress" @click="enterParentDic(scope.row.fparentid)" :key="scope.row.fparentid">文件位置</span>
+          </template>
+        </el-table-column>
       </el-table>
       </el-scrollbar>
     </div>
@@ -91,6 +95,11 @@
         if (row.fsize !== null) {
           return formatSize(Number(row.fsize.replace('B', '')))
         }
+      },
+      enterParentDic(parentId) {
+        event.stopPropagation()
+        this.$store.dispatch('GetCategory', parentId)
+        this.$store.dispatch('ToggleSearch', false)
       }
     },
     mounted() {
@@ -121,6 +130,12 @@
     height: 2em;
     float: left;
   }
-
+  .fileAddress{
+    color: #1296db;
+    text-decoration: underline;
+    &:hover{
+      text-decoration: none;
+    }
+  }
 </style>
 
