@@ -63,7 +63,7 @@
         this.selectedData.forEach(item => {
           categoryids.push(item.fcategoryid)
         })
-        deleteCategory(categoryids)
+        deleteCategory(categoryids, this.$store.getters.parentId)
           .then(res => {
             this.$store.dispatch('ToggleDeleteVisible')
             if (res.success) {
