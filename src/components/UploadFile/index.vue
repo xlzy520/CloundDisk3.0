@@ -162,7 +162,7 @@ export default {
           this.uploadData = {
             fparentid: this.parentId,
             fcategoryid: this.selectedData[0].fcategoryid,
-            fremarks: 'hahah'
+            fremarks: this.fileDesc
           }
         }
       }
