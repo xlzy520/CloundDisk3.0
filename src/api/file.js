@@ -20,7 +20,7 @@ export function getCategory(id) {
 
 export function deleteCategory(categoryids, fparentid) {
   return request({
-    url: '/api_zhq/djcpsdocument/category/deleteCategory.do',
+    url: '/api_py/djcpsdocument/category/deleteCategory.do',
     method: 'post',
     data: {
       list: categoryids,

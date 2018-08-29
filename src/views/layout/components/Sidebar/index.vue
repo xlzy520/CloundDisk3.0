@@ -20,6 +20,7 @@
         :indent="10"
         :expand-on-click-node="false"
         @node-expand="nodeExpand"
+        @node-collapse="nodeCollapse"
         @node-click="handleNodeClick">
         <span class="custom-tree-node" slot-scope="{node,data}">
           <svg-icon  icon-class="1"></svg-icon>
@@ -70,23 +71,28 @@
     methods: {
       handleNodeClick(data) {
         this.$store.dispatch('GetCategory', data.fcategoryid)
+        this.$store.dispatch('SetParentId', data.fcategoryid)
       },
       async nodeExpand(data, node) {
-        console.log(data)
         console.log(node)
         let arr = await getCategory(data.fcategoryid)
         arr = arr.data.tableList
-        console.log(arr)
         data.childrenFolder = []
-        console.log(data)
-        if (arr.length >= 1) {
-          for (const item of this.CreateFolderObj(arr)) {
-            this.$refs.folderTree.append(item, node)
+        if (node.childNodes.length !== arr.length) {
+          if (arr.length >= 1) {
+            for (const item of this.CreateFolderObj(arr)) {
+              this.$refs.folderTree.append(item, node)
+            }
+            node.childNodes.map((item) => {
+              if (item.data.fsortorder === 1) {
+                item.isLeaf = false
+              }
+            })
           }
-        } else {
-          node.isLeaf = true
-          data = []
         }
+      },
+      nodeCollapse(data, node) {
+        console.log(node)
       },
       getFolder(arr) {
         return arr.filter((item) => {
@@ -96,9 +102,8 @@
       CreateFolderObj(arr) {
         const folderArr = this.getFolder(arr)
         folderArr.map((item) => {
-          Object.defineProperties(item, { 'childrenFolder': { value: [{}], writable: true }})
+          Object.defineProperties(item, { 'childrenFolder': { value: [], writable: true }})
         })
-        console.log(folderArr)
         return folderArr
       }
     }
