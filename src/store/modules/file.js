@@ -52,8 +52,8 @@ const file = {
     SETSEARCHLIST: (state, data) => {
       state.searchList = data
     },
-    TOGGLE_SEARCH: state => {
-      state.hasSearch = !state.hasSearch
+    TOGGLE_SEARCH: (state, data) => {
+      state.hasSearch = data
     }
   },
   actions: {
@@ -95,9 +95,10 @@ const file = {
     async SetSearchList({ commit }, queryString) {
       const searchList = await getSearchResult(queryString)
       commit('SETSEARCHLIST', searchList.data)
+      commit('TOGGLE_SEARCH', true)
     },
-    ToggleSearch({ commit }) {
-      commit('TOGGLE_SEARCH')
+    ToggleSearch({ commit }, data) {
+      commit('TOGGLE_SEARCH', data)
     }
   }
 }

@@ -74,7 +74,6 @@ export default {
     },
     getSearchResult() {
       this.$store.dispatch('SetSearchList', this.queryString)
-      this.$store.dispatch('ToggleSearch')
     }
   }
 }
