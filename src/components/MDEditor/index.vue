@@ -132,14 +132,16 @@
             if (res.success) {
               this.$message({
                 type: 'success',
-                message: '文档保存成功。'
+                message: '文档保存成功。',
+                duration: 1000
               })
               this.closeMkdown()
               this.$store.dispatch('Refresh')
             } else {
               this.$message({
                 type: 'error',
-                message: '文档保存失败。'
+                message: '文档保存失败。',
+                duration: 1000
               })
             }
           })

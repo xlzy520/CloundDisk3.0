@@ -1,4 +1,5 @@
 import { getCategory, getDocInfo, getSearchResult } from '@/api/file'
+import { Message } from 'element-ui'
 const file = {
   state: {
     parentId: '0',
@@ -94,6 +95,13 @@ const file = {
     },
     async SetSearchList({ commit }, queryString) {
       const searchList = await getSearchResult(queryString)
+      if (searchList.success) {
+        Message({
+          type: 'success',
+          message: '查询成功',
+          duration: 1000
+        })
+      }
       commit('SETSEARCHLIST', searchList.data)
       commit('TOGGLE_SEARCH', true)
     },
