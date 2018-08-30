@@ -12,7 +12,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api_zhq':{
-        target: 'http://192.168.2.171:8080/',
+        target: 'http://192.168.2.171:8081/',
         changeOrigin: true,
         pathRewrite:{'^/api_zhq': ''}
       },
@@ -22,7 +22,7 @@ module.exports = {
         pathRewrite:{'^/api_ldh': ''}
       },
       '/api_py':{
-        target: 'http://192.168.12.227:8080/',
+        target: 'http://192.168.13.9:8081/',
         changeOrigin: true,
         pathRewrite:{'^/api_py': ''}
       },

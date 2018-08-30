@@ -9,11 +9,13 @@
         <li v-for="(item, index) in fileList" :key="index">
           <div class="box" :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''" @dblclick="fileType(item.ffiletype,item.fcategoryid)">
             <div @dblclick.stop="() => {}"><el-checkbox :label="item"></el-checkbox></div>
-            <svg-icon :icon-class="item.ffiletype === 1 ? 'folder' : 'markdown'" className="icon" />
+            <svg-icon :icon-class="String(item.ffiletype)" className="icon" />
             <div v-show="item.isEditor">
               <rename-file v-if="selectedData.length >= 1" type="Thumbnail"></rename-file>
             </div>
-            <span v-show="!item.isEditor">{{item.fname}}</span>
+            <div class="fileName">
+              <span v-show="!item.isEditor" :title="item.fname ">{{item.fname}}</span>
+            </div>
           </div>
         </li>
       </ul>
@@ -62,7 +64,7 @@
             })
             this.$store.dispatch('SetParentId', fcategoryid)
             break
-          case 2:
+          case 3:
             this.$store.dispatch('TogglePreviewVisible')
             // this.$store.dispatch('GetDocInfo')
             break
@@ -119,9 +121,12 @@
           }
         }
         .box {
+          width: 115px;
+          height: 140px;
+          border-radius: 6px;
           position: absolute;
           &:hover {
-            background: #F4F4F4;
+            background:#e3ecf76b;
             .el-checkbox {
               display: block;
             }
@@ -132,13 +137,20 @@
             right: 6px;
             top: 6px;
           }
-          span {
+          .fileName {
             font-size: 14px;
             overflow:hidden;
             text-overflow:ellipsis;
             display:-webkit-box;
             -webkit-box-orient:vertical;
             -webkit-line-clamp:2;
+            span{
+              display: inline-block;
+              width: 100px;
+              overflow: hidden; /*超出的部分隐藏起来。*/
+              white-space: nowrap; /*不显示的地方用省略号...代替*/
+              text-overflow: ellipsis; /* 支持 IE */
+            }
           }
           .icon {
             width: 100px;
@@ -151,7 +163,6 @@
       overflow-x: hidden;
     }
     .empty-block {
-      position: relative;
       min-height: 60px;
       text-align: center;
       width: 100%;

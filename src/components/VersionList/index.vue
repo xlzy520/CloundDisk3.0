@@ -25,18 +25,15 @@
           </el-table-column>
           <el-table-column
             width="145"
+            :formatter="formatterTime"
+            prop="fupdatetime"
             label="修改时间">
-            <template slot-scope="scope">
-              {{scope.row.fupdatetime}}
-            </template>
           </el-table-column>
           <el-table-column
             prop="filesize"
+            :formatter="sizeFormatter"
             label="文件长度"
             width="80">
-            <template slot-scope="scope">
-              {{scope.row.size}}
-            </template>
           </el-table-column>
           <el-table-column
             prop="fremarks"
@@ -47,7 +44,7 @@
             width="80"
             label="操作">
             <template slot-scope="scope">
-              <a href="javascript:void(0)" @click="downloadFile(scope.row.filesgin)">下载</a>
+              <a @click="downloadVersion(scope.row.filesgin, $event, scope.row.filename, scope.row.fversion)">下载</a>
               <a
                 href="javascript:void(0)"
                 @click="rollBack(scope.row.filesgin)"
@@ -67,6 +64,8 @@
 <script>
   import { mapGetters } from 'vuex'
   import { getVersionList, versionRollback } from '@/api/file'
+  import { parseTime } from '@/utils/index'
+  import { formatSize } from '@/utils/index'
   export default {
     name: 'VersionList',
     computed: {
@@ -88,11 +87,12 @@
       }
     },
     methods: {
+      downloadVersion(id, evt, filename, fversion) {
+        evt.target.href = '/api_zhq/djcpsdocument/fileManager/downloadFile.do?id=' + id
+        evt.target.download = filename // 暂时不加版本号
+      },
       dialogClose() {
         this.$store.dispatch('ToggleVersionVisible')
-      },
-      downloadFile(id) {
-
       },
       async rollBack(newVer) {
         if (this.selectedData.length === 1) {
@@ -107,6 +107,14 @@
         if (this.selectedData.length === 1) {
           const versionListInfo = await getVersionList(this.selectedData[0].fname, this.$store.getters.parentId)
           this.tableData = versionListInfo.data
+        }
+      },
+      formatterTime(row, column) {
+        return parseTime(row.fupdatetime)
+      },
+      sizeFormatter(row) {
+        if (row.filesize !== null) {
+          return formatSize(Number(row.filesize.replace('B', '')))
         }
       }
     },

@@ -18,7 +18,7 @@
              <rename-file v-if="selectedData.length >= 1" type="List"></rename-file>
             </div>
             <div v-show="!scope.row.isEditor">
-              <svg-icon :icon-class="scope.row.ffiletype===1? 'folder': 'markdown'"></svg-icon>
+              <svg-icon :icon-class="String(scope.row.ffiletype)"></svg-icon>
               <span class="fileName"
                     @click="fileType(scope.row.ffiletype,scope.row.fcategoryid)">{{ scope.row.fname }}</span>
             </div>
@@ -30,8 +30,13 @@
             <span style="margin-left: 1px">{{ scope.row.fupdatetime.split(':').slice(0,-1).join(':') }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="fsize" label="大小" sortable></el-table-column>
-        <el-table-column prop="foperator" label="创建者"></el-table-column>
+        <el-table-column prop="fsize" label="大小" sortable :formatter="sizeFormatter"></el-table-column>
+        <el-table-column prop="foperator" label="创建者" v-if="!hasSearch"></el-table-column>
+        <el-table-column label="所在目录" v-if="hasSearch">
+          <template slot-scope="scope">
+            <span class="fileAddress" @click="enterParentDic(scope.row.fparentid)" :key="scope.row.fparentid">文件位置</span>
+          </template>
+        </el-table-column>
       </el-table>
       </el-scrollbar>
     </div>
@@ -41,6 +46,7 @@
 <script>
   import RenameFile from '@/components/RenameFile'
   import { mapGetters } from 'vuex'
+  import { formatSize } from '@/utils/index'
   export default {
     name: 'List',
     props: {
@@ -52,7 +58,7 @@
     components: { RenameFile },
     computed: {
       ...mapGetters([
-        'selectedData'
+        'selectedData', 'hasSearch'
       ])
     },
     methods: {
@@ -65,8 +71,16 @@
             break
           case 2:
             event.stopPropagation()
+            this.$message({
+              message: '只可以对markdown文件进行预览编辑哦',
+              type: 'warning'
+            })
+            break
+          case 3:
+            event.stopPropagation()
             this.$store.dispatch('TogglePreviewVisible')
             this.$store.dispatch('GetDocInfo', fcategoryid)
+            console.log(fcategoryid)
             break
         }
       },
@@ -84,6 +98,16 @@
         } else {
           this.$refs.multipleTable.toggleRowSelection(row)
         }
+      },
+      sizeFormatter(row) {
+        if (row.fsize !== null) {
+          return formatSize(Number(row.fsize.replace('B', '')))
+        }
+      },
+      enterParentDic(parentId) {
+        event.stopPropagation()
+        this.$store.dispatch('GetCategory', parentId)
+        this.$store.dispatch('ToggleSearch', false)
       }
     },
     mounted() {
@@ -114,6 +138,12 @@
     height: 2em;
     float: left;
   }
-
+  .fileAddress{
+    color: #1296db;
+    text-decoration: underline;
+    &:hover{
+      text-decoration: none;
+    }
+  }
 </style>
 

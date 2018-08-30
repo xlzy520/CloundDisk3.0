@@ -5,7 +5,12 @@
       <el-button type="primary" icon="el-icon-upload" @click="uploadFile">上传文件</el-button>
       <el-button type="primary" icon="el-icon-plus" @click="newFolder">新建文件夹</el-button>
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-document" @click="previewFile">预览</el-button>
-      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-download">下载</el-button>
+      <a
+        class="el-button el-button--primary"
+        v-if="[2].indexOf(isShow) > -1"
+        icon="el-icon-download"
+        @click="downloadFile"
+        ref="downloadBtn"><i class="el-icon-download"></i>下载</a>
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-edit" @click="updateFile">更新</el-button>
       <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-tickets" @click="showVersion">版本</el-button>
       <el-button type="primary" v-if="[1, 2].indexOf(isShow) > -1" icon="el-icon-edit-outline" @click="rename">重命名</el-button>
@@ -37,14 +42,13 @@ export default {
   components: { Breadcrumb },
   computed: {
     ...mapGetters([
-      'showBtn',
       'selectedData',
       'fileList',
       'parentId'
     ]),
     isShow() {
       const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length
-      const fileCheckedCount = this.selectedData.filter(item => item.ffiletype === 2).length
+      const fileCheckedCount = this.selectedData.filter(item => item.ffiletype !== 1).length
       if (this.selectedData.length > 1) {
         return 3
       } else if (folderCheckedCount === 1 && fileCheckedCount === 0) {
@@ -102,7 +106,7 @@ export default {
                 message: res.msg,
                 showClose: true,
                 type: 'error',
-                duration: 6000
+                duration: 2000
               })
             }
           })
@@ -111,7 +115,7 @@ export default {
               message: '无法连接服务器',
               showClose: true,
               type: 'error',
-              duration: 6000
+              duration: 2000
             })
           })
       }).catch(() => {
@@ -124,6 +128,10 @@ export default {
     previewFile() {
       this.$store.dispatch('TogglePreviewVisible')
       this.$store.dispatch('GetDocInfo')
+    },
+    downloadFile() {
+      this.$refs.downloadBtn.href = '/api_zhq/djcpsdocument/fileManager/downloadFile.do?id=' + this.selectedData[0].fcategoryid
+      this.$refs.downloadBtn.download = this.selectedData[0].fname
     }
   }
 }

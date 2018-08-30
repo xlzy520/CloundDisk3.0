@@ -1,6 +1,7 @@
 <template>
   <div class="rename-edit">
     <el-input size="small"
+              spellcheck="false"
               v-model="value"
               placeholder="请输入内容"
               :style="{width:(type=='List'?'350px':'60px')}"

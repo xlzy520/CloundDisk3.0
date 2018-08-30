@@ -15,7 +15,7 @@
       title="请输入搜索关键词"
       placeholder="请输入搜索关键词"
       :keyEnterFunction="getSearchResult"
-      v-model="searchValue">
+      v-model="queryString">
 
     </md-input>
     <el-dropdown class="avatar-container" trigger="click">
@@ -46,7 +46,6 @@
 import { mapGetters } from 'vuex'
 import Hamburger from '@/components/Hamburger'
 import MdInput from '@/components/MDinput'
-import { getSearchResult } from '@/api/file'
 export default {
   components: {
     MdInput,
@@ -61,7 +60,7 @@ export default {
   },
   data() {
     return {
-      searchValue: ''
+      queryString: ''
     }
   },
   methods: {
@@ -74,8 +73,7 @@ export default {
       })
     },
     getSearchResult() {
-      console.log(1111)
-      getSearchResult(this.searchValue)
+      this.$store.dispatch('SetSearchList', this.queryString)
     }
   }
 }
@@ -178,7 +176,7 @@ export default {
       .user-avatar {
         width: 40px;
         height: 40px;
-        border-radius: 10px;
+        border-radius: 50%;
       }
       .el-icon-caret-bottom {
         position: absolute;

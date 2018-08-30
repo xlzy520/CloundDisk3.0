@@ -81,6 +81,11 @@ export default {
           this.$store.dispatch('Login', this.loginForm).then(() => {
             this.loading = false
             this.$router.push({ path: '/' })
+            this.$message({
+              message: '登录成功',
+              type: 'success',
+              duration: 2000
+            })
           }).catch(() => {
             this.loading = false
             // this.$router.push({ path: '/' }) //  跳过后台验证
@@ -125,7 +130,6 @@ $light_gray:#eee;
   }
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
-    background: #283443;
     border-radius: 5px;
     color: #454545;
   }

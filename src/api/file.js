@@ -18,12 +18,13 @@ export function getCategory(id) {
   })
 }
 
-export function deleteCategory(categoryids) {
+export function deleteCategory(categoryids, fparentid) {
   return request({
     url: '/api_zhq/djcpsdocument/category/deleteCategory.do',
     method: 'post',
     data: {
-      list: categoryids
+      list: categoryids,
+      fparentid: fparentid
     }
   })
 }
@@ -49,13 +50,21 @@ export function versionRollback(oldVer, newVer) {
   })
 }
 
-export function uploadFile(parentId) {
+export function updateMarkdown(data) {
   return request({
     url: '/api_zhq/djcpsdocument/category/fileUpload.do',
     method: 'post',
-    data: {
-      fparentId: parentId
-    }
+    processData: false,
+    contentType: false,
+    data: data
+  })
+}
+
+export function downloadFile(id) {
+  return request({
+    url: '/api_zhq/djcpsdocument/fileManager/downloadFile.do',
+    method: 'get',
+    params: { id }
   })
 }
 
@@ -82,12 +91,12 @@ export function renameFile(fid, fname, fparentid) {
   })
 }
 
-export function getSearchResult(searchValue, categoryName, sort, curPage) {
+export function getSearchResult(queryString, categoryName, sort, curPage) {
   return request({
     url: '/api_zhq/djcpsdocument/search/list.do',
     method: 'post',
     data: {
-      searchValue: searchValue,
+      queryString: queryString,
       categoryName: categoryName,
       sort: 1,
       curPage: 1

@@ -11,7 +11,7 @@
       width="430px">
       <div class="file-list">
         <div v-for="(item, index) in selectedData" :key="index" class="item">
-          <svg-icon :icon-class="fileIcon(item.ffiletype)" className="icon"/> <span class="item-name">{{item.fname}}</span>
+          <svg-icon :icon-class="String(item.ffiletype)" className="icon"/> <span class="item-name">{{item.fname}}</span>
         </div>
       </div>
       <div class="info-panel">
@@ -63,7 +63,7 @@
         this.selectedData.forEach(item => {
           categoryids.push(item.fcategoryid)
         })
-        deleteCategory(categoryids)
+        deleteCategory(categoryids, this.$store.getters.parentId)
           .then(res => {
             this.$store.dispatch('ToggleDeleteVisible')
             if (res.success) {
@@ -94,13 +94,6 @@
             })
             this.$store.dispatch('ToggleDeleteVisible')
           })
-      },
-      fileIcon(filetype) {
-        if (filetype === 1) {
-          return 'folder'
-        } else if (filetype === 2) {
-          return 'markdown'
-        }
       }
     },
     computed: {

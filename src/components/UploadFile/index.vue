@@ -25,7 +25,7 @@
       multiple
     >
       <i class="el-icon-upload"></i>
-      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+      <div class="el-upload__text">将文件拖到此处或点击上传</div>
       <div class="el-upload__tip" slot="tip" v-if="!updateType"><span style="color: #888;padding-right: 2px;">当前文件夹：</span>{{tip}}</div>
       <div class="el-upload__tip" slot="tip" v-if="updateType"><span style="color: #888;padding-right: 2px;">要更新的文件：</span>{{tip}}</div>
     </el-upload>
@@ -162,7 +162,7 @@ export default {
           this.uploadData = {
             fparentid: this.parentId,
             fcategoryid: this.selectedData[0].fcategoryid,
-            fremarks: 'hahah'
+            fremarks: this.fileDesc
           }
         }
       }

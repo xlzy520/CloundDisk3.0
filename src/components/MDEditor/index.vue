@@ -14,11 +14,9 @@
       </div>
       <div class="viewport">
         <div class="list-detail">
-          <!--<div class="list"></div>-->
-          <!--<div class="detail-container">-->
           <div class="detail">
             <mavon-editor
-              v-model="docValue"
+              v-model="docValue.file"
               :toolbars="toolbars"
               :externalLink="externalLink"
               codeStyle="monokai-sublime"
@@ -38,10 +36,9 @@
 <script>
   import { mapGetters } from 'vuex'
   import '@/styles/markdown.css'
-  import { updateDocInfo } from '@/api/file'
-
+  import { updateMarkdown } from '@/api/file'
   export default {
-    name: 'allDoc',
+    name: 'MDEditor',
     computed: {
       ...mapGetters([
         'PreviewVisible',
@@ -51,7 +48,6 @@
     },
     data() {
       return {
-        value: '',
         disabled: false,
         isField: false, // 是否双栏
         isPreview: 'preview', // 预览或编辑
@@ -120,9 +116,25 @@
         this.isEditMk = false
       },
       async saveFile() {
-        console.log(this.value)
-        const updateInfo = await updateDocInfo(this.value)
-        console.log(updateInfo)
+        const markdownBlob = new Blob([this.docValue.file], { type: 'text/plain' })
+        const markdownFile = new File([markdownBlob], this.docValue.name)
+        const markdownData = new FormData()
+        markdownData.append('file', markdownFile)
+        markdownData.append('fparentid', this.$store.getters.parentId)
+        markdownData.append('fcategoryid', this.docValue.id)
+        this.$prompt('请输入更新描述', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          center: true
+        }).then(({ value }) => {
+          markdownData.append('remarks', value)
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '取消输入'
+          })
+        })
+        updateMarkdown(markdownData)
       }
     },
     async mounted() {
