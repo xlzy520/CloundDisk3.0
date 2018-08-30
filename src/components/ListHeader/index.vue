@@ -110,7 +110,8 @@ export default {
             if (res.success) {
               this.$message({
                 type: 'success',
-                message: res.msg
+                message: res.msg,
+                duration: 1000
               })
               this.$store.dispatch('Refresh')
             }
@@ -120,7 +121,7 @@ export default {
               message: '无法连接服务器',
               showClose: true,
               type: 'error',
-              duration: 2000
+              duration: 1000
             })
           })
       }).catch(() => {
