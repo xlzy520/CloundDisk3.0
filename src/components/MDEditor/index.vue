@@ -127,14 +127,14 @@
           cancelButtonText: '取消',
           center: true
         }).then(({ value }) => {
-          markdownData.append('remarks', value)
+          markdownData.append('fremarks', value)
+          updateMarkdown(markdownData)
         }).catch(() => {
           this.$message({
             type: 'info',
             message: '取消输入'
           })
         })
-        updateMarkdown(markdownData)
       }
     },
     async mounted() {

@@ -151,6 +151,7 @@ export default {
       this.fileList = filelist
 
       if (file.status === 'ready') {
+        const that = this
         this.$store.dispatch('Refresh')
         this.btDisable = false
         this.currentFile = file
@@ -162,7 +163,7 @@ export default {
           this.uploadData = {
             fparentid: this.parentId,
             fcategoryid: this.selectedData[0].fcategoryid,
-            fremarks: this.fileDesc
+            fremarks: that.fileDesc
           }
         }
       }
