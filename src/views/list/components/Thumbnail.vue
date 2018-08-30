@@ -7,14 +7,14 @@
       <el-scrollbar tag="ul" style="height: 80vh">
       <ul>
         <li v-for="(item, index) in fileList" :key="index">
-          <div class="box" :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''" @click="fileType(item.ffiletype,item.fcategoryid)">
+          <div class="box" :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''" @click="fileType(item.ffiletype,item.fcategoryid)"  :title="item.fname ">
             <div @click.stop="() => {}"><el-checkbox :label="item"></el-checkbox></div>
             <svg-icon :icon-class="String(item.ffiletype)" className="icon" />
             <div v-show="item.isEditor">
               <rename-file v-if="selectedData.length >= 1" type="Thumbnail"></rename-file>
             </div>
             <div class="fileName">
-              <span v-show="!item.isEditor" :title="item.fname ">{{item.fname}}</span>
+              <span v-show="!item.isEditor">{{item.fname}}</span>
             </div>
           </div>
         </li>
