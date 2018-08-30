@@ -1,10 +1,15 @@
 <template>
   <div class="list">
     <div class="hd">
-      <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="disabled">全选</el-checkbox>
+      <el-checkbox
+        :indeterminate="isIndeterminate"
+        v-model="checkAll"
+        @change="handleCheckAllChange"
+        class="allCheck"
+        :disabled="disabled">全选</el-checkbox>
     </div>
     <el-checkbox-group v-model="checkedData" @change="handleCheckItemChange">
-      <el-scrollbar tag="ul" style="height: 80vh">
+      <el-scrollbar tag="ul" style="height: 75vh">
       <ul>
         <li v-for="(item, index) in fileList" :key="index">
           <div class="box" :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''" @click="fileType(item.ffiletype,item.fcategoryid)">
@@ -95,8 +100,7 @@
 
 <style scoped lang="scss">
   .list {
-    width: 92%;
-    margin: 20px auto;
+    margin: auto;
     justify-content: center;
     min-height: 200px;
     overflow: hidden;
@@ -106,6 +110,9 @@
         .el-icon-sort-down {
           padding: 0 6px;
         }
+      }
+      .allCheck{
+        margin-left: 12px;
       }
     }
     ul {
