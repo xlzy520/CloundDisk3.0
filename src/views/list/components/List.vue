@@ -72,7 +72,7 @@
           case 2:
             event.stopPropagation()
             this.$message({
-              message: '只可以对markdown文件进行预览编辑哦',
+              message: '只可以对markdown文件进行预览编辑哦 ',
               type: 'warning'
             })
             break
