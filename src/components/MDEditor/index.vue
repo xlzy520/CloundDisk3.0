@@ -128,7 +128,21 @@
           center: true
         }).then(({ value }) => {
           markdownData.append('fremarks', value)
-          updateMarkdown(markdownData)
+          updateMarkdown(markdownData).then((res) => {
+            if (res.success) {
+              this.$message({
+                type: 'success',
+                message: '文档保存成功。'
+              })
+              this.closeMkdown()
+              this.$store.dispatch('Refresh')
+            } else {
+              this.$message({
+                type: 'error',
+                message: '文档保存失败。'
+              })
+            }
+          })
         }).catch(() => {
           this.$message({
             type: 'info',
