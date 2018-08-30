@@ -116,7 +116,6 @@
         this.isEditMk = false
       },
       async saveFile() {
-        console.log(this.docValue.file)
         const markdownBlob = new Blob([this.docValue.file], { type: 'text/plain' })
         const markdownFile = new File([markdownBlob], this.docValue.name)
         const markdownData = new FormData()

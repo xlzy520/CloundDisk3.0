@@ -10,7 +10,7 @@ const file = {
     deleteVisible: false,
     detailVisible: false,
     versionVisible: false,
-    fileList: null,
+    fileList: [],
     folderNav: [],
     PreviewVisible: false,
     docValue: '',

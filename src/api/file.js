@@ -2,15 +2,15 @@ import request from '@/utils/request'
 
 export function getDocInfo(id) {
   return request({
-    url: '/api_ldh/djcpsdocument/fileManager/getFile.do',
+    url: '/api_zhq/djcpsdocument/fileManager/getFile.do',
     method: 'get',
-    params: { id: '20180829_RD_MARKDOWN_QKvut' }
+    params: { id }
   })
 }
 
 export function getCategory(id) {
   return request({
-    url: '/api_py/djcpsdocument/category/getCategory.do',
+    url: '/api_zhq/djcpsdocument/category/getCategory.do',
     method: 'post',
     data: {
       fcategoryid: id
@@ -20,7 +20,7 @@ export function getCategory(id) {
 
 export function deleteCategory(categoryids, fparentid) {
   return request({
-    url: '/api_py/djcpsdocument/category/deleteCategory.do',
+    url: '/api_zhq/djcpsdocument/category/deleteCategory.do',
     method: 'post',
     data: {
       list: categoryids,
@@ -52,7 +52,7 @@ export function versionRollback(oldVer, newVer) {
 
 export function updateMarkdown(data) {
   return request({
-    url: '/api_py/djcpsdocument/category/fileUpload.do',
+    url: '/api_zhq/djcpsdocument/category/fileUpload.do',
     method: 'post',
     processData: false,
     contentType: false,
@@ -62,7 +62,7 @@ export function updateMarkdown(data) {
 
 export function downloadFile(id) {
   return request({
-    url: '/api_ldh/djcpsdocument/fileManager/downloadFile.do',
+    url: '/api_zhq/djcpsdocument/fileManager/downloadFile.do',
     method: 'get',
     params: { id }
   })
@@ -93,7 +93,7 @@ export function renameFile(fid, fname, fparentid) {
 
 export function getSearchResult(queryString, categoryName, sort, curPage) {
   return request({
-    url: '/api_oyny/djcpsdocument/search/list.do',
+    url: '/api_zhq/djcpsdocument/search/list.do',
     method: 'post',
     data: {
       queryString: queryString,

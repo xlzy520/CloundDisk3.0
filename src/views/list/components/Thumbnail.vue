@@ -155,7 +155,6 @@
       overflow-x: hidden;
     }
     .empty-block {
-      position: relative;
       min-height: 60px;
       text-align: center;
       width: 100%;

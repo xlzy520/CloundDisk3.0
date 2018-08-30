@@ -130,7 +130,7 @@ export default {
       this.$store.dispatch('GetDocInfo')
     },
     downloadFile() {
-      this.$refs.downloadBtn.href = '/api_ldh/djcpsdocument/fileManager/downloadFile.do?id=' + this.selectedData[0].fcategoryid
+      this.$refs.downloadBtn.href = '/api_zhq/djcpsdocument/fileManager/downloadFile.do?id=' + this.selectedData[0].fcategoryid
       this.$refs.downloadBtn.download = this.selectedData[0].fname
     }
   }

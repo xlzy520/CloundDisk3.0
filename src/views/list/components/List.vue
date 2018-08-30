@@ -73,6 +73,7 @@
             event.stopPropagation()
             this.$store.dispatch('TogglePreviewVisible')
             this.$store.dispatch('GetDocInfo', fcategoryid)
+            console.log(fcategoryid)
             break
         }
       },
