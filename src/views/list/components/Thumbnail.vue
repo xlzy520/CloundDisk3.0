@@ -8,8 +8,8 @@
         class="allCheck"
         :disabled="disabled">全选</el-checkbox>
     </div>
-    <el-checkbox-group v-model="checkedData" @change="handleCheckItemChange">
-      <el-scrollbar tag="ul" style="height: 75vh">
+    <el-scrollbar tag="ul" style="height: 76vh">
+     <el-checkbox-group v-model="checkedData" @change="handleCheckItemChange">
       <ul>
         <li v-for="(item, index) in fileList" :key="index">
           <div class="box" :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''" @click="fileType(item.ffiletype,item.fcategoryid)">
@@ -24,8 +24,8 @@
           </div>
         </li>
       </ul>
-      </el-scrollbar>
-    </el-checkbox-group>
+     </el-checkbox-group>
+    </el-scrollbar>
     <div class="empty-block" v-if="!fileList.length"><span class="empty-text">暂无数据</span></div>
   </div>
 </template>
@@ -171,9 +171,6 @@
         }
       }
     }
-    .el-scrollbar__wrap {
-      overflow-x: hidden;
-    }
     .empty-block {
       min-height: 60px;
       text-align: center;
@@ -187,6 +184,7 @@
         color: #909399;
       }
     }
+
   }
 </style>
 

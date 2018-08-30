@@ -122,15 +122,15 @@
     width: 100%;
     min-width: 980px;
   }
+  .el-scrollbar__wrap{
+    overflow-x: auto;
+  }
   .fileName{
     cursor: pointer;
     line-height: 2;
     &:hover{
       color: #42b983;
     }
-  }
-  .el-scrollbar__wrap {
-    overflow-x: hidden;
   }
   .cell .svg-icon{
     width: 2em;
@@ -144,5 +144,6 @@
       text-decoration: none;
     }
   }
+
 </style>
 
