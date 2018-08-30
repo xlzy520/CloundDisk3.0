@@ -84,11 +84,6 @@ const file = {
     async Refresh({ commit }) {
       const Category = await getCategory(this.getters.parentId)
       if (Category.success) {
-        Message({
-          type: 'success',
-          message: '刷新成功',
-          duration: 1000
-        })
         commit('GET_CATEGORY', Category.data.tableList)
         commit('SET_FOLDERNAV', Category.data.navList)
       }
