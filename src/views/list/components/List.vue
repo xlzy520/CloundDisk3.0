@@ -32,9 +32,9 @@
         </el-table-column>
         <el-table-column prop="fsize" label="大小" sortable :formatter="sizeFormatter"></el-table-column>
         <el-table-column prop="foperator" label="创建者" v-if="!hasSearch"></el-table-column>
-        <el-table-column label="所在目录" v-if="hasSearch">
+        <el-table-column label="所在目录" v-if="hasSearch" key="zhibi">
           <template slot-scope="scope">
-            <span class="fileAddress" @click="enterParentDic(scope.row.fparentid)" :key="scope.row.fparentid">文件位置</span>
+            <span class="fileAddress" @click="enterParentDic(scope.row.fparentid)" :key="scope.row.fcategoryid">文件位置</span>
           </template>
         </el-table-column>
       </el-table>
@@ -73,7 +73,6 @@
             event.stopPropagation()
             this.$store.dispatch('TogglePreviewVisible')
             this.$store.dispatch('GetDocInfo', fcategoryid)
-            console.log(fcategoryid)
             break
         }
       },
