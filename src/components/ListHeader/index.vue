@@ -30,6 +30,9 @@
       </el-tooltip>
     </div>
     <breadcrumb></breadcrumb>
+    <div class="back2FileList">
+      <el-button v-waves type="success" plain size="mini" v-if="hasSearch" @click="back2FileList">返回文件列表</el-button>
+    </div>
   </div>
 </template>
 
@@ -37,14 +40,19 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '../Breadcrumb/index'
 import { addCategory } from '@/api/file'
+import waves from '@/directive/waves/index.js' // 水波纹指令
 export default {
   name: 'ListHeader',
   components: { Breadcrumb },
+  directives: {
+    waves
+  },
   computed: {
     ...mapGetters([
       'selectedData',
       'fileList',
-      'parentId'
+      'parentId',
+      'hasSearch'
     ]),
     isShow() {
       const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length
@@ -101,13 +109,6 @@ export default {
                 message: res.msg
               })
               this.$store.dispatch('Refresh')
-            } else {
-              this.$message({
-                message: res.msg,
-                showClose: true,
-                type: 'error',
-                duration: 2000
-              })
             }
           })
           .catch(() => {
@@ -132,6 +133,9 @@ export default {
     downloadFile() {
       this.$refs.downloadBtn.href = '/api_zhq/djcpsdocument/fileManager/downloadFile.do?id=' + this.selectedData[0].fcategoryid
       this.$refs.downloadBtn.download = this.selectedData[0].fname
+    },
+    back2FileList() {
+      this.$store.dispatch('ToggleSearch', false)
     }
   }
 }
@@ -167,4 +171,10 @@ export default {
       }
     }
 
+  .back2FileList{
+    display: block;
+    position: absolute;
+    right: 50px;
+    top: 45px;
+  }
 </style>
