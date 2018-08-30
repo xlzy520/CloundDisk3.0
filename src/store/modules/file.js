@@ -83,8 +83,15 @@ const file = {
     },
     async Refresh({ commit }) {
       const Category = await getCategory(this.getters.parentId)
-      commit('GET_CATEGORY', Category.data.tableList)
-      commit('SET_FOLDERNAV', Category.data.navList)
+      if (Category.success) {
+        Message({
+          type: 'success',
+          message: '刷新成功',
+          duration: 1000
+        })
+        commit('GET_CATEGORY', Category.data.tableList)
+        commit('SET_FOLDERNAV', Category.data.navList)
+      }
     },
     GetSelectedData({ commit }, data) {
       commit('GET_SELECTEDDATA', data)
@@ -101,9 +108,9 @@ const file = {
           message: '查询成功',
           duration: 1000
         })
+        commit('SETSEARCHLIST', searchList.data)
+        commit('TOGGLE_SEARCH', true)
       }
-      commit('SETSEARCHLIST', searchList.data)
-      commit('TOGGLE_SEARCH', true)
     },
     ToggleSearch({ commit }, data) {
       commit('TOGGLE_SEARCH', data)

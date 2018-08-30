@@ -20,7 +20,6 @@
         :indent="10"
         :expand-on-click-node="false"
         @node-expand="nodeExpand"
-        @node-collapse="nodeCollapse"
         @node-click="handleNodeClick">
         <span class="custom-tree-node" slot-scope="{node,data}">
           <svg-icon  icon-class="1"></svg-icon>
@@ -74,25 +73,19 @@
         this.$store.dispatch('SetParentId', data.fcategoryid)
       },
       async nodeExpand(data, node) {
-        console.log(node)
         let arr = await getCategory(data.fcategoryid)
         arr = arr.data.tableList
-        data.childrenFolder = []
-        if (node.childNodes.length !== arr.length) {
-          if (arr.length >= 1) {
-            for (const item of this.CreateFolderObj(arr)) {
-              this.$refs.folderTree.append(item, node)
-            }
-            node.childNodes.map((item) => {
-              if (item.data.fsortorder === 1) {
-                item.isLeaf = false
-              }
-            })
+        node.childNodes = []
+        if (arr.length >= 1) {
+          for (const item of this.CreateFolderObj(arr)) {
+            this.$refs.folderTree.append(item, node)
           }
+          node.childNodes.map((item) => {
+            if (item.data.fsortorder === 1) {
+              item.isLeaf = false
+            }
+          })
         }
-      },
-      nodeCollapse(data, node) {
-        console.log(node)
       },
       getFolder(arr) {
         return arr.filter((item) => {

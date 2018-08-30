@@ -14,6 +14,7 @@
       name="search"
       title="请输入搜索关键词"
       placeholder="请输入搜索关键词"
+      :maxlength="maxlength"
       :keyEnterFunction="getSearchResult"
       v-model="queryString">
 
@@ -60,7 +61,8 @@ export default {
   },
   data() {
     return {
-      queryString: ''
+      queryString: '',
+      maxlength: 30
     }
   },
   methods: {
