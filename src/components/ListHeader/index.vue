@@ -97,11 +97,15 @@ export default {
       this.$prompt('请输入文件夹名称', '新建文件夹', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        inputPattern: /^[^\/:*?"<>|]+$/,
-        inputErrorMessage: '文件夹名称格式不正确',
-        closeOnClickModal: false
+        inputErrorMessage: '文件夹名称不能为空',
+        closeOnClickModal: false,
+        inputValidator: (value) => {
+          if (value.trim().length === 0) {
+            return '文件夹名称不能为空'
+          }
+        }
       }).then(({ value }) => {
-        addCategory(this.parentId, value)
+        addCategory(this.parentId, value.trim())
           .then(res => {
             if (res.success) {
               this.$message({
