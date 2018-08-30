@@ -8,7 +8,7 @@
       <ul>
         <li v-for="(item, index) in fileList" :key="index">
           <div class="box" :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''" @click="fileType(item.ffiletype,item.fcategoryid)">
-            <div @dblclick.stop="() => {}"><el-checkbox :label="item"></el-checkbox></div>
+            <div @click.stop="() => {}"><el-checkbox :label="item"></el-checkbox></div>
             <svg-icon :icon-class="String(item.ffiletype)" className="icon" />
             <div v-show="item.isEditor">
               <rename-file v-if="selectedData.length >= 1" type="Thumbnail"></rename-file>
@@ -59,6 +59,7 @@
       fileType(type, fcategoryid) {
         switch (type) {
           case 1:
+            event.stopPropagation()
             this.$store.dispatch('GetCategory', fcategoryid)
             this.$store.dispatch('SetParentId', fcategoryid)
             break
@@ -70,6 +71,7 @@
             })
             break
           case 3:
+            event.stopPropagation()
             this.$store.dispatch('TogglePreviewVisible')
             this.$store.dispatch('GetDocInfo')
             break
