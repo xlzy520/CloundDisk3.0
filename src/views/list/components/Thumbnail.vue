@@ -7,7 +7,7 @@
       <el-scrollbar tag="ul" style="height: 80vh">
       <ul>
         <li v-for="(item, index) in fileList" :key="index">
-          <div class="box" :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''" @dblclick="fileType(item.ffiletype,item.fcategoryid)">
+          <div class="box" :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''" @click="fileType(item.ffiletype,item.fcategoryid)">
             <div @dblclick.stop="() => {}"><el-checkbox :label="item"></el-checkbox></div>
             <svg-icon :icon-class="String(item.ffiletype)" className="icon" />
             <div v-show="item.isEditor">
@@ -59,14 +59,19 @@
       fileType(type, fcategoryid) {
         switch (type) {
           case 1:
-            this.$store.dispatch('GetCategory', fcategoryid).then(() => {
-              this.handleCheckItemChange()
-            })
+            this.$store.dispatch('GetCategory', fcategoryid)
             this.$store.dispatch('SetParentId', fcategoryid)
+            break
+          case 2:
+            event.stopPropagation()
+            this.$message({
+              message: '只可以对markdown文件进行预览编辑哦 ',
+              type: 'warning'
+            })
             break
           case 3:
             this.$store.dispatch('TogglePreviewVisible')
-            // this.$store.dispatch('GetDocInfo')
+            this.$store.dispatch('GetDocInfo')
             break
         }
       }
@@ -125,6 +130,7 @@
           height: 140px;
           border-radius: 6px;
           position: absolute;
+          user-select: none;
           &:hover {
             background:#e3ecf76b;
             .el-checkbox {
