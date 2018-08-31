@@ -31,8 +31,6 @@ service.interceptors.response.use(
         type: 'error',
         duration: 2 * 1000
       })
-      console.log(1)
-      // 50008:非法的token; 50012:其他客户端登录了;  50014:Token 过期了;
       if (res.code === 100602) {
         MessageBox.confirm('Token 过期了，您可以取消继续留在该页面，或者重新登录', '确定登出', {
           confirmButtonText: '重新登录',
@@ -51,7 +49,7 @@ service.interceptors.response.use(
   },
   error => {
     console.log(error.response)// for debug
-    error.message = error.message === 'timeout of 5000ms exceeded' ? '连接超时！' : error.message
+    error.message = error.message === 'timeout of 5000ms exceeded' ? '连接服务器超时！' : error.message
     Message({
       message: error.message || error.msg,
       type: 'error',

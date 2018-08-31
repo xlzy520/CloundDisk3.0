@@ -97,6 +97,13 @@
     }
   }
 </script>
+<style lang="scss">
+  .list{
+    .el-scrollbar__wrap{
+      overflow-x: hidden;
+    }
+  }
+</style>
 
 <style scoped lang="scss">
   .list {

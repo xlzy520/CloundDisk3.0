@@ -116,14 +116,6 @@ export default {
               this.$store.dispatch('Refresh')
             }
           })
-          .catch(() => {
-            this.$message({
-              message: '无法连接服务器',
-              showClose: true,
-              type: 'error',
-              duration: 1000
-            })
-          })
       }).catch(() => {
         this.$message({
           type: 'info',

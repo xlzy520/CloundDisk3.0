@@ -14,6 +14,7 @@
         <span class="logo__title">东经云盘</span>
       </div>
       <el-tree
+        style="display: inline-block"
         :data="data"
         :props="defaultProps"
         ref="folderTree"
@@ -104,6 +105,9 @@
 </script>
 
 <style lang="scss">
+  .scrollbar-wrapper.el-scrollbar__wrap{
+
+  }
   .custom-tree-node {
     flex: 1;
     display: flex;

@@ -121,9 +121,9 @@
   .file-content {
     width: 100%;
     min-width: 980px;
-  }
-  .el-scrollbar__wrap{
-    overflow-x: auto;
+    .el-scrollbar__wrap{
+      overflow-x: hidden;
+    }
   }
   .fileName{
     cursor: pointer;
