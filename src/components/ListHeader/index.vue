@@ -125,7 +125,7 @@ export default {
     },
     previewFile() {
       this.$store.dispatch('TogglePreviewVisible')
-      this.$store.dispatch('GetDocInfo')
+      this.$store.dispatch('GetDocInfo', this.selectedData[0].fcategoryid)
     },
     downloadFile() {
       this.$refs.downloadBtn.href = '/api_zhq/djcpsdocument/fileManager/downloadFile.do?id=' + this.selectedData[0].fcategoryid
