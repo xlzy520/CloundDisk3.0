@@ -1,16 +1,15 @@
 <template>
-  <div class="rename-edit">
+  <div class="rename-edit" @click.stop="() => {}">
     <el-input size="small"
               spellcheck="false"
               v-model.trim="value"
               placeholder="请输入内容"
               :style="{width:(type=='List'?'350px':'60px')}"
-              clearable
               autofocus>
     </el-input>
     <span>
         <el-button type="primary" icon="el-icon-check" @click="confirmEdit()"></el-button>
-        <el-button type="primary" icon="el-icon-close" @click="cancelEdit()"></el-button>
+        <el-button type="primary" icon="el-icon-close" @click="cancelEdit()" ></el-button>
       </span>
   </div>
 </template>

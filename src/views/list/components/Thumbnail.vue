@@ -1,12 +1,7 @@
 <template>
   <div class="list">
     <div class="hd">
-      <el-checkbox
-        :indeterminate="isIndeterminate"
-        v-model="checkAll"
-        @change="handleCheckAllChange"
-        class="allCheck"
-        :disabled="disabled">全选</el-checkbox>
+      <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="disabled">全选</el-checkbox>
     </div>
     <el-scrollbar tag="ul" style="height: 76vh">
      <el-checkbox-group v-model="checkedData" @change="handleCheckItemChange">
@@ -19,7 +14,7 @@
               <rename-file v-if="selectedData.length >= 1" type="Thumbnail"></rename-file>
             </div>
             <div class="fileName">
-              <span v-show="!item.isEditor" :title="item.fname ">{{item.fname}}</span>
+              <span v-show="!item.isEditor">{{item.fname}}</span>
             </div>
           </div>
         </li>
@@ -60,12 +55,20 @@
         const checkedCount = value.length
         this.checkAll = checkedCount === this.fileList.length
         this.isIndeterminate = checkedCount > 0 && checkedCount < this.fileList.length
+        this.fileList.forEach(item => {
+          if (item.isEditor !== undefined) {
+            this.$set(item, 'isEditor', false)
+          }
+        })
       },
       fileType(type, fcategoryid) {
         switch (type) {
           case 1:
             this.$store.dispatch('GetCategory', fcategoryid)
             this.$store.dispatch('SetParentId', fcategoryid)
+            if (this.selectedData.length >= 1) {
+              this.handleCheckAllChange()
+            }
             break
           case 2:
             this.$message({

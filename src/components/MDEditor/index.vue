@@ -16,6 +16,7 @@
         <div class="list-detail">
           <div class="detail">
             <mavon-editor
+              ref="md"
               v-model="docValue.file"
               :toolbars="toolbars"
               :externalLink="externalLink"
@@ -24,6 +25,7 @@
               :subfield="isField"
               :defaultOpen="isPreview"
               :toolbarsFlag="barsFlag"
+              @imgAdd="imgAdd"
             />
           </div>
           <!--</div>-->
@@ -151,6 +153,14 @@
             message: '取消输入'
           })
         })
+      },
+      async imgAdd(pos, $file) {
+        var formdata = new FormData()
+        formdata.append('file', $file)
+        formdata.append('fparentid', this.$store.getters.parentId)
+        const imgInfo = await updateMarkdown(formdata)
+        console.log(imgInfo.data.id)
+        this.$refs.md.$img2Url(pos, '/api_zhq/djcpsdocument/fileManager/downloadFile.do?id=' + imgInfo.data.id)
       }
     },
     async mounted() {

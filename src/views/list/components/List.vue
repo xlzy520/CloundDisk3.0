@@ -85,11 +85,7 @@
         })
       },
       clickRow(row) {
-        if (row.isEditor === true) {
-          this.$refs.multipleTable.toggleRowSelection(row, true)
-        } else {
-          this.$refs.multipleTable.toggleRowSelection(row)
-        }
+        this.$refs.multipleTable.toggleRowSelection(row)
       },
       sizeFormatter(row) {
         if (row.fsize !== null) {
