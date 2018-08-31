@@ -5,7 +5,7 @@
     <upload-file></upload-file>
     <delete-file></delete-file>
     <detail v-if="selectedData.length===1"></detail>
-    <version-list v-if="selectedData.length===1"></version-list>
+    <version-list v-if="versionVisible"></version-list>
     <m-d-editor></m-d-editor>
   </div>
 </template>
@@ -31,7 +31,8 @@ export default {
     ...mapGetters([
       'fileList',
       'searchList',
-      'selectedData'
+      'selectedData',
+      'versionVisible'
     ]),
     List() {
       return this.$store.getters.hasSearch === false ? this.fileList : this.searchList.bookList
