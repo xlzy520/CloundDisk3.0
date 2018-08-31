@@ -58,7 +58,7 @@
             创建时间：
           </div>
           <div class="content">
-            {{selectedData[0].fcreatetime}}
+            {{timeCreate}}
           </div>
           <div class="clearfix"></div>
         </div>
@@ -67,7 +67,7 @@
             最后修改人：
           </div>
           <div class="content">
-            {{selectedData[0].editorRealname}}
+            {{selectedData[0].fupdateor}}
           </div>
           <div class="clearfix"></div>
         </div>
@@ -76,7 +76,7 @@
             修改时间：
           </div>
           <div class="content">
-            {{selectedData[0].fupdatetime}}
+            {{timeEdit}}
           </div>
           <div class="clearfix"></div>
         </div>
@@ -98,7 +98,7 @@
 </template>
 <script>
   import { mapGetters } from 'vuex'
-  import { formatSize } from '@/utils/index'
+  import { formatSize, parseTime } from '@/utils/index'
   import { getVersionList } from '@/api/file'
   export default {
     name: 'Detail',
@@ -135,6 +135,12 @@
       },
       size() {
         return formatSize(Number(this.selectedData[0].fsize.replace('B', '')))
+      },
+      timeEdit() {
+        return parseTime(this.selectedData[0].fupdatetime)
+      },
+      timeCreate() {
+        return parseTime(this.selectedData[0].fcreatetime)
       }
     },
     methods: {
