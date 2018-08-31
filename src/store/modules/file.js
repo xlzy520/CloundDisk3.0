@@ -93,7 +93,9 @@ const file = {
     },
     async GetDocInfo({ commit }, fcategoryid) {
       const docInfo = await getDocInfo(fcategoryid)
-      commit('GET_DOC_INFO', docInfo.data)
+      if (docInfo.success) {
+        commit('GET_DOC_INFO', docInfo.data)
+      }
     },
     async SetSearchList({ commit }, queryString) {
       const searchList = await getSearchResult(queryString)
