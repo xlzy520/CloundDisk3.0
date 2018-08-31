@@ -31,7 +31,7 @@
     </el-upload>
 
     <div class="file-desc-label" v-if="updateType">文件描述</div>
-    <el-input type="textarea" v-model.trim="fileDesc" v-if="updateType"></el-input>
+    <el-input type="textarea" v-model="fileDesc" v-if="updateType"></el-input>
     <span slot="footer" class="dialog-footer">
       <el-button size="small"  v-if="!updateType" type="primary" @click="submitUpload" :disabled="btDisable">开始上传</el-button>
       <el-button size="small" v-if="updateType" type="primary" @click="submitUpload" :disabled="btDisable">开始更新</el-button>
@@ -149,21 +149,19 @@ export default {
     },
     onFileChange(file, filelist) {
       this.fileList = filelist
-
       if (file.status === 'ready') {
-        const that = this
         this.$store.dispatch('Refresh')
         this.btDisable = false
         this.currentFile = file
-
         this.uploadData = {
           fparentid: this.parentId
         }
+
         if (this.selectedData.length === 1) {
           this.uploadData = {
             fparentid: this.parentId,
             fcategoryid: this.selectedData[0].fcategoryid,
-            fremarks: that.fileDesc
+            fremarks: this.fileDesc.trim()
           }
         }
       }
