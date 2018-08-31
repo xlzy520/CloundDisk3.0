@@ -13,13 +13,11 @@
       class="upload-demo"
       drag
       :action="uploadFileUrl"
-      :limit="4"
       :on-success="uploadOk"
       :data="uploadData"
       :on-change="onFileChange"
       :auto-upload="false"
       :on-remove="onRemove"
-      :on-exceed="onExceed"
       :show-file-list="true"
       :on-error="onError"
       multiple
@@ -104,13 +102,6 @@ export default {
       if (filelist.length === 0) {
         this.btDisable = true
       }
-    },
-    onExceed(file, filelist) {
-      this.$message({
-        message: '每次只能上传四个文件',
-        type: 'error',
-        duration: 2000
-      })
     },
     submitUpload() {
       if (this.currentFile == null) {
