@@ -21,12 +21,13 @@
           <el-table-column
             prop="fcreator"
             label="创建人"
-            width="90">
+            width="70">
           </el-table-column>
           <el-table-column
             width="145"
             :formatter="formatterTime"
             prop="fupdatetime"
+            sortable
             label="修改时间">
           </el-table-column>
           <el-table-column
