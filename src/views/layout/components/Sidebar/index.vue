@@ -1,5 +1,5 @@
 <template>
-  <el-scrollbar wrapClass="scrollbar-wrapper">
+  <!--<el-scrollbar wrapClass="scrollbar-wrapper">-->
     <el-menu
       mode="vertical"
       :show-timeout="200"
@@ -13,20 +13,23 @@
         <img src="@/assets/logo/logo.png" width="36" height="36" class="logo__img">
         <span class="logo__title">东经云盘</span>
       </div>
-      <el-tree
-        style="display: inline-block"
-        :data="data"
-        :props="defaultProps"
-        ref="folderTree"
-        :indent="10"
-        :expand-on-click-node="false"
-        @node-expand="nodeExpand"
-        @node-click="handleNodeClick">
+      <el-scrollbar style="display: inline-block">
+        <el-tree
+          style="display: inline-block"
+          :data="data"
+          :props="defaultProps"
+          ref="folderTree"
+          :indent="10"
+          :expand-on-click-node="false"
+          @node-expand="nodeExpand"
+          @node-click="handleNodeClick">
         <span class="custom-tree-node" slot-scope="{node,data}">
           <svg-icon  icon-class="1"></svg-icon>
           <span>{{ node.label }}</span>
         </span>
-      </el-tree>
+        </el-tree>
+      </el-scrollbar>
+
       <!--<sidebar-item -->
         <!--v-for="route in routes" -->
         <!--:key="route.name" -->
@@ -34,7 +37,7 @@
         <!--:base-path="route.path">-->
       <!--</sidebar-item>-->
     </el-menu>
-  </el-scrollbar>
+  <!--</el-scrollbar>-->
 </template>
 
 <script>
@@ -105,9 +108,7 @@
 </script>
 
 <style lang="scss">
-  .scrollbar-wrapper.el-scrollbar__wrap{
-
-  }
+  @import "@/styles/variables.scss";
   .custom-tree-node {
     flex: 1;
     display: flex;
@@ -142,4 +143,16 @@
       vertical-align: middle;
     }
   }
+  .logo + .el-scrollbar .el-scrollbar__wrap{
+    width: 13vw;
+    height: 91vh;
+    & + .el-scrollbar__bar.is-horizontal{
+      height: 1.5vh;
+      .el-scrollbar__thumb{
+        background-color: $scrollbarBlue;
+        height: 1.5vh;
+      }
+    }
+  }
+
 </style>
