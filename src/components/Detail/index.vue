@@ -85,7 +85,7 @@
             文件大小：
           </div>
           <div class="content">
-            {{selectedData[0].size}}
+            {{size}}
           </div>
           <div class="clearfix"></div>
         </div>
@@ -98,6 +98,7 @@
 </template>
 <script>
   import { mapGetters } from 'vuex'
+  import { formatSize } from '@/utils/index'
   export default {
     name: 'Detail',
     data() {
@@ -130,6 +131,9 @@
       },
       topTitle() {
         return this.title + '详情'
+      },
+      size() {
+        return formatSize(Number(this.selectedData[0].fsize.replace('B', '')))
       }
     },
     methods: {

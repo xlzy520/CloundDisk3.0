@@ -1,7 +1,6 @@
 <template>
   <div class="file-content clearfix" ref="fileContent">
     <div class="file-list">
-      <img src="/api_zhq/djcpsdocument/fileManager/downloadFile.do?id=20180831_RD_PICTURE_DCID4" width="100" height="100"/>
       <el-scrollbar style="height: 80vh">
       <el-table
         ref="multipleTable"
