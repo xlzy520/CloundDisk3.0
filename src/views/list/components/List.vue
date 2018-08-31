@@ -24,12 +24,7 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column label="修改时间" sortable>
-          <template slot-scope="scope">
-            <i class="el-icon-time"></i>
-            <span style="margin-left: 1px">{{ scope.row.fupdatetime.split(':').slice(0,-1).join(':') }}</span>
-          </template>
-        </el-table-column>
+        <el-table-column label="修改时间" sortable prop="fupdatetime" :formatter="formatterTime"></el-table-column>
         <el-table-column prop="fsize" label="大小" sortable :formatter="sizeFormatter"></el-table-column>
         <el-table-column prop="foperator" label="创建者" v-if="!hasSearch"></el-table-column>
         <el-table-column label="所在目录" v-if="hasSearch" key="zhibi">
@@ -46,7 +41,7 @@
 <script>
   import RenameFile from '@/components/RenameFile'
   import { mapGetters } from 'vuex'
-  import { formatSize } from '@/utils/index'
+  import { formatSize, parseTime } from '@/utils/index'
   export default {
     name: 'List',
     props: {
@@ -105,6 +100,9 @@
         event.stopPropagation()
         this.$store.dispatch('GetCategory', parentId)
         this.$store.dispatch('ToggleSearch', false)
+      },
+      formatterTime(row, column) {
+        return parseTime(row.fupdatetime)
       }
     },
     mounted() {

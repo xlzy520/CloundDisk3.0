@@ -65,8 +65,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import { getVersionList, versionRollback } from '@/api/file'
-  import { parseTime } from '@/utils/index'
-  import { formatSize } from '@/utils/index'
+  import { formatSize, parseTime } from '@/utils/index'
   export default {
     name: 'VersionList',
     computed: {

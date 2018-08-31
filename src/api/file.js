@@ -10,7 +10,7 @@ export function getDocInfo(id) {
 
 export function getCategory(id) {
   return request({
-    url: '/api_zhq/djcpsdocument/category/getCategory.do',
+    url: '/api_py/djcpsdocument/category/getCategory.do',
     method: 'post',
     data: {
       fcategoryid: id
@@ -20,7 +20,7 @@ export function getCategory(id) {
 
 export function deleteCategory(categoryids, fparentid) {
   return request({
-    url: '/api_zhq/djcpsdocument/category/deleteCategory.do',
+    url: '/api_py/djcpsdocument/category/deleteCategory.do',
     method: 'post',
     data: {
       list: categoryids,
