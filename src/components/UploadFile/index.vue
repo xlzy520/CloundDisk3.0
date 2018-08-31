@@ -70,7 +70,7 @@ export default {
       'upload'
     ]),
     uploadFileUrl() {
-      return '/api_zhq/djcpsdocument/category/fileUpload.do?'
+      return '/api_py/djcpsdocument/category/fileUpload.do?'
     },
     title() {
       return this.upload.type === 'upload' ? '文件上传' : '文件更新'
@@ -116,7 +116,7 @@ export default {
       if (this.currentFile == null) {
         return
       }
-
+      this.uploadData.fremarks = this.fileDesc
       this.$refs.upload.submit()
       this.btDisable = true
     },
@@ -160,8 +160,7 @@ export default {
         if (this.selectedData.length === 1) {
           this.uploadData = {
             fparentid: this.parentId,
-            fcategoryid: this.selectedData[0].fcategoryid,
-            fremarks: this.fileDesc.trim()
+            fcategoryid: this.selectedData[0].fcategoryid
           }
         }
       }
