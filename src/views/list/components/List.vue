@@ -20,7 +20,7 @@
             <div v-show="!scope.row.isEditor">
               <svg-icon :icon-class="String(scope.row.ffiletype)"></svg-icon>
               <span class="fileName"
-                    @click="fileType(scope.row.ffiletype,scope.row.fcategoryid)">{{ scope.row.fname }}</span>
+                    @click.stop="fileType(scope.row.ffiletype,scope.row.fcategoryid)">{{ scope.row.fname }}</span>
             </div>
           </template>
         </el-table-column>
@@ -65,20 +65,18 @@
       fileType(type, fcategoryid) {
         switch (type) {
           case 1:
-            event.stopPropagation()
             this.$store.dispatch('GetCategory', fcategoryid)
             this.$store.dispatch('SetParentId', fcategoryid)
             break
           case 2:
-            event.stopPropagation()
             this.$message({
               message: '只可以对markdown文件进行预览编辑哦 ',
               type: 'warning'
             })
             break
           case 3:
-            event.stopPropagation()
             this.$store.dispatch('TogglePreviewVisible')
+            console.log(fcategoryid)
             this.$store.dispatch('GetDocInfo', fcategoryid)
             break
         }

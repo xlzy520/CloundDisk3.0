@@ -75,7 +75,7 @@
             break
           case 3:
             this.$store.dispatch('TogglePreviewVisible')
-            this.$store.dispatch('GetDocInfo')
+            this.$store.dispatch('GetDocInfo', fcategoryid)
             break
         }
       }
@@ -119,7 +119,7 @@
         }
       }
       .allCheck{
-        margin-left: 12px;
+        margin-left: 1.5vw;
       }
     }
     ul {
