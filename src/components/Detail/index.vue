@@ -22,7 +22,7 @@
             当前版本：
           </div>
           <div class="content">
-            {{selectedData[0].fname}}
+            {{detail.newestVersion}}
           </div>
           <div class="clearfix"></div>
         </div>
@@ -40,7 +40,7 @@
             版本描述：
           </div>
           <div class="content">
-            {{selectedData[0].desc}}
+            {{detail.fremarks}}
           </div>
           <div class="clearfix"></div>
         </div>
@@ -99,6 +99,7 @@
 <script>
   import { mapGetters } from 'vuex'
   import { formatSize } from '@/utils/index'
+  import { getVersionList } from '@/api/file'
   export default {
     name: 'Detail',
     data() {
@@ -139,7 +140,23 @@
     methods: {
       dialogClose() {
         this.$store.dispatch('ToggleDetailVisible')
+      },
+      async requestData() {
+        if (this.selectedData.length === 1) {
+          const versionListInfo = await getVersionList(this.selectedData[0].fname, this.$store.getters.parentId)
+          if (versionListInfo.success) {
+            versionListInfo.data.filter((item) => {
+              if (item.fdisplay) {
+                this.detail.newestVersion = item.fversion
+                this.detail.fremarks = item.fremarks
+              }
+            })
+          }
+        }
       }
+    },
+    mounted() {
+      this.requestData()
     }
   }
 </script>
