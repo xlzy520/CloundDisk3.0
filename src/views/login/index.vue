@@ -84,7 +84,7 @@ export default {
             this.$message({
               message: '登录成功',
               type: 'success',
-              duration: 2000
+              duration: 1000
             })
           }).catch(() => {
             this.loading = false

@@ -39,7 +39,8 @@
             if (editInfo.success) {
               this.$message({
                 message: '文件夹重命名成功',
-                type: 'success'
+                type: 'success',
+                duration: 1000
               })
               row[0].isEditor = false
               this.$set(this.selectedData[0], 'fname', this.value)

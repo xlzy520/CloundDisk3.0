@@ -91,7 +91,7 @@ export default {
         message: msg,
         showClose: true,
         type: 'error',
-        duration: 6000
+        duration: 1000
       })
       this.$store.dispatch('ToggleUploadVisible')
       this.$refs.upload.clearFiles()
@@ -116,7 +116,7 @@ export default {
         this.$message({
           message: '文件上传成功',
           type: 'success',
-          duration: 2000
+          duration: 1000
         })
         this.$store.dispatch('ToggleUploadVisible')
         this.$refs.upload.clearFiles()
@@ -131,7 +131,7 @@ export default {
           message: msg,
           showClose: true,
           type: 'error',
-          duration: 6000
+          duration: 1000
         })
         this.$store.dispatch('ToggleUploadVisible')
         this.$refs.upload.clearFiles()
@@ -177,7 +177,7 @@ export default {
         this.$message({
           message: '文件上传被中止',
           type: 'warning',
-          duration: 2000
+          duration: 1000
         })
       }
       this.$store.dispatch('ToggleUploadVisible')

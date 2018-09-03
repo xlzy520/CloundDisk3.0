@@ -70,7 +70,7 @@
               this.$message({
                 message: res.msg,
                 type: 'success',
-                duration: 2000
+                duration: 1000
               })
               this.deleting = false
               this.$store.dispatch('Refresh')
@@ -79,7 +79,7 @@
                 message: res.msg,
                 showClose: true,
                 type: 'error',
-                duration: 6000
+                duration: 1000
               })
             }
           })
@@ -90,7 +90,7 @@
               message: '无法连接服务器',
               showClose: true,
               type: 'error',
-              duration: 6000
+              duration: 1000
             })
             this.$store.dispatch('ToggleDeleteVisible')
           })
