@@ -35,7 +35,7 @@
         const row = this.selectedData
         if (row.length >= 1) {
           try {
-            const editInfo = await renameFile(row[0].fcategoryid, this.value, row[0].fparentid)
+            const editInfo = await renameFile(row[0].fcategoryid, this.value, row[0].fparentid, row[0].ffiletype)
             if (editInfo.success) {
               this.$message({
                 message: '文件夹重命名成功',
