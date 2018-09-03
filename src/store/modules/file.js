@@ -42,6 +42,10 @@ const file = {
       state.parentId = data
     },
     SET_FOLDERNAV: (state, data) => {
+      data.unshift({
+        fcategoryid: '0',
+        fname: '研发中心'
+      })
       state.folderNav = data
     },
     GET_SELECTEDDATA: (state, data) => {
