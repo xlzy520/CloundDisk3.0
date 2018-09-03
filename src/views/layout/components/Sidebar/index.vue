@@ -23,7 +23,7 @@
           :expand-on-click-node="false"
           @node-expand="nodeExpand"
           @node-click="handleNodeClick">
-        <span class="custom-tree-node" slot-scope="{node,data}">
+        <span class="custom-tree-node" slot-scope="{node,data}" :title="node.label">
           <svg-icon  icon-class="1"></svg-icon>
           <span>{{ node.label }}</span>
         </span>
@@ -149,7 +149,7 @@
     & + .el-scrollbar__bar.is-horizontal{
       height: 1.5vh;
       .el-scrollbar__thumb{
-        background-color: $scrollbarBlue;
+        background-color: rgba(64,158,255,.8);
         height: 1.5vh;
       }
     }
