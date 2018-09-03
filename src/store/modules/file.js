@@ -95,6 +95,7 @@ const file = {
       const docInfo = await getDocInfo(fcategoryid)
       if (docInfo.success) {
         commit('GET_DOC_INFO', docInfo.data)
+        commit('TOGGLE_PREVIEWVISIBLE')
       }
     },
     async SetSearchList({ commit }, queryString) {

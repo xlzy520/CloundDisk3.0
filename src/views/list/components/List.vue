@@ -71,8 +71,6 @@
             })
             break
           case 3:
-            this.$store.dispatch('TogglePreviewVisible')
-            console.log(fcategoryid)
             this.$store.dispatch('GetDocInfo', fcategoryid)
             break
         }
