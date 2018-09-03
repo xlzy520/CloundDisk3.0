@@ -15,7 +15,7 @@
       </div>
       <el-scrollbar style="display: inline-block">
         <el-tree
-          style="display: inline-block"
+          style="display: inline-block;min-width: 13vw"
           :data="data"
           :props="defaultProps"
           ref="folderTree"
@@ -146,6 +146,8 @@
   .logo + .el-scrollbar .el-scrollbar__wrap{
     width: 13vw;
     height: 91vh;
+    margin-right: 0!important;
+    overflow-y: hidden;
     & + .el-scrollbar__bar.is-horizontal{
       height: 1.5vh;
       .el-scrollbar__thumb{
