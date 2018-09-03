@@ -1,7 +1,12 @@
 <template>
   <div class="list">
     <div class="hd">
-      <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="disabled">全选</el-checkbox>
+      <el-checkbox
+        :indeterminate="isIndeterminate"
+        v-model="checkAll"
+        @change="handleCheckAllChange"
+        class="allCheck"
+        :disabled="disabled">全选</el-checkbox>
     </div>
     <el-scrollbar tag="ul" style="height: 76vh">
      <el-checkbox-group v-model="checkedData" @change="handleCheckItemChange">
@@ -66,9 +71,6 @@
           case 1:
             this.$store.dispatch('GetCategory', fcategoryid)
             this.$store.dispatch('SetParentId', fcategoryid)
-            if (this.selectedData.length >= 1) {
-              this.handleCheckAllChange()
-            }
             break
           case 2:
             this.$message({
@@ -78,7 +80,6 @@
             })
             break
           case 3:
-            this.$store.dispatch('TogglePreviewVisible')
             this.$store.dispatch('GetDocInfo', fcategoryid)
             break
         }
