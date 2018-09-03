@@ -4,7 +4,7 @@
       <el-button type="primary" icon="el-icon-refresh" @click="refresh">刷新</el-button>
       <el-button type="primary" icon="el-icon-upload" @click="uploadFile">上传文件</el-button>
       <el-button type="primary" icon="el-icon-plus" @click="newFolder">新建文件夹</el-button>
-      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-document" @click="previewFile">预览</el-button>
+      <el-button type="primary" v-if="[3].indexOf(isShow) > -1" icon="el-icon-document" @click="previewFile">预览</el-button>
       <a
         class="el-button el-button--primary"
         v-if="[2].indexOf(isShow) > -1"
