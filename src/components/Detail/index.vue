@@ -105,7 +105,10 @@
     data() {
       return {
         isLoad: true,
-        detail: {}
+        detail: {
+          newestVersion: '',
+          fremarks: ''
+        }
       }
     },
     computed: {
@@ -148,7 +151,7 @@
         this.$store.dispatch('ToggleDetailVisible')
       },
       async requestData() {
-        if (this.selectedData.length === 1) {
+        if (this.selectedData.length === 1 && this.detailVisible === true) {
           const versionListInfo = await getVersionList(this.selectedData[0].fname, this.$store.getters.parentId)
           if (versionListInfo.success) {
             versionListInfo.data.filter((item) => {
@@ -159,6 +162,7 @@
             })
           }
         }
+        console.log(this.detail)
       }
     },
     mounted() {

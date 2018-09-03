@@ -4,7 +4,7 @@
     <component :is="component" :fileList="List"></component>
     <upload-file></upload-file>
     <delete-file></delete-file>
-    <detail v-if="selectedData.length===1"></detail>
+    <detail v-if="detailVisible"></detail>
     <version-list v-if="versionVisible"></version-list>
     <m-d-editor></m-d-editor>
   </div>
@@ -32,6 +32,7 @@ export default {
       'fileList',
       'searchList',
       'selectedData',
+      'detailVisible',
       'versionVisible'
     ]),
     List() {

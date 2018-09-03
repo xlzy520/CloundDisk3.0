@@ -104,7 +104,7 @@
         }
       },
       async requestData() {
-        if (this.selectedData.length === 1) {
+        if (this.selectedData.length === 1 && this.versionVisible === true) {
           const versionListInfo = await getVersionList(this.selectedData[0].fname, this.$store.getters.parentId)
           this.tableData = versionListInfo.data
         }
