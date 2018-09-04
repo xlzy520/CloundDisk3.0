@@ -202,8 +202,11 @@ export default {
       color: #7d7b7b;
       position: fixed;
       z-index: 200;
-      li:hover{
-        background: #e2edf9;
+      li{
+        cursor: pointer;
+        &:hover{
+          background: #e2edf9;
+        }
       }
       .disabled {
         color: #bbbbbb;
