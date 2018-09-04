@@ -15,13 +15,13 @@
         </div>
       </div>
       <div class="info-panel">
-        <span class="info" v-if="deleting==true">
+        <span class="info" v-if="deleting===true">
           <i class="el-icon-loading"></i> 正在删除...
         </span>
-        <span class="info2" v-if="deleteInfo!=''">
+        <span class="info2" v-if="deleteInfo!==''">
           {{deleteInfo}}
         </span>
-        <span class="err" v-if="err != ''">
+        <span class="err" v-if="err !== ''">
           {{err}}
         </span>
       </div>
