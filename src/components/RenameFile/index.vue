@@ -4,7 +4,9 @@
               spellcheck="false"
               v-model.trim="value"
               placeholder="请输入内容"
-              :style="{width:(type=='List'?'350px':'60px')}"
+              ref="reName"
+              :style="{width:(type==='List'?'350px':'60px')}"
+              @focus="selection($event)"
               autofocus>
     </el-input>
     <span>
@@ -54,10 +56,16 @@
         if (this.selectedData.length >= 1) {
           this.selectedData[0].isEditor = false
         }
+      },
+      selection(event) {
+        const value = event.currentTarget.value
+        const dotIndex = value.lastIndexOf('.')
+        event.currentTarget.setSelectionRange(0, dotIndex)
       }
     },
     mounted() {
       this.value = this.selectedData[0].fname
+      document.querySelector('.rename-edit input').focus()
     }
   }
 </script>
