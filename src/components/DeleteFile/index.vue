@@ -86,12 +86,6 @@
           .catch(err => {
             console.log(err)
             this.deleting = false
-            this.$message({
-              message: '无法连接服务器',
-              showClose: true,
-              type: 'error',
-              duration: 1000
-            })
             this.$store.dispatch('ToggleDeleteVisible')
           })
       }
