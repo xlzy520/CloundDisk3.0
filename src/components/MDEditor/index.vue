@@ -158,7 +158,7 @@
       async imgAdd(pos, $file) {
         var formdata = new FormData()
         formdata.append('file', $file)
-        formdata.append('fparentid', this.$store.getters.parentId)
+        formdata.append('fparentid', '1')
         const imgInfo = await updateMarkdown(formdata)
         console.log(imgInfo.data.id)
         this.$refs.md.$img2Url(pos, '/api_zhq/djcpsdocument/fileManager/downloadFile.do?id=' + imgInfo.data.id)
