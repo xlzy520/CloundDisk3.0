@@ -70,7 +70,7 @@
         </el-table>
       </div>
       <div slot="footer" class="dialog-footer">
-        <div class="diff-select clearfix" v-if="selectedData[0].ffiletype === 3">
+        <div class="diff-select clearfix" v-if="selectedData[0].ffiletype === 3&&tableData.length>1">
           <el-select v-model="oldVersion" filterable placeholder="请选择旧版本" size="small">
             <el-option
               v-for="item in tableData"
@@ -152,7 +152,7 @@
           this.tableData = versionListInfo.data
           if (this.newVersion === '' && this.oldVersion === '') {
             this.newVersion = versionListInfo.data[0].fversion
-            this.oldVersion = versionListInfo.data[versionListInfo.data.length - 1].fversion
+            this.oldVersion = versionListInfo.data[1].fversion
           }
         }
       },
