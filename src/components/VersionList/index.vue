@@ -113,6 +113,7 @@
         },
         set() {
           this.$store.dispatch('ToggleVersionVisible')
+          this.$store.dispatch('Refresh')
         }
       },
       ...mapGetters([
@@ -125,8 +126,14 @@
         tableData: [],
         oldStr: '',
         newStr: '',
-        oldVersion: '',
-        newVersion: ''
+        oldVersion: {
+          label: '',
+          value: ''
+        },
+        newVersion: {
+          label: '',
+          value: ''
+        }
       }
     },
     methods: {
@@ -136,6 +143,7 @@
       },
       dialogClose() {
         this.$store.dispatch('ToggleVersionVisible')
+        this.$store.dispatch('Refresh')
       },
       async rollBack(newVer) {
         if (this.selectedData.length === 1) {
@@ -150,9 +158,11 @@
         if (this.selectedData.length === 1 && this.versionVisible === true) {
           const versionListInfo = await getVersionList(this.selectedData[0].fname, this.$store.getters.parentId)
           this.tableData = versionListInfo.data
-          if (this.newVersion === '' && this.oldVersion === '') {
-            this.newVersion = versionListInfo.data[0].fversion
-            this.oldVersion = versionListInfo.data[1].fversion
+          if (this.newVersion.value === '' && this.oldVersion.value === '') {
+            this.newVersion.label = versionListInfo.data[0].fversion
+            this.newVersion.value = versionListInfo.data[0].filesgin
+            this.oldVersion.label = versionListInfo.data[1].fversion
+            this.oldVersion.value = versionListInfo.data[1].filesgin
           }
         }
       },
@@ -168,7 +178,7 @@
         this.$store.dispatch('GetDocInfo', id)
       },
       async diff() {
-        if (this.oldVersion === '' || this.newVersion === '') {
+        if (this.oldVersion.value === '' || this.newVersion.value === '') {
           this.$message({
             message: '请选择旧版本或者新版本',
             type: 'warning',
@@ -177,8 +187,8 @@
           return
         }
         try {
-          const oldVersion = await getDocInfo(this.oldVersion)
-          const newVersion = await getDocInfo(this.newVersion)
+          const oldVersion = await getDocInfo(this.oldVersion.value)
+          const newVersion = await getDocInfo(this.newVersion.value)
           this.oldStr = oldVersion.data.file
           this.newStr = newVersion.data.file
           this.versionDiff = true
@@ -190,8 +200,10 @@
           })
           this.versionDiff = false
         } finally {
-          this.oldVersion = ''
-          this.newVersion = ''
+          this.oldVersion.value = ''
+          this.oldVersion.label = ''
+          this.newVersion.value = ''
+          this.newVersion.label = ''
         }
       }
     },
