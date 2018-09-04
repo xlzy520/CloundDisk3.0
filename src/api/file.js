@@ -79,14 +79,15 @@ export function addCategory(parentid, name) {
   })
 }
 
-export function renameFile(fid, fname, fparentid) {
+export function renameFile(fid, fname, fparentid, ffiletype) {
   return request({
     url: '/api_zhq/djcpsdocument/category/setCategoryName.do',
     method: 'post',
     data: {
       fcategoryid: fid,
       fname: fname,
-      fparentid: fparentid
+      fparentid: fparentid,
+      ffiletype: ffiletype
     }
   })
 }

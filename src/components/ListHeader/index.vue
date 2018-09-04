@@ -4,18 +4,18 @@
       <el-button type="primary" icon="el-icon-refresh" @click="refresh">刷新</el-button>
       <el-button type="primary" icon="el-icon-upload" @click="uploadFile">上传文件</el-button>
       <el-button type="primary" icon="el-icon-plus" @click="newFolder">新建文件夹</el-button>
-      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-document" @click="previewFile">预览</el-button>
+      <el-button type="primary" v-if="[4].indexOf(isShow) > -1" icon="el-icon-document" @click="previewFile">预览</el-button>
       <a
         class="el-button el-button--primary"
-        v-if="[2].indexOf(isShow) > -1"
+        v-if="[2,4].indexOf(isShow) > -1"
         icon="el-icon-download"
         @click="downloadFile"
         ref="downloadBtn"><i class="el-icon-download"></i>下载</a>
-      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-edit" @click="updateFile">更新</el-button>
-      <el-button type="primary" v-if="[2].indexOf(isShow) > -1" icon="el-icon-tickets" @click="showVersion">版本</el-button>
-      <el-button type="primary" v-if="[1, 2].indexOf(isShow) > -1" icon="el-icon-edit-outline" @click="rename">重命名</el-button>
-      <el-button type="primary" v-if="[1, 2, 3].indexOf(isShow) > -1" icon="el-icon-delete" @click="deleteFile">删除</el-button>
-      <el-button type="primary" v-if="[1, 2].indexOf(isShow) > -1" icon="el-icon-info" @click="getDetail">详情</el-button>
+      <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-edit" @click="updateFile">更新</el-button>
+      <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-tickets" @click="showVersion">版本</el-button>
+      <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-edit-outline" @click="rename">重命名</el-button>
+      <el-button type="primary" v-if="[1, 2, 3, 4].indexOf(isShow) > -1" icon="el-icon-delete" @click="deleteFile">删除</el-button>
+      <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-info" @click="getDetail">详情</el-button>
     </div>
     <div class="action-wrap">
       <el-tooltip class="item" effect="dark" content="列表" placement="bottom">
@@ -56,13 +56,16 @@ export default {
     ]),
     isShow() {
       const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length
-      const fileCheckedCount = this.selectedData.filter(item => item.ffiletype !== 1).length
+      const fileCheckedCount = this.selectedData.filter(item => item.ffiletype === 2).length
+      const previewCheckedCount = this.selectedData.filter(item => item.ffiletype !== 1 && item.ffiletype !== 2).length
       if (this.selectedData.length > 1) {
         return 3
       } else if (folderCheckedCount === 1 && fileCheckedCount === 0) {
         return 1
       } else if (folderCheckedCount === 0 && fileCheckedCount === 1) {
         return 2
+      } else if (folderCheckedCount === 0 && fileCheckedCount === 0 && previewCheckedCount === 1) {
+        return 4
       }
     }
   },
