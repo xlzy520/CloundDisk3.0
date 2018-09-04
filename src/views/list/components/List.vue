@@ -12,7 +12,7 @@
         @row-click="clickRow">
         <el-table-column type="selection" width="55"></el-table-column>
 
-        <el-table-column label="名称" sortable width="480px">
+        <el-table-column label="名称" width="480px">
           <template slot-scope="scope">
             <div v-show="scope.row.isEditor">
              <rename-file v-if="selectedData.length >= 1" type="List"></rename-file>
@@ -25,7 +25,7 @@
           </template>
         </el-table-column>
         <el-table-column label="修改时间" sortable prop="fupdatetime" :formatter="formatterTime"></el-table-column>
-        <el-table-column prop="fsize" label="大小" sortable :formatter="sizeFormatter"></el-table-column>
+        <el-table-column prop="fsize" label="大小" :formatter="sizeFormatter"></el-table-column>
         <el-table-column prop="foperator" label="创建者" v-if="!hasSearch"></el-table-column>
         <el-table-column label="所在目录" v-if="hasSearch" key="zhibi">
           <template slot-scope="scope">
