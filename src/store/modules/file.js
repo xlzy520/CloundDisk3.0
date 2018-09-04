@@ -11,12 +11,14 @@ const file = {
     deleteVisible: false,
     detailVisible: false,
     versionVisible: false,
+    menuVisible: false,
     fileList: [],
     folderNav: [],
     PreviewVisible: false,
     docValue: '',
     searchList: null,
-    hasSearch: false
+    hasSearch: false,
+    coordinate: []
   },
   mutations: {
     TOGGLE_UPLOADVISIBLE: (state, data) => {
@@ -34,6 +36,10 @@ const file = {
     },
     TOGGLE_PREVIEWVISIBLE: state => {
       state.PreviewVisible = !state.PreviewVisible
+    },
+    RIGHT_TOGGLE_MENUVISIBLE: (state, data) => {
+      state.coordinate = data
+      state.menuVisible = state.coordinate[2]
     },
     GET_CATEGORY: (state, data) => {
       state.fileList = data
@@ -72,6 +78,9 @@ const file = {
     },
     TogglePreviewVisible: ({ commit }) => {
       commit('TOGGLE_PREVIEWVISIBLE')
+    },
+    RightTogglemenuVisible: ({ commit }, data) => {
+      commit('RIGHT_TOGGLE_MENUVISIBLE', data)
     },
     async GetCategory({ commit }, fcategoryid) {
       const Category = await getCategory(fcategoryid)

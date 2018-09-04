@@ -9,7 +9,8 @@
         highlight-current-row
         :default-sort="{prop: 'date', order: 'descending'}"
         @selection-change="handleSelectionChange"
-        @row-click="clickRow">
+        @row-click="clickRow"
+        @row-contextmenu="showMenu">
         <el-table-column type="selection" width="55"></el-table-column>
 
         <el-table-column label="名称" width="480px">
@@ -77,6 +78,7 @@
       },
       handleSelectionChange(rows) {
         this.$store.dispatch('GetSelectedData', rows)
+        this.$store.dispatch('RightTogglemenuVisible', [false])
         this.fileList.forEach(item => {
           if (item.isEditor !== undefined) {
             this.$set(item, 'isEditor', false)
@@ -98,9 +100,26 @@
       },
       formatterTime(row, column) {
         return parseTime(row.fupdatetime)
+      },
+      showMenu(row) {
+        event.preventDefault()
+        const x = event.clientX
+        let y = ''
+        if (event.clientY <= (window.innerHeight / 2)) {
+          y = event.clientY
+        } else {
+          y = event.clientY - 213
+        }
+        this.$refs.multipleTable.toggleRowSelection(row, true)
+        this.$store.dispatch('RightTogglemenuVisible', [true, x, y])
+        document.getElementsByTagName('body')[0].addEventListener('click', (e) => {
+          if (!document.getElementById('menu-btn').contains(e.target)) {
+            this.$store.dispatch('RightTogglemenuVisible', [false])
+          }
+        })
       }
     },
-    mounted() {
+    async mounted() {
       this.selectedData.forEach(row => {
         this.$refs.multipleTable.toggleRowSelection(row)
       })

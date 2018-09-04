@@ -17,6 +17,15 @@
       <el-button type="primary" v-if="[1, 2, 3, 4].indexOf(isShow) > -1" icon="el-icon-delete" @click="deleteFile">删除</el-button>
       <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-info" @click="getDetail">详情</el-button>
     </div>
+    <ul id="menu-btn" v-show="menuVisible" :style="{top:(coordinate[2]+'px'),left:(coordinate[1]+'px')}">
+      <li :class="{disabled:([1, 2, 4].indexOf(isShow) > -1?false:true)}" @click.stop="fileType(selectedData[0].ffiletype,selectedData[0].fcategoryid)">打开</li>
+      <li :class="{disabled:([2, 4].indexOf(isShow) > -1?false:true)}" @click="downloadFile2">下载</li>
+      <li :class="{disabled:([2, 4].indexOf(isShow) > -1?false:true)}" @click="updateFile">更新</li>
+      <li :class="{disabled:([2, 4].indexOf(isShow) > -1?false:true)}" @click="showVersion">版本</li>
+      <li :class="{disabled:([1, 2, 4].indexOf(isShow) > -1?false:true)}" @click="rename">重命名</li>
+      <li :class="{disabled:([1, 2, 3, 4].indexOf(isShow) > -1?false:true)}" @click="deleteFile">删除</li>
+      <li :class="{disabled:([1, 2, 4].indexOf(isShow) > -1?false:true)}" @click="getDetail">详情</li>
+    </ul>
     <div class="action-wrap">
       <el-tooltip class="item" effect="dark" content="列表" placement="bottom">
         <div class="action-item" @click="typeShow('List')">
@@ -52,7 +61,9 @@ export default {
       'selectedData',
       'fileList',
       'parentId',
-      'hasSearch'
+      'hasSearch',
+      'menuVisible',
+      'coordinate'
     ]),
     isShow() {
       const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length
@@ -70,6 +81,26 @@ export default {
     }
   },
   methods: {
+    fileType(type, fcategoryid) {
+      this.$store.dispatch('RightTogglemenuVisible', [false])
+      switch (type) {
+        case 1:
+          this.$store.dispatch('GetCategory', fcategoryid)
+          this.$store.dispatch('SetParentId', fcategoryid)
+          break
+        case 2:
+          this.$message({
+            message: '只可以对markdown文件进行预览编辑哦 ',
+            type: 'warning'
+          })
+          break
+        case 3:
+          this.$store.dispatch('TogglePreviewVisible')
+          console.log(fcategoryid)
+          this.$store.dispatch('GetDocInfo', fcategoryid)
+          break
+      }
+    },
     typeShow(type) {
       this.$emit('list_type_toggle', type)
     },
@@ -95,6 +126,7 @@ export default {
       if (this.selectedData.length === 1) {
         this.$set(this.selectedData[0], 'isEditor', true)
       }
+      this.$store.dispatch('RightTogglemenuVisible', [false])
     },
     newFolder() {
       this.$prompt('请输入文件夹名称', '新建文件夹', {
@@ -134,6 +166,10 @@ export default {
       this.$refs.downloadBtn.href = '/api_zhq/djcpsdocument/fileManager/downloadFile.do?id=' + this.selectedData[0].fcategoryid
       this.$refs.downloadBtn.download = this.selectedData[0].fname
     },
+    downloadFile2() {
+      this.downloadFile()
+      this.$refs.downloadBtn.click()
+    },
     back2FileList() {
       this.$store.dispatch('ToggleSearch', false)
     }
@@ -152,6 +188,26 @@ export default {
       text-align: left;
       .el-button {
         padding: 6px 8px;
+      }
+    }
+    #menu-btn{
+      list-style: none;
+      background: #fbfcff;
+      height: 213px;
+      line-height: 30px;
+      width: 100px;
+      text-align: center;
+      border-radius: 4px;
+      box-shadow: 0px 2px 5px #a9a7a7;
+      color: #7d7b7b;
+      position: fixed;
+      z-index: 200;
+      li:hover{
+        background: #e2edf9;
+      }
+      .disabled {
+        color: #bbbbbb;
+        pointer-events: none;
       }
     }
   }
