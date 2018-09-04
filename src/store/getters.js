@@ -17,6 +17,8 @@ const getters = {
   PreviewVisible: state => state.file.PreviewVisible,
   docValue: state => state.file.docValue,
   searchList: state => state.file.searchList,
-  hasSearch: state => state.file.hasSearch
+  hasSearch: state => state.file.hasSearch,
+  menuVisible: state => state.file.menuVisible,
+  coordinate: state => state.file.coordinate
 }
 export default getters
