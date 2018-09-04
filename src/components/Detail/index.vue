@@ -26,15 +26,6 @@
           </div>
           <div class="clearfix"></div>
         </div>
-        <div class="detail-item" v-if="isFolder">
-          <div class="label">
-            文件夹描述：
-          </div>
-          <div class="content">
-            {{selectedData[0].desc}}
-          </div>
-          <div class="clearfix"></div>
-        </div>
         <div class="detail-item" v-if="!isFolder">
           <div class="label">
             版本描述：

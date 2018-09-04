@@ -6,7 +6,15 @@
       :modal-append-to-body="false"
       custom-class="version-list"
       :close-on-click-modal="true"
-      width="650px">
+      width="750px">
+      <vue-code-diff
+        :old-string="oldStr"
+        :new-string="newStr"
+        :context="10"
+        style="min-height: 70vh"
+        outputFormat="side-by-side"
+        v-if="versionDiff"
+        class="diff"></vue-code-diff>
       <div class="file-list">
         <el-table
           :data="tableData"
@@ -42,7 +50,7 @@
           </el-table-column>
 
           <el-table-column
-            width="80"
+            width="120"
             label="操作">
             <template slot-scope="scope">
               <a @click="downloadVersion(scope.row.filesgin, $event, scope.row.filename, scope.row.fversion)">下载</a>
@@ -50,14 +58,33 @@
                 href="javascript:void(0)"
                 @click="rollBack(scope.row.filesgin)"
                 title="设为最新版本" v-if="!scope.row.fdisplay">回退</a>
+              <a size="mini" @click="previewFile(scope.row.filesgin)">查看</a>
             </template>
           </el-table-column>
         </el-table>
       </div>
-
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogClose" size="small" type="primary">关闭</el-button>
-      </span>
+      <div slot="footer" class="dialog-footer">
+        <div class="diff clearfix">
+          <el-select v-model="oldVersion" filterable placeholder="请选择旧版本" size="small">
+            <el-option
+              v-for="item in tableData"
+              :key="item.value"
+              :label="item.fversion"
+              :value="item.filesgin">
+            </el-option>
+          </el-select>
+          <el-select v-model="newVersion" filterable placeholder="请选择新版本" size="small">
+            <el-option
+              v-for="item in tableData"
+              :key="item.value"
+              :label="item.fversion"
+              :value="item.filesgin">
+            </el-option>
+          </el-select>
+          <el-button @click="diff" size="small" type="success">版本对比</el-button>
+        </div>
+        <el-button @click="dialogClose" size="small" type="warning">关闭</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -66,8 +93,13 @@
   import { mapGetters } from 'vuex'
   import { getVersionList, versionRollback } from '@/api/file'
   import { formatSize, parseTime } from '@/utils/index'
+  import vueCodeDiff from 'vue-code-diff'
+
   export default {
     name: 'VersionList',
+    components: {
+      vueCodeDiff
+    },
     computed: {
       versionVisible: {
         get() {
@@ -83,7 +115,12 @@
     },
     data() {
       return {
-        tableData: []
+        versionDiff: false,
+        tableData: [],
+        oldStr: '',
+        newStr: '',
+        oldVersion: '',
+        newVersion: ''
       }
     },
     methods: {
@@ -116,6 +153,13 @@
         if (row.filesize !== null) {
           return formatSize(Number(row.filesize.replace('B', '')))
         }
+      },
+      previewFile(id) {
+        this.$store.dispatch('GetDocInfo', id)
+      },
+      diff() {
+
+        // this.versionDiff = true
       }
     },
     mounted() {
@@ -128,20 +172,25 @@
   .version-list .el-dialog__body {
     padding: 10px 20px !important;
   }
+
   .version-list .el-dialog__header {
     padding: 10px 20px 5px 20px !important;
   }
+
   .version-list .el-form-item {
     margin-bottom: 5px !important;
   }
+
   .version-list .el-dialog__headerbtn {
-    top:14px;
+    top: 14px;
   }
+
   .version-list .tooltip {
     color: #a00;
     font-size: 12px;
     padding-right: 10px;
   }
+
   .version-list .file-list {
 
     border: 1px solid #ddd;
@@ -149,18 +198,19 @@
     overflow-y: auto;
     overflow-x: auto;
   }
+
   .version-list .file-list .item {
     line-height: 28px;
     padding: 0 6px 0 6px;
     font-size: 12px;
-    white-space:nowrap;
-    text-overflow:ellipsis;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     width: 330px;
     overflow: hidden;
   }
 
   .version-list .el-table__row {
-    font-size:12px;
+    font-size: 12px;
     color: #333;
   }
 
@@ -169,12 +219,27 @@
     height: 30px;
     text-decoration: none;
   }
+
   .version-list .el-table__row a:hover {
     text-decoration: underline;
   }
+
   .version-list .el-table__row .cell {
     line-height: 18px;
   }
 
+  .el-table__body-wrapper.is-scrolling-none::-webkit-scrollbar {
+    width: 6px;
+    background-color: #e5e5e5;
+  }
 
+  .el-table__body-wrapper.is-scrolling-none::-webkit-scrollbar-thumb {
+    overflow-x: hidden;
+    overflow-y: auto;
+    border-radius: 4px;
+    background-color: rgba(18, 150, 219, .8);
+  }
+  .diff{
+    float: left;
+  }
 </style>
