@@ -56,10 +56,7 @@
         barsFlag: false, // 是否显示工具栏
         isEditMk: true,
         externalLink: {
-          hljs_css: function(css) {
-            // 这是你的代码高亮配色文件路径
-            return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/' + css + '.min.css'
-          },
+          hljs_css: false,
           katex_css: false, // `false`表示禁用自动加载，它也可以是个函数，如果它是个函数，那么这个函数应该返回一个可访问的`katex`的css路径字符串
           // 我们没有设置`katex_js`, `hljs_js`, `hljs_lang`, `markdown_css`， `mavon-editor`会认为它的值为`true`，它会默认使用`cdnjs`相关外链加载
           katex_js: false,
@@ -174,6 +171,7 @@
 <style lang="scss">
   @import "@/styles/mixin.scss";
   @import "@/styles/variables.scss";
+  /*@import "@/styles/code.scss";*/
 
   .markdown .el-dialog{
     margin-top: 8vh!important;

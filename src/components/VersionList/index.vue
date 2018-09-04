@@ -7,14 +7,20 @@
       custom-class="version-list"
       :close-on-click-modal="true"
       width="750px">
-      <vue-code-diff
-        :old-string="oldStr"
-        :new-string="newStr"
-        :context="10"
-        style="min-height: 70vh"
-        outputFormat="side-by-side"
-        v-if="versionDiff"
-        class="diff"></vue-code-diff>
+      <el-dialog
+        width="80%"
+        title="版本对比详情"
+        custom-class="diffMaster"
+        :visible.sync="versionDiff"
+        append-to-body>
+        <vue-code-diff
+          :old-string="oldStr"
+          :new-string="newStr"
+          :context="10"
+          style="min-height: 70vh"
+          outputFormat="side-by-side"
+          v-if="versionDiff"></vue-code-diff>
+      </el-dialog>
       <div class="file-list">
         <el-table
           :data="tableData"
@@ -58,13 +64,13 @@
                 href="javascript:void(0)"
                 @click="rollBack(scope.row.filesgin)"
                 title="设为最新版本" v-if="!scope.row.fdisplay">回退</a>
-              <a size="mini" @click="previewFile(scope.row.filesgin)">查看</a>
+              <a size="mini" @click="previewFile(scope.row.filesgin)" v-if="selectedData[0].ffiletype === 3">查看</a>
             </template>
           </el-table-column>
         </el-table>
       </div>
       <div slot="footer" class="dialog-footer">
-        <div class="diff clearfix">
+        <div class="diff-select clearfix" v-if="selectedData[0].ffiletype === 3">
           <el-select v-model="oldVersion" filterable placeholder="请选择旧版本" size="small">
             <el-option
               v-for="item in tableData"
@@ -91,7 +97,7 @@
 
 <script>
   import { mapGetters } from 'vuex'
-  import { getVersionList, versionRollback } from '@/api/file'
+  import { getVersionList, versionRollback, getDocInfo } from '@/api/file'
   import { formatSize, parseTime } from '@/utils/index'
   import vueCodeDiff from 'vue-code-diff'
 
@@ -144,6 +150,10 @@
         if (this.selectedData.length === 1 && this.versionVisible === true) {
           const versionListInfo = await getVersionList(this.selectedData[0].fname, this.$store.getters.parentId)
           this.tableData = versionListInfo.data
+          if (this.newVersion === '' && this.oldVersion === '') {
+            this.newVersion = versionListInfo.data[0].fversion
+            this.oldVersion = versionListInfo.data[versionListInfo.data.length - 1].fversion
+          }
         }
       },
       formatterTime(row, column) {
@@ -157,9 +167,32 @@
       previewFile(id) {
         this.$store.dispatch('GetDocInfo', id)
       },
-      diff() {
-
-        // this.versionDiff = true
+      async diff() {
+        if (this.oldVersion === '' || this.newVersion === '') {
+          this.$message({
+            message: '请选择旧版本或者新版本',
+            type: 'warning',
+            duration: 1000
+          })
+          return
+        }
+        try {
+          const oldVersion = await getDocInfo(this.oldVersion)
+          const newVersion = await getDocInfo(this.newVersion)
+          this.oldStr = oldVersion.data.file
+          this.newStr = newVersion.data.file
+          this.versionDiff = true
+        } catch (e) {
+          this.$message({
+            message: '网络连接失败',
+            type: 'warning',
+            duration: 1000
+          })
+          this.versionDiff = false
+        } finally {
+          this.oldVersion = ''
+          this.newVersion = ''
+        }
       }
     },
     mounted() {
@@ -239,7 +272,10 @@
     border-radius: 4px;
     background-color: rgba(18, 150, 219, .8);
   }
-  .diff{
+  .diff-select{
     float: left;
+  }
+  .diffMaster{
+    margin-top: 8vh!important;
   }
 </style>
