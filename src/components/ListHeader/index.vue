@@ -19,8 +19,7 @@
     </div>
     <ul id="menu-btn" v-show="menuVisible" :style="{top:(coordinate[2]+'px'),left:(coordinate[1]+'px')}">
       <li :class="{disabled:([1, 2, 4].indexOf(isShow) > -1?false:true)}" @click.stop="fileType(selectedData[0].ffiletype,selectedData[0].fcategoryid)">打开</li>
-      <li :class="{disabled:([2, 4].indexOf(isShow) > -1?false:true)}">
-        <li @click="downloadFile2">下载</li>
+      <li :class="{disabled:([2, 4].indexOf(isShow) > -1?false:true)}" @click="downloadFile2">下载</li>
       <li :class="{disabled:([2, 4].indexOf(isShow) > -1?false:true)}" @click="updateFile">更新</li>
       <li :class="{disabled:([2, 4].indexOf(isShow) > -1?false:true)}" @click="showVersion">版本</li>
       <li :class="{disabled:([1, 2, 4].indexOf(isShow) > -1?false:true)}" @click="rename">重命名</li>
