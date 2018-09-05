@@ -18,13 +18,13 @@
       <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-info" @click="getDetail">详情</el-button>
     </div>
     <ul id="menu-btn" v-show="menuVisible" :style="{top:(coordinate[2]+'px'),left:(coordinate[1]+'px')}">
-      <li :class="{disabled:([1, 2, 4].indexOf(isShow) > -1?false:true)}" @click.stop="fileType(selectedData[0].ffiletype,selectedData[0].fcategoryid)">打开</li>
-      <li :class="{disabled:([2, 4].indexOf(isShow) > -1?false:true)}" @click="downloadFile2">下载</li>
-      <li :class="{disabled:([2, 4].indexOf(isShow) > -1?false:true)}" @click="updateFile">更新</li>
-      <li :class="{disabled:([2, 4].indexOf(isShow) > -1?false:true)}" @click="showVersion">版本</li>
-      <li :class="{disabled:([1, 2, 4].indexOf(isShow) > -1?false:true)}" @click="rename">重命名</li>
-      <li :class="{disabled:([1, 2, 3, 4].indexOf(isShow) > -1?false:true)}" @click="deleteFile">删除</li>
-      <li :class="{disabled:([1, 2, 4].indexOf(isShow) > -1?false:true)}" @click="getDetail">详情</li>
+      <li :class="{disabled:([1, 2, 4].indexOf(isShow) !== -1)}" @click.stop="fileType(selectedData[0].ffiletype,selectedData[0].fcategoryid)">打开</li>
+      <li :class="{disabled:([2, 4].indexOf(isShow)  !== -1)}" @click="downloadFile2">下载</li>
+      <li :class="{disabled:([2, 4].indexOf(isShow)  !== -1)}" @click="updateFile">更新</li>
+      <li :class="{disabled:([2, 4].indexOf(isShow)  !== -1)}" @click="showVersion">版本</li>
+      <li :class="{disabled:([1, 2, 4].indexOf(isShow)  !== -1)}" @click="rename">重命名</li>
+      <li :class="{disabled:([1, 2, 3, 4].indexOf(isShow)  !== -1)}" @click="deleteFile">删除</li>
+      <li :class="{disabled:([1, 2, 4].indexOf(isShow)  !== -1)}" @click="getDetail">详情</li>
     </ul>
     <div class="action-wrap">
       <el-tooltip class="item" effect="dark" content="列表" placement="bottom">
@@ -199,13 +199,14 @@ export default {
       text-align: center;
       border-radius: 4px;
       box-shadow: 0px 2px 5px #a9a7a7;
-      color: #7d7b7b;
+      color: #000000;
       position: fixed;
       z-index: 200;
       li{
         cursor: pointer;
         &:hover{
-          background: #e2edf9;
+          background: rgba(10,193,41,.8);
+          color: #fff;
         }
       }
       .disabled {

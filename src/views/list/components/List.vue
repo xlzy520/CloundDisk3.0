@@ -15,10 +15,10 @@
 
         <el-table-column label="名称" width="480px">
           <template slot-scope="scope">
-            <div v-show="scope.row.isEditor">
-             <rename-file v-if="selectedData.length >= 1" type="List"></rename-file>
+            <div v-if="scope.row.isEditor">
+             <rename-file type="List"></rename-file>
             </div>
-            <div v-show="!scope.row.isEditor">
+            <div v-else="!scope.row.isEditor">
               <svg-icon :icon-class="String(scope.row.ffiletype)"></svg-icon>
               <span class="fileName"
                     @click.stop="fileType(scope.row.ffiletype,scope.row.fcategoryid)">{{ scope.row.fname }}</span>
