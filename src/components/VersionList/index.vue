@@ -24,7 +24,6 @@
           <el-form-item label="差异化范围:">
             <el-input-number
               v-model="numDiff"
-              @change="handleChange"
               size="mini"
               :min="1" :max="100"
               label="差异化范围"></el-input-number>
