@@ -1,5 +1,6 @@
 import { getCategory, getDocInfo, getSearchResult } from '@/api/file'
 import { Message } from 'element-ui'
+import { Loading } from 'element-ui'
 const file = {
   state: {
     parentId: '0',
@@ -12,6 +13,7 @@ const file = {
     detailVisible: false,
     versionVisible: false,
     menuVisible: false,
+    loadVisible: true,
     fileList: [],
     folderNav: [],
     PreviewVisible: false,
@@ -33,6 +35,7 @@ const file = {
     },
     TOGGLE_VERSIONVISIBLE: state => {
       state.versionVisible = !state.versionVisible
+      state.loadVisible = false
     },
     TOGGLE_PREVIEWVISIBLE: state => {
       state.PreviewVisible = !state.PreviewVisible
@@ -43,6 +46,7 @@ const file = {
     },
     GET_CATEGORY: (state, data) => {
       state.fileList = data
+      state.loadVisible = false
     },
     SET_PARENT_ID: (state, data) => {
       state.parentId = data
@@ -83,9 +87,19 @@ const file = {
       commit('RIGHT_TOGGLE_MENUVISIBLE', data)
     },
     async GetCategory({ commit }, fcategoryid) {
-      const Category = await getCategory(fcategoryid)
-      commit('GET_CATEGORY', Category.data.tableList)
-      commit('SET_FOLDERNAV', Category.data.navList)
+      return new Promise((resolve, reject) => {
+        const loadingInstance = Loading.service({ fullscreen: true })
+        getCategory(fcategoryid).then(response => {
+          const Category = response
+          loadingInstance.close()
+          commit('GET_CATEGORY', Category.data.tableList)
+          commit('SET_FOLDERNAV', Category.data.navList)
+          resolve(response)
+        }).catch(error => {
+          loadingInstance.close()
+          reject(error)
+        })
+      })
     },
     SetParentId: ({ commit }, id) => {
       commit('SET_PARENT_ID', id)

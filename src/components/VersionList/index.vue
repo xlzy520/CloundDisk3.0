@@ -100,7 +100,7 @@
   import { getVersionList, versionRollback, getDocInfo } from '@/api/file'
   import { formatSize, parseTime } from '@/utils/index'
   import vueCodeDiff from 'vue-code-diff'
-
+  import { Loading } from 'element-ui';
   export default {
     name: 'VersionList',
     components: {
@@ -116,7 +116,7 @@
         }
       },
       ...mapGetters([
-        'selectedData'
+        'selectedData',
       ])
     },
     data() {
@@ -148,12 +148,28 @@
       },
       async requestData() {
         if (this.selectedData.length === 1 && this.versionVisible === true) {
-          const versionListInfo = await getVersionList(this.selectedData[0].fname, this.$store.getters.parentId)
-          this.tableData = versionListInfo.data
-          if (this.newVersion === '' && this.oldVersion === '') {
-            this.newVersion = versionListInfo.data[0].fversion
-            this.oldVersion = versionListInfo.data[1].fversion
-          }
+          return new Promise((resolve, reject) => {
+            const loadingInstance1 = Loading.service({ target: document.querySelector('.version-list') })
+            getVersionList(this.selectedData[0].fname, this.$store.getters.parentId).then(response => {
+              const versionListInfo = response
+              this.tableData = versionListInfo.data
+              loadingInstance1.close()
+              if (this.newVersion === '' && this.oldVersion === '') {
+                this.newVersion = versionListInfo.data[0].fversion
+                this.oldVersion = versionListInfo.data[1].fversion
+              }
+              resolve(response)
+            }).catch(error => {
+              loadingInstance1.close()
+              reject(error)
+            })
+          })
+          // const versionListInfo = await getVersionList(this.selectedData[0].fname, this.$store.getters.parentId)
+          // this.tableData = versionListInfo.data
+          // if (this.newVersion === '' && this.oldVersion === '') {
+          //   this.newVersion = versionListInfo.data[0].fversion
+          //   this.oldVersion = versionListInfo.data[1].fversion
+          // }
         }
       },
       formatterTime(row, column) {
