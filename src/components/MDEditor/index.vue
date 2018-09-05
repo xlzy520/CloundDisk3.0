@@ -126,7 +126,9 @@
           cancelButtonText: '取消',
           center: true
         }).then(({ value }) => {
-          markdownData.append('fremarks', value)
+          if (value === null) {
+            markdownData.append('fremarks', '')
+          }
           updateMarkdown(markdownData).then((res) => {
             if (res.success) {
               this.$message({
