@@ -13,12 +13,30 @@
         custom-class="diffMaster"
         :visible.sync="versionDiff"
         append-to-body>
+        <el-switch
+          class="lineSwitch"
+          v-model="lineSwitch"
+          active-text="双栏"
+          inactive-text="单栏"
+          active-color="#13ce66"
+          inactive-color="#ff4949"></el-switch>
+        <el-form class="rangeDiff" label-width="200px">
+          <el-form-item label="差异化范围:">
+            <el-input-number
+              v-model="numDiff"
+              @change="handleChange"
+              size="mini"
+              :min="1" :max="100"
+              label="差异化范围"></el-input-number>
+          </el-form-item>
+        </el-form>
+
         <vue-code-diff
           :old-string="oldStr"
           :new-string="newStr"
-          :context="10"
+          :context="numDiff"
           style="min-height: 70vh"
-          outputFormat="side-by-side"
+          :outputFormat="outputFormat"
           v-if="versionDiff"></vue-code-diff>
       </el-dialog>
       <div class="file-list">
@@ -26,6 +44,7 @@
           :data="tableData"
           height="260"
           stripe
+          v-loading="loading"
           style="width: 100%">
           <el-table-column
             width="70"
@@ -71,7 +90,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <div class="diff-select clearfix" v-if="selectedData[0].ffiletype === 3&&tableData.length>1">
-          <el-select v-model="oldVersion" filterable placeholder="请选择旧版本" size="small">
+          <el-select v-model="oldVersion.value" filterable placeholder="请选择旧版本" size="small">
             <el-option
               v-for="item in tableData"
               :key="item.value"
@@ -79,7 +98,7 @@
               :value="item.filesgin">
             </el-option>
           </el-select>
-          <el-select v-model="newVersion" filterable placeholder="请选择新版本" size="small">
+          <el-select v-model="newVersion.value" filterable placeholder="请选择新版本" size="small">
             <el-option
               v-for="item in tableData"
               :key="item.value"
@@ -118,7 +137,10 @@
       },
       ...mapGetters([
         'selectedData'
-      ])
+      ]),
+      outputFormat() {
+        return this.lineSwitch === true ? 'line-by-line' : 'side-by-side'
+      }
     },
     data() {
       return {
@@ -133,7 +155,10 @@
         newVersion: {
           label: '',
           value: ''
-        }
+        },
+        lineSwitch: true,
+        numDiff: 5,
+        loading: false
       }
     },
     methods: {
@@ -146,11 +171,25 @@
         this.$store.dispatch('Refresh')
       },
       async rollBack(newVer) {
+        this.loading = true
         if (this.selectedData.length === 1) {
           const version = await versionRollback(this.tableData[0].filesgin, newVer)
           if (version.success) {
+            this.loading = false
+            this.$message({
+              message: '版本回退成功',
+              type: 'success',
+              duration: 1000
+            })
             this.requestData()
             // this.$store.dispatch('Refresh')  //刷新文件列表
+          } else {
+            this.loading = false
+            this.$message({
+              message: '版本回退失败',
+              type: 'warning',
+              duration: 1000
+            })
           }
         }
       },
@@ -202,8 +241,6 @@
         } finally {
           this.oldVersion.value = ''
           this.oldVersion.label = ''
-          this.newVersion.value = ''
-          this.newVersion.label = ''
         }
       }
     },
@@ -289,5 +326,15 @@
   }
   .diffMaster{
     margin-top: 8vh!important;
+  }
+  .lineSwitch{
+    position: absolute;
+    top: 22px;
+    left: 40%;
+  }
+  .rangeDiff{
+    position: absolute;
+    top: 11px;
+    left: 60%;
   }
 </style>
