@@ -48,7 +48,8 @@
       return {
         checkAll: false,
         checkedData: [],
-        isIndeterminate: false
+        isIndeterminate: false,
+        disabled: false
       }
     },
     methods: {
@@ -76,7 +77,9 @@
           case 1:
             this.$store.dispatch('GetCategory', fcategoryid)
             this.$store.dispatch('SetParentId', fcategoryid)
-            this.checkAll = false
+            if (this.selectedData.length >= 1) {
+              this.handleCheckAllChange()
+            }
             break
           case 2:
             this.$message({
@@ -91,19 +94,9 @@
         }
       }
     },
-    computed: {
-      ...mapGetters([
-        'selectedData'
-      ]),
-      disabled: {
-        get() {
-          return this.fileList.length === 0
-        },
-        set() {
-
-        }
-      }
-    },
+    computed: mapGetters([
+      'selectedData'
+    ]),
     mounted() {
       this.checkedData = this.selectedData
       const totalLength = this.fileList.length
@@ -151,7 +144,7 @@
       text-align: center;
       li {
         width: 115px;
-        height: 120px;
+        height: 140px;
         margin: 0 10px;
         .box-hover {
           background: #F4F4F4;

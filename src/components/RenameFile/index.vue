@@ -82,4 +82,9 @@
       margin-right: 10px;
     }
   }
+  .thumbEdit{
+    position: absolute;
+    width: 150px;
+    left: -15px;
+  }
 </style>
