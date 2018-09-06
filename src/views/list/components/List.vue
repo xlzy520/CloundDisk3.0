@@ -6,10 +6,11 @@
         ref="multipleTable"
         :data="fileList"
         style="width: 100%"
-        highlight-current-row
         :default-sort="{prop: 'date', order: 'descending'}"
+        :row-style="highlightRow"
         @selection-change="handleSelectionChange"
         @row-click="clickRow"
+        @cell-dblclick="dblclickRow"
         @row-contextmenu="showMenu">
         <el-table-column type="selection" width="55"></el-table-column>
 
@@ -51,6 +52,11 @@
         type: Array
       }
     },
+    data() {
+      return {
+        selectRow: []
+      }
+    },
     components: { RenameFile },
     computed: {
       ...mapGetters([
@@ -84,9 +90,29 @@
             this.$set(item, 'isEditor', false)
           }
         })
+        this.selectRow = []
+        rows.forEach((item, index) => {
+          this.selectRow.push(this.fileList.indexOf(item))
+        })
       },
       clickRow(row) {
-        this.$refs.multipleTable.toggleRowSelection(row)
+        this.fileList.forEach(item => {
+          if (item.fcategoryid === row.fcategoryid) {
+            this.$refs.multipleTable.toggleRowSelection(row, true)
+          } else {
+            this.$refs.multipleTable.toggleRowSelection(item, false)
+          }
+        })
+      },
+      dblclickRow(row) {
+        this.fileType(row.ffiletype, row.fcategoryid)
+      },
+      highlightRow({ row, rowIndex }) {
+        if (this.selectRow.includes(rowIndex)) {
+          return {
+            'background-color': '#ecf5ff'
+          }
+        }
       },
       sizeFormatter(row) {
         if (row.fsize !== null) {
@@ -110,7 +136,7 @@
         } else {
           y = event.clientY - 213
         }
-        this.$refs.multipleTable.toggleRowSelection(row, true)
+        this.clickRow(row)
         this.$store.dispatch('RightTogglemenuVisible', [true, x, y])
         document.getElementsByTagName('body')[0].addEventListener('click', (e) => {
           if (!document.getElementById('menu-btn').contains(e.target)) {
@@ -123,6 +149,8 @@
       this.selectedData.forEach(row => {
         this.$refs.multipleTable.toggleRowSelection(row)
       })
+    },
+    watch: {
     }
   }
 </script>
