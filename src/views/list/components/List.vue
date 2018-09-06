@@ -30,7 +30,7 @@
         <el-table-column prop="foperator" label="创建者" v-if="!hasSearch"></el-table-column>
         <el-table-column label="所在目录" v-if="hasSearch" key="zhibi">
           <template slot-scope="scope">
-            <span class="fileAddress" @click="enterParentDic(scope.row.fparentid)" :key="scope.row.fcategoryid">文件位置</span>
+            <span class="fileAddress" @click="enterParentDic(scope.row)" :key="scope.row.fcategoryid">文件位置</span>
           </template>
         </el-table-column>
       </el-table>
@@ -93,9 +93,11 @@
           return formatSize(Number(row.fsize.replace('B', '')))
         }
       },
-      enterParentDic(parentId) {
+      enterParentDic(searchObj) {
         event.stopPropagation()
-        this.$store.dispatch('GetCategory', parentId)
+        this.$store.dispatch('GetCategory', searchObj.parentId)
+        console.log(searchObj)
+        this.$store.dispatch('GetSelectedData', searchObj)
         this.$store.dispatch('ToggleSearch', false)
       },
       formatterTime(row, column) {
@@ -150,6 +152,7 @@
   .fileAddress{
     color: #1296db;
     text-decoration: underline;
+    cursor: pointer;
     &:hover{
       text-decoration: none;
     }

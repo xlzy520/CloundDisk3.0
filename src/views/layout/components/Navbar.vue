@@ -13,7 +13,7 @@
       icon="search"
       name="search"
       title="请输入搜索关键词"
-      placeholder="请输入搜索关键词"
+      placeholder="请输入关键词,回车搜索"
       :maxlength="maxlength"
       :keyEnterFunction="getSearchResult"
       v-model="queryString">
