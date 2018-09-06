@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
-
+import { Message } from 'element-ui'
 import '@/styles/index.scss' // global css
 
 import App from './App'
@@ -18,6 +18,13 @@ import 'mavon-editor/dist/css/index.css'
 
 Vue.use(ElementUI)
 Vue.use(mavonEditor)
+Vue.prototype.$message1000 = (message, type) => {
+  Message({
+    message: message,
+    type: type,
+    duration: 1000
+  })
+}
 
 Vue.config.productionTip = false
 
