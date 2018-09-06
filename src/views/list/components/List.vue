@@ -162,6 +162,9 @@
     .el-scrollbar__wrap{
       overflow-x: hidden;
     }
+    .el-table--enable-row-hover .el-table__body tr:hover>td {
+      background-color: #ecf5ff;
+    }
   }
   .fileName{
     cursor: pointer;
