@@ -115,8 +115,7 @@
         this.isEditMk = false
       },
       async saveFile() {
-        const markdownBlob = new Blob([this.docValue.file], { type: 'text/plain' })
-        const markdownFile = new File([markdownBlob], this.docValue.name)
+        const markdownFile = new File([this.docValue.file], this.docValue.name)
         const markdownData = new FormData()
         markdownData.append('file', markdownFile)
         markdownData.append('fparentid', this.$store.getters.parentId)
