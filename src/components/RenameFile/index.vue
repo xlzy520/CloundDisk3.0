@@ -1,10 +1,10 @@
 <template>
-  <div class="rename-edit" @click.stop="() => {}">
+  <div class="rename-edit" @click.stop="() => {}" :class="{thumbEdit:!(type === 'List')}">
     <el-input size="small"
               spellcheck="false"
               v-model.trim="value"
               placeholder="请输入内容"
-              :style="{width:(type==='List'?'350px':'60px')}"
+              :style="{width:(type==='List'?'350px':'90px')}"
               @focus="selection($event)">
     </el-input>
     <span>
