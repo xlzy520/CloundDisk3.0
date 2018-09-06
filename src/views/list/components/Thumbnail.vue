@@ -70,6 +70,7 @@
           case 1:
             this.$store.dispatch('GetCategory', fcategoryid)
             this.$store.dispatch('SetParentId', fcategoryid)
+            this.checkAll = false
             break
           case 2:
             this.$message({
