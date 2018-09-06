@@ -4,10 +4,8 @@
               spellcheck="false"
               v-model.trim="value"
               placeholder="请输入内容"
-              ref="reName"
               :style="{width:(type==='List'?'350px':'60px')}"
-              @focus="selection($event)"
-              autofocus>
+              @focus="selection($event)">
     </el-input>
     <span>
         <el-button type="primary" icon="el-icon-check" @click="confirmEdit()"></el-button>
@@ -58,9 +56,11 @@
         }
       },
       selection(event) {
-        const value = event.currentTarget.value
-        const dotIndex = value.lastIndexOf('.')
-        event.currentTarget.setSelectionRange(0, dotIndex)
+        const dotIndex = this.value.lastIndexOf('.')
+        setTimeout(function() {
+          event.target.selectionStart = 0
+          event.target.selectionEnd = dotIndex
+        }, 80)
       }
     },
     mounted() {
