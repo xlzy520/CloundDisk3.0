@@ -136,6 +136,10 @@ const file = {
     },
     ToggleSearch({ commit }, data) {
       commit('TOGGLE_SEARCH', data)
+    },
+    NewMarkdownFile({ commit }) {
+      commit('GET_DOC_INFO', {})
+      commit('TOGGLE_PREVIEWVISIBLE')
     }
   }
 }

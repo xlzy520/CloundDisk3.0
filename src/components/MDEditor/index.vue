@@ -115,38 +115,62 @@
         this.isEditMk = false
       },
       async saveFile() {
-        const markdownFile = new File([this.docValue.file], this.docValue.name)
-        const markdownData = new FormData()
-        markdownData.append('file', markdownFile)
-        markdownData.append('fparentid', this.$store.getters.parentId)
-        markdownData.append('fcategoryid', this.docValue.id)
-        this.$prompt('请输入更新描述', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          center: true
-        }).then(({ value }) => {
-          if (value === null) {
-            markdownData.append('fremarks', '')
-          }
-          updateMarkdown(markdownData).then((res) => {
-            if (res.success) {
-              this.$message1000('文档保存成功。', 'success')
-              this.closeMkdown()
-              this.$store.dispatch('Refresh')
-            } else {
-              this.$message1000('文档保存失败。', 'error')
-            }
+        if (!this.docValue.name) {
+          this.$prompt('请输入文件名', '文件名', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            center: true
+          }).then(({ value }) => {
+            this.docValue.name = value + 'md'
+            const markdownFile = new File([this.docValue.file], this.docValue.name)
+            const markdownData = new FormData()
+            markdownData.append('file', markdownFile)
+            markdownData.append('fparentid', this.$store.getters.parentId)
+            updateMarkdown(markdownData).then((res) => {
+              if (res.success) {
+                this.$message1000('文档新建成功。', 'success')
+                this.closeMkdown()
+                this.$store.dispatch('Refresh')
+              } else {
+                this.$message1000('文档新建失败。', 'error')
+              }
+            })
+          }).catch(() => {
+            this.$message1000('取消输入。', 'info')
           })
-        }).catch(() => {
-          this.$message1000('取消输入。', 'info')
-        })
+        } else {
+          const markdownFile = new File([this.docValue.file], this.docValue.name)
+          const markdownData = new FormData()
+          markdownData.append('file', markdownFile)
+          markdownData.append('fparentid', this.$store.getters.parentId)
+          markdownData.append('fcategoryid', this.docValue.id)
+          this.$prompt('请输入更新描述', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            center: true
+          }).then(({ value }) => {
+            if (value === null) {
+              markdownData.append('fremarks', '')
+              updateMarkdown(markdownData).then((res) => {
+                if (res.success) {
+                  this.$message1000('文档保存成功。', 'success')
+                  this.closeMkdown()
+                  this.$store.dispatch('Refresh')
+                } else {
+                  this.$message1000('文档保存失败。', 'error')
+                }
+              })
+            }
+          }).catch(() => {
+            this.$message1000('取消输入。', 'info')
+          })
+        }
       },
       async imgAdd(pos, $file) {
         var formdata = new FormData()
         formdata.append('file', $file)
         formdata.append('fparentid', '1')
         const imgInfo = await updateMarkdown(formdata)
-        console.log(imgInfo.data.id)
         this.$refs.md.$img2Url(pos, '/api_zhq/djcpsdocument/fileManager/downloadFile.do?id=' + imgInfo.data.id)
       }
     },

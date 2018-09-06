@@ -3,7 +3,13 @@
     <div class="list-btn">
       <el-button type="primary" icon="el-icon-refresh" @click="refresh">刷新</el-button>
       <el-button type="primary" icon="el-icon-upload" @click="uploadFile">上传文件</el-button>
-      <el-button type="primary" icon="el-icon-plus" @click="newFolder">新建文件夹</el-button>
+      <el-dropdown type="primary" @command="handleCommand">
+        <el-button type="primary"><i class="el-icon-plus"></i>新建<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="newFolder">文件夹</el-dropdown-item>
+          <el-dropdown-item divided command="newMarkdown">Markdown</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
       <el-button type="primary" v-if="[4].indexOf(isShow) > -1" icon="el-icon-document" @click="previewFile">预览</el-button>
       <a
         class="el-button el-button--primary"
@@ -164,6 +170,15 @@ export default {
     },
     back2FileList() {
       this.$store.dispatch('ToggleSearch', false)
+    },
+    handleCommand(command) {
+      switch (command) {
+        case 'newFolder': this.newFolder(); break
+        case 'newMarkdown':
+          this.$store.dispatch('NewMarkdownFile')
+          break
+        default: return false
+      }
     }
   }
 }
