@@ -12,7 +12,10 @@
      <el-checkbox-group v-model="checkedData" @change="handleCheckItemChange">
       <ul>
         <li v-for="(item, index) in fileList" :key="index">
-          <div class="box" :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''" @click="fileType(item.ffiletype,item.fcategoryid)">
+          <div class="box"
+               @contextmenu.prevent="falseFunc"
+               :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''"
+               @click="fileType(item.ffiletype,item.fcategoryid)">
             <div @click.stop="() => {}"><el-checkbox :label="item"></el-checkbox></div>
             <svg-icon :icon-class="String(item.ffiletype)" className="icon" />
             <div v-show="item.isEditor">
@@ -49,6 +52,9 @@
       }
     },
     methods: {
+      falseFunc() {
+        return false
+      },
       handleCheckAllChange(val) {
         this.checkedData = val ? this.fileList : []
         this.$store.dispatch('GetSelectedData', this.checkedData)
@@ -145,7 +151,7 @@
       text-align: center;
       li {
         width: 115px;
-        height: 140px;
+        height: 120px;
         margin: 0 10px;
         .box-hover {
           background: #F4F4F4;
@@ -155,8 +161,9 @@
         }
         .box {
           width: 115px;
-          height: 140px;
+          height: 120px;
           border-radius: 6px;
+          cursor: pointer;
           position: absolute;
           user-select: none;
           &:hover {
