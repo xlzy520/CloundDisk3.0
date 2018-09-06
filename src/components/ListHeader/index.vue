@@ -117,7 +117,11 @@ export default {
       this.$store.dispatch('ToggleVersionVisible')
     },
     refresh() {
-      this.$store.dispatch('Refresh')
+      this.$store.dispatch('Refresh').then(res => {
+        if (res.success) {
+          this.$message1000('刷新成功', 'success')
+        }
+      })
     },
     deleteFile() {
       this.$store.dispatch('ToggleDeleteVisible')
