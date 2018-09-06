@@ -89,10 +89,7 @@ export default {
           this.$store.dispatch('SetParentId', fcategoryid)
           break
         case 2:
-          this.$message({
-            message: '只可以对markdown文件进行预览编辑哦 ',
-            type: 'warning'
-          })
+          this.$message1000('只可以对markdown文件进行预览编辑哦', 'warning')
           break
         case 3:
           this.$store.dispatch('TogglePreviewVisible')
@@ -147,20 +144,12 @@ export default {
         addCategory(this.parentId, value.trim())
           .then(res => {
             if (res.success) {
-              this.$message({
-                type: 'success',
-                message: res.msg,
-                duration: 1000
-              })
+              this.$message1000(res.msg, 'success')
               this.$store.dispatch('Refresh')
             }
           })
       }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '取消输入',
-          duration: 1000
-        })
+        this.$message1000('取消输入', 'info')
       })
     },
     previewFile() {

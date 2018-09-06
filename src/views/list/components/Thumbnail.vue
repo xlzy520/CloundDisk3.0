@@ -82,11 +82,7 @@
             }
             break
           case 2:
-            this.$message({
-              message: '只可以对markdown文件进行预览编辑哦 ',
-              type: 'warning',
-              duration: 1000
-            })
+            this.$message1000('只可以对markdown文件进行预览编辑哦', 'warning')
             break
           case 3:
             this.$store.dispatch('GetDocInfo', fcategoryid)

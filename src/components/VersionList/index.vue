@@ -175,20 +175,12 @@
           const version = await versionRollback(this.tableData[0].filesgin, newVer)
           if (version.success) {
             this.loading = false
-            this.$message({
-              message: '版本回退成功',
-              type: 'success',
-              duration: 1000
-            })
+            this.$message1000('版本回退成功', 'success')
             this.requestData()
             // this.$store.dispatch('Refresh')  //刷新文件列表
           } else {
             this.loading = false
-            this.$message({
-              message: '版本回退失败',
-              type: 'warning',
-              duration: 1000
-            })
+            this.$message1000('版本回退失败', 'warning')
           }
         }
       },
@@ -221,11 +213,7 @@
       },
       async diff() {
         if (this.oldVersion.value === '' || this.newVersion.value === '') {
-          this.$message({
-            message: '请选择旧版本或者新版本',
-            type: 'warning',
-            duration: 1000
-          })
+          this.$message1000('请选择旧版本或者新版本', 'warning')
           return
         }
         try {
@@ -235,11 +223,7 @@
           this.newStr = newVersion.data.file
           this.versionDiff = true
         } catch (e) {
-          this.$message({
-            message: '网络连接失败',
-            type: 'warning',
-            duration: 1000
-          })
+          this.$message1000('网络连接失败', 'warning')
           this.versionDiff = false
         } finally {
           this.oldVersion.value = ''

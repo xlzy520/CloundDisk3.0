@@ -131,27 +131,15 @@
           }
           updateMarkdown(markdownData).then((res) => {
             if (res.success) {
-              this.$message({
-                type: 'success',
-                message: '文档保存成功。',
-                duration: 1000
-              })
+              this.$message1000('文档保存成功。', 'success')
               this.closeMkdown()
               this.$store.dispatch('Refresh')
             } else {
-              this.$message({
-                type: 'error',
-                message: '文档保存失败。',
-                duration: 1000
-              })
+              this.$message1000('文档保存失败。', 'error')
             }
           })
         }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '取消输入',
-            duration: 1000
-          })
+          this.$message1000('取消输入。', 'info')
         })
       },
       async imgAdd(pos, $file) {

@@ -67,20 +67,11 @@
           .then(res => {
             this.$store.dispatch('ToggleDeleteVisible')
             if (res.success) {
-              this.$message({
-                message: res.msg,
-                type: 'success',
-                duration: 1000
-              })
+              this.$message1000(res.msg, 'success')
               this.deleting = false
               this.$store.dispatch('Refresh')
             } else {
-              this.$message({
-                message: res.msg,
-                showClose: true,
-                type: 'error',
-                duration: 1000
-              })
+              this.$message1000(res.msg, 'error')
             }
           })
           .catch(err => {

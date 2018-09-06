@@ -86,13 +86,7 @@ export default {
   },
   methods: {
     onError() {
-      const msg = '文件上传出错：网络错误'
-      this.$message({
-        message: msg,
-        showClose: true,
-        type: 'error',
-        duration: 1000
-      })
+      this.$message1000('文件上传出错：网络错误', 'error')
       this.$store.dispatch('ToggleUploadVisible')
       this.$refs.upload.clearFiles()
       this.$store.dispatch('Refresh')
@@ -113,11 +107,7 @@ export default {
     },
     uploadOk(response, file, filelist) {
       if (response.success === true) {
-        this.$message({
-          message: '文件上传成功',
-          type: 'success',
-          duration: 1000
-        })
+        this.$message1000('文件上传成功', 'success')
         this.$store.dispatch('ToggleUploadVisible')
         this.$refs.upload.clearFiles()
         this.$store.dispatch('Refresh')
@@ -127,12 +117,7 @@ export default {
           msg = '服务器错误'
         }
         msg = '文件上传出错：' + msg
-        this.$message({
-          message: msg,
-          showClose: true,
-          type: 'error',
-          duration: 1000
-        })
+        this.$message1000(msg, 'error')
         this.$store.dispatch('ToggleUploadVisible')
         this.$refs.upload.clearFiles()
         this.$store.dispatch('Refresh')
@@ -142,22 +127,14 @@ export default {
       if (this.upload.type === 'update') {
         if (file.name !== this.selectedData[0].fname) {
           filelist.pop()
-          this.$message({
-            message: '文件上传失败！上传文件名与更新文件名不符',
-            type: 'error',
-            duration: 1000
-          })
+          this.$message1000('文件上传失败！上传文件名与更新文件名不符', 'error')
         }
       }
       if (filelist.length > 1) {
         for (const item of filelist) {
           if (item.name === file.name) {
             filelist.pop()
-            this.$message({
-              message: '上传失败！文件上传列表中存在同名文件',
-              type: 'error',
-              duration: 1000
-            })
+            this.$message1000('上传失败！文件上传列表中存在同名文件', 'error')
           }
         }
       }
@@ -197,11 +174,7 @@ export default {
         } else {
           return
         }
-        this.$message({
-          message: '文件上传被中止',
-          type: 'warning',
-          duration: 1000
-        })
+        this.$message1000('文件上传被中止', 'warning')
       }
       this.$store.dispatch('ToggleUploadVisible')
       this.$refs.upload.clearFiles()

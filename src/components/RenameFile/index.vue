@@ -37,11 +37,7 @@
           try {
             const editInfo = await renameFile(row[0].fcategoryid, this.value, row[0].fparentid, row[0].ffiletype)
             if (editInfo.success) {
-              this.$message({
-                message: '文件夹重命名成功',
-                type: 'success',
-                duration: 1000
-              })
+              this.$message1000('文件夹重命名成功', 'success')
               row[0].isEditor = false
               this.$set(this.selectedData[0], 'fname', this.value)
             }

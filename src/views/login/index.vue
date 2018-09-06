@@ -81,11 +81,7 @@ export default {
           this.$store.dispatch('Login', this.loginForm).then(() => {
             this.loading = false
             this.$router.push({ path: '/' })
-            this.$message({
-              message: '登录成功',
-              type: 'success',
-              duration: 1000
-            })
+            this.$message1000('登录成功', 'success')
           }).catch(() => {
             this.loading = false
             // this.$router.push({ path: '/' }) //  跳过后台验证
