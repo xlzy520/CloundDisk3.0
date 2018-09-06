@@ -110,6 +110,7 @@ const file = {
         commit('GET_CATEGORY', Category.data.tableList)
         commit('SET_FOLDERNAV', Category.data.navList)
       }
+      return Category
     },
     GetSelectedData({ commit }, data) {
       commit('GET_SELECTEDDATA', data)
