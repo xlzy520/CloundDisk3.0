@@ -134,7 +134,11 @@
         } else {
           y = event.clientY - 213
         }
-        this.clickRow(row)
+        if (this.selectedData.length <= 1) {
+          this.clickRow(row)
+        } else {
+          this.$refs.multipleTable.toggleRowSelection(row, true)
+        }
         this.$store.dispatch('RightTogglemenuVisible', [true, x, y])
         document.getElementsByTagName('body')[0].addEventListener('click', (e) => {
           if (!document.getElementById('menu-btn').contains(e.target)) {
