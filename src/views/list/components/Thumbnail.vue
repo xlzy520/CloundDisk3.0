@@ -45,8 +45,7 @@
       return {
         checkAll: false,
         checkedData: [],
-        isIndeterminate: false,
-        disabled: false
+        isIndeterminate: false
       }
     },
     methods: {
@@ -85,9 +84,19 @@
         }
       }
     },
-    computed: mapGetters([
-      'selectedData'
-    ]),
+    computed: {
+      ...mapGetters([
+        'selectedData'
+      ]),
+      disabled: {
+        get() {
+          return this.fileList.length === 0
+        },
+        set() {
+
+        }
+      }
+    },
     mounted() {
       this.checkedData = this.selectedData
       const totalLength = this.fileList.length
