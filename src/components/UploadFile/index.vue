@@ -139,7 +139,30 @@ export default {
       }
     },
     onFileChange(file, filelist) {
+      if (this.upload.type === 'update') {
+        if (file.name !== this.selectedData[0].fname) {
+          filelist.pop()
+          this.$message({
+            message: '文件上传失败！上传文件名与更新文件名不符',
+            type: 'error',
+            duration: 1000
+          })
+        }
+      }
+      if (filelist.length > 1) {
+        for (const item of filelist) {
+          if (item.name === file.name) {
+            filelist.pop()
+            this.$message({
+              message: '上传失败！文件上传列表中存在同名文件',
+              type: 'error',
+              duration: 1000
+            })
+          }
+        }
+      }
       this.fileList = filelist
+
       if (file.status === 'ready') {
         this.$store.dispatch('Refresh')
         this.btDisable = false
