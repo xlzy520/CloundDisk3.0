@@ -161,18 +161,18 @@
   .file-content {
     width: 100%;
     min-width: 980px;
+    .fileName{
+      cursor: pointer;
+      line-height: 2;
+      &:hover{
+        color: #42b983;
+      }
+    }
     .el-scrollbar__wrap{
       overflow-x: hidden;
     }
     .el-table--enable-row-hover .el-table__body tr:hover>td {
       background-color: #ecf5ff;
-    }
-  }
-  .fileName{
-    cursor: pointer;
-    line-height: 2;
-    &:hover{
-      color: #42b983;
     }
   }
   .cell .svg-icon{
