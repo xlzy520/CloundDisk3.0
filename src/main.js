@@ -18,7 +18,8 @@ import 'mavon-editor/dist/css/index.css'
 
 Vue.use(ElementUI)
 Vue.use(mavonEditor)
-Vue.prototype.$message1000 = (message, type) => {
+
+Vue.prototype.$message1000 = (message, type) => { // 默认消息提示持续1S
   Message({
     message: message,
     type: type,

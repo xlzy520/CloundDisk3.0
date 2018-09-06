@@ -75,6 +75,7 @@
       handleNodeClick(data) {
         this.$store.dispatch('GetCategory', data.fcategoryid)
         this.$store.dispatch('SetParentId', data.fcategoryid)
+        this.$store.dispatch('ToggleSearch', false)
       },
       async nodeExpand(data, node) {
         let arr = await getCategory(data.fcategoryid)
