@@ -27,16 +27,16 @@
       <li :class="{disabled:!([1, 2, 4].indexOf(isShow)  > -1)}" @click="getDetail">详情</li>
     </ul>
     <div class="action-wrap">
-      <el-tooltip class="item" effect="dark" content="列表" placement="bottom">
-        <div class="action-item" @click="typeShow('List')">
+      <div class="item">
+        <div class="action-item" @click="typeShow('List')" title="列表">
           <svg-icon icon-class="list" className="icon" />
         </div>
-      </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="缩略图" placement="bottom">
-        <div class="action-item" @click="typeShow('Thumbnail')">
+      </div>
+      <div class="item">
+        <div class="action-item" @click="typeShow('Thumbnail')" title="缩略图">
           <svg-icon icon-class="abbr" className="icon" />
         </div>
-      </el-tooltip>
+      </div>
     </div>
     <breadcrumb></breadcrumb>
     <div class="back2FileList">
@@ -93,7 +93,6 @@ export default {
           break
         case 3:
           this.$store.dispatch('TogglePreviewVisible')
-          console.log(fcategoryid)
           this.$store.dispatch('GetDocInfo', fcategoryid)
           break
       }
