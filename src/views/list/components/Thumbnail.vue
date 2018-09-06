@@ -71,6 +71,9 @@
           case 1:
             this.$store.dispatch('GetCategory', fcategoryid)
             this.$store.dispatch('SetParentId', fcategoryid)
+            if (this.selectedData.length >= 1) {
+              this.handleCheckAllChange()
+            }
             break
           case 2:
             this.$message({
@@ -137,6 +140,7 @@
         width: 115px;
         height: 140px;
         margin: 0 10px;
+        position: relative;
         .box-hover {
           background: #F4F4F4;
           .el-checkbox {

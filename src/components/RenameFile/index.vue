@@ -1,11 +1,11 @@
 <template>
-  <div class="rename-edit" @click.stop="() => {}">
+  <div class="rename-edit" @click.stop="() => {}" :class="{thumbEdit:(type === 'List' ? false:true)}">
     <el-input size="small"
               spellcheck="false"
               v-model.trim="value"
               placeholder="请输入内容"
               ref="reName"
-              :style="{width:(type==='List'?'350px':'60px')}"
+              :style="{width:(type==='List'?'350px':'90px')}"
               @focus="selection($event)"
               autofocus>
     </el-input>
@@ -81,5 +81,10 @@
     .el-input{
       margin-right: 10px;
     }
+  }
+  .thumbEdit{
+    position: absolute;
+    width: 150px;
+    left: -15px;
   }
 </style>
