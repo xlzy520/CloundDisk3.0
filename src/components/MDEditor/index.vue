@@ -153,11 +153,9 @@
             this.$message1000('取消输入。', 'info')
           })
         } else {
-          console.log(this.docValue)
           const markdownFile = new File([this.docValue.file], this.docValue.name)
           markdownData.append('file', markdownFile)
           markdownData.append('fcategoryid', this.docValue.id)
-          console.log(1)
           this.$prompt('请输入更新描述', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -186,10 +184,10 @@
         this.$refs.md.$img2Url(pos, '/api_zhq/djcpsdocument/fileManager/downloadFile.do?id=' + imgInfo.data.id)
       },
       timedSave() {
-        const docLs = localStorage
-        const docSaveTimer = setTimeout(() => {
-          docLs.setItem('docCache', this.docValue.file)
-        }, 30 * 1000)
+        // const docLs = localStorage
+        // const docSaveTimer = setTimeout(() => {
+        //   docLs.setItem('docCache', this.docValue.file)
+        // }, 30 * 1000)
       }
     },
     async mounted() {

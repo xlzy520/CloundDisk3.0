@@ -220,7 +220,9 @@
           const oldVersion = await getDocInfo(this.oldVersion.value)
           const newVersion = await getDocInfo(this.newVersion.value)
           this.oldStr = oldVersion.data.file
+          console.log(this.oldStr)
           this.newStr = newVersion.data.file
+          console.log(this.newStr)
           this.versionDiff = true
         } catch (e) {
           this.$message1000('网络连接失败', 'warning')
