@@ -16,7 +16,10 @@ const file = {
     loadVisible: true,
     fileList: [],
     folderNav: [],
-    PreviewVisible: false,
+    preview: {
+      visible: false,
+      type: 'preview' // 新建markdown时需要首先展示编辑界面
+    },
     docValue: '',
     searchList: null,
     hasSearch: false,
@@ -37,8 +40,9 @@ const file = {
       state.versionVisible = !state.versionVisible
       state.loadVisible = false
     },
-    TOGGLE_PREVIEWVISIBLE: state => {
-      state.PreviewVisible = !state.PreviewVisible
+    TOGGLE_PREVIEWVISIBLE: (state, data) => {
+      state.preview.type = data
+      state.preview.visible = !state.preview.visible
     },
     RIGHT_TOGGLE_MENUVISIBLE: (state, data) => {
       state.coordinate = data
@@ -80,8 +84,8 @@ const file = {
     ToggleVersionVisible: ({ commit }) => {
       commit('TOGGLE_VERSIONVISIBLE')
     },
-    TogglePreviewVisible: ({ commit }) => {
-      commit('TOGGLE_PREVIEWVISIBLE')
+    TogglePreviewVisible: ({ commit }, data) => {
+      commit('TOGGLE_PREVIEWVISIBLE', data)
     },
     RightTogglemenuVisible: ({ commit }, data) => {
       commit('RIGHT_TOGGLE_MENUVISIBLE', data)
@@ -119,7 +123,7 @@ const file = {
       const docInfo = await getDocInfo(fcategoryid)
       if (docInfo.success) {
         commit('GET_DOC_INFO', docInfo.data)
-        commit('TOGGLE_PREVIEWVISIBLE')
+        commit('TOGGLE_PREVIEWVISIBLE', 'preview')
       }
     },
     async SetSearchList({ commit }, queryString) {
@@ -139,7 +143,7 @@ const file = {
     },
     NewMarkdownFile({ commit }) {
       commit('GET_DOC_INFO', {})
-      commit('TOGGLE_PREVIEWVISIBLE')
+      commit('TOGGLE_PREVIEWVISIBLE', 'create')
     }
   }
 }

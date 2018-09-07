@@ -1,8 +1,8 @@
 <template>
   <div class="markdown">
     <el-dialog
-      :visible.sync="PreviewVisible"
-      :modal-append-to-body="false"
+      :visible.sync="preview.visible"
+      :modal-append-to-body="true"
       :show-close="false"
       :close-on-press-escape="false"
       :close-on-click-modal="false"
@@ -43,10 +43,22 @@
     name: 'MDEditor',
     computed: {
       ...mapGetters([
-        'PreviewVisible',
         'docValue',
         'selectedData'
-      ])
+      ]),
+      preview: {
+        get() {
+          if (this.$store.getters.preview.type === 'create') {
+            this.isField = true
+            this.barsFlag = true
+            this.isEditMk = false
+          }
+          return this.$store.getters.preview
+        },
+        set() {
+          this.$store.dispatch('TogglePreviewVisible')
+        }
+      }
     },
     data() {
       return {
@@ -115,23 +127,26 @@
         this.isEditMk = false
       },
       async saveFile() {
+        const markdownData = new FormData()
+        markdownData.append('fparentid', this.$store.getters.parentId)
         if (!this.docValue.name) {
           this.$prompt('请输入文件名', '文件名', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
-            center: true
+            inputPattern: /^[^\\\\\\/:*?\\"<>|]+$/,
+            center: true,
+            inputErrorMessage: '文件名中不能包含\/:*?"<>|等特殊字符'
           }).then(({ value }) => {
-            this.docValue.name = value + 'md'
+            this.docValue.name = value + '.md'
             const markdownFile = new File([this.docValue.file], this.docValue.name)
-            const markdownData = new FormData()
             markdownData.append('file', markdownFile)
-            markdownData.append('fparentid', this.$store.getters.parentId)
             updateMarkdown(markdownData).then((res) => {
               if (res.success) {
                 this.$message1000('文档新建成功。', 'success')
                 this.closeMkdown()
                 this.$store.dispatch('Refresh')
               } else {
+                this.docValue.name = null
                 this.$message1000('文档新建失败。', 'error')
               }
             })
@@ -140,9 +155,7 @@
           })
         } else {
           const markdownFile = new File([this.docValue.file], this.docValue.name)
-          const markdownData = new FormData()
           markdownData.append('file', markdownFile)
-          markdownData.append('fparentid', this.$store.getters.parentId)
           markdownData.append('fcategoryid', this.docValue.id)
           this.$prompt('请输入更新描述', '提示', {
             confirmButtonText: '确定',
@@ -177,6 +190,9 @@
     async mounted() {
       if (this.selectedData.length >= 1) {
         this.value = this.docValue
+      }
+      if (this.preview.type === 'create') {
+        console.log(1)
       }
     }
   }

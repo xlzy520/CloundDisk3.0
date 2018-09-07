@@ -138,7 +138,8 @@ export default {
       this.$prompt('请输入文件夹名称', '新建文件夹', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        inputErrorMessage: '文件夹名称不能为空',
+        inputPattern: /^[^\\\\\\/:*?\\"<>|]+$/,
+        inputErrorMessage: '文件名中不能包含/:*?"<>|等特殊字符',
         closeOnClickModal: false,
         inputValidator: (value) => {
           if (value.trim().length === 0) {
