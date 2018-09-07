@@ -80,7 +80,7 @@
         }
       },
       handleSelectionChange(rows) {
-        this.$store.dispatch('GetSelectedData', rows)
+        this.$store.dispatch('SetSelectedData', rows)
         this.$store.dispatch('RightTogglemenuVisible', [false])
         this.fileList.forEach(item => {
           if (item.isEditor !== undefined) {
@@ -119,7 +119,7 @@
       enterParentDic(searchObj) {
         event.stopPropagation()
         this.$store.dispatch('GetCategory', searchObj.fparentid)
-        this.$store.dispatch('GetSelectedData', [searchObj])
+        this.$store.dispatch('SetSelectedData', [searchObj])
         this.$store.dispatch('ToggleSearch', false)
         this.selectRow.push(this.fileList.indexOf(searchObj))
       },

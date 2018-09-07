@@ -58,7 +58,7 @@ const file = {
     SET_FOLDERNAV: (state, data) => {
       state.folderNav = data
     },
-    GET_SELECTEDDATA: (state, data) => {
+    SET_SELECTEDDATA: (state, data) => {
       state.selectedData = data
     },
     GET_DOC_INFO: (state, data) => {
@@ -116,8 +116,8 @@ const file = {
       }
       return Category
     },
-    GetSelectedData({ commit }, data) {
-      commit('GET_SELECTEDDATA', data)
+    SetSelectedData({ commit }, data) {
+      commit('SET_SELECTEDDATA', data)
     },
     async GetDocInfo({ commit }, fcategoryid) {
       const docInfo = await getDocInfo(fcategoryid)
