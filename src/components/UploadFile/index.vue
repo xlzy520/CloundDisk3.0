@@ -131,12 +131,13 @@ export default {
         }
       }
       if (filelist.length > 1) {
-        for (const item of filelist) {
-          if (item.name === file.name) {
+        for (let i = 0; i < filelist.length - 1; i++) {
+          if (filelist[i].name === file.name) {
             filelist.pop()
             this.$message1000('上传失败！文件上传列表中存在同名文件', 'error')
           }
         }
+        console.log(filelist)
       }
       this.fileList = filelist
 
