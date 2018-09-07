@@ -129,6 +129,7 @@
       async saveFile() {
         const markdownData = new FormData()
         markdownData.append('fparentid', this.$store.getters.parentId)
+        console.log(this.docValue)
         if (!this.docValue.name) {
           this.$prompt('请输入文件名', '文件名', {
             confirmButtonText: '确定',
@@ -145,10 +146,10 @@
                 this.$message1000('文档新建成功。', 'success')
                 this.closeMkdown()
                 this.$store.dispatch('Refresh')
-              } else {
-                this.docValue.name = null
-                this.$message1000('文档新建失败。', 'error')
               }
+            }).catch(() => {
+              this.docValue.name = null
+              this.$message1000('文档新建失败。', 'error')
             })
           }).catch(() => {
             this.$message1000('取消输入。', 'info')
@@ -185,15 +186,19 @@
         formdata.append('fparentid', '1')
         const imgInfo = await updateMarkdown(formdata)
         this.$refs.md.$img2Url(pos, '/api_zhq/djcpsdocument/fileManager/downloadFile.do?id=' + imgInfo.data.id)
+      },
+      timedSave() {
+        const docLs = localStorage
+        const docSaveTimer = setTimeout(() => {
+          docLs.setItem('docCache', this.docValue.file)
+        }, 30 * 1000)
       }
     },
     async mounted() {
       if (this.selectedData.length >= 1) {
         this.value = this.docValue
       }
-      if (this.preview.type === 'create') {
-        console.log(1)
-      }
+      this.timedSave()
     }
   }
 </script>
