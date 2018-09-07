@@ -9,16 +9,14 @@
       <img src="@/assets/logo/logo.png" width="36" height="36" class="nav__logo__img">
       <span class="nav__logo__title">东经云盘</span>
     </div>
-    <md-input
-      icon="search"
-      name="search"
-      title="请输入搜索关键词"
-      placeholder="请输入关键词,回车搜索"
-      :maxlength="maxlength"
-      :keyEnterFunction="getSearchResult"
-      v-model="queryString">
-
-    </md-input>
+      <md-input
+        icon="search"
+        name="search"
+        title="请输入搜索关键词"
+        placeholder="请输入关键词,回车搜索"
+        :maxlength="maxlength"
+        :keyEnterFunction="getSearchResult">
+      </md-input>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img class="user-avatar" :src="'https://oa.djcps.com/DJOA/'+avatar">
@@ -47,6 +45,7 @@
 import { mapGetters } from 'vuex'
 import Hamburger from '@/components/Hamburger'
 import MdInput from '@/components/MDinput'
+import { Loading } from 'element-ui'
 export default {
   components: {
     MdInput,
@@ -75,7 +74,10 @@ export default {
       })
     },
     getSearchResult() {
-      this.$store.dispatch('SetSearchList', this.queryString)
+      const loadingSearch = Loading.service({ fullscreen: true })
+      this.$store.dispatch('SetSearchList', this.queryString).then(res => {
+        loadingSearch.close()
+      })
     }
   }
 }

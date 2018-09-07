@@ -3,7 +3,13 @@
     <div class="list-btn">
       <el-button type="primary" icon="el-icon-refresh" @click="refresh">刷新</el-button>
       <el-button type="primary" icon="el-icon-upload" @click="uploadFile">上传文件</el-button>
-      <el-button type="primary" icon="el-icon-plus" @click="newFolder">新建文件夹</el-button>
+      <el-dropdown type="primary" @command="handleCommand">
+        <el-button type="primary"><i class="el-icon-plus"></i>新建<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="newFolder">文件夹</el-dropdown-item>
+          <el-dropdown-item divided command="newMarkdown">Markdown</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
       <el-button type="primary" v-if="[4].indexOf(isShow) > -1" icon="el-icon-document" @click="previewFile">预览</el-button>
       <a
         class="el-button el-button--primary"
@@ -27,16 +33,16 @@
       <li :class="{disabled:!([1, 2, 4].indexOf(isShow)  > -1)}" @click="getDetail">详情</li>
     </ul>
     <div class="action-wrap">
-      <el-tooltip class="item" effect="dark" content="列表" placement="bottom">
-        <div class="action-item" @click="typeShow('List')">
+      <div class="item">
+        <div class="action-item" @click="typeShow('List')" title="列表">
           <svg-icon icon-class="list" className="icon" />
         </div>
-      </el-tooltip>
-      <el-tooltip class="item" effect="dark" content="缩略图" placement="bottom">
-        <div class="action-item" @click="typeShow('Thumbnail')">
+      </div>
+      <div class="item">
+        <div class="action-item" @click="typeShow('Thumbnail')" title="缩略图">
           <svg-icon icon-class="abbr" className="icon" />
         </div>
-      </el-tooltip>
+      </div>
     </div>
     <breadcrumb></breadcrumb>
     <div class="back2FileList">
@@ -93,7 +99,6 @@ export default {
           break
         case 3:
           this.$store.dispatch('TogglePreviewVisible')
-          console.log(fcategoryid)
           this.$store.dispatch('GetDocInfo', fcategoryid)
           break
       }
@@ -165,6 +170,15 @@ export default {
     },
     back2FileList() {
       this.$store.dispatch('ToggleSearch', false)
+    },
+    handleCommand(command) {
+      switch (command) {
+        case 'newFolder': this.newFolder(); break
+        case 'newMarkdown':
+          this.$store.dispatch('NewMarkdownFile')
+          break
+        default: return false
+      }
     }
   }
 }

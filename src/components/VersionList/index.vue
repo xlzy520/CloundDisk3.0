@@ -191,7 +191,7 @@
           if (versionListInfo.success) {
             this.loading = false
             this.tableData = versionListInfo.data
-            if (this.newVersion.value === '' && this.oldVersion.value === '') {
+            if (versionListInfo.data.length > 1 && this.newVersion.value === '' && this.oldVersion.value === '') {
               this.newVersion.label = versionListInfo.data[0].fversion
               this.newVersion.value = versionListInfo.data[0].filesgin
               this.oldVersion.label = versionListInfo.data[1].fversion

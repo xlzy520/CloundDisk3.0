@@ -33,6 +33,7 @@
       jumpFolder(fcategoryid) {
         this.$store.dispatch('GetCategory', fcategoryid)
         this.$store.dispatch('SetParentId', fcategoryid)
+        this.$store.dispatch('ToggleSearch', false)
       }
     }
   }

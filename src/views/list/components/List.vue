@@ -11,7 +11,8 @@
         @selection-change="handleSelectionChange"
         @row-click="clickRow"
         @cell-dblclick="dblclickRow"
-        @row-contextmenu="showMenu">
+        @row-contextmenu="showMenu"
+        >
         <el-table-column type="selection" width="55"></el-table-column>
 
         <el-table-column label="名称" width="480px">
@@ -161,18 +162,19 @@
   .file-content {
     width: 100%;
     min-width: 980px;
+    user-select: none;
+    .fileName{
+      cursor: pointer;
+      line-height: 2;
+      &:hover{
+        color: #42b983;
+      }
+    }
     .el-scrollbar__wrap{
       overflow-x: hidden;
     }
     .el-table--enable-row-hover .el-table__body tr:hover>td {
       background-color: #ecf5ff;
-    }
-  }
-  .fileName{
-    cursor: pointer;
-    line-height: 2;
-    &:hover{
-      color: #42b983;
     }
   }
   .cell .svg-icon{
