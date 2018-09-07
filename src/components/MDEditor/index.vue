@@ -129,7 +129,6 @@
       async saveFile() {
         const markdownData = new FormData()
         markdownData.append('fparentid', this.$store.getters.parentId)
-        console.log(this.docValue)
         if (!this.docValue.name) {
           this.$prompt('请输入文件名', '文件名', {
             confirmButtonText: '确定',
@@ -138,8 +137,7 @@
             center: true,
             inputErrorMessage: '文件名中不能包含\/:*?"<>|等特殊字符'
           }).then(({ value }) => {
-            this.docValue.name = value + '.md'
-            const markdownFile = new File([this.docValue.file], this.docValue.name)
+            const markdownFile = new File([this.docValue.file], value + '.md')
             markdownData.append('file', markdownFile)
             updateMarkdown(markdownData).then((res) => {
               if (res.success) {
@@ -155,26 +153,26 @@
             this.$message1000('取消输入。', 'info')
           })
         } else {
+          console.log(this.docValue)
           const markdownFile = new File([this.docValue.file], this.docValue.name)
           markdownData.append('file', markdownFile)
           markdownData.append('fcategoryid', this.docValue.id)
+          console.log(1)
           this.$prompt('请输入更新描述', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             center: true
           }).then(({ value }) => {
-            if (value === null) {
-              markdownData.append('fremarks', '')
-              updateMarkdown(markdownData).then((res) => {
-                if (res.success) {
-                  this.$message1000('文档保存成功。', 'success')
-                  this.closeMkdown()
-                  this.$store.dispatch('Refresh')
-                } else {
-                  this.$message1000('文档保存失败。', 'error')
-                }
-              })
-            }
+            markdownData.append('fremarks', value)
+            updateMarkdown(markdownData).then((res) => {
+              if (res.success) {
+                this.$message1000('文档保存成功。', 'success')
+                this.closeMkdown()
+                this.$store.dispatch('Refresh')
+              }
+            }).catch(() => {
+              this.$message1000('文档保存失败。', 'error')
+            })
           }).catch(() => {
             this.$message1000('取消输入。', 'info')
           })
