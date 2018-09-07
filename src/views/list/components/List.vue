@@ -117,10 +117,10 @@
       },
       enterParentDic(searchObj) {
         event.stopPropagation()
-        this.$store.dispatch('GetCategory', searchObj.parentId)
-        console.log(searchObj)
-        this.$store.dispatch('GetSelectedData', searchObj)
+        this.$store.dispatch('GetCategory', searchObj.fparentid)
+        this.$store.dispatch('GetSelectedData', [searchObj])
         this.$store.dispatch('ToggleSearch', false)
+        this.selectRow.push(this.fileList.indexOf(searchObj))
       },
       formatterTime(row, column) {
         return parseTime(row.fupdatetime)
