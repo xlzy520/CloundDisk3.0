@@ -11,7 +11,8 @@
         @selection-change="handleSelectionChange"
         @row-click="clickRow"
         @cell-dblclick="dblclickRow"
-        @row-contextmenu="showMenu">
+        @row-contextmenu="showMenu"
+        >
         <el-table-column type="selection" width="55"></el-table-column>
 
         <el-table-column label="名称" width="480px">
@@ -161,6 +162,7 @@
   .file-content {
     width: 100%;
     min-width: 980px;
+    user-select: none;
     .fileName{
       cursor: pointer;
       line-height: 2;
