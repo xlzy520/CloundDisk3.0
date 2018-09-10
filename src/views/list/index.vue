@@ -61,5 +61,7 @@ export default {
 </script>
 
 <style lang="scss">
-
+  .el-scrollbar__thumb{
+    background-color: rgba(64,158,255,.8);
+  }
 </style>

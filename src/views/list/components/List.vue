@@ -133,6 +133,8 @@
                 this.$nextTick(() => {
                   elScrollBar.scrollTop = (53) * this.fileList.indexOf(item)
                 })
+              } else {
+                this.$message1000('源文件未找到，文件可能已经被删除', 'info')
               }
             }
           }
