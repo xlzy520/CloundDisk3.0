@@ -28,7 +28,6 @@
               @imgAdd="imgAdd"
             />
           </div>
-          <!--</div>-->
         </div>
       </div>
     </el-dialog>
@@ -147,7 +146,7 @@
               }
             }).catch(() => {
               this.docValue.name = null
-              this.$message1000('文档新建失败。', 'error')
+              // this.$message1000('文档新建失败。' + err.message, 'error')
             })
           }).catch(() => {
             this.$message1000('取消输入。', 'info')
@@ -161,6 +160,7 @@
             cancelButtonText: '取消',
             center: true
           }).then(({ value }) => {
+            value = value === null ? '' : value
             markdownData.append('fremarks', value)
             updateMarkdown(markdownData).then((res) => {
               if (res.success) {
@@ -191,10 +191,9 @@
       }
     },
     async mounted() {
-      if (this.selectedData.length >= 1) {
-        this.value = this.docValue
-      }
-      this.timedSave()
+      // if (this.selectedData.length >= 1) {
+      //   this.value = this.docValue
+      // }
     }
   }
 </script>
