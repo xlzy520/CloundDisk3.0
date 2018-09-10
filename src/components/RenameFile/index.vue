@@ -7,10 +7,10 @@
               :style="{width:(type==='List'?'350px':'90px')}"
               @focus="selection($event)">
     </el-input>
-    <span>
+
         <el-button type="primary" icon="el-icon-check" @click="confirmEdit()"></el-button>
-        <el-button type="primary" icon="el-icon-close" @click="cancelEdit()" ></el-button>
-      </span>
+        <el-button type="primary" icon="el-icon-close" @click="cancelEdit()"></el-button>
+     
   </div>
 </template>
 <script>
