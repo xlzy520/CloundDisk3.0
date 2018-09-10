@@ -81,7 +81,6 @@
       },
       handleSelectionChange(rows) {
         if (this.fileList[0].faothority === 'newFolder') {
-          console.log(1)
           this.fileList.shift()
           this.selectRow = []
         } else {

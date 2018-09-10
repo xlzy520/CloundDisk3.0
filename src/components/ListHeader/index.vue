@@ -136,7 +136,7 @@ export default {
           fcategoryid: null,
           fcategorystatus: 1,
           fcreatetime: null,
-          ffiletype: null,
+          ffiletype: 1,
           fname: '新建文件夹',
           foperator: null,
           foperatorid: null,

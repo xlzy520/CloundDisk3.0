@@ -9,7 +9,7 @@
               spellcheck="false"
               v-model.trim="value"
               placeholder="请输入内容"
-              :style="{width:(type==='List'?'350px':'90px')}"
+              :style="{width:(type==='List'?'350px':'120px')}"
               @focus="selection($event)">
     </el-input>
     <el-button type="primary" icon="el-icon-check" @click="confirmEdit()"></el-button>
@@ -88,6 +88,7 @@
 <style lang="scss">
   .rename-edit{
     .el-button{
+      margin-top: 2px;
       padding: 4px 4px;
     }
     .el-button--primary {
@@ -108,6 +109,7 @@
   .thumbEdit{
     position: absolute;
     width: 150px;
+    top: 85px;
     left: -15px;
   }
 </style>

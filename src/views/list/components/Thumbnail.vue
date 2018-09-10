@@ -18,8 +18,8 @@
                @click="fileType(item.ffiletype,item.fcategoryid)">
             <div @click.stop="() => {}"><el-checkbox :label="item"></el-checkbox></div>
             <svg-icon :icon-class="String(item.ffiletype)" className="icon" />
-            <div v-show="item.isEditor">
-              <rename-file v-if="selectedData.length >= 1" type="Thumbnail"></rename-file>
+            <div v-if="item.isEditor">
+              <rename-file type="Thumbnail"></rename-file>
             </div>
             <div class="fileName">
               <span v-show="!item.isEditor">{{item.fname}}</span>
@@ -63,15 +63,20 @@ export default {
         this.isIndeterminate = false
       },
       handleCheckItemChange(value) {
-        this.$store.dispatch('SetSelectedData', value)
-        const checkedCount = value.length
-        this.checkAll = checkedCount === this.fileList.length
-        this.isIndeterminate = checkedCount > 0 && checkedCount < this.fileList.length
-        this.fileList.forEach(item => {
-          if (item.isEditor !== undefined) {
-            this.$set(item, 'isEditor', false)
-          }
-        })
+        if (this.fileList[0].faothority === 'newFolder') {
+          this.fileList.shift()
+          this.checkedData = []
+        } else {
+          this.$store.dispatch('SetSelectedData', value)
+          const checkedCount = value.length
+          this.checkAll = checkedCount === this.fileList.length
+          this.isIndeterminate = checkedCount > 0 && checkedCount < this.fileList.length
+          this.fileList.forEach(item => {
+            if (item.isEditor !== undefined) {
+              this.$set(item, 'isEditor', false)
+            }
+          })
+        }
       },
       fileType(type, fcategoryid) {
         switch (type) {
