@@ -70,8 +70,6 @@
               this.$message1000(res.msg, 'success')
               this.deleting = false
               this.$store.dispatch('Refresh')
-            } else {
-              this.$message1000(res.msg, 'error')
             }
           })
           .catch(err => {
