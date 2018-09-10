@@ -22,7 +22,7 @@ module.exports = {
         pathRewrite:{'^/api_ldh': ''}
       },
       '/api_py':{
-        target: 'http://192.168.13.9:8081/',
+        target: 'http://192.168.13.27:8081/',
         changeOrigin: true,
         pathRewrite:{'^/api_py': ''}
       },

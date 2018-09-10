@@ -4,7 +4,7 @@
       <el-button type="primary" icon="el-icon-refresh" @click="refresh">刷新</el-button>
       <el-button type="primary" icon="el-icon-upload" @click="uploadFile">上传文件</el-button>
       <el-dropdown type="primary" @command="handleCommand">
-        <el-button type="primary" @click.stop.prevent="newFolder"><i class="el-icon-plus"></i>新建<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+        <el-button type="primary"><i class="el-icon-plus"></i>&nbsp新建<i class="el-icon-arrow-down el-icon--right"></i></el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="newFolder">文件夹</el-dropdown-item>
           <el-dropdown-item divided command="newMarkdown">Markdown</el-dropdown-item>
