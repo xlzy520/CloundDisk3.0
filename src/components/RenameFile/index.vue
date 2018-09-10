@@ -1,5 +1,10 @@
 <template>
-  <div class="rename-edit" @click.stop="() => {}" :class="{thumbEdit:!(type === 'List')}">
+  <div
+    class="rename-edit"
+    @click.stop="() => {}"
+    @dblclick.stop="()=>{}"
+    @contextmenu.stop="()=>{}"
+    :class="{thumbEdit:!(type === 'List')}">
     <el-input size="small"
               spellcheck="false"
               v-model.trim="value"
@@ -7,10 +12,8 @@
               :style="{width:(type==='List'?'350px':'90px')}"
               @focus="selection($event)">
     </el-input>
-
-        <el-button type="primary" icon="el-icon-check" @click="confirmEdit()"></el-button>
-        <el-button type="primary" icon="el-icon-close" @click="cancelEdit()"></el-button>
-     
+    <el-button type="primary" icon="el-icon-check" @click="confirmEdit()"></el-button>
+    <el-button type="primary" icon="el-icon-close" @click="cancelEdit()"></el-button>
   </div>
 </template>
 <script>
@@ -69,12 +72,20 @@
 <style lang="scss">
   .rename-edit{
     .el-button{
-      padding: 0;
+      padding: 4px 4px;
     }
     .el-button--primary {
-      background-color: #409eff61;
+      background-color: rgba(18,150,219,.6);
     }
     .el-input{
+      input{
+        font-size: 16px;
+        /*&::selection{*/
+          /*background-color: #dffff5;*/
+          /*color: #e207ef;*/
+        /*}*/
+      }
+
       margin-right: 10px;
     }
   }
