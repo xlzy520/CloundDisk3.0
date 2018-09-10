@@ -65,6 +65,9 @@
       ])
     },
     methods: {
+      haha() {
+        console.log(11)
+      },
       fileType(type, fcategoryid) {
         switch (type) {
           case 1:
@@ -116,12 +119,21 @@
           return formatSize(Number(row.fsize.replace('B', '')))
         }
       },
-      enterParentDic(searchObj) {
+      async enterParentDic(searchObj) {
         event.stopPropagation()
-        this.$store.dispatch('GetCategory', searchObj.fparentid)
-        this.$store.dispatch('SetSelectedData', [searchObj])
-        this.$store.dispatch('ToggleSearch', false)
-        this.selectRow.push(this.fileList.indexOf(searchObj))
+        await this.$store.dispatch('SetSelectedData', [searchObj])
+        await this.$store.dispatch('ToggleSearch', false)
+        await this.$store.dispatch('GetCategory', searchObj.fparentid).then((res) => {
+          if (res.success) {
+            for (const item of this.fileList) {
+              if (item.fcategoryid === searchObj.fcategoryid) {
+                this.selectRow.push(this.fileList.indexOf(item))
+                this.$refs.multipleTable.toggleRowSelection(item)
+                document.querySelector('.el-table.el-table--fit.el-table--enable-row-hover').scrollTop = 10000
+              }
+            }
+          }
+        })
       },
       formatterTime(row, column) {
         return parseTime(row.fupdatetime)

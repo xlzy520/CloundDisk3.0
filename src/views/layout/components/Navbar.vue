@@ -12,6 +12,7 @@
       <md-input
         icon="search"
         name="search"
+        v-model="queryString"
         title="请输入搜索关键词"
         placeholder="请输入关键词,回车搜索"
         :maxlength="maxlength"
