@@ -4,7 +4,7 @@
       <el-button type="primary" icon="el-icon-refresh" @click="refresh">刷新</el-button>
       <el-button type="primary" icon="el-icon-upload" @click="uploadFile">上传文件</el-button>
       <el-dropdown type="primary" @command="handleCommand">
-        <el-button type="primary"><i class="el-icon-plus"></i>新建<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+        <el-button type="primary" @click.stop.prevent="newFolder"><i class="el-icon-plus"></i>新建<i class="el-icon-arrow-down el-icon--right"></i></el-button>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item command="newFolder">文件夹</el-dropdown-item>
           <el-dropdown-item divided command="newMarkdown">Markdown</el-dropdown-item>
@@ -46,7 +46,7 @@
     </div>
     <breadcrumb></breadcrumb>
     <div class="back2FileList">
-      <el-button v-waves type="success" plain size="mini" v-if="hasSearch" @click="back2FileList">返回文件列表</el-button>
+      <el-button type="success" plain size="mini" v-if="hasSearch" @click="back2FileList">返回文件列表</el-button>
     </div>
   </div>
 </template>
@@ -55,13 +55,9 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '../Breadcrumb/index'
 import { addCategory } from '@/api/file'
-import waves from '@/directive/waves/index.js' // 水波纹指令
 export default {
   name: 'ListHeader',
   components: { Breadcrumb },
-  directives: {
-    waves
-  },
   computed: {
     ...mapGetters([
       'selectedData',

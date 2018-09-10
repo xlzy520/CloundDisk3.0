@@ -1,7 +1,7 @@
 <template>
   <div class="file-content clearfix" ref="fileContent">
     <div class="file-list">
-      <el-scrollbar style="height: 80vh">
+      <el-scrollbar style="height: 80vh" ref="elscrollbar">
       <el-table
         ref="multipleTable"
         :data="fileList"
@@ -129,7 +129,10 @@
               if (item.fcategoryid === searchObj.fcategoryid) {
                 this.selectRow.push(this.fileList.indexOf(item))
                 this.$refs.multipleTable.toggleRowSelection(item)
-                document.querySelector('.el-table.el-table--fit.el-table--enable-row-hover').scrollTop = 10000
+                const elScrollBar = this.$refs['elscrollbar'].$refs['wrap']
+                this.$nextTick(() => {
+                  elScrollBar.scrollTop = (53) * this.fileList.indexOf(item)
+                })
               }
             }
           }
