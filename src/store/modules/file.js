@@ -20,7 +20,10 @@ const file = {
       visible: false,
       type: 'preview' // 新建markdown时需要首先展示编辑界面
     },
-    docValue: '',
+    docValue: {
+      file: '',
+      name: ''
+    },
     searchList: null,
     hasSearch: false,
     coordinate: []
