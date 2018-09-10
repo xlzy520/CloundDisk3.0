@@ -18,13 +18,14 @@
 </template>
 <script>
   import { mapGetters } from 'vuex'
-  import { renameFile } from '@/api/file'
+  import { renameFile, addCategory } from '@/api/file'
   export default {
     name: 'RenameFile',
     props: ['type'],
     computed: {
       ...mapGetters([
-        'selectedData'
+        'selectedData',
+        'fileList'
       ])
     },
 
@@ -47,11 +48,24 @@
           } catch (e) {
             row[0].isEditor = false
           }
+        } else {
+          try {
+            const editInfo = await addCategory(this.$store.getters.parentId, this.value)
+            if (editInfo.success) {
+              this.$message1000('文件夹新建成功', 'success')
+              this.$store.dispatch('Refresh')
+            }
+          } catch (e) {
+            this.fileList[0].isEditor = false
+          }
         }
       },
       cancelEdit() {
         if (this.selectedData.length >= 1) {
           this.selectedData[0].isEditor = false
+        } else {
+          this.fileList.shift()
+          this.$set(this.fileList[0], 'isEditor', false)
         }
       },
       selection(event) {
@@ -63,7 +77,9 @@
       }
     },
     mounted() {
-      this.value = this.selectedData[0].fname
+      if (this.selectedData[0]) {
+        this.value = this.selectedData[0].fname
+      }
       document.querySelector('.rename-edit input').focus()
     }
   }

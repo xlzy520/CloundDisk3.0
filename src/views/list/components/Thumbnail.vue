@@ -34,16 +34,17 @@
 </template>
 
 <script>
-  import RenameFile from '@/components/RenameFile'
+  import nameEditor from '@/components/RenameFile'
   import { mapGetters } from 'vuex'
-  export default {
+  import RenameFile from '../../../components/RenameFile/index'
+export default {
     props: {
       fileList: {
         type: Array,
         required: true
       }
     },
-    components: { RenameFile },
+    components: { RenameFile, nameEditor },
     data() {
       return {
         checkAll: false,

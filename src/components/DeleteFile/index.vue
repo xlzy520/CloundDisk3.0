@@ -74,7 +74,7 @@
           })
           .catch(err => {
             console.log(err)
-            if (this.$store.getters.hasSearch){
+            if (this.$store.getters.hasSearch) {
               this.$message1000('该文件已经被删除', 'info')
             }
             this.deleting = false

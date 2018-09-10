@@ -54,7 +54,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import Breadcrumb from '../Breadcrumb/index'
-import { addCategory } from '@/api/file'
 export default {
   name: 'ListHeader',
   components: { Breadcrumb },
@@ -131,28 +130,49 @@ export default {
       this.$store.dispatch('RightTogglemenuVisible', [false])
     },
     newFolder() {
-      this.$prompt('请输入文件夹名称', '新建文件夹', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        inputPattern: /^[^\\\\\\/:*?\\"<>|]+$/,
-        inputErrorMessage: '文件名中不能包含/:*?"<>|等特殊字符',
-        closeOnClickModal: false,
-        inputValidator: (value) => {
-          if (value.trim().length === 0) {
-            return '文件夹名称不能为空'
-          }
-        }
-      }).then(({ value }) => {
-        addCategory(this.parentId, value.trim())
-          .then(res => {
-            if (res.success) {
-              this.$message1000(res.msg, 'success')
-              this.$store.dispatch('Refresh')
-            }
-          })
-      }).catch(() => {
-        this.$message1000('取消输入', 'info')
+      this.$store.dispatch('Refresh').then(res => {
+        this.fileList.unshift({
+          faothority: 'newFolder',
+          fcategoryid: null,
+          fcategorystatus: 1,
+          fcreatetime: null,
+          ffiletype: null,
+          fname: '新建文件夹',
+          foperator: null,
+          foperatorid: null,
+          fparentid: null,
+          fsize: null,
+          fsortorder: null,
+          fupdateor: null,
+          fupdatetime: null,
+          rowid: null
+        })
+        this.$set(this.fileList[0], 'isEditor', true)
+        this.$store.dispatch('SetSelectedData', [])
       })
+
+      // this.$prompt('请输入文件夹名称', '新建文件夹', {
+      //   confirmButtonText: '确定',
+      //   cancelButtonText: '取消',
+      //   inputPattern: /^[^\\\\\\/:*?\\"<>|]+$/,
+      //   inputErrorMessage: '文件名中不能包含/:*?"<>|等特殊字符',
+      //   closeOnClickModal: false,
+      //   inputValidator: (value) => {
+      //     if (value.trim().length === 0) {
+      //       return '文件夹名称不能为空'
+      //     }
+      //   }
+      // }).then(({ value }) => {
+      //   addCategory(this.parentId, value.trim())
+      //     .then(res => {
+      //       if (res.success) {
+      //         this.$message1000(res.msg, 'success')
+      //         this.$store.dispatch('Refresh')
+      //       }
+      //     })
+      // }).catch(() => {
+      //   this.$message1000('取消输入', 'info')
+      // })
     },
     previewFile() {
       this.$store.dispatch('GetDocInfo', this.selectedData[0].fcategoryid)

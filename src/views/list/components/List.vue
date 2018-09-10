@@ -65,9 +65,6 @@
       ])
     },
     methods: {
-      haha() {
-        console.log(11)
-      },
       fileType(type, fcategoryid) {
         switch (type) {
           case 1:
@@ -83,17 +80,23 @@
         }
       },
       handleSelectionChange(rows) {
-        this.$store.dispatch('SetSelectedData', rows)
-        this.$store.dispatch('RightTogglemenuVisible', [false])
-        this.fileList.forEach(item => {
-          if (item.isEditor !== undefined) {
-            this.$set(item, 'isEditor', false)
-          }
-        })
-        this.selectRow = []
-        rows.forEach((item, index) => {
-          this.selectRow.push(this.fileList.indexOf(item))
-        })
+        if (this.fileList[0].faothority === 'newFolder') {
+          console.log(1)
+          this.fileList.shift()
+          this.selectRow = []
+        } else {
+          this.$store.dispatch('SetSelectedData', rows)
+          this.$store.dispatch('RightTogglemenuVisible', [false])
+          this.fileList.forEach(item => {
+            if (item.isEditor !== undefined) {
+              this.$set(item, 'isEditor', false)
+            }
+          })
+          this.selectRow = []
+          rows.forEach((item, index) => {
+            this.selectRow.push(this.fileList.indexOf(item))
+          })
+        }
       },
       clickRow(row) {
         this.fileList.forEach(item => {
@@ -110,7 +113,7 @@
       highlightRow({ row, rowIndex }) {
         if (this.selectRow.includes(rowIndex)) {
           return {
-            'background-color': '#ecf5ff'
+            'background-color': '#d4ecff'
           }
         }
       },
@@ -140,7 +143,9 @@
         })
       },
       formatterTime(row, column) {
-        return parseTime(row.fupdatetime)
+        if (row.fupdatetime) {
+          return parseTime(row.fupdatetime)
+        }
       },
       showMenu(row, event) {
         event.preventDefault()
