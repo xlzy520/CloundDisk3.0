@@ -116,7 +116,7 @@
           return formatSize(Number(row.fsize.replace('B', '')))
         }
       },
-      enterParentDic(searchObj) {
+      enterParentDic(searchObj, event) {
         event.stopPropagation()
         this.$store.dispatch('GetCategory', searchObj.parentId)
         console.log(searchObj)
@@ -126,7 +126,7 @@
       formatterTime(row, column) {
         return parseTime(row.fupdatetime)
       },
-      showMenu(row) {
+      showMenu(row, event) {
         event.preventDefault()
         const x = event.clientX
         let y = ''
