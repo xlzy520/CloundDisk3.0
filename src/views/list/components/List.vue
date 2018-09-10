@@ -32,7 +32,7 @@
         <el-table-column prop="foperator" label="创建者" v-if="!hasSearch"></el-table-column>
         <el-table-column label="所在目录" v-if="hasSearch" key="zhibi">
           <template slot-scope="scope">
-            <span class="fileAddress" @click="enterParentDic(scope.row)" :key="scope.row.fcategoryid">文件位置</span>
+            <span class="fileAddress" @click.stop="enterParentDic(scope.row)" :key="scope.row.fcategoryid">文件位置</span>
           </template>
         </el-table-column>
       </el-table>
@@ -119,8 +119,7 @@
           return formatSize(Number(row.fsize.replace('B', '')))
         }
       },
-      async enterParentDic(searchObj) {
-        event.stopPropagation()
+      async enterParentDic(searchObj, event) {
         await this.$store.dispatch('SetSelectedData', [searchObj])
         await this.$store.dispatch('ToggleSearch', false)
         await this.$store.dispatch('GetCategory', searchObj.fparentid).then((res) => {
@@ -143,7 +142,7 @@
       formatterTime(row, column) {
         return parseTime(row.fupdatetime)
       },
-      showMenu(row) {
+      showMenu(row, event) {
         event.preventDefault()
         const x = event.clientX
         let y = ''
