@@ -193,6 +193,9 @@ export default {
       .el-button {
         padding: 6px 8px;
       }
+      .el-dropdown{
+        margin: 0 10px;
+      }
     }
     #menu-btn{
       list-style: none;
