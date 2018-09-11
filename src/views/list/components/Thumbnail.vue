@@ -3,13 +3,13 @@
     <div class="hd">
       <el-checkbox
         :indeterminate="isIndeterminate"
-        v-model="checkAll"
+        v-model="selectedData.length >= 1"
         @change="handleCheckAllChange"
         class="allCheck"
         :disabled="disabled">全选</el-checkbox>
     </div>
     <el-scrollbar tag="ul" style="height: 76vh">
-     <el-checkbox-group v-model="checkedData" @change="handleCheckItemChange">
+     <el-checkbox-group v-model="selectedData" @change="handleCheckItemChange">
       <ul>
         <li v-for="(item, index) in fileList" :key="index">
           <div class="box"
@@ -35,8 +35,7 @@
 
 <script>
   import nameEditor from '@/components/RenameFile'
-  import { mapGetters } from 'vuex'
-  import RenameFile from '../../../components/RenameFile/index'
+  import RenameFile from '@/components/RenameFile/index'
 export default {
     props: {
       fileList: {
@@ -47,8 +46,6 @@ export default {
     components: { RenameFile, nameEditor },
     data() {
       return {
-        checkAll: false,
-        checkedData: [],
         isIndeterminate: false,
         disabled: false
       }
@@ -58,18 +55,17 @@ export default {
         return false
       },
       handleCheckAllChange(val) {
-        this.checkedData = val ? this.fileList : []
-        this.$store.dispatch('SetSelectedData', this.checkedData)
+        this.selectedData = val ? this.fileList : []
+        this.$store.dispatch('SetSelectedData', this.selectedData)
         this.isIndeterminate = false
       },
       handleCheckItemChange(value) {
         if (this.fileList[0].faothority === 'newFolder') {
           this.fileList.shift()
-          this.checkedData = []
+          this.selectedData = []
         } else {
           this.$store.dispatch('SetSelectedData', value)
           const checkedCount = value.length
-          this.checkAll = checkedCount === this.fileList.length
           this.isIndeterminate = checkedCount > 0 && checkedCount < this.fileList.length
           this.fileList.forEach(item => {
             if (item.isEditor !== undefined) {
@@ -96,19 +92,23 @@ export default {
         }
       }
     },
-    computed: mapGetters([
-      'selectedData'
-    ]),
+    computed: {
+      selectedData: {
+        get() {
+          return this.$store.getters.selectedData
+        },
+        set(newValue) {
+          this.$store.dispatch('SetSelectedData', newValue)
+        }
+      }
+    },
     mounted() {
-      this.checkedData = this.selectedData
       const totalLength = this.fileList.length
-      const checkedDataLength = this.checkedData.length
+      const checkedDataLength = this.selectedData.length
       if (totalLength === 0) {
         this.disabled = true
       } else if (checkedDataLength > 0 && checkedDataLength < totalLength) {
         this.isIndeterminate = true
-      } else if (totalLength === checkedDataLength) {
-        this.checkAll = true
       }
     }
   }
