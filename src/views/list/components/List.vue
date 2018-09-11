@@ -6,16 +6,16 @@
         ref="multipleTable"
         :data="fileList"
         style="width: 100%"
-        :default-sort="{prop: 'date', order: 'descending'}"
         :row-style="highlightRow"
         @selection-change="handleSelectionChange"
         @row-click="clickRow"
         @cell-dblclick="dblclickRow"
         @row-contextmenu="showMenu"
+        @sort-change="sortChange"
         >
         <el-table-column type="selection" width="55"></el-table-column>
 
-        <el-table-column label="名称" width="480px">
+        <el-table-column label="名称" width="480px" prop="fname">
           <template slot-scope="scope">
             <div v-if="scope.row.isEditor">
              <rename-file type="List"></rename-file>
@@ -55,7 +55,7 @@
     },
     data() {
       return {
-        selectRow: []
+        rows: []
       }
     },
     components: { RenameFile },
@@ -80,9 +80,10 @@
         }
       },
       handleSelectionChange(rows) {
+        this.rows = rows
         if (this.fileList[0].faothority === 'newFolder') {
           this.fileList.shift()
-          this.selectRow = []
+          this.rows = []
         } else {
           this.$store.dispatch('SetSelectedData', rows)
           this.$store.dispatch('RightTogglemenuVisible', [false])
@@ -90,10 +91,6 @@
             if (item.isEditor !== undefined) {
               this.$set(item, 'isEditor', false)
             }
-          })
-          this.selectRow = []
-          rows.forEach((item, index) => {
-            this.selectRow.push(this.fileList.indexOf(item))
           })
         }
       },
@@ -110,7 +107,7 @@
         this.fileType(row.ffiletype, row.fcategoryid)
       },
       highlightRow({ row, rowIndex }) {
-        if (this.selectRow.includes(rowIndex)) {
+        if (this.rows.includes(row)) {
           return {
             'background-color': '#d4ecff'
           }
