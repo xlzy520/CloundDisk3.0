@@ -12,6 +12,7 @@
               :style="{width:(type==='List'?'350px':'120px')}"
               @focus="selection($event)">
     </el-input>
+    <span v-show="!correct && type === 'List'" class="fileNameTips">文件名中不能为空或包含/:*?"<>|等特殊字符</span>
     <el-button type="primary" icon="el-icon-check" @click="confirmEdit()"></el-button>
     <el-button type="primary" icon="el-icon-close" @click="cancelEdit()"></el-button>
   </div>
@@ -21,23 +22,45 @@
   import { renameFile, addCategory } from '@/api/file'
   export default {
     name: 'RenameFile',
-    props: ['type'],
+    props: {
+      type: {
+        type: String,
+        required: true
+      }
+    },
     computed: {
       ...mapGetters([
         'selectedData',
         'fileList'
-      ])
+      ]),
+      value: {
+        get() {
+          return this.fileName
+        },
+        set(newValue) {
+          if (!(/^[^\\\\\\/:*?\\"<>|]+$/).test(newValue)) {
+            this.correct = false
+          } else {
+            this.correct = true
+            this.fileName = newValue
+          }
+        }
+      }
     },
 
     data() {
       return {
-        value: ''
+        fileName: '',
+        correct: true
       }
     },
     methods: {
       async confirmEdit() {
         const row = this.selectedData
-        if (row.length >= 1) {
+        if (!this.correct) {
+          this.$message1000('文件名中不能包含空格/:*?"<>|等特殊字符', 'error')
+          return false
+        } else if (row.length >= 1) {
           try {
             const editInfo = await renameFile(row[0].fcategoryid, this.value, row[0].fparentid, row[0].ffiletype)
             if (editInfo.success) {
@@ -111,5 +134,13 @@
     width: 150px;
     top: 85px;
     left: -15px;
+  }
+  .fileNameTips{
+    position: absolute;
+    bottom: -7px;
+    left: 10px;
+    color: red;
+    width: 300px;
+    font-size: 10px;
   }
 </style>
