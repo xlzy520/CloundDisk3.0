@@ -28,11 +28,6 @@
       <div class="el-upload__tip" slot="tip" v-if="!updateType"><span style="color: #888;padding-right: 2px;">当前文件夹：</span>{{tip}}</div>
       <div class="el-upload__tip" slot="tip" v-if="updateType"><span style="color: #888;padding-right: 2px;">要更新的文件：</span>{{tip}}</div>
     </el-upload>
-    <form action="/api_py/djcpsdocument/category/fileUpload.do" enctype="multipart/form-data" method="post">
-      <input type="hidden" name="fparentid" value="0"/>
-      <input id="dir" type="file" name="file" webkitdirectory/>
-      <input id="uploadDir" type="submit" value="提交文件夹">
-    </form>
     <div class="file-desc-label" v-if="updateType">文件描述</div>
     <el-input type="textarea" v-model="fileDesc" v-if="updateType"></el-input>
     <span slot="footer" class="dialog-footer">
