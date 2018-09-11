@@ -78,6 +78,8 @@ export default {
       const loadingSearch = Loading.service({ fullscreen: true })
       this.$store.dispatch('SetSearchList', this.queryString).then(res => {
         loadingSearch.close()
+      }).catch(res => {
+        loadingSearch.close()
       })
     }
   }

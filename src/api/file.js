@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function getDocInfo(id) {
   return request({
-    url: '/api_zhq/djcpsdocument/fileManager/getFile.do',
+    url: '/djcpsdocument/fileManager/getFile.do',
     method: 'get',
     params: { id }
   })
@@ -10,7 +10,7 @@ export function getDocInfo(id) {
 
 export function getCategory(id) {
   return request({
-    url: '/api_zhq/djcpsdocument/category/getCategory.do',
+    url: '/djcpsdocument/category/getCategory.do',
     method: 'post',
     data: {
       fcategoryid: id
@@ -20,7 +20,7 @@ export function getCategory(id) {
 
 export function deleteCategory(categoryids, fparentid) {
   return request({
-    url: '/api_zhq/djcpsdocument/category/deleteCategory.do',
+    url: '/djcpsdocument/category/deleteCategory.do',
     method: 'post',
     data: {
       list: categoryids,
@@ -31,7 +31,7 @@ export function deleteCategory(categoryids, fparentid) {
 
 export function getVersionList(fname, fparentid) {
   return request({
-    url: '/api_zhq/djcpsdocument/version/getAllVersion.do',
+    url: '/djcpsdocument/version/getAllVersion.do',
     method: 'post',
     data: {
       fname: fname,
@@ -41,7 +41,7 @@ export function getVersionList(fname, fparentid) {
 }
 export function versionRollback(oldVer, newVer) {
   return request({
-    url: '/api_zhq/djcpsdocument/version/versionBack.do',
+    url: '/djcpsdocument/version/versionBack.do',
     method: 'post',
     data: {
       oldDisplayFileSgin: oldVer,
@@ -52,7 +52,7 @@ export function versionRollback(oldVer, newVer) {
 
 export function updateMarkdown(data) {
   return request({
-    url: '/api_zhq/djcpsdocument/category/fileUpload.do',
+    url: '/djcpsdocument/category/fileUpload.do',
     method: 'post',
     processData: false,
     contentType: false,
@@ -62,7 +62,7 @@ export function updateMarkdown(data) {
 
 export function downloadFile(id) {
   return request({
-    url: '/api_zhq/djcpsdocument/fileManager/downloadFile.do',
+    url: '/djcpsdocument/fileManager/downloadFile.do',
     method: 'get',
     params: { id }
   })
@@ -70,7 +70,7 @@ export function downloadFile(id) {
 
 export function addCategory(parentid, name) {
   return request({
-    url: '/api_zhq/djcpsdocument/category/addCategory.do',
+    url: '/djcpsdocument/category/addCategory.do',
     method: 'post',
     data: {
       fparentid: parentid,
@@ -81,7 +81,7 @@ export function addCategory(parentid, name) {
 
 export function renameFile(fid, fname, fparentid, ffiletype) {
   return request({
-    url: '/api_zhq/djcpsdocument/category/setCategoryName.do',
+    url: '/djcpsdocument/category/setCategoryName.do',
     method: 'post',
     data: {
       fcategoryid: fid,
@@ -94,7 +94,7 @@ export function renameFile(fid, fname, fparentid, ffiletype) {
 
 export function getSearchResult(queryString, categoryName, sort, curPage) {
   return request({
-    url: '/api_zhq/djcpsdocument/search/list.do',
+    url: '/djcpsdocument/search/list.do',
     method: 'post',
     data: {
       queryString: queryString,

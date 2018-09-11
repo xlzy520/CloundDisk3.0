@@ -162,7 +162,7 @@
     },
     methods: {
       downloadVersion(id, evt, filename, fversion) {
-        evt.target.href = '/api_zhq/djcpsdocument/fileManager/downloadFile.do?id=' + id
+        evt.target.href = process.env.UPLOAD_API + '/djcpsdocument/fileManager/downloadFile.do?id=' + id
         evt.target.download = filename // 暂时不加版本号
       },
       dialogClose() {
