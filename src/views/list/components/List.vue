@@ -11,7 +11,6 @@
         @row-click="clickRow"
         @cell-dblclick="dblclickRow"
         @row-contextmenu="showMenu"
-        @sort-change="sortChange"
         >
         <el-table-column type="selection" width="55"></el-table-column>
 
