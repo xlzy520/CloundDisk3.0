@@ -57,7 +57,7 @@
     methods: {
       async confirmEdit() {
         const row = this.selectedData
-        if (!this.correct) {
+        if (!(/^[^\\\\\\/:*?\\"<>|]+$/).test(this.fileName)) {
           this.$message1000('文件名中不能包含空格/:*?"<>|等特殊字符', 'error')
           return false
         } else if (row.length >= 1) {
@@ -80,6 +80,7 @@
             }
           } catch (e) {
             this.fileList[0].isEditor = false
+            this.fileList.shift()
           }
         }
       },
