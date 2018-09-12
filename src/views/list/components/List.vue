@@ -14,7 +14,7 @@
         >
         <el-table-column type="selection" width="55"></el-table-column>
 
-        <el-table-column label="名称" width="480px" prop="fname">
+        <el-table-column label="名称" width="480px" prop="fname" sortable>
           <template slot-scope="scope">
             <div v-if="scope.row.isEditor">
              <rename-file type="List"></rename-file>
@@ -27,7 +27,7 @@
           </template>
         </el-table-column>
         <el-table-column label="修改时间" sortable prop="fupdatetime" :formatter="formatterTime"></el-table-column>
-        <el-table-column prop="fsize" label="大小" :formatter="sizeFormatter"></el-table-column>
+        <el-table-column label="大小" :formatter="sizeFormatter" sortable :sort-method="sizeSort"></el-table-column>
         <el-table-column prop="foperator" label="创建者" v-if="!hasSearch"></el-table-column>
         <el-table-column label="所在目录" v-if="hasSearch" key="zhibi">
           <template slot-scope="scope">
@@ -64,6 +64,13 @@
       ])
     },
     methods: {
+      sizeSort(a, b) {
+        if (a.fsize && b.fsize) {
+          a = Number(a.fsize.replace('B', ''))
+          b = Number(b.fsize.replace('B', ''))
+          return (a - b)
+        }
+      },
       fileType(type, fcategoryid) {
         switch (type) {
           case 1:
