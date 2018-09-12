@@ -1,6 +1,5 @@
 import Vue from 'vue'
 
-import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import { Message } from 'element-ui'
 import '@/styles/index.scss' // global css
@@ -16,7 +15,6 @@ import '@/permission' // permission control
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
 
-Vue.use(ElementUI)
 Vue.use(mavonEditor)
 
 Vue.prototype.$message1000 = (message, type) => { // 默认消息提示持续1S

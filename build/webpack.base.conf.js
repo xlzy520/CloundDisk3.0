@@ -24,6 +24,13 @@ module.exports = {
   entry: {
     app: './src/main.js'
   },
+  externals: {
+    'vue': 'Vue',
+    'vuex': 'Vuex',
+    'vue-router': 'VueRouter',
+    'element-ui': 'ELEMENT',
+    'highlight.js': 'Highlight.js'  //markdown中已经引入该js的CDN
+  },
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',

@@ -13,22 +13,25 @@
         <img src="@/assets/logo/logo.png" width="36" height="36" class="logo__img">
         <span class="logo__title">东经云盘</span>
       </div>
-      <el-scrollbar style="display: inline-block">
-        <el-tree
-          style="display: inline-block;min-width: 13vw"
-          :data="data"
-          :props="defaultProps"
-          ref="folderTree"
-          :indent="10"
-          :expand-on-click-node="false"
-          @node-expand="nodeExpand"
-          @node-click="handleNodeClick">
+      <div v-show="!isCollapse">
+        <el-scrollbar style="display: inline-block" v-show="!isCollapse">
+          <el-tree
+            style="display: inline-block;min-width: 13vw"
+            :data="data"
+            :props="defaultProps"
+            ref="folderTree"
+            :indent="10"
+            :expand-on-click-node="false"
+            @node-expand="nodeExpand"
+            @node-click="handleNodeClick">
         <span class="custom-tree-node" slot-scope="{node,data}" :title="node.label">
           <svg-icon  icon-class="1"></svg-icon>
           <span>{{ node.label }}</span>
         </span>
-        </el-tree>
-      </el-scrollbar>
+          </el-tree>
+        </el-scrollbar>
+      </div>
+
 
       <!--<sidebar-item -->
         <!--v-for="route in routes" -->
