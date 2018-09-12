@@ -29,7 +29,7 @@ module.exports = {
     'vuex': 'Vuex',
     'vue-router': 'VueRouter',
     'element-ui': 'ELEMENT',
-    'highlight.js': 'Highlight.js'  //markdown中已经引入该js的CDN
+    'highlight.js': '"highlight.js"'
   },
   output: {
     path: config.build.assetsRoot,
