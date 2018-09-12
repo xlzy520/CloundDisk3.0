@@ -10,6 +10,7 @@
         </span>
         <el-input name="username"
                   type="text"
+                  spellcheck="false"
                   v-model.trim="loginForm.username"
                   autoComplete="on"
                   maxlength="30"
@@ -22,6 +23,7 @@
         </span>
         <el-input name="password"
                   :type="pwdType"
+                  spellcheck="false"
                   @keyup.enter.native="handleLogin"
                   v-model.trim="loginForm.password"
                   maxlength="30"
@@ -46,8 +48,8 @@ export default {
   data() {
     return {
       loginForm: {
-        username: '',
-        password: ''
+        username: process.env.USER.name,
+        password: process.env.USER.password
       },
       loginRules: {
         username: [
