@@ -188,16 +188,20 @@
       async requestData() {
         this.loading = true
         if (this.selectedData.length === 1 && this.versionVisible === true) {
-          const versionListInfo = await getVersionList(this.selectedData[0].fname, this.$store.getters.parentId)
-          if (versionListInfo.success) {
-            this.loading = false
-            this.tableData = versionListInfo.data
-            if (versionListInfo.data.length > 1 && this.newVersion.value === '' && this.oldVersion.value === '') {
-              this.newVersion.label = versionListInfo.data[0].fversion
-              this.newVersion.value = versionListInfo.data[0].filesgin
-              this.oldVersion.label = versionListInfo.data[1].fversion
-              this.oldVersion.value = versionListInfo.data[1].filesgin
+          try {
+            const versionListInfo = await getVersionList(this.selectedData[0].fname, this.$store.getters.parentId)
+            if (versionListInfo.success) {
+              this.loading = false
+              this.tableData = versionListInfo.data
+              if (versionListInfo.data.length > 1 && this.newVersion.value === '' && this.oldVersion.value === '') {
+                this.newVersion.label = versionListInfo.data[0].fversion
+                this.newVersion.value = versionListInfo.data[0].filesgin
+                this.oldVersion.label = versionListInfo.data[1].fversion
+                this.oldVersion.value = versionListInfo.data[1].filesgin
+              }
             }
+          } catch (e) {
+            this.loading = false
           }
         }
       },
