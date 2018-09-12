@@ -2,6 +2,7 @@ import axios from 'axios'
 import { Message, MessageBox } from 'element-ui'
 import store from '../store'
 import { getToken } from '@/utils/auth'
+import router from '../router'
 
 // 创建axios实例
 const service = axios.create({
@@ -32,15 +33,17 @@ service.interceptors.response.use(
         duration: 2 * 1000
       })
       if (res.code === 100602) {
-        MessageBox.confirm('Token 过期了，您可以取消继续留在该页面，或者重新登录', '确定登出', {
-          confirmButtonText: '重新登录',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          store.dispatch('FedLogOut').then(() => {
-            location.reload()// 为了重新实例化vue-router对象 避免bug
+        if (router.path !== '/login') {
+          MessageBox.confirm('Token 过期了，您可以取消继续留在该页面，或者重新登录', '确定登出', {
+            confirmButtonText: '重新登录',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            store.dispatch('FedLogOut').then(() => {
+              location.reload()// 为了重新实例化vue-router对象 避免bug
+            })
           })
-        })
+        }
       }
       return Promise.reject('error')
     } else {
