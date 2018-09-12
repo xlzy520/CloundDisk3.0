@@ -1,6 +1,5 @@
 import Vue from 'vue'
 
-import 'element-ui/lib/theme-chalk/index.css'
 import { Message } from 'element-ui'
 import '@/styles/index.scss' // global css
 
