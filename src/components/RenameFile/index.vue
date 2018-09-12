@@ -13,7 +13,7 @@
               @focus="selection($event)">
     </el-input>
     <span v-show="!correct && type === 'List'" class="fileNameTips">文件名中不能为空或包含/:*?"<>|等特殊字符</span>
-    <el-button type="primary" icon="el-icon-check" @click="confirmEdit()"></el-button>
+    <el-button type="primary" icon="el-icon-check" @click="confirmEdit()" :loading="loading"></el-button>
     <el-button type="primary" icon="el-icon-close" @click="cancelEdit()"></el-button>
   </div>
 </template>
@@ -51,11 +51,13 @@
     data() {
       return {
         fileName: '',
-        correct: true
+        correct: true,
+        loading: false
       }
     },
     methods: {
       async confirmEdit() {
+        this.loading = true
         const row = this.selectedData
         if (!(/^[^\\\\\\/:*?\\"<>|]+$/).test(this.fileName)) {
           this.$message1000('文件名中不能包含空格/:*?"<>|等特殊字符', 'error')
@@ -64,21 +66,25 @@
           try {
             const editInfo = await renameFile(row[0].fcategoryid, this.value, row[0].fparentid, row[0].ffiletype)
             if (editInfo.success) {
+              this.loading = false
               this.$message1000('文件夹重命名成功', 'success')
               row[0].isEditor = false
               this.$set(this.selectedData[0], 'fname', this.value)
             }
           } catch (e) {
+            this.loading = false
             row[0].isEditor = false
           }
         } else {
           try {
             const editInfo = await addCategory(this.$store.getters.parentId, this.value)
             if (editInfo.success) {
+              this.loading = false
               this.$message1000('文件夹新建成功', 'success')
               this.$store.dispatch('Refresh')
             }
           } catch (e) {
+            this.loading = false
             this.fileList[0].isEditor = false
             this.fileList.shift()
           }
