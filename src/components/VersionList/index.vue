@@ -105,7 +105,7 @@
               :value="item.filesgin">
             </el-option>
           </el-select>
-          <el-button @click="diff" size="small" type="success">版本对比</el-button>
+          <el-button @click="diff" size="small" type="success" :loading="diffLoading">版本对比</el-button>
         </div>
         <el-button @click="dialogClose" size="small" type="warning">关闭</el-button>
       </div>
@@ -157,7 +157,8 @@
         },
         lineSwitch: true,
         numDiff: 5,
-        loading: false
+        loading: false,
+        diffLoading: false
       }
     },
     methods: {
@@ -212,21 +213,23 @@
         this.$store.dispatch('GetDocInfo', id)
       },
       async diff() {
+        this.diffLoading = true
         if (this.oldVersion.value === '' || this.newVersion.value === '') {
           this.$message1000('请选择旧版本或者新版本', 'warning')
+          this.diffLoading = false
           return
         }
         try {
           const oldVersion = await getDocInfo(this.oldVersion.value)
           const newVersion = await getDocInfo(this.newVersion.value)
           this.oldStr = oldVersion.data.file
-          console.log(this.oldStr)
           this.newStr = newVersion.data.file
-          console.log(this.newStr)
+          this.diffLoading = false
           this.versionDiff = true
         } catch (e) {
           this.$message1000('网络连接失败', 'warning')
           this.versionDiff = false
+          this.diffLoading = false
         } finally {
           this.oldVersion.value = ''
           this.oldVersion.label = ''
