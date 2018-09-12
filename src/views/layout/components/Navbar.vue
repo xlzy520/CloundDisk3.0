@@ -15,7 +15,7 @@
         name="search"
         v-model="queryString"
         title="请输入搜索关键词"
-        placeholder="请输入关键词,回车搜索"
+        placeholder="请输入关键词，回车搜索"
         :maxlength="maxlength"
         :keyEnterFunction="getSearchResult">
       </md-input>
@@ -97,6 +97,16 @@ export default {
     height: 50px;
     float: left;
     padding: 0 10px;
+    &:hover{
+      animation: hamburger-spin infinite 1s linear;
+    }
+    @keyframes hamburger-spin {
+      0% {transform: rotate(0deg);}
+      25% {transform: rotate(45deg);}
+      50% {transform: rotate(0deg);}
+      75% {transform: rotate(-45deg);}
+      100% {transform: rotate(0deg);}
+    }
   }
   .nav__logo{
     display: inline-block;
