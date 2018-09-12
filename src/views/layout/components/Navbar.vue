@@ -10,6 +10,7 @@
       <span class="nav__logo__title">东经云盘</span>
     </div>
       <md-input
+        style="width: 20%"
         icon="search"
         name="search"
         v-model="queryString"
