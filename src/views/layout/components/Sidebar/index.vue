@@ -1,37 +1,37 @@
 <template>
   <!--<el-scrollbar wrapClass="scrollbar-wrapper">-->
-    <el-menu
-      mode="vertical"
-      :show-timeout="200"
-      :default-active="$route.path"
-      :collapse="isCollapse"
-      background-color="rgba(145,212,143,.5)"
-      text-color="#063873"
-      active-text-color="#409EFF"
-    >
-      <div class="logo" v-show="!isCollapse">
-        <img src="@/assets/logo/logo.png" width="36" height="36" class="logo__img">
-        <span class="logo__title">东经云盘</span>
-      </div>
-      <div v-show="!isCollapse">
-        <el-scrollbar style="display: inline-block" v-show="!isCollapse">
-          <el-tree
-            style="display: inline-block;min-width: 13vw"
-            :data="data"
-            :props="defaultProps"
-            ref="folderTree"
-            :indent="10"
-            :expand-on-click-node="false"
-            @node-expand="nodeExpand"
-            @node-click="handleNodeClick">
+  <div>
+    <div class="logo" v-show="!isCollapse">
+      <img src="@/assets/logo/logo.png" width="36" height="36" class="logo__img">
+      <span class="logo__title">东经云盘</span>
+    </div>
+    <el-scrollbar v-show="!isCollapse" class="folderTree" style="display: inline-block">
+      <el-tree
+        style="display: inline-block;min-width: 13vw"
+        :data="data"
+        :props="defaultProps"
+        ref="folderTree"
+        :indent="10"
+        :expand-on-click-node="false"
+        @node-expand="nodeExpand"
+        @node-click="handleNodeClick">
         <span class="custom-tree-node" slot-scope="{node,data}" :title="node.label">
           <svg-icon  icon-class="1"></svg-icon>
           <span>{{ node.label }}</span>
         </span>
-          </el-tree>
-        </el-scrollbar>
-      </div>
+      </el-tree>
+    </el-scrollbar >
+  </div>
 
+  <!--<el-menu-->
+      <!--mode="vertical"-->
+      <!--:show-timeout="200"-->
+      <!--:default-active="$route.path"-->
+      <!--:collapse="isCollapse"-->
+      <!--background-color="rgba(145,212,143,.5)"-->
+      <!--text-color="#063873"-->
+      <!--active-text-color="#409EFF"-->
+    <!--&gt;-->
 
       <!--<sidebar-item -->
         <!--v-for="route in routes" -->
@@ -39,7 +39,7 @@
         <!--:item="route" -->
         <!--:base-path="route.path">-->
       <!--</sidebar-item>-->
-    </el-menu>
+    <!--</el-menu>-->
   <!--</el-scrollbar>-->
 </template>
 
@@ -113,6 +113,9 @@
 
 <style lang="scss">
   @import "@/styles/variables.scss";
+  .folderTree{
+
+  }
   .custom-tree-node {
     flex: 1;
     display: flex;
@@ -150,8 +153,8 @@
   .logo + .el-scrollbar .el-scrollbar__wrap{
     width: 13vw;
     height: 91vh;
-    margin-right: 0!important;
     overflow-y: hidden;
+    margin-right: 0!important;
     & + .el-scrollbar__bar.is-horizontal{
       height: 1.5vh;
       .el-scrollbar__thumb{
