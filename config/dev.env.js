@@ -8,6 +8,6 @@ module.exports = merge(prodEnv, {
   UPLOAD_API: '"/api_zhq"',
   USER: {
     name: '"13588043792"',
-    password: '"dj123456"'
+    password: '"863063lv"'
   }
 })
