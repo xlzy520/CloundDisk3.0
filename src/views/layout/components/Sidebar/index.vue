@@ -76,6 +76,9 @@
     },
     methods: {
       handleNodeClick(data) {
+        if (this.$router.path !== '/list/index') {
+          this.$router.push('/list/index')
+        }
         this.$store.dispatch('GetCategory', data.fcategoryid)
         this.$store.dispatch('SetParentId', data.fcategoryid)
         this.$store.dispatch('ToggleSearch', false)
