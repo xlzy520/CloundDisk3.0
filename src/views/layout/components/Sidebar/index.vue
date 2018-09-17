@@ -113,9 +113,6 @@
 
 <style lang="scss">
   @import "@/styles/variables.scss";
-  .folderTree{
-
-  }
   .custom-tree-node {
     flex: 1;
     display: flex;

@@ -216,4 +216,13 @@ export default {
   .box >>> .el-checkbox .el-checkbox__label {
     display: none;
   }
+  .box >>> .el-checkbox__inner {
+    width: 18px!important;
+    height: 18px!important;
+  }
+  .box >>> .el-checkbox__inner::after {
+    height: 10px;
+    left: 5px;
+    width: 5px
+  }
 </style>
