@@ -9,7 +9,11 @@
       <img src="@/assets/logo/logo.png" width="36" height="36" class="nav__logo__img">
       <span class="nav__logo__title">东经云盘</span>
     </div>
-      <md-input
+    <div class="recycle">
+      <svg-icon icon-class="recycle"></svg-icon>
+      <router-link to="/recycle" class="recycle-text">回收站</router-link>
+    </div>
+    <md-input
         style="width: 20%"
         icon="search"
         name="search"
@@ -71,7 +75,7 @@ export default {
       this.$store.dispatch('ToggleSideBar')
     },
     logout() {
-      this.$store.dispatch('FedLogOut').then(() => {
+      this.$store.dispatch('LogOut').then(() => {
         location.reload() // 为了重新实例化vue-router对象 避免bug
       })
     },
@@ -109,7 +113,7 @@ export default {
     }
   }
   .nav__logo{
-    display: inline-block;
+    float: left;
     &__img{
       float: left;
       margin-top: 5px;
@@ -118,6 +122,19 @@ export default {
     &__title{
       float: right;
       font-size: 20px;
+    }
+  }
+  .recycle{
+    color: #9e9e9e;
+    font-size: 18px;
+    float: left;
+    margin-left: 50px;
+    padding: 0 10px;
+    &:hover{
+      color: #1296db;
+    }
+    .recycle-text{
+
     }
   }
   .search {

@@ -43,15 +43,26 @@ export const constantRouterMap = [
       {
         path: 'index',
         component: () => import('@/views/list/index'),
-        name: '文件列表',
+        name: '文件列表'
+      }
+    ]
+  },
+  {
+    path: '/recycle',
+    component: Layout,
+    redirect: '/recycle/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/recycle/index'),
+        name: '回收站',
         meta: {
-          title: '文件列表',
-          icon: 'allDoc'
+          title: '回收站',
+          icon: 'recycle'
         }
       }
     ]
   },
-
   { path: '*', redirect: '/404', hidden: true }
 ]
 
