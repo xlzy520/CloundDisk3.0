@@ -61,7 +61,11 @@ export default {
     }
   },
   async mounted() {
-    this.$store.dispatch('GetCategory', '0')
+    if (this.$router.history.current.query.fcategoryid) {
+      this.$store.dispatch('GetCategory', this.$router.history.current.query.fcategoryid)
+    } else {
+      this.$store.dispatch('GetCategory', '0')
+    }
   }
 }
 </script>
