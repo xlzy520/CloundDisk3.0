@@ -76,6 +76,9 @@
           case 1:
             this.$store.dispatch('GetCategory', fcategoryid)
             this.$store.dispatch('SetParentId', fcategoryid)
+            if (this.$router.path !== '/list/index') {
+              this.$router.push({ path: `/list/index?`, query: { dirid: fcategoryid }})
+            }
             break
           case 2:
             this.$message1000('只可以对markdown文件进行预览编辑哦', 'warning')

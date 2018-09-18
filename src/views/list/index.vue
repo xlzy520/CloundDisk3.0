@@ -61,13 +61,16 @@ export default {
     }
   },
   async mounted() {
-    this.$store.dispatch('GetCategory', '0')
-    // console.log(this.$route)
-    // if (this.$route.query.fcategoryid) {
-    //   this.$store.dispatch('GetCategory', this.$route.query.fcategoryid)
-    // } else {
-    //   this.$store.dispatch('GetCategory', '0')
-    // }
+    if (this.$route.query.dirid) {
+      this.$store.dispatch('GetCategory', this.$route.query.dirid)
+    } else {
+      this.$store.dispatch('GetCategory', '0')
+    }
+    window.addEventListener('popstate', () => {
+      if (this.$route.query.dirid) {
+        this.$store.dispatch('GetCategory', this.$route.query.dirid)
+      }
+    }, false)
   }
 }
 </script>
