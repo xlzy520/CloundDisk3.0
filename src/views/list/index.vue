@@ -61,11 +61,13 @@ export default {
     }
   },
   async mounted() {
-    if (this.$router.history.current.query.fcategoryid) {
-      this.$store.dispatch('GetCategory', this.$router.history.current.query.fcategoryid)
-    } else {
-      this.$store.dispatch('GetCategory', '0')
-    }
+    this.$store.dispatch('GetCategory', '0')
+    // console.log(this.$route)
+    // if (this.$route.query.fcategoryid) {
+    //   this.$store.dispatch('GetCategory', this.$route.query.fcategoryid)
+    // } else {
+    //   this.$store.dispatch('GetCategory', '0')
+    // }
   }
 }
 </script>

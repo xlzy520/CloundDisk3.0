@@ -76,9 +76,10 @@
     },
     methods: {
       handleNodeClick(data) {
-        if (this.$router.path !== '/list/index') {
-          this.$router.push({ path: `/list/index?`, query: { fcategoryid: data.fcategoryid }})
-        }
+        this.$router.push({ path: '/list/index?' })
+        // if (this.$router.path !== '/list/index') {
+        //   this.$router.push({ path: `/list/index?`, query: { fcategoryid: data.fcategoryid }})
+        // }
         this.$store.dispatch('GetCategory', data.fcategoryid)
         this.$store.dispatch('SetParentId', data.fcategoryid)
         this.$store.dispatch('ToggleSearch', false)
