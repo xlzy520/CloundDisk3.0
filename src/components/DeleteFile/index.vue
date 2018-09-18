@@ -79,6 +79,8 @@
             }
             this.deleting = false
             this.$store.dispatch('ToggleDeleteVisible')
+          }).finally(() => {
+            this.$store.dispatch('SetSelectedData', [])
           })
       }
     },

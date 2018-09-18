@@ -87,17 +87,19 @@
       },
       handleSelectionChange(rows) {
         this.rows = rows
-        if (this.fileList[0].faothority === 'newFolder') {
-          this.fileList.shift()
-          this.rows = []
-        } else {
-          this.$store.dispatch('SetSelectedData', rows)
-          this.$store.dispatch('RightTogglemenuVisible', [false])
-          this.fileList.forEach(item => {
-            if (item.isEditor !== undefined) {
-              this.$set(item, 'isEditor', false)
-            }
-          })
+        if (this.fileList.length > 0) {
+          if (this.fileList[0].faothority === 'newFolder') {
+            this.fileList.shift()
+            this.rows = []
+          } else {
+            this.$store.dispatch('SetSelectedData', rows)
+            this.$store.dispatch('RightTogglemenuVisible', [false])
+            this.fileList.forEach(item => {
+              if (item.isEditor !== undefined) {
+                this.$set(item, 'isEditor', false)
+              }
+            })
+          }
         }
       },
       clickRow(row) {
