@@ -15,6 +15,7 @@
           <div class="box"
                @contextmenu.prevent="falseFunc"
                :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''"
+               :title="item.fname"
                @click="fileType(item.ffiletype,item.fcategoryid)">
             <div @click.stop="() => {}"><el-checkbox :label="item"></el-checkbox></div>
             <svg-icon :icon-class="String(item.ffiletype)" className="icon" />
