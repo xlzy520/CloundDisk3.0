@@ -61,11 +61,8 @@ export default {
     }
   },
   async mounted() {
-    if (this.$route.query.dirid) {
-      this.$store.dispatch('GetCategory', this.$route.query.dirid)
-    } else {
-      this.$store.dispatch('GetCategory', '0')
-    }
+    this.$router.push({ path: `/list/index?`, query: { dirid: '0' }})
+    this.$store.dispatch('GetCategory', this.$route.query.dirid)
     window.addEventListener('popstate', () => {
       if (this.$route.query.dirid) {
         this.$store.dispatch('GetCategory', this.$route.query.dirid)

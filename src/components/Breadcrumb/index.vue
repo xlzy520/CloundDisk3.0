@@ -35,6 +35,7 @@
         this.$store.dispatch('GetCategory', fcategoryid)
         this.$store.dispatch('SetParentId', fcategoryid)
         this.$store.dispatch('ToggleSearch', false)
+        this.$router.push({ path: `/list/index?`, query: { dirid: fcategoryid }})
       }
     }
   }
