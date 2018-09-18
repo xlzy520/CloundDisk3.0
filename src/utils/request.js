@@ -33,7 +33,7 @@ service.interceptors.response.use(
         duration: 2 * 1000
       })
       if (res.code === 100602) {
-        if (router.path !== '/login') {
+        if (router.history.current.path !== '/login') {
           MessageBox.confirm('Token 过期了，您可以取消继续留在该页面，或者重新登录', '确定登出', {
             confirmButtonText: '重新登录',
             cancelButtonText: '取消',
