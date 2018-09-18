@@ -130,6 +130,7 @@ export default {
     float: left;
     margin-left: 50px;
     padding: 0 10px;
+    cursor: pointer;
     &:hover{
       color: #1296db;
     }
