@@ -1,8 +1,13 @@
 <template>
   <div class="recycle-container">
-    <div class="recycle-btns" v-show="selected">
-      <el-button size="medium" @click="realDelete">删除</el-button>
-      <el-button size="medium" @click="revert">还原</el-button>
+    <div class="recycle-btns clearfix" v-show="selected">
+      <div class="recycle-btns-left">
+        <el-button size="medium" @click="revert" icon="el-icon-refresh">还原</el-button>
+        <el-button size="medium" @click="realDelete" icon="el-icon-delete">删除</el-button>
+      </div>
+      <div class="recycle-btns-right">
+        <el-button size="medium" @click="clearRecycle" icon="el-icon-delete">清空回收站</el-button>
+      </div>
     </div>
     <el-scrollbar style="height: 83vh">
       <el-table
@@ -89,7 +94,26 @@ export default {
       })
     },
     realDelete() {
-      console.log(555)
+      this.$confirm('文件删除后将无法恢复，您确认要彻底删除所选文件吗？', '彻底删除', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message1000('删除成功', 'success')
+      }).catch(() => {
+        this.$message1000('已取消删除', 'info')
+      })
+    },
+    clearRecycle() {
+      this.$confirm('清空回收站？', '清空回收站', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.$message1000('清空成功', 'success')
+      }).catch(() => {
+        this.$message1000('已取消清空', 'info')
+      })
     }
   },
   mounted() {
@@ -101,6 +125,18 @@ export default {
 <style lang="scss">
   .recycle-container{
     padding: 18px 24px 0 24px;
+    .recycle-btns{
+      padding: 5px 0;
+      .recycle-btns-left{
+        float: left;
+      }
+      .recycle-btns-right{
+        float: right;
+      }
+    }
+    .el-table--enable-row-hover .el-table__body tr:hover>td {
+      background-color: #ecf5ff;
+    }
     .el-scrollbar__wrap{
       overflow-x: hidden;
     }
