@@ -1,11 +1,11 @@
 <template>
   <div class="recycle-container">
-    <div class="recycle-btns clearfix" v-show="selected">
-      <div class="recycle-btns-left">
+    <div class="recycle-btns clearfix">
+      <div class="recycle-btns-left" v-show="selected.length > 0">
         <el-button size="medium" @click="revert" icon="el-icon-refresh">还原</el-button>
         <el-button size="medium" @click="realDelete" icon="el-icon-delete">删除</el-button>
       </div>
-      <div class="recycle-btns-right">
+      <div class="recycle-btns-right" :style="selected.length > 0? '': 'float: left'">
         <el-button size="medium" @click="clearRecycle" icon="el-icon-delete">清空回收站</el-button>
       </div>
     </div>
@@ -124,7 +124,7 @@ export default {
 
 <style lang="scss">
   .recycle-container{
-    padding: 18px 24px 0 24px;
+    padding: 14px 24px 0 24px;
     .recycle-btns{
       padding: 5px 0;
       .recycle-btns-left{

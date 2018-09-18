@@ -128,7 +128,7 @@ export default {
     color: #9e9e9e;
     font-size: 18px;
     float: left;
-    margin-left: 50px;
+    margin-left: 30px;
     padding: 0 10px;
     cursor: pointer;
     &:hover{
