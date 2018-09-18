@@ -1,6 +1,8 @@
 <template>
   <div class="recycle-main">
+    <el-table>
 
+    </el-table>
   </div>
 </template>
 
