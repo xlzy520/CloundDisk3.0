@@ -28,7 +28,7 @@ const user = {
       const password = md5(userInfo.password)
       return new Promise((resolve, reject) => {
         login(username, password).then(response => {
-          const data = response.data[0]
+          const data = response.data
           setToken(data.token)
           commit('SET_TOKEN', data.token)
           resolve()
