@@ -88,7 +88,6 @@ export default {
       this.$refs.recycleTable.toggleRowSelection(row)
     },
     revert() {
-      console.log(this.categoryids)
       this.$confirm('确认还原选中的文件？', '确认还原', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
