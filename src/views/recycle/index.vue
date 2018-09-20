@@ -18,7 +18,7 @@
         @row-click="clickRow"
         v-loading="loading" >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="名称" width="480px" prop="fname">
+        <el-table-column label="名称" width="360" prop="fname">
           <template slot-scope="scope">
             <div>
               <svg-icon :icon-class="String(scope.row.ffiletype)"></svg-icon>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { getRecycleList } from '@/api/recycle'
+import { getRecycleList, recycleRecover, recycleDelete } from '@/api/recycle'
 import { formatSize, parseTime } from '@/utils/index'
 export default {
   name: 'Recycle',
@@ -44,7 +44,8 @@ export default {
     return {
       recycleData: [],
       loading: false,
-      selected: []
+      selected: [],
+      categoryids: []
     }
   },
   methods: {
@@ -78,17 +79,27 @@ export default {
     },
     handleSelectionChange(rows) {
       this.selected = rows
+      this.categoryids = []
+      this.selected.forEach(item => {
+        this.categoryids.push(item.fcategoryid)
+      })
     },
     clickRow(row) {
       this.$refs.recycleTable.toggleRowSelection(row)
     },
     revert() {
+      console.log(this.categoryids)
       this.$confirm('确认还原选中的文件？', '确认还原', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'success'
       }).then(() => {
-        this.$message1000('还原成功', 'success')
+        recycleRecover(this.categoryids).then(res => {
+          if (res.success === true) {
+            this.$message1000('还原成功', 'success')
+            window.location.reload()
+          }
+        })
       }).catch(() => {
         this.$message1000('已取消还原', 'info')
       })
@@ -99,18 +110,32 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message1000('删除成功', 'success')
+        recycleDelete(this.categoryids).then(res => {
+          if (res.success === true) {
+            this.$message1000('删除成功', 'success')
+            window.location.reload()
+          }
+        })
       }).catch(() => {
         this.$message1000('已取消删除', 'info')
       })
     },
     clearRecycle() {
+      this.categoryids = []
+      this.recycleData.forEach(item => {
+        this.categoryids.push(item.fcategoryid)
+      })
       this.$confirm('清空回收站？', '清空回收站', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message1000('清空成功', 'success')
+        recycleDelete(this.categoryids).then(res => {
+          if (res.success === true) {
+            this.$message1000('清空成功', 'success')
+            window.location.reload()
+          }
+        })
       }).catch(() => {
         this.$message1000('已取消清空', 'info')
       })
@@ -139,6 +164,10 @@ export default {
     }
     .el-scrollbar__wrap{
       overflow-x: hidden;
+    }
+    .fileName {
+      cursor: pointer;
+      line-height: 2;
     }
   }
 
