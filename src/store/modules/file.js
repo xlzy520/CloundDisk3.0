@@ -9,6 +9,10 @@ const file = {
       visible: false,
       type: ''
     },
+    move: {
+      visible: false,
+      type: ''
+    },
     deleteVisible: false,
     detailVisible: false,
     versionVisible: false,
@@ -46,6 +50,10 @@ const file = {
     TOGGLE_PREVIEWVISIBLE: (state, data) => {
       state.preview.type = data
       state.preview.visible = !state.preview.visible
+    },
+    TOGGLE_MOVEVISIBLE: (state, data) => {
+      state.move.visible = !state.move.visible
+      state.move.type = data
     },
     RIGHT_TOGGLE_MENUVISIBLE: (state, data) => {
       state.coordinate = data
@@ -89,6 +97,9 @@ const file = {
     },
     TogglePreviewVisible: ({ commit }, data) => {
       commit('TOGGLE_PREVIEWVISIBLE', data)
+    },
+    ToggleMoveVisible: ({ commit }, type) => {
+      commit('TOGGLE_MOVEVISIBLE', type)
     },
     RightTogglemenuVisible: ({ commit }, data) => {
       commit('RIGHT_TOGGLE_MENUVISIBLE', data)

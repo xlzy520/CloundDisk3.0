@@ -152,7 +152,8 @@ export default {
         if (this.selectedData.length === 1) {
           this.uploadData = {
             fparentid: this.parentId,
-            fcategoryid: this.selectedData[0].fcategoryid
+            fcategoryid: this.selectedData[0].fcategoryid,
+            fversionsign: this.selectedData[0].fversionsign
           }
         }
       }

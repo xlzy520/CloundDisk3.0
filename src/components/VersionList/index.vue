@@ -189,7 +189,7 @@
         this.loading = true
         if (this.selectedData.length === 1 && this.versionVisible === true) {
           try {
-            const versionListInfo = await getVersionList(this.selectedData[0].fname, this.$store.getters.parentId)
+            const versionListInfo = await getVersionList(this.selectedData[0].fversionsign)
             if (versionListInfo.success) {
               this.loading = false
               this.tableData = versionListInfo.data
