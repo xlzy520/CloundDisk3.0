@@ -19,6 +19,7 @@ const getters = {
   searchList: state => state.file.searchList,
   hasSearch: state => state.file.hasSearch,
   menuVisible: state => state.file.menuVisible,
-  coordinate: state => state.file.coordinate
+  coordinate: state => state.file.coordinate,
+  move: state => state.file.move
 }
 export default getters

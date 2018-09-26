@@ -161,7 +161,7 @@
         if (event.clientY <= (window.innerHeight / 2)) {
           y = event.clientY
         } else {
-          y = event.clientY - 213
+          y = event.clientY - 273
         }
         if (this.selectedData.length <= 1) {
           this.clickRow(row)

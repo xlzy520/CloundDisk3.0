@@ -13,6 +13,7 @@
     <detail v-if="detailVisible"></detail>
     <version-list v-if="versionVisible"></version-list>
     <m-d-editor></m-d-editor>
+    <move-file v-if="move.visible"></move-file>
   </div>
 </template>
 
@@ -26,6 +27,7 @@ import DeleteFile from '@/components/DeleteFile'
 import Detail from '@/components/Detail'
 import VersionList from '@/components/VersionList'
 import MDEditor from '@/components/MDEditor'
+import MoveFile from '@/components/MoveFile'
 export default {
   name: 'list',
   data() {
@@ -39,7 +41,8 @@ export default {
       'searchList',
       'selectedData',
       'detailVisible',
-      'versionVisible'
+      'versionVisible',
+      'move'
     ]),
     List() {
       return this.$store.getters.hasSearch === false ? this.fileList : this.searchList.bookList
@@ -53,7 +56,8 @@ export default {
     List,
     ListHeader,
     DeleteFile,
-    MDEditor
+    MDEditor,
+    MoveFile
   },
   methods: {
     list_type_toggle(component) {

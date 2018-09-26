@@ -20,8 +20,10 @@
       <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-edit" @click="updateFile">更新</el-button>
       <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-tickets" @click="showVersion">版本</el-button>
       <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-edit-outline" @click="rename">重命名</el-button>
-      <el-button type="primary" v-if="[1, 2, 3, 4].indexOf(isShow) > -1" icon="el-icon-delete" @click="deleteFile">删除</el-button>
+      <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" @click="deleteFile">删除</el-button>
       <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-info" @click="getDetail">详情</el-button>
+      <el-button type="primary" v-if="[2, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" @click="copyFile">复制到</el-button>
+      <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" @click="moveFile">移动到</el-button>
     </div>
     <ul id="menu-btn" v-show="menuVisible" :style="{top:(coordinate[2]+'px'),left:(coordinate[1]+'px')}">
       <li :class="{disabled:!([1, 2, 4].indexOf(isShow) > -1)}" @click.stop="fileType(selectedData[0].ffiletype,selectedData[0].fcategoryid)">打开</li>
@@ -29,8 +31,10 @@
       <li :class="{disabled:!([2, 4].indexOf(isShow) > -1)}" @click="updateFile">更新</li>
       <li :class="{disabled:!([2, 4].indexOf(isShow)  > -1)}" @click="showVersion">版本</li>
       <li :class="{disabled:!([1, 2, 4].indexOf(isShow)  > -1)}" @click="rename">重命名</li>
-      <li :class="{disabled:!([1, 2, 3, 4].indexOf(isShow) > -1)}" @click="deleteFile">删除</li>
+      <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow) > -1)}" @click="deleteFile">删除</li>
       <li :class="{disabled:!([1, 2, 4].indexOf(isShow)  > -1)}" @click="getDetail">详情</li>
+      <li :class="{disabled:!([2, 4, 5].indexOf(isShow)  > -1)}" @click="copyFile">复制到</li>
+      <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow)  > -1)}" @click="moveFile">移动到</li>
     </ul>
     <div class="action-wrap">
       <div class="item">
@@ -71,7 +75,11 @@ export default {
       const fileCheckedCount = this.selectedData.filter(item => item.ffiletype === 2).length
       const previewCheckedCount = this.selectedData.filter(item => item.ffiletype !== 1 && item.ffiletype !== 2).length
       if (this.selectedData.length > 1) {
-        return 3
+        if (folderCheckedCount === 0) {
+          return 5
+        } else {
+          return 3
+        }
       } else if (folderCheckedCount === 1 && fileCheckedCount === 0) {
         return 1
       } else if (folderCheckedCount === 0 && fileCheckedCount === 1) {
@@ -173,6 +181,12 @@ export default {
           break
         default: return false
       }
+    },
+    copyFile() {
+      this.$store.dispatch('ToggleMoveVisible', 'copy')
+    },
+    moveFile() {
+      this.$store.dispatch('ToggleMoveVisible', 'move')
     }
   }
 }
@@ -197,7 +211,7 @@ export default {
     #menu-btn{
       list-style: none;
       background: #fbfcff;
-      height: 213px;
+      height: 273px;
       line-height: 30px;
       width: 100px;
       text-align: center;

@@ -29,13 +29,12 @@ export function deleteCategory(categoryids, fparentid) {
   })
 }
 
-export function getVersionList(fname, fparentid) {
+export function getVersionList(fversionsign) {
   return request({
     url: '/djcpsdocument/version/getAllVersion.do',
     method: 'post',
     data: {
-      fname: fname,
-      fcategoryid: fparentid
+      fvsgin: fversionsign
     }
   })
 }
@@ -104,4 +103,23 @@ export function getSearchResult(queryString, categoryName, sort, curPage) {
     }
   })
 }
-
+export function moveFile(idList, fparentid) {
+  return request({
+    url: '/djcpsdocument/category/floderMove.do',
+    method: 'post',
+    data: {
+      list: idList,
+      fparentid: fparentid
+    }
+  })
+}
+export function copyFile(idList, fparentid) {
+  return request({
+    url: '/djcpsdocument/category/copyFile.do',
+    method: 'post',
+    data: {
+      list: idList,
+      fparentid: fparentid
+    }
+  })
+}
