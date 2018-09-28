@@ -35,11 +35,16 @@ module.exports = {
         target: 'http://192.168.2.131:8080/',
         changeOrigin: true,
         pathRewrite:{'^/api_oyny': ''}
+      },
+      '/api_office':{
+        target: 'http://192.168.12.23:8081/',
+        changeOrigin: true,
+        pathRewrite:{'^/api_office': ''}
       }
     },
 
     // Various Dev Server settings
-    // host: '192.168.2.91', // can be overwritten by process.env.HOST
+    host: '192.168.2.91', // can be overwritten by process.env.HOST
     port: 9528, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,
