@@ -41,7 +41,8 @@
       },
       ...mapGetters([
         'selectedData',
-        'move'
+        'move',
+        'parentId'
       ]),
       title() {
         return this.move.type === 'move' ? '移动到' : '复制到'
@@ -58,7 +59,7 @@
         this.id = data
       },
       async moveFile() {
-        moveFile(this.idList, this.id).then(moveInfo => {
+        moveFile(this.idList, this.id, this.parentId).then(moveInfo => {
           this.$message1000('文件移动成功', 'success')
           this.$store.dispatch('ToggleMoveVisible')
           this.$store.dispatch('Refresh')

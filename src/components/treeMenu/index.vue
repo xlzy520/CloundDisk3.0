@@ -50,6 +50,9 @@
         if (this.type === 'sidebar') {
           this.$store.dispatch('GetCategory', data.fcategoryid)
           this.$store.dispatch('SetParentId', data.fcategoryid)
+          if (this.$router.path !== '/list/index') {
+            this.$router.push({ path: `/list/index?`, query: { dirid: data.fcategoryid }})
+          }
         } else {
           this.$emit('getFolderid', data.fcategoryid)
         }

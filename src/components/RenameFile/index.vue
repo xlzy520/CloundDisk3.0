@@ -64,7 +64,11 @@
           return false
         } else if (row.length >= 1) {
           try {
-            const editInfo = await renameFile(row[0].fcategoryid, this.value, row[0].fparentid, row[0].ffiletype)
+            const editInfo = await renameFile(row[0].fcategoryid,
+              row[0].fname,
+              this.value,
+              row[0].fparentid,
+              row[0].ffiletype)
             if (editInfo.success) {
               this.loading = false
               this.$message1000('文件夹重命名成功', 'success')
