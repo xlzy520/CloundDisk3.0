@@ -22,7 +22,7 @@
             <div v-else="!scope.row.isEditor">
               <svg-icon :icon-class="String(scope.row.ffiletype)"></svg-icon>
               <span class="fileName"
-                    @click.stop="fileType(scope.row.ffiletype,scope.row.fcategoryid)">{{ scope.row.fname }}</span>
+                    @click.stop="fileType(scope.row)">{{ scope.row.fname }}</span>
             </div>
           </template>
         </el-table-column>
@@ -71,8 +71,9 @@
           return (a - b)
         }
       },
-      fileType(type, fcategoryid) {
-        switch (type) {
+      fileType(params) {
+        const { ffiletype, fcategoryid, fversionsign } = params
+        switch (ffiletype) {
           case 1:
             this.$store.dispatch('GetCategory', fcategoryid)
             this.$store.dispatch('SetParentId', fcategoryid)
@@ -81,10 +82,11 @@
             }
             break
           case 2:
-            this.$message1000('只可以对markdown文件进行预览编辑哦', 'warning')
+            this.$store.dispatch('TogglePreviewVisible')
+            this.$store.dispatch('GetDocInfo', fcategoryid)
             break
           case 3:
-            this.$store.dispatch('GetDocInfo', fcategoryid)
+            window.open(`http://192.168.2.91:9528/#/office?id=${fcategoryid}&vid=${fversionsign}`)
             break
         }
       },

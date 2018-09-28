@@ -21,7 +21,7 @@
 import { mapGetters } from 'vuex'
 import Thumbnail from './components/Thumbnail'
 import List from './components/List'
-import ListHeader from '@/components/ListHeader'
+import ListHeader from './components/ListHeader'
 import UploadFile from '@/components/UploadFile'
 import DeleteFile from '@/components/DeleteFile'
 import Detail from '@/components/Detail'

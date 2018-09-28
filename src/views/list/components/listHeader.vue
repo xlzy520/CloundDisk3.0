@@ -10,7 +10,9 @@
           <el-dropdown-item divided command="newMarkdown">Markdown</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      <el-button type="primary" v-if="[4].indexOf(isShow) > -1" icon="el-icon-document" @click="previewFile">预览</el-button>
+      <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-edit-outline" @click="rename">重命名</el-button>
+      <el-button type="primary" v-if="[2, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" @click="copyFile">复制到</el-button>
+      <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" @click="moveFile">移动到</el-button>
       <a
         class="el-button el-button--primary"
         v-if="[2,4].indexOf(isShow) > -1"
@@ -19,22 +21,19 @@
         ref="downloadBtn"><i class="el-icon-download"></i>下载</a>
       <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-edit" @click="updateFile">更新</el-button>
       <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-tickets" @click="showVersion">版本</el-button>
-      <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-edit-outline" @click="rename">重命名</el-button>
-      <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" @click="deleteFile">删除</el-button>
+     <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" @click="deleteFile">删除</el-button>
       <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-info" @click="getDetail">详情</el-button>
-      <el-button type="primary" v-if="[2, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" @click="copyFile">复制到</el-button>
-      <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" @click="moveFile">移动到</el-button>
     </div>
     <ul id="menu-btn" v-show="menuVisible" :style="{top:(coordinate[2]+'px'),left:(coordinate[1]+'px')}">
-      <li :class="{disabled:!([1, 2, 4].indexOf(isShow) > -1)}" @click.stop="fileType(selectedData[0].ffiletype,selectedData[0].fcategoryid)">打开</li>
+      <li :class="{disabled:!([1, 2, 4].indexOf(isShow) > -1)}" @click.stop="fileType">打开</li>
       <li :class="{disabled:!([2, 4].indexOf(isShow)  > -1)}" @click="downloadFile2">下载</li>
+      <li :class="{disabled:!([2, 4, 5].indexOf(isShow)  > -1)}" @click="copyFile">复制到</li>
+      <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow)  > -1)}" @click="moveFile">移动到</li>
       <li :class="{disabled:!([2, 4].indexOf(isShow) > -1)}" @click="updateFile">更新</li>
       <li :class="{disabled:!([2, 4].indexOf(isShow)  > -1)}" @click="showVersion">版本</li>
       <li :class="{disabled:!([1, 2, 4].indexOf(isShow)  > -1)}" @click="rename">重命名</li>
       <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow) > -1)}" @click="deleteFile">删除</li>
       <li :class="{disabled:!([1, 2, 4].indexOf(isShow)  > -1)}" @click="getDetail">详情</li>
-      <li :class="{disabled:!([2, 4, 5].indexOf(isShow)  > -1)}" @click="copyFile">复制到</li>
-      <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow)  > -1)}" @click="moveFile">移动到</li>
     </ul>
     <div class="action-wrap">
       <div class="item">
@@ -57,7 +56,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Breadcrumb from '../Breadcrumb/index'
+import Breadcrumb from '../../../components/Breadcrumb/index'
 export default {
   name: 'ListHeader',
   components: { Breadcrumb },
@@ -90,19 +89,23 @@ export default {
     }
   },
   methods: {
-    fileType(type, fcategoryid) {
+    fileType() {
+      const { fcategoryid, ffiletype, fversionsign } = this.selectedData[0]
       this.$store.dispatch('RightTogglemenuVisible', [false])
-      switch (type) {
+      switch (ffiletype) {
         case 1:
           this.$store.dispatch('GetCategory', fcategoryid)
           this.$store.dispatch('SetParentId', fcategoryid)
           break
         case 2:
-          this.$message1000('只可以对markdown文件进行预览编辑哦', 'warning')
-          break
-        case 3:
           this.$store.dispatch('TogglePreviewVisible')
           this.$store.dispatch('GetDocInfo', fcategoryid)
+          break
+        case 3:
+          this.$router.push({ path: '/office', query: {
+            id: fcategoryid,
+            version: fversionsign
+          }})
           break
       }
     },
