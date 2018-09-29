@@ -4,6 +4,7 @@
 
 <script>
   import { getOffice } from '@/api/office'
+  import { getToken } from '@/utils/auth'
   export default {
     name: 'office',
     data() {
@@ -29,16 +30,17 @@
       script.src = 'http://192.168.12.228:9000/web-apps/apps/api/documents/api.js'
       head.appendChild(script)
       getOffice(this.$route.query).then((res) => {
-        console.log(res)
         const history = res.data.historys
         history.map((item) => {
           item.user = {}
           item.user.name = item.updator
         })
-        console.log(history)
         this.history = history
         this.document = res.data.document
         this.editConfig = res.data.editConfig
+        this.editConfig.user = {
+          name: res.data.editConfig.user
+        }
       })
     },
     methods: {
@@ -61,8 +63,7 @@
         })
       }
       setTimeout(() => {
-        console.log(this.editConfig);
-        window.docEditor = new window.DocsAPI.DocEditor('placeholder', {
+        const config = {
           document: this.document,
           events: {
             'onRequestHistory': onRequestHistory,
@@ -74,7 +75,8 @@
           'editorConfig': this.editConfig,
           'height': '100%',
           'width': '100%'
-        })
+        }
+        window.docEditor = new window.DocsAPI.DocEditor('placeholder', config)
       }, 1000)
     }
   }
