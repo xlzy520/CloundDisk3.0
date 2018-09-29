@@ -71,8 +71,8 @@
           return (a - b)
         }
       },
-      fileType(params) {
-        const { ffiletype, fcategoryid, fversionsign } = params
+      fileType(rows) {
+        const { ffiletype, fcategoryid, fversionsign } = rows
         switch (ffiletype) {
           case 1:
             this.$store.dispatch('GetCategory', fcategoryid)
@@ -87,6 +87,15 @@
             break
           case 3:
             window.open(`http://192.168.2.91:9528/#/office?id=${fcategoryid}&vid=${fversionsign}`)
+            break
+          case 4:
+            window.open(`http://192.168.2.91:9528/#/office?id=${fcategoryid}&vid=${fversionsign}`)
+            break
+          case 5:
+            window.open(`http://192.168.2.91:9528/#/office?id=${fcategoryid}&vid=${fversionsign}`)
+            break
+          case 6:
+            window.open(`http://192.168.2.171:8081/djcpsdocument/fileManager/downloadFile.do?id=${fcategoryid}`)
             break
         }
       },
@@ -131,7 +140,7 @@
           return formatSize(Number(row.fsize.replace('B', '')))
         }
       },
-      async enterParentDic(searchObj, event) {
+      async enterParentDic(searchObj) {
         await this.$store.dispatch('SetSelectedData', [searchObj])
         await this.$store.dispatch('ToggleSearch', false)
         await this.$store.dispatch('GetCategory', searchObj.fparentid).then((res) => {
@@ -151,7 +160,7 @@
           }
         })
       },
-      formatterTime(row, column) {
+      formatterTime(row) {
         if (row.fupdatetime) {
           return parseTime(row.fupdatetime)
         }

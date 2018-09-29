@@ -102,10 +102,13 @@ export default {
           this.$store.dispatch('GetDocInfo', fcategoryid)
           break
         case 3:
-          this.$router.push({ path: '/office', query: {
-            id: fcategoryid,
-            version: fversionsign
-          }})
+          window.open(`http://192.168.2.91:9528/#/office?id=${fcategoryid}&vid=${fversionsign}`)
+          break
+        case 4:
+          window.open(`http://192.168.2.91:9528/#/office?id=${fcategoryid}&vid=${fversionsign}`)
+          break
+        case 5:
+          window.open(`http://192.168.2.91:9528/#/office?id=${fcategoryid}&vid=${fversionsign}`)
           break
       }
     },
@@ -166,7 +169,7 @@ export default {
       this.$store.dispatch('GetDocInfo', this.selectedData[0].fcategoryid)
     },
     downloadFile() {
-      this.$refs.downloadBtn.href = process.env.UPLOAD_API + '/djcpsdocument/fileManager/downloadFile.do?id=' + this.selectedData[0].fcategoryid
+      this.$refs.downloadBtn.href = `${process.env.UPLOAD_API}/djcpsdocument/fileManager/downloadFile.do?id=${this.selectedData[0].fcategoryid}`
       this.$refs.downloadBtn.download = this.selectedData[0].fname
     },
     downloadFile2() {

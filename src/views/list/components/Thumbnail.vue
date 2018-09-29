@@ -16,7 +16,7 @@
                @contextmenu.prevent="falseFunc"
                :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''"
                :title="item.fname"
-               @click="fileType(item.ffiletype,item.fcategoryid)">
+               @click="fileType(item)">
             <div @click.stop="() => {}"><el-checkbox :label="item"></el-checkbox></div>
             <svg-icon :icon-class="String(item.ffiletype)" className="icon" />
             <div v-if="item.isEditor">
@@ -75,8 +75,9 @@ export default {
           })
         }
       },
-      fileType(type, fcategoryid) {
-        switch (type) {
+      fileType(rows) {
+        const { ffiletype, fcategoryid, fversionsign } = rows
+        switch (ffiletype) {
           case 1:
             this.$store.dispatch('GetCategory', fcategoryid)
             this.$store.dispatch('SetParentId', fcategoryid)
@@ -88,10 +89,20 @@ export default {
             }
             break
           case 2:
-            this.$message1000('只可以对markdown文件进行预览编辑哦', 'warning')
+            this.$store.dispatch('TogglePreviewVisible')
+            this.$store.dispatch('GetDocInfo', fcategoryid)
             break
           case 3:
-            this.$store.dispatch('GetDocInfo', fcategoryid)
+            window.open(`http://192.168.2.91:9528/#/office?id=${fcategoryid}&vid=${fversionsign}`)
+            break
+          case 4:
+            window.open(`http://192.168.2.91:9528/#/office?id=${fcategoryid}&vid=${fversionsign}`)
+            break
+          case 5:
+            window.open(`http://192.168.2.91:9528/#/office?id=${fcategoryid}&vid=${fversionsign}`)
+            break
+          case 6:
+            window.open(`http://192.168.2.171:8081/djcpsdocument/fileManager/downloadFile.do?id=${fcategoryid}`)
             break
         }
       }
