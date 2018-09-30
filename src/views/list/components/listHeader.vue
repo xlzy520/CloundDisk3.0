@@ -25,7 +25,6 @@
       <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-info" @click="getDetail">详情</el-button>
     </div>
     <ul id="menu-btn" v-show="menuVisible" :style="{top:(coordinate[2]+'px'),left:(coordinate[1]+'px')}">
-      <li :class="{disabled:!([1, 2, 4].indexOf(isShow) > -1)}" @click.stop="fileType">打开</li>
       <li :class="{disabled:!([2, 4].indexOf(isShow)  > -1)}" @click="downloadFile2">下载</li>
       <li :class="{disabled:!([2, 4, 5].indexOf(isShow)  > -1)}" @click="copyFile">复制到</li>
       <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow)  > -1)}" @click="moveFile">移动到</li>
@@ -89,29 +88,6 @@ export default {
     }
   },
   methods: {
-    fileType() {
-      const { fcategoryid, ffiletype, fversionsign } = this.selectedData[0]
-      this.$store.dispatch('RightTogglemenuVisible', [false])
-      switch (ffiletype) {
-        case 1:
-          this.$store.dispatch('GetCategory', fcategoryid)
-          this.$store.dispatch('SetParentId', fcategoryid)
-          break
-        case 2:
-          this.$store.dispatch('TogglePreviewVisible')
-          this.$store.dispatch('GetDocInfo', fcategoryid)
-          break
-        case 3:
-          window.open(`http://192.168.2.91:9528/#/office?id=${fcategoryid}&vid=${fversionsign}`)
-          break
-        case 4:
-          window.open(`http://192.168.2.91:9528/#/office?id=${fcategoryid}&vid=${fversionsign}`)
-          break
-        case 5:
-          window.open(`http://192.168.2.91:9528/#/office?id=${fcategoryid}&vid=${fversionsign}`)
-          break
-      }
-    },
     typeShow(type) {
       this.$emit('list_type_toggle', type)
     },
@@ -217,7 +193,6 @@ export default {
     #menu-btn{
       list-style: none;
       background: #fbfcff;
-      height: 273px;
       line-height: 30px;
       width: 100px;
       text-align: center;

@@ -13,16 +13,31 @@
       <svg-icon icon-class="recycle"></svg-icon>
       <router-link to="/recycle" class="recycle-text">回收站</router-link>
     </div>
-    <md-input
-        style="width: 20%"
-        icon="search"
-        name="search"
-        v-model="queryString"
-        title="请输入搜索关键词"
-        placeholder="请输入关键词，回车搜索"
-        :maxlength="maxlength"
-        :keyEnterFunction="getSearchResult">
-      </md-input>
+    <!--<form action="www.baidu.com" enctype="multipart/form-data" method="post">-->
+      <!--<input type="hidden" name="type" value="1"/>-->
+      <!--<input id="dir" type="file" name="file" webkitdirectory mozdirectory onchange="haha(this)"/>-->
+      <!--<input id="uploadDir" type="submit" value="提交文件夹">-->
+    <!--</form>-->
+    <div class="search_wrap">
+      <div class="search_select">
+        <el-select v-model="searchSelect" size="small" style="width: 100px">
+          <el-option value="all" label="全文检索">全文检索</el-option>
+          <el-option value="file" label="文件搜索">文件搜索</el-option>
+        </el-select>
+      </div>
+      <div class="search_input">
+        <md-input
+          style="width: 20%"
+          icon="search"
+          name="search"
+          v-model="queryString"
+          title="请输入搜索关键词"
+          placeholder="请输入关键词，回车搜索"
+          :maxlength="maxlength"
+          :keyEnterFunction="getSearchResult">
+        </md-input>
+      </div>
+    </div>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <img class="user-avatar" :src="'https://oa.djcps.com/DJOA/'+avatar">
@@ -67,7 +82,8 @@ export default {
   data() {
     return {
       queryString: '',
-      maxlength: 30
+      maxlength: 30,
+      searchSelect: 'all'
     }
   },
   methods: {
@@ -135,6 +151,14 @@ export default {
       color: #1296db;
     }
     .recycle-text{
+
+    }
+  }
+  .search_wrap{
+    .search_select{
+
+    }
+    .search_input{
 
     }
   }

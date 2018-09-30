@@ -10,7 +10,7 @@ export function getDocInfo(id) {
 
 export function getCategory(id) {
   return request({
-    url: '/api_zhq/djcpsdocument/category/getCategory.do',
+    url: '/djcpsdocument/category/getCategory.do',
     method: 'post',
     data: {
       fcategoryid: id

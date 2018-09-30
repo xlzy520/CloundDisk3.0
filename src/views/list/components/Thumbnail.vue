@@ -93,6 +93,8 @@ export default {
             this.$store.dispatch('GetDocInfo', fcategoryid)
             break
           case 3:
+            console.log(fcategoryid)
+            // TODO office编辑之后，文件系统中未设置成最新版本
             window.open(`http://192.168.2.91:9528/#/office?id=${fcategoryid}&vid=${fversionsign}`)
             break
           case 4:
@@ -102,7 +104,7 @@ export default {
             window.open(`http://192.168.2.91:9528/#/office?id=${fcategoryid}&vid=${fversionsign}`)
             break
           case 6:
-            window.open(`http://192.168.2.171:8081/djcpsdocument/fileManager/downloadFile.do?id=${fcategoryid}`)
+            window.open(`http://192.168.2.171:8081/djcpsdocument/fileManager/previewPdf.do?id=${fcategoryid}`)
             break
         }
       }
