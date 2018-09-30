@@ -141,9 +141,6 @@ export default {
         this.$store.dispatch('SetSelectedData', [])
       })
     },
-    previewFile() {
-      this.$store.dispatch('GetDocInfo', this.selectedData[0].fcategoryid)
-    },
     downloadFile() {
       this.$refs.downloadBtn.href = `${process.env.UPLOAD_API}/djcpsdocument/fileManager/downloadFile.do?id=${this.selectedData[0].fcategoryid}`
       this.$refs.downloadBtn.download = this.selectedData[0].fname

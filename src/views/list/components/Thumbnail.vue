@@ -75,8 +75,7 @@ export default {
           })
         }
       },
-      fileType(rows) {
-        const { ffiletype, fcategoryid, fversionsign } = rows
+      fileType({ ffiletype, fcategoryid, fversionsign }) {
         switch (ffiletype) {
           case 1:
             this.$store.dispatch('GetCategory', fcategoryid)

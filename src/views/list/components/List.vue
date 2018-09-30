@@ -71,8 +71,7 @@
           return (a - b)
         }
       },
-      fileType(rows) {
-        const { ffiletype, fcategoryid, fversionsign } = rows
+      fileType({ ffiletype, fcategoryid, fversionsign }) {
         switch (ffiletype) {
           case 1:
             this.$store.dispatch('GetCategory', fcategoryid)
@@ -128,9 +127,9 @@
         })
       },
       dblclickRow(row) {
-        this.fileType(row.ffiletype, row.fcategoryid)
+        this.fileType(row)
       },
-      highlightRow({ row, rowIndex }) {
+      highlightRow({ row }) {
         if (this.rows.includes(row)) {
           return {
             'background-color': '#d4ecff'
@@ -162,9 +161,9 @@
           }
         })
       },
-      formatterTime(row) {
-        if (row.fupdatetime) {
-          return parseTime(row.fupdatetime)
+      formatterTime({ fupdatetime }) {
+        if (fupdatetime) {
+          return parseTime(fupdatetime)
         }
       },
       showMenu(row, event) {
