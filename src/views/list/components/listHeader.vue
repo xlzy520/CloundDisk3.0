@@ -120,7 +120,7 @@ export default {
       this.$store.dispatch('RightTogglemenuVisible', [false])
     },
     newFolder() {
-      this.$store.dispatch('Refresh').then(res => {
+      this.$store.dispatch('Refresh').then(() => {
         this.fileList.unshift({
           faothority: 'newFolder',
           fcategoryid: null,

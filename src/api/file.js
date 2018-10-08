@@ -104,6 +104,18 @@ export function getSearchResult(queryString, categoryName, sort, curPage) {
     }
   })
 }
+export function getFullTextSearchResult(queryString, categoryName, sort, curPage) {
+  return request({
+    url: '/djcpsdocument/search/fullList.do',
+    method: 'post',
+    data: {
+      queryString: queryString,
+      categoryName: categoryName,
+      sort: 1,
+      curPage: 1
+    }
+  })
+}
 export function moveFile(idList, fparentid) {
   return request({
     url: '/djcpsdocument/category/floderMove.do',

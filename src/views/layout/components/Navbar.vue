@@ -19,24 +19,20 @@
       <!--<input id="uploadDir" type="submit" value="提交文件夹">-->
     <!--</form>-->
     <div class="search_wrap">
-      <div class="search_select">
-        <el-select v-model="searchSelect" size="small" style="width: 100px">
-          <el-option value="all" label="全文检索">全文检索</el-option>
-          <el-option value="file" label="文件搜索">文件搜索</el-option>
-        </el-select>
-      </div>
-      <div class="search_input">
-        <md-input
-          style="width: 20%"
-          icon="search"
-          name="search"
-          v-model="queryString"
-          title="请输入搜索关键词"
-          placeholder="请输入关键词，回车搜索"
-          :maxlength="maxlength"
-          :keyEnterFunction="getSearchResult">
-        </md-input>
-      </div>
+      <el-switch
+        v-model="query.fullTextBoolean"
+        active-text="全文搜索">
+      </el-switch>
+      <md-input
+        style="width: 48%"
+        icon="search"
+        name="search"
+        v-model="query.queryString"
+        title="请输入搜索关键词"
+        placeholder="请输入关键词，回车搜索"
+        :maxlength="maxlength"
+        :keyEnterFunction="getSearchResult">
+      </md-input>
     </div>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
@@ -81,9 +77,11 @@ export default {
   },
   data() {
     return {
-      queryString: '',
-      maxlength: 30,
-      searchSelect: 'all'
+      query: {
+        fullTextBoolean: false,
+        queryString: ''
+      },
+      maxlength: 30
     }
   },
   methods: {
@@ -97,7 +95,7 @@ export default {
     },
     getSearchResult() {
       const loadingSearch = Loading.service({ fullscreen: true })
-      this.$store.dispatch('SetSearchList', this.queryString).then(res => {
+      this.$store.dispatch('SetSearchList', this.query).then(res => {
         loadingSearch.close()
       }).catch(res => {
         loadingSearch.close()
@@ -107,7 +105,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style rel="stylesheet/scss" lang="scss">
 .navbar {
   height: 50px;
   line-height: 50px;
@@ -155,80 +153,23 @@ export default {
     }
   }
   .search_wrap{
-    .search_select{
-
-    }
-    .search_input{
-
-    }
-  }
-  .search {
     position: absolute;
-    bottom: 1vh;
-    right: 10vw;
-    width: 268px;
-    height: 36px;
-    padding: 2px 2px 2px 2px;
-    background-color: rgba(165, 165, 165, .12);
-    border-radius: 6px;
-    font-size: 12px;
-    z-index: 10;
-    .searchform {
-      background-color: #fff;
-      background-color: hsla(0, 0%, 100%, .88);
-      display: block;
-      height: 32px;
-      border-radius: 4px;
-      transition: background-color .2s;
-      .search-keyword {
-        float: left;
-        width: 200px;
-        outline: none;
-        border-radius: 4px;
-        height: 32px;
-        line-height: 32px;
-        border: 0;
-        padding: 0 12px;
-        background-color: transparent;
-        font-size: 12px;
-        color: #222;
-        overflow: hidden;
-      }
-      .search-submit {
-        position: absolute;
-        display: block;
-        right: 0;
-        width: 48px;
-        height: 32px;
-        border: 0;
-        outline: none;
-        background-color: transparent;
-        font-size: 21px;
-        cursor: pointer;
-        color: #00a5db;
-        &:hover {
-          color: #ff4e8e;
-        }
-      }
+    width: 500px;
+    right: 10%;
+    float: left;
+    .material-input__component{
+      position: absolute;
+      top: 12%;
+      right: 30%;
+      margin-top: 0;
     }
-  }
-  .material-input__component{
-    position: absolute;
-    top: 22%;
-    right: 22%;
-    margin-top: 0;
-  }
-  .screenfull {
-    position: absolute;
-    right: 90px;
-    top: 16px;
-    color: red;
   }
   .avatar-container {
     height: 50px;
     display: inline-block;
     position: absolute;
     right: 35px;
+    top: 0;
     .avatar-wrapper {
       cursor: pointer;
       margin-top: 5px;

@@ -1,4 +1,4 @@
-import { getCategory, getDocInfo, getSearchResult } from '@/api/file'
+import { getCategory, getDocInfo, getSearchResult, getFullTextSearchResult } from '@/api/file'
 import { Message } from 'element-ui'
 import { Loading } from 'element-ui'
 const file = {
@@ -75,7 +75,7 @@ const file = {
     GET_DOC_INFO: (state, data) => {
       state.docValue = data
     },
-    SETSEARCHLIST: (state, data) => {
+    SET_SEARCH_LIST: (state, data) => {
       state.searchList = data
     },
     TOGGLE_SEARCH: (state, data) => {
@@ -140,15 +140,21 @@ const file = {
         commit('TOGGLE_PREVIEWVISIBLE', 'preview')
       }
     },
-    async SetSearchList({ commit }, queryString) {
-      const searchList = await getSearchResult(queryString)
+    async SetSearchList({ commit }, query) {
+      const { fullTextBoolean, queryString } = query
+      let searchList
+      if (fullTextBoolean) {
+        searchList = await getFullTextSearchResult(queryString)
+      } else {
+        searchList = await getSearchResult(queryString)
+      }
       if (searchList.success) {
         Message({
           type: 'success',
           message: '查询成功',
           duration: 1000
         })
-        commit('SETSEARCHLIST', searchList.data)
+        commit('SET_SEARCH_LIST', searchList.data)
         commit('TOGGLE_SEARCH', true)
       }
     },
