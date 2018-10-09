@@ -14,6 +14,7 @@
     <version-list v-if="versionVisible"></version-list>
     <m-d-editor></m-d-editor>
     <move-file v-if="move.visible"></move-file>
+    <img-editor v-if="imgEditor.visible"></img-editor>
   </div>
 </template>
 
@@ -28,6 +29,7 @@ import Detail from '@/components/Detail'
 import VersionList from '@/components/VersionList'
 import MDEditor from '@/components/MDEditor'
 import MoveFile from '@/components/MoveFile'
+import ImgEditor from '@/components/imgEditor'
 export default {
   name: 'list',
   data() {
@@ -42,13 +44,15 @@ export default {
       'selectedData',
       'detailVisible',
       'versionVisible',
-      'move'
+      'move',
+      'imgEditor'
     ]),
     List() {
       return this.$store.getters.hasSearch === false ? this.fileList : this.searchList.bookList
     }
   },
   components: {
+    ImgEditor,
     VersionList,
     Detail,
     UploadFile,

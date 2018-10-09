@@ -20,6 +20,7 @@ const getters = {
   hasSearch: state => state.file.hasSearch,
   menuVisible: state => state.file.menuVisible,
   coordinate: state => state.file.coordinate,
-  move: state => state.file.move
+  move: state => state.file.move,
+  imgEditor: state => state.file.imgEditor
 }
 export default getters

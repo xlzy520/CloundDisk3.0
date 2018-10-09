@@ -16,6 +16,10 @@ const file = {
     deleteVisible: false,
     detailVisible: false,
     versionVisible: false,
+    imgEditor: {
+      visible: false,
+      id: ''
+    },
     menuVisible: false,
     loadVisible: true,
     fileList: [],
@@ -39,6 +43,10 @@ const file = {
     },
     TOGGLE_DELETEVISIBLE: state => {
       state.deleteVisible = !state.deleteVisible
+    },
+    TOGGLE_IMG_EDITOR: (state, data) => {
+      state.imgEditor.visible = !state.imgEditor.visible
+      state.imgEditor.id = data
     },
     TOGGLE_DETAILVISIBLE: state => {
       state.detailVisible = !state.detailVisible
@@ -91,6 +99,9 @@ const file = {
     },
     ToggleDetailVisible: ({ commit }) => {
       commit('TOGGLE_DETAILVISIBLE')
+    },
+    ToggleImgEditor: ({ commit }, data) => {
+      commit('TOGGLE_IMG_EDITOR', data)
     },
     ToggleVersionVisible: ({ commit }) => {
       commit('TOGGLE_VERSIONVISIBLE')

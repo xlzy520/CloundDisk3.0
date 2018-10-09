@@ -81,7 +81,6 @@
             }
             break
           case 2:
-            this.$store.dispatch('TogglePreviewVisible')
             this.$store.dispatch('GetDocInfo', fcategoryid)
             break
           case 3:
@@ -97,6 +96,9 @@
             break
           case 6:
             window.open(`http://192.168.2.171:8081/djcpsdocument/fileManager/previewPdf.do?id=${fcategoryid}`)
+            break
+          case 7:
+            this.$store.dispatch('ToggleImgEditor', fcategoryid)
             break
         }
       },
