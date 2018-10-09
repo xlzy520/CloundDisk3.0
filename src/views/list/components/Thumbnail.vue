@@ -18,7 +18,13 @@
                :title="item.fname"
                @click="fileType(item)">
             <div @click.stop="() => {}"><el-checkbox :label="item"></el-checkbox></div>
-            <svg-icon :icon-class="String(item.ffiletype)" className="icon" />
+            <svg-icon v-if="item.ffiletype!==7" :icon-class="String(item.ffiletype)" className="icon"/>
+            <img
+              v-if="item.ffiletype === 7"
+              className="icon"
+              width="100"
+              height="100"
+              :src="'/api_zhq/djcpsdocument/fileManager/downloadFile.do?id='+item.fcategoryid"/>
             <div v-if="item.isEditor">
               <rename-file type="Thumbnail"></rename-file>
             </div>
