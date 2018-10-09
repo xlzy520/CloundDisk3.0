@@ -82,13 +82,13 @@
                 href="javascript:void(0)"
                 @click="rollBack(scope.row.filesgin)"
                 title="设为最新版本" v-if="!scope.row.fdisplay">回退</a>
-              <a size="mini" @click="previewFile(scope.row.filesgin)" v-if="selectedData[0].ffiletype === 2">查看</a>
+              <a size="mini" @click="fileType(scope.row)">查看</a>
             </template>
           </el-table-column>
         </el-table>
       </div>
       <div slot="footer" class="dialog-footer">
-        <div class="diff-select clearfix" v-if="selectedData[0].ffiletype === 3&&tableData.length>1">
+        <div class="diff-select clearfix" v-if="selectedData[0].ffiletype === 2&&tableData.length>1">
           <el-select v-model="oldVersion.value" filterable placeholder="请选择旧版本" size="small">
             <el-option
               v-for="item in tableData"
@@ -213,8 +213,35 @@
           return formatSize(Number(row.filesize.replace('B', '')))
         }
       },
-      previewFile(id) {
-        this.$store.dispatch('GetDocInfo', id)
+      fileType({ fvsgin, filesgin }) {
+        switch (this.selectedData[0].ffiletype) {
+          case 1:
+            this.$store.dispatch('GetCategory', filesgin)
+            this.$store.dispatch('SetParentId', filesgin)
+            if (this.$router.path !== '/list/index') {
+              this.$router.push({ path: `/list/index?`, query: { dirid: filesgin }})
+            }
+            break
+          case 2:
+            this.$store.dispatch('GetDocInfo', filesgin)
+            break
+          case 3:
+            // TODO office编辑之后，文件系统中未设置成最新版本
+            window.open(`http://192.168.2.91:9528/#/office?id=${filesgin}&vid=${fvsgin}`)
+            break
+          case 4:
+            window.open(`http://192.168.2.91:9528/#/office?id=${filesgin}&vid=${fvsgin}`)
+            break
+          case 5:
+            window.open(`http://192.168.2.91:9528/#/office?id=${filesgin}&vid=${fvsgin}`)
+            break
+          case 6:
+            window.open(`http://192.168.2.171:8081/djcpsdocument/fileManager/previewPdf.do?id=${filesgin}`)
+            break
+          case 7:
+            this.$store.dispatch('ToggleImgEditor', filesgin)
+            break
+        }
       },
       async diff() {
         this.diffLoading = true
