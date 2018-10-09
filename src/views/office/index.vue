@@ -4,6 +4,7 @@
 
 <script>
   import { getOffice } from '@/api/office'
+  import dynamicLoadScripts from '@/utils/dynamicLoadScript'
   export default {
     name: 'office',
     data() {
@@ -18,63 +19,60 @@
         }
       }
     },
-    async created() {
-      const script = document.createElement('script')
-      const head = document.getElementsByTagName('head')[0]
-      script.type = 'text/javascript'
-      script.charset = 'UTF-8'
-      script.async = 'defer'
-      script.src = 'http://192.168.12.228:9000/web-apps/apps/api/documents/api.js'
-      head.appendChild(script)
-      try {
-        const res = await getOffice(this.$route.query)
-        if (res && res.success) {
-          this.data = res.data
-          this.data.historys.map((item) => {
-            item.user = {}
-            item.user.name = item.updator
-          })
-        }
-      } catch (err) {
-        this.$message1000(err.msg, 'error')
-        setTimeout(() => {
-          window.close()
-        }, 300)
-      }
+    created() {
+      dynamicLoadScripts('http://192.168.12.228:9000/web-apps/apps/api/documents/api.js').then(() => {
+        this.getOfficeData().then(() => {
+          const onRequestHistoryClose = function() {
+            document.location.reload()
+          }
+          const onRequestHistoryData = (event) => {
+            var version = event.data
+            console.log(version)
+            this.historyData = this.data.historys[version - 1]
+            this.historyData.version = version
+            window.docEditor.setHistoryData(this.data.historys[version - 1])
+          }
+          const onRequestHistory = () => {
+            window.docEditor.refreshHistory({
+              currentVersion: 1,
+              history: this.data.historys
+            })
+          }
+          const config = {
+            ...this.data,
+            events: {
+              'onRequestHistory': onRequestHistory,
+              'onRequestHistoryData': onRequestHistoryData,
+              'onRequestHistoryClose': onRequestHistoryClose
+            },
+            'height': '100%',
+            'width': '100%'
+          }
+          window.docEditor = new window.DocsAPI.DocEditor('placeholder', config)
+        })
+      })
     },
     methods: {
-
+      async getOfficeData() {
+        try {
+          const res = await getOffice(this.$route.query)
+          if (res && res.success) {
+            this.data = res.data
+            this.data.historys.map((item) => {
+              item.user = {}
+              item.user.name = item.updator
+            })
+          }
+        } catch (err) {
+          this.$message1000(err.msg, 'error')
+          setTimeout(() => {
+            window.close()
+          }, 300)
+        }
+      }
     },
     mounted() {
-      const onRequestHistoryClose = function() {
-        document.location.reload()
-      }
-      const onRequestHistoryData = (event) => {
-        var version = event.data
-        console.log(version)
-        this.historyData = this.data.historys[version - 1]
-        this.historyData.version = version
-        window.docEditor.setHistoryData(this.data.historys[version - 1])
-      }
-      const onRequestHistory = () => {
-        window.docEditor.refreshHistory({
-          currentVersion: 1,
-          history: this.data.historys
-        })
-      }
-      setTimeout(() => {
-        const config = {
-          ...this.data,
-          events: {
-            'onRequestHistory': onRequestHistory,
-            'onRequestHistoryData': onRequestHistoryData,
-            'onRequestHistoryClose': onRequestHistoryClose
-          },
-          'height': '100%',
-          'width': '100%'
-        }
-        window.docEditor = new window.DocsAPI.DocEditor('placeholder', config)
-      }, 1000)
+
     }
   }
 </script>

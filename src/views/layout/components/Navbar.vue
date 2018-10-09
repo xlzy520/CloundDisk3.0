@@ -21,6 +21,7 @@
     <div class="search_wrap">
       <el-switch
         v-model="query.fullTextBoolean"
+        active-color="#13ce66"
         active-text="全文搜索">
       </el-switch>
       <md-input
