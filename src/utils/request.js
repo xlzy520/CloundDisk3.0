@@ -30,7 +30,7 @@ service.interceptors.response.use(
       Message({
         message: res.msg,
         type: 'error',
-        duration: 2 * 1000
+        duration: 1500
       })
       if (res.code === 100602) {
         if (router.history.current.path !== '/login') {
@@ -56,7 +56,7 @@ service.interceptors.response.use(
     Message({
       message: error.message || error.msg,
       type: 'error',
-      duration: 2 * 1000
+      duration: 1500
     })
     return Promise.reject(error)
   }
