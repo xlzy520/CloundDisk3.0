@@ -74,7 +74,7 @@
           markdown_css: false,
           hljs_js: function() {
             // 这是你的hljs文件路径
-            return 'https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js'
+            return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js'
           }
         },
         toolbars: {

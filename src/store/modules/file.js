@@ -141,7 +141,8 @@ const file = {
     SetSelectedData({ commit }, data) {
       commit('SET_SELECTED_DATA', data)
     },
-    async GetDocInfo({ commit }, { fcategoryid, fversionsign }) {
+    async GetDocInfo({ commit }, data) {
+      const { fcategoryid, fversionsign } = data
       const docInfo = await getDocInfo(fcategoryid)
       if (docInfo.success) {
         docInfo.data.fversionsign = fversionsign
@@ -149,8 +150,8 @@ const file = {
         commit('TOGGLE_PREVIEW_VISIBLE', 'preview')
       }
     },
-    async SetSearchList({ commit }, query) {
-      const { fullTextBoolean, queryString } = query
+    async SetSearchList({ commit }, data) {
+      const { fullTextBoolean, queryString } = data
       let searchList
       if (fullTextBoolean) {
         searchList = await getFullTextSearchResult(queryString)

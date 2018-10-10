@@ -81,7 +81,7 @@
             }
             break
           case 2:
-            this.$store.dispatch('GetDocInfo', fcategoryid, fversionsign)
+            this.$store.dispatch('GetDocInfo', { fcategoryid, fversionsign })
             break
           case 3:
             console.log(fcategoryid)
