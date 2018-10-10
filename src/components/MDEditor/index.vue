@@ -178,23 +178,15 @@
         }
       },
       async imgAdd(pos, $file) {
-        var formdata = new FormData()
+        const formdata = new FormData()
         formdata.append('file', $file)
         formdata.append('fparentid', '1')
         const imgInfo = await updateMarkdown(formdata)
         this.$refs.md.$img2Url(pos, process.env.UPLOAD_API + '/djcpsdocument/fileManager/downloadFile.do?id=' + imgInfo.data.id)
-      },
-      timedSave() {
-        // const docLs = localStorage
-        // const docSaveTimer = setTimeout(() => {
-        //   docLs.setItem('docCache', this.docValue.file)
-        // }, 30 * 1000)
       }
     },
     async mounted() {
-      // if (this.selectedData.length >= 1) {
-      //   this.value = this.docValue
-      // }
+
     }
   }
 </script>
