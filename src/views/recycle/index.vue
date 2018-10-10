@@ -18,7 +18,7 @@
         @row-click="clickRow"
         v-loading="loading" >
         <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="名称" width="360" prop="fname">
+        <el-table-column label="名称" width="480" prop="fname">
           <template slot-scope="scope">
             <div>
               <svg-icon :icon-class="String(scope.row.ffiletype)"></svg-icon>

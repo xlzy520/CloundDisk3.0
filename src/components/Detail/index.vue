@@ -146,14 +146,13 @@
           const versionListInfo = await getVersionList(this.selectedData[0].fversionsign, this.$store.getters.parentId)
           if (versionListInfo.success) {
             versionListInfo.data.filter((item) => {
-              if (item.fdisplay) {
+              if (!item.fdisplay) {
                 this.detail.newestVersion = item.fversion
                 this.detail.fremarks = item.fremarks
               }
             })
           }
         }
-        console.log(this.detail)
       }
     },
     mounted() {
