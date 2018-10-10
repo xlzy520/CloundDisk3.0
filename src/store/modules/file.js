@@ -28,42 +28,39 @@ const file = {
       visible: false,
       type: 'preview' // 新建markdown时需要首先展示编辑界面
     },
-    docValue: {
-      file: '',
-      name: ''
-    },
+    docValue: {},
     searchList: null,
     hasSearch: false,
     coordinate: []
   },
   mutations: {
-    TOGGLE_UPLOADVISIBLE: (state, data) => {
+    TOGGLE_UPLOAD_VISIBLE: (state, data) => {
       state.upload.visible = !state.upload.visible
       state.upload.type = data
     },
-    TOGGLE_DELETEVISIBLE: state => {
+    TOGGLE_DELETE_VISIBLE: state => {
       state.deleteVisible = !state.deleteVisible
     },
     TOGGLE_IMG_EDITOR: (state, data) => {
       state.imgEditor.visible = !state.imgEditor.visible
       state.imgEditor.id = data
     },
-    TOGGLE_DETAILVISIBLE: state => {
+    TOGGLE_DETAIL_VISIBLE: state => {
       state.detailVisible = !state.detailVisible
     },
-    TOGGLE_VERSIONVISIBLE: state => {
+    TOGGLE_VERSION_VISIBLE: state => {
       state.versionVisible = !state.versionVisible
       state.loadVisible = false
     },
-    TOGGLE_PREVIEWVISIBLE: (state, data) => {
+    TOGGLE_PREVIEW_VISIBLE: (state, data) => {
       state.preview.type = data
       state.preview.visible = !state.preview.visible
     },
-    TOGGLE_MOVEVISIBLE: (state, data) => {
+    TOGGLE_MOVE_VISIBLE: (state, data) => {
       state.move.visible = !state.move.visible
       state.move.type = data
     },
-    RIGHT_TOGGLE_MENUVISIBLE: (state, data) => {
+    RIGHT_TOGGLE_MENU_VISIBLE: (state, data) => {
       state.coordinate = data
       state.menuVisible = state.coordinate[2]
     },
@@ -74,10 +71,10 @@ const file = {
     SET_PARENT_ID: (state, data) => {
       state.parentId = data
     },
-    SET_FOLDERNAV: (state, data) => {
+    SET_FOLDER_NAV: (state, data) => {
       state.folderNav = data
     },
-    SET_SELECTEDDATA: (state, data) => {
+    SET_SELECTED_DATA: (state, data) => {
       state.selectedData = data
     },
     GET_DOC_INFO: (state, data) => {
@@ -92,28 +89,28 @@ const file = {
   },
   actions: {
     ToggleUploadVisible: ({ commit }, type) => {
-      commit('TOGGLE_UPLOADVISIBLE', type)
+      commit('TOGGLE_UPLOAD_VISIBLE', type)
     },
     ToggleDeleteVisible: ({ commit }) => {
-      commit('TOGGLE_DELETEVISIBLE')
+      commit('TOGGLE_DELETE_VISIBLE')
     },
     ToggleDetailVisible: ({ commit }) => {
-      commit('TOGGLE_DETAILVISIBLE')
+      commit('TOGGLE_DETAIL_VISIBLE')
     },
     ToggleImgEditor: ({ commit }, data) => {
       commit('TOGGLE_IMG_EDITOR', data)
     },
     ToggleVersionVisible: ({ commit }) => {
-      commit('TOGGLE_VERSIONVISIBLE')
+      commit('TOGGLE_VERSION_VISIBLE')
     },
     TogglePreviewVisible: ({ commit }, data) => {
-      commit('TOGGLE_PREVIEWVISIBLE', data)
+      commit('TOGGLE_PREVIEW_VISIBLE', data)
     },
     ToggleMoveVisible: ({ commit }, type) => {
-      commit('TOGGLE_MOVEVISIBLE', type)
+      commit('TOGGLE_MOVE_VISIBLE', type)
     },
     RightTogglemenuVisible: ({ commit }, data) => {
-      commit('RIGHT_TOGGLE_MENUVISIBLE', data)
+      commit('RIGHT_TOGGLE_MENU_VISIBLE', data)
     },
     async GetCategory({ commit }, fcategoryid) {
       return new Promise((resolve, reject) => {
@@ -122,7 +119,7 @@ const file = {
           const Category = response
           loadingInstance.close()
           commit('GET_CATEGORY', Category.data.tableList)
-          commit('SET_FOLDERNAV', Category.data.navList)
+          commit('SET_FOLDER_NAV', Category.data.navList)
           resolve(response)
         }).catch(error => {
           loadingInstance.close()
@@ -137,18 +134,19 @@ const file = {
       const Category = await getCategory(this.getters.parentId)
       if (Category.success) {
         commit('GET_CATEGORY', Category.data.tableList)
-        commit('SET_FOLDERNAV', Category.data.navList)
+        commit('SET_FOLDER_NAV', Category.data.navList)
       }
       return Category
     },
     SetSelectedData({ commit }, data) {
-      commit('SET_SELECTEDDATA', data)
+      commit('SET_SELECTED_DATA', data)
     },
-    async GetDocInfo({ commit }, fcategoryid) {
+    async GetDocInfo({ commit }, { fcategoryid, fversionsign }) {
       const docInfo = await getDocInfo(fcategoryid)
       if (docInfo.success) {
+        docInfo.data.fversionsign = fversionsign
         commit('GET_DOC_INFO', docInfo.data)
-        commit('TOGGLE_PREVIEWVISIBLE', 'preview')
+        commit('TOGGLE_PREVIEW_VISIBLE', 'preview')
       }
     },
     async SetSearchList({ commit }, query) {
@@ -174,7 +172,7 @@ const file = {
     },
     NewMarkdownFile({ commit }) {
       commit('GET_DOC_INFO', {})
-      commit('TOGGLE_PREVIEWVISIBLE', 'create')
+      commit('TOGGLE_PREVIEW_VISIBLE', 'create')
     }
   }
 }

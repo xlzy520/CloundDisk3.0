@@ -1,12 +1,6 @@
 <template>
   <div>
     <list-header @list_type_toggle="list_type_toggle"></list-header>
-    <!--<iframe-->
-      <!--src="http://192.168.12.237/we/wordeditorframe.aspx?WOPISrc=http://192.168.12.23:8081/djcpsdocument/wopi/files/683e1061a8af46529a88b9164ec95f69"-->
-      <!--width="100%"-->
-      <!--height="600"-->
-    <!--&gt;-->
-    <!--</iframe>-->
     <component :is="component" :fileList="List"></component>
     <upload-file></upload-file>
     <delete-file></delete-file>
@@ -30,6 +24,7 @@ import VersionList from '@/components/VersionList'
 import MDEditor from '@/components/MDEditor'
 import MoveFile from '@/components/MoveFile'
 import ImgEditor from '@/components/imgEditor'
+// TODO 用时间冒泡的方式处理listHeader里的按钮
 export default {
   name: 'list',
   data() {

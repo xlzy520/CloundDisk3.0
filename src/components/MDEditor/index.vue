@@ -155,6 +155,7 @@
           const markdownFile = new File([this.docValue.file], this.docValue.name)
           markdownData.append('file', markdownFile)
           markdownData.append('fcategoryid', this.docValue.id)
+          markdownData.append('fversionsign', this.docValue.fversionsign)
           this.$prompt('请输入更新描述', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',

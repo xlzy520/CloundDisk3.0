@@ -6,44 +6,50 @@
         v-model="selectedData.length >= 1"
         @change="handleCheckAllChange"
         class="allCheck"
-        :disabled="disabled">全选</el-checkbox>
+        :disabled="disabled">全选
+      </el-checkbox>
     </div>
     <el-scrollbar tag="ul" style="height: 76vh">
-     <el-checkbox-group v-model="selectedData" @change="handleCheckItemChange">
-      <ul>
-        <li v-for="(item, index) in fileList" :key="index">
-          <div class="box"
-               @contextmenu.prevent="falseFunc"
-               :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''"
-               :title="item.fname"
-               @click="fileType(item)">
-            <div @click.stop="() => {}"><el-checkbox :label="item"></el-checkbox></div>
-            <svg-icon v-if="item.ffiletype!==7" :icon-class="String(item.ffiletype)" className="icon"/>
-            <img
-              v-if="item.ffiletype === 7"
-              className="icon"
-              width="100"
-              height="100"
-              :src="'/api_zhq/djcpsdocument/fileManager/downloadFile.do?id='+item.fcategoryid"/>
-            <div v-if="item.isEditor">
-              <rename-file type="Thumbnail"></rename-file>
+      <el-checkbox-group v-model="selectedData" @change="handleCheckItemChange">
+        <ul>
+          <li v-for="(item, index) in fileList" :key="index">
+            <div class="box"
+                 @contextmenu.prevent="falseFunc"
+                 :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''"
+                 :title="item.fname"
+                 @click="fileType(item)">
+              <div @click.stop="() => {}">
+                <el-checkbox :label="item"></el-checkbox>
+              </div>
+              <svg-icon v-if="item.ffiletype!==7" :icon-class="String(item.ffiletype)" className="icon"/>
+              <img
+                v-if="item.ffiletype === 7"
+                class="icon"
+                width="100"
+                height="100"
+                :src="'/api_zhq/djcpsdocument/fileManager/downloadFile.do?id='+item.fcategoryid"/>
+              <div v-if="item.isEditor">
+                <rename-file type="Thumbnail"></rename-file>
+              </div>
+              <div class="fileName">
+                <span v-show="!item.isEditor">{{item.fname}}</span>
+              </div>
             </div>
-            <div class="fileName">
-              <span v-show="!item.isEditor">{{item.fname}}</span>
-            </div>
-          </div>
-        </li>
-      </ul>
-     </el-checkbox-group>
+          </li>
+        </ul>
+      </el-checkbox-group>
     </el-scrollbar>
-    <div class="empty-block" v-if="!fileList.length"><span class="empty-text">暂无数据</span></div>
+    <div class="empty-block" v-if="!fileList.length">
+      <span class="empty-text">暂无数据</span>
+    </div>
   </div>
 </template>
 
 <script>
   import nameEditor from '@/components/RenameFile'
   import RenameFile from '@/components/RenameFile/index'
-export default {
+
+  export default {
     props: {
       fileList: {
         type: Array,
@@ -138,8 +144,8 @@ export default {
   }
 </script>
 <style lang="scss">
-  .list{
-    .el-scrollbar__wrap{
+  .list {
+    .el-scrollbar__wrap {
       overflow-x: hidden;
     }
   }
@@ -158,7 +164,7 @@ export default {
           padding: 0 6px;
         }
       }
-      .allCheck{
+      .allCheck {
         margin-left: 1.5vw;
       }
     }
@@ -175,7 +181,7 @@ export default {
         .box-hover {
           background: #F4F4F4;
           .el-checkbox {
-            display: block!important;
+            display: block !important;
           }
         }
         .box {
@@ -186,7 +192,7 @@ export default {
           position: absolute;
           user-select: none;
           &:hover {
-            background:#e3ecf76b;
+            background: #e3ecf76b;
             .el-checkbox {
               display: block;
             }
@@ -199,12 +205,12 @@ export default {
           }
           .fileName {
             font-size: 14px;
-            overflow:hidden;
-            text-overflow:ellipsis;
-            display:-webkit-box;
-            -webkit-box-orient:vertical;
-            -webkit-line-clamp:2;
-            span{
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            span {
               display: inline-block;
               width: 100px;
               overflow: hidden;
@@ -240,10 +246,12 @@ export default {
   .box >>> .el-checkbox .el-checkbox__label {
     display: none;
   }
+
   .box >>> .el-checkbox__inner {
-    width: 18px!important;
-    height: 18px!important;
+    width: 18px !important;
+    height: 18px !important;
   }
+
   .box >>> .el-checkbox__inner::after {
     height: 10px;
     left: 5px;

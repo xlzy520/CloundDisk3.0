@@ -10,7 +10,6 @@
     width="400px">
     <el-upload
       ref="upload"
-      class="upload-demo"
       drag
       :action="uploadFileUrl"
       :on-success="uploadOk"
@@ -20,10 +19,12 @@
       :on-remove="onRemove"
       :show-file-list="true"
       :on-error="onError"
+      :on-progress="onProgress"
       multiple
 
     >
       <i class="el-icon-upload"></i>
+      <p class="upload-speed">{{speed}}</p>
       <div class="el-upload__text">将文件拖到此处或点击上传</div>
       <div class="el-upload__tip" slot="tip" v-if="!updateType"><span style="color: #888;padding-right: 2px;">当前文件夹：</span>{{tip}}</div>
       <div class="el-upload__tip" slot="tip" v-if="updateType"><span style="color: #888;padding-right: 2px;">要更新的文件：</span>{{tip}}</div>
@@ -40,6 +41,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import { formatSize } from '@/utils/index'
 export default {
   name: 'UploadFile',
   data() {
@@ -50,7 +52,10 @@ export default {
       uploadData: {},
       btDisable: true,
       currentFile: null,
-      fileDesc: ''
+      fileDesc: '',
+      speed: '',
+      time: '',
+      loaded: 0
     }
   },
   computed: {
@@ -85,13 +90,22 @@ export default {
     }
   },
   methods: {
+    onProgress(event, file, fileList) {
+      const interval = new Date().getTime() - this.time
+      this.time = new Date().getTime()
+      const size = event.loaded - this.loaded
+      this.speed = formatSize((size / (interval / 1000)).toFixed(0)) + '/s'
+      this.loaded = event.loaded
+    },
     onError() {
       this.$message1000('文件上传出错：网络错误', 'error')
       this.$store.dispatch('ToggleUploadVisible')
       this.$refs.upload.clearFiles()
       this.$store.dispatch('Refresh')
+      this.speed = ''
     },
     onRemove(file, filelist) {
+      this.speed = ''
       this.fileList = filelist
       if (filelist.length === 0) {
         this.btDisable = true
@@ -103,9 +117,11 @@ export default {
       }
       this.uploadData.fremarks = this.fileDesc
       this.$refs.upload.submit()
+      this.time = new Date().getTime()
       this.btDisable = true
     },
     uploadOk(response, file, filelist) {
+      this.speed = ''
       if (response.success === true) {
         this.$message1000('文件上传成功', 'success')
         this.$store.dispatch('ToggleUploadVisible')
@@ -137,7 +153,6 @@ export default {
             this.$message1000('上传失败！文件上传列表中存在同名文件', 'error')
           }
         }
-        console.log(filelist)
       }
       this.fileList = filelist
 
@@ -160,26 +175,28 @@ export default {
     },
     quitDialog() {
       var uploadingFiles = []
-
       for (let i = 0; i < this.fileList.length; ++i) {
         if (this.fileList[i].status === 'uploading') {
           uploadingFiles.push(this.fileList[i])
         }
       }
-      if (uploadingFiles.length > 0) {
+      if (this.fileList.length > 0) {
         if (confirm('文件正在上传中，关闭后上传被中止, 是否继续?')) {
           for (let v = 0; v < uploadingFiles.length; ++v) {
             this.$refs.upload.abort(uploadingFiles[v])
           }
-          this.$store.dispatch('ToggleUploadVisible')
+          this.speed = ''
           this.$refs.upload.clearFiles()
+          this.fileList = []
+          this.$store.dispatch('ToggleUploadVisible')
         } else {
           return
         }
         this.$message1000('文件上传被中止', 'warning')
       }
-      this.$store.dispatch('ToggleUploadVisible')
       this.$refs.upload.clearFiles()
+      this.fileList = []
+      this.$store.dispatch('ToggleUploadVisible')
     }
   }
 }
@@ -208,5 +225,8 @@ export default {
     font-size: 14px;
     margin: 5px 0 5px 0px;
     color: #666;
+  }
+  .upload-speed{
+    color: forestgreen;
   }
 </style>
