@@ -1,7 +1,8 @@
 <template>
   <el-dialog
     :title="title"
-    :visible.sync="upload.visible"
+    :visible.sync="visible"
+    @close="close"
     :modal-append-to-body="false"
     custom-class="upload-file"
     :close-on-click-modal="true"
@@ -34,7 +35,7 @@
     <span slot="footer" class="dialog-footer">
       <el-button size="small"  v-if="!updateType" type="primary" @click="submitUpload" :disabled="btDisable">开始上传</el-button>
       <el-button size="small" v-if="updateType" type="primary" @click="submitUpload" :disabled="btDisable">开始更新</el-button>
-      <el-button @click="quitDialog" size="small">关 闭</el-button>
+      <el-button @click="close()" size="small">关 闭</el-button>
     </span>
   </el-dialog>
 </template>
@@ -44,6 +45,16 @@ import { mapGetters } from 'vuex'
 import { formatSize } from '@/utils/index'
 export default {
   name: 'UploadFile',
+  props: {
+    visible: {
+      type: Boolean,
+      required: true
+    },
+    type: {
+      type: String,
+      required: true
+    }
+  },
   data() {
     return {
       isLoad: true,
@@ -59,27 +70,19 @@ export default {
     }
   },
   computed: {
-    uploadVisible: {
-      get() {
-        return this.$store.state.file.uploadVisible
-      },
-      set() {
-      }
-    },
     ...mapGetters([
       'folderNav',
       'parentId',
-      'selectedData',
-      'upload'
+      'selectedData'
     ]),
     uploadFileUrl() {
       return process.env.UPLOAD_API + '/djcpsdocument/category/fileUpload.do?'
     },
     title() {
-      return this.upload.type === 'upload' ? '文件上传' : '文件更新'
+      return this.type === 'upload' ? '文件上传' : '文件更新'
     },
     updateType() {
-      return this.upload.type === 'update'
+      return this.type === 'update'
     },
     tip() {
       let tip = ''
@@ -140,7 +143,7 @@ export default {
       }
     },
     onFileChange(file, filelist) {
-      if (this.upload.type === 'update') {
+      if (this.type === 'update') {
         if (file.name !== this.selectedData[0].fname) {
           filelist.pop()
           this.$message1000('文件上传失败！上传文件名与更新文件名不符', 'error')
@@ -173,7 +176,7 @@ export default {
         }
       }
     },
-    quitDialog() {
+    close() {
       var uploadingFiles = []
       for (let i = 0; i < this.fileList.length; ++i) {
         if (this.fileList[i].status === 'uploading') {
@@ -188,7 +191,7 @@ export default {
           this.speed = ''
           this.$refs.upload.clearFiles()
           this.fileList = []
-          this.$store.dispatch('ToggleUploadVisible')
+          this.$emit('closeDialog', 'uploadVisible')
         } else {
           return
         }
@@ -196,7 +199,7 @@ export default {
       }
       this.$refs.upload.clearFiles()
       this.fileList = []
-      this.$store.dispatch('ToggleUploadVisible')
+      this.$emit('closeDialog', 'uploadVisible')
     }
   }
 }

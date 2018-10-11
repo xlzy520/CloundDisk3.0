@@ -2,7 +2,7 @@
   <div>
     <el-dialog
       title="删除文件"
-      :visible.sync="isVisible"
+      :visible.sync="visible"
       :modal-append-to-body="false"
       custom-class="delete-file"
       :close-on-click-modal="false"
@@ -28,7 +28,7 @@
       <span slot="footer" class="dialog-footer">
         <span class="tooltip">{{err}}</span>
         <el-button type="primary" @click="submitForm" size="small">开始删除</el-button>
-        <el-button @click="quitDialog" size="small">关闭</el-button>
+        <el-button @click="close" size="small">关闭</el-button>
       </span>
     </el-dialog>
   </div>
@@ -39,6 +39,17 @@
   import { deleteCategory } from '@/api/file'
   export default {
     name: 'DeleteFile',
+    props: {
+      visible: {
+        type: Boolean,
+        required: true
+      }
+    },
+    computed: {
+      ...mapGetters([
+        'selectedData'
+      ])
+    },
     data() {
       return {
         err: '',
@@ -47,15 +58,15 @@
       }
     },
     methods: {
-      quitDialog() {
+      close() {
         if (this.deleting) {
           if (confirm('删除未完成，您关闭对话框后，删除将继续进行，仍要关闭对话框吗？')) {
-            this.$store.dispatch('ToggleDeleteVisible')
+            this.$emit('closeDialog', 'deleteVisible')
             return
           }
           return
         }
-        this.$store.dispatch('ToggleDeleteVisible')
+        this.$emit('closeDialog', 'deleteVisible')
       },
       submitForm() {
         this.deleting = true
@@ -65,7 +76,7 @@
         })
         deleteCategory(categoryids, this.$store.getters.parentId)
           .then(res => {
-            this.$store.dispatch('ToggleDeleteVisible')
+            this.$emit('closeDialog', 'deleteVisible')
             if (res.success) {
               this.$message1000(res.msg, 'success')
               this.deleting = false
@@ -73,24 +84,16 @@
             }
           })
           .catch(err => {
-            console.log(err)
             if (this.$store.getters.hasSearch) {
-              this.$message1000('该文件已经被删除', 'info')
+              this.$message1000(err.message, 'info')
             }
             this.deleting = false
-            this.$store.dispatch('ToggleDeleteVisible')
+            this.close()
           }).finally(() => {
             this.$store.dispatch('SetSelectedData', [])
           })
       }
-    },
-    computed: {
-      ...mapGetters({
-        isVisible: 'deleteVisible',
-        selectedData: 'selectedData'
-      })
-    },
-    mounted() {}
+    }
   }
 </script>
 

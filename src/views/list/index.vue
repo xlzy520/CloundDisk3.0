@@ -2,8 +2,8 @@
   <div>
     <list-header @list_type_toggle="list_type_toggle" @action="dispatchAction"></list-header>
     <component :is="component" :fileList="List"></component>
-    <upload-file></upload-file>
-    <delete-file></delete-file>
+    <upload-file :visible="upload.visible" :type="upload.type" @closeDialog="closeDialog"></upload-file>
+    <delete-file :visible="deleteVisible" @closeDialog="closeDialog"></delete-file>
     <detail v-if="detailVisible" @closeDialog="closeDialog"></detail>
     <version-list v-if="versionVisible" @closeDialog="closeDialog"></version-list>
     <m-d-editor></m-d-editor>
@@ -33,6 +33,11 @@
         detailVisible: false,
         versionVisible: false,
         move: {
+          visible: false,
+          type: 'upload'
+        },
+        deleteVisible: false,
+        upload: {
           visible: false,
           type: 'upload'
         }
@@ -66,12 +71,18 @@
         this.component = component
       },
       closeDialog(component) {
-        console.log(component)
-        if (component === 'moveVisible') {
-          this.move.visible = false
-        } else {
-          this[component] = false
+        switch (component) {
+          case 'moveVisible':
+            this.move.visible = false
+            break
+          case 'uploadVisible':
+            this.upload.visible = false
+            break
+          default:
+            this[component] = false
+            break
         }
+        console.log(component)
       },
       dispatchAction(action) {
         switch (action) {
@@ -79,7 +90,10 @@
             this.refresh()
             break
           case 'upload':
-            this.upload()
+            this.upload = {
+              visible: true,
+              type: 'upload'
+            }
             break
           case 'rename':
             this.rename()
@@ -97,13 +111,16 @@
             }
             break
           case 'update':
-            this.update()
+            this.upload = {
+              visible: true,
+              type: 'update'
+            }
             break
           case 'version':
             this.versionVisible = true
             break
           case 'delete':
-            this.delete()
+            this.deleteVisible = true
             break
           case 'detail':
             this.detailVisible = true
@@ -115,24 +132,12 @@
       typeShow(type) {
         this.$emit('list_type_toggle', type)
       },
-      upload() {
-        this.$store.dispatch('ToggleUploadVisible', 'upload')
-      },
-      update() {
-        this.$store.dispatch('ToggleUploadVisible', 'update')
-      },
-      version() {
-        this.$store.dispatch('ToggleVersionVisible')
-      },
       refresh() {
         this.$store.dispatch('Refresh').then(res => {
           if (res.success) {
             this.$message1000('刷新成功', 'success')
           }
         })
-      },
-      delete() {
-        this.$store.dispatch('ToggleDeleteVisible')
       },
       rename() {
         if (this.selectedData.length === 1) {
@@ -184,14 +189,7 @@
           default:
             return false
         }
-      },
-      copyTo() {
-        this.$store.dispatch('ToggleMoveVisible', 'copy')
-      },
-      moveTo() {
-        this.$store.dispatch('ToggleMoveVisible', 'move')
       }
-
     },
     async mounted() {
       this.$router.push({ path: `/list/index?`, query: { dirid: '0' }})

@@ -5,11 +5,6 @@ const file = {
   state: {
     parentId: '0',
     selectedData: [],
-    upload: {
-      visible: false,
-      type: ''
-    },
-    deleteVisible: false,
     imgEditor: {
       visible: false,
       id: ''
@@ -28,13 +23,6 @@ const file = {
     coordinate: []
   },
   mutations: {
-    TOGGLE_UPLOAD_VISIBLE: (state, data) => {
-      state.upload.visible = !state.upload.visible
-      state.upload.type = data
-    },
-    TOGGLE_DELETE_VISIBLE: state => {
-      state.deleteVisible = !state.deleteVisible
-    },
     TOGGLE_IMG_EDITOR: (state, data) => {
       state.imgEditor.visible = !state.imgEditor.visible
       state.imgEditor.id = data
@@ -71,12 +59,6 @@ const file = {
     }
   },
   actions: {
-    ToggleUploadVisible: ({ commit }, type) => {
-      commit('TOGGLE_UPLOAD_VISIBLE', type)
-    },
-    ToggleDeleteVisible: ({ commit }) => {
-      commit('TOGGLE_DELETE_VISIBLE')
-    },
     ToggleImgEditor: ({ commit }, data) => {
       commit('TOGGLE_IMG_EDITOR', data)
     },

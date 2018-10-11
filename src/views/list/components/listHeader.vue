@@ -100,34 +100,6 @@ export default {
     typeShow(type) {
       this.$emit('list_type_toggle', type)
     },
-    getDetail() {
-      this.$store.dispatch('ToggleDetailVisible')
-    },
-    uploadFile() {
-      this.$store.dispatch('ToggleUploadVisible', 'upload')
-    },
-    updateFile() {
-      this.$store.dispatch('ToggleUploadVisible', 'update')
-    },
-    showVersion() {
-      this.$store.dispatch('ToggleVersionVisible')
-    },
-    refresh() {
-      this.$store.dispatch('Refresh').then(res => {
-        if (res.success) {
-          this.$message1000('刷新成功', 'success')
-        }
-      })
-    },
-    deleteFile() {
-      this.$store.dispatch('ToggleDeleteVisible')
-    },
-    rename() {
-      if (this.selectedData.length === 1) {
-        this.$set(this.selectedData[0], 'isEditor', true)
-      }
-      this.$store.dispatch('RightTogglemenuVisible', [false])
-    },
     newFolder() {
       this.$store.dispatch('Refresh').then(() => {
         this.fileList.unshift({
@@ -169,12 +141,6 @@ export default {
           break
         default: return false
       }
-    },
-    copyFile() {
-      this.$store.dispatch('ToggleMoveVisible', 'copy')
-    },
-    moveFile() {
-      this.$store.dispatch('ToggleMoveVisible', 'move')
     }
   }
 }
