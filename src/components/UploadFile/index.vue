@@ -102,7 +102,7 @@ export default {
     },
     onError() {
       this.$message1000('文件上传出错：网络错误', 'error')
-      this.$store.dispatch('ToggleUploadVisible')
+      this.$emit('closeDialog', 'uploadVisible')
       this.$refs.upload.clearFiles()
       this.$store.dispatch('Refresh')
       this.speed = ''
@@ -127,7 +127,7 @@ export default {
       this.speed = ''
       if (response.success === true) {
         this.$message1000('文件上传成功', 'success')
-        this.$store.dispatch('ToggleUploadVisible')
+        this.$emit('closeDialog', 'uploadVisible')
         this.$refs.upload.clearFiles()
         this.$store.dispatch('Refresh')
       } else {
@@ -137,7 +137,7 @@ export default {
         }
         msg = '文件上传出错：' + msg
         this.$message1000(msg, 'error')
-        this.$store.dispatch('ToggleUploadVisible')
+        this.$emit('closeDialog', 'uploadVisible')
         this.$refs.upload.clearFiles()
         this.$store.dispatch('Refresh')
       }

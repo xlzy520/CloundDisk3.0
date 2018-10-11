@@ -82,7 +82,6 @@
             this[component] = false
             break
         }
-        console.log(component)
       },
       dispatchAction(action) {
         switch (action) {
@@ -129,9 +128,6 @@
             break
         }
       },
-      typeShow(type) {
-        this.$emit('list_type_toggle', type)
-      },
       refresh() {
         this.$store.dispatch('Refresh').then(res => {
           if (res.success) {
@@ -144,51 +140,6 @@
           this.$set(this.selectedData[0], 'isEditor', true)
         }
         this.$store.dispatch('RightTogglemenuVisible', [false])
-      },
-      newFolder() {
-        this.$store.dispatch('Refresh').then(() => {
-          this.fileList.unshift({
-            faothority: 'newFolder',
-            fcategoryid: null,
-            fcategorystatus: 1,
-            fcreatetime: null,
-            ffiletype: 1,
-            fname: '新建文件夹',
-            foperator: null,
-            foperatorid: null,
-            fparentid: null,
-            fsize: null,
-            fsortorder: null,
-            fupdateor: null,
-            fupdatetime: null,
-            rowid: null
-          })
-          this.$set(this.fileList[0], 'isEditor', true)
-          this.$store.dispatch('SetSelectedData', [])
-        })
-      },
-      downloadFile() {
-        this.$refs.downloadBtn.href = `${process.env.UPLOAD_API}/djcpsdocument/fileManager/downloadFile.do?id=${this.selectedData[0].fcategoryid}`
-        this.$refs.downloadBtn.download = this.selectedData[0].fname
-      },
-      downloadFile2() {
-        this.downloadFile()
-        this.$refs.downloadBtn.click()
-      },
-      back2FileList() {
-        this.$store.dispatch('ToggleSearch', false)
-      },
-      handleCommand(command) {
-        switch (command) {
-          case 'newFolder':
-            this.newFolder()
-            break
-          case 'newMarkdown':
-            this.$store.dispatch('NewMarkdownFile')
-            break
-          default:
-            return false
-        }
       }
     },
     async mounted() {

@@ -18,7 +18,6 @@
           class="el-button el-button--primary"
           v-if="[2,4].indexOf(isShow) > -1"
           icon="el-icon-download"
-          @click="downloadFile"
           ref="downloadBtn"><i class="el-icon-download"></i>下载</a>
         <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-edit" data-action="update">更新</el-button>
         <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-tickets" data-action="version">版本</el-button>
