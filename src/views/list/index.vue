@@ -1,7 +1,8 @@
 <template>
   <div>
-    <list-header @list_type_toggle="list_type_toggle" @action="dispatchAction"></list-header>
-    <component :is="component" :fileList="List"></component>
+    <list-header @action="dispatchAction"></list-header>
+    <List v-if="component" :fileList="List"></List>
+    <thumbnail v-if="!component" :fileList="List"></thumbnail>
     <upload-file :visible="upload.visible" :type="upload.type" @closeDialog="closeDialog"></upload-file>
     <delete-file :visible="deleteVisible" @closeDialog="closeDialog"></delete-file>
     <detail v-if="detailVisible" @closeDialog="closeDialog"></detail>
@@ -26,10 +27,10 @@
   import ImgEditor from '@/components/imgEditor'
   // TODO 用事件冒泡的方式处理listHeader里的按钮
   export default {
-    name: 'list',
+    name: 'index',
     data() {
       return {
-        component: 'List',
+        component: true,
         detailVisible: false,
         versionVisible: false,
         move: {
@@ -67,9 +68,6 @@
       MoveFile
     },
     methods: {
-      list_type_toggle(component) {
-        this.component = component
-      },
       closeDialog(component) {
         switch (component) {
           case 'moveVisible':
@@ -123,6 +121,15 @@
             break
           case 'detail':
             this.detailVisible = true
+            break
+          case 'back2FileList':
+            this.$store.dispatch('ToggleSearch', false)
+            break
+          case 'List':
+            this.component = true
+            break
+          case 'Thumbnail':
+            this.component = false
             break
           default:
             break

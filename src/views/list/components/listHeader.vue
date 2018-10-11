@@ -1,6 +1,6 @@
 <template>
-  <div class="list-head">
-    <div class="file-action" @click="click">
+  <div class="list-head" @click="click">
+    <div class="file-action">
       <div class="list-btn">
         <el-button type="primary" icon="el-icon-refresh" data-action="refresh">刷新</el-button>
         <el-button type="primary" icon="el-icon-upload" data-action="upload">上传</el-button>
@@ -37,19 +37,19 @@
     </div>
     <div class="action-wrap">
       <div class="item">
-        <div class="action-item" @click="typeShow('List')" title="列表">
+        <div class="action-item" data-action="List" title="列表">
           <svg-icon icon-class="list" className="icon" />
         </div>
       </div>
       <div class="item">
-        <div class="action-item" @click="typeShow('Thumbnail')" title="缩略图">
+        <div class="action-item" data-action="Thumbnail" title="缩略图">
           <svg-icon icon-class="abbr" className="icon" />
         </div>
       </div>
     </div>
     <breadcrumb></breadcrumb>
     <div class="back2FileList">
-      <el-button type="success" plain size="mini" v-if="hasSearch" @click="back2FileList">返回文件列表</el-button>
+      <el-button type="success" plain size="mini" v-if="hasSearch" data-action="back2FileList">返回文件列表</el-button>
     </div>
   </div>
 </template>
@@ -90,14 +90,12 @@ export default {
   },
   methods: {
     click({ target }) {
-      const action = target.getAttribute('data-action') || target.parentElement.getAttribute('data-action')
-      console.log(action)
+      const action = target.getAttribute('data-action') ||
+        target.parentElement.getAttribute('data-action') ||
+        target.parentElement.parentElement.getAttribute('data-action')
       if (action) {
         this.$emit('action', action)
       }
-    },
-    typeShow(type) {
-      this.$emit('list_type_toggle', type)
     },
     newFolder() {
       this.$store.dispatch('Refresh').then(() => {
@@ -128,9 +126,6 @@ export default {
     downloadFile2() {
       this.downloadFile()
       this.$refs.downloadBtn.click()
-    },
-    back2FileList() {
-      this.$store.dispatch('ToggleSearch', false)
     },
     handleCommand(command) {
       switch (command) {
