@@ -1,39 +1,41 @@
 <template>
   <div class="list-head">
-    <div class="list-btn">
-      <el-button type="primary" icon="el-icon-refresh" @click="refresh">刷新</el-button>
-      <el-button type="primary" icon="el-icon-upload" @click="uploadFile">上传文件</el-button>
-      <el-dropdown type="primary" @command="handleCommand">
-        <el-button type="primary"><i class="el-icon-plus"></i>&nbsp新建<i class="el-icon-arrow-down el-icon--right"></i></el-button>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="newFolder">文件夹</el-dropdown-item>
-          <el-dropdown-item divided command="newMarkdown">Markdown</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-      <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-edit-outline" @click="rename">重命名</el-button>
-      <el-button type="primary" v-if="[2, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" @click="copyFile">复制到</el-button>
-      <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" @click="moveFile">移动到</el-button>
-      <a
-        class="el-button el-button--primary"
-        v-if="[2,4].indexOf(isShow) > -1"
-        icon="el-icon-download"
-        @click="downloadFile"
-        ref="downloadBtn"><i class="el-icon-download"></i>下载</a>
-      <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-edit" @click="updateFile">更新</el-button>
-      <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-tickets" @click="showVersion">版本</el-button>
-     <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" @click="deleteFile">删除</el-button>
-      <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-info" @click="getDetail">详情</el-button>
+    <div class="file-action" @click="click">
+      <div class="list-btn">
+        <el-button type="primary" icon="el-icon-refresh" data-action="refresh">刷新</el-button>
+        <el-button type="primary" icon="el-icon-upload" data-action="upload">上传</el-button>
+        <el-dropdown type="primary" @command="handleCommand">
+          <el-button type="primary"><i class="el-icon-plus"></i>&nbsp新建<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="newFolder">文件夹</el-dropdown-item>
+            <el-dropdown-item divided command="newMarkdown">Markdown</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-edit-outline" data-action="rename">重命名</el-button>
+        <el-button type="primary" v-if="[2, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" data-action="copyTo">复制到</el-button>
+        <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" data-action="moveTo">移动到</el-button>
+        <a
+          class="el-button el-button--primary"
+          v-if="[2,4].indexOf(isShow) > -1"
+          icon="el-icon-download"
+          @click="downloadFile"
+          ref="downloadBtn"><i class="el-icon-download"></i>下载</a>
+        <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-edit" data-action="update">更新</el-button>
+        <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-tickets" data-action="version">版本</el-button>
+        <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" data-action="delete">删除</el-button>
+        <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-info" data-action="detail">详情</el-button>
+      </div>
+      <ul id="menu-btn" v-show="menuVisible" :style="{top:(coordinate[2]+'px'),left:(coordinate[1]+'px')}">
+        <li :class="{disabled:!([2, 4].indexOf(isShow)  > -1)}" data-action="downloadFile2">下载</li>
+        <li :class="{disabled:!([2, 4, 5].indexOf(isShow)  > -1)}" data-action="copyTo">复制到</li>
+        <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow)  > -1)}" data-action="moveTo">移动到</li>
+        <li :class="{disabled:!([2, 4].indexOf(isShow) > -1)}" data-action="update">更新</li>
+        <li :class="{disabled:!([2, 4].indexOf(isShow)  > -1)}" data-action="version">版本</li>
+        <li :class="{disabled:!([1, 2, 4].indexOf(isShow)  > -1)}" data-action="rename">重命名</li>
+        <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow) > -1)}" data-action="delete">删除</li>
+        <li :class="{disabled:!([1, 2, 4].indexOf(isShow)  > -1)}" data-action="detail">详情</li>
+      </ul>
     </div>
-    <ul id="menu-btn" v-show="menuVisible" :style="{top:(coordinate[2]+'px'),left:(coordinate[1]+'px')}">
-      <li :class="{disabled:!([2, 4].indexOf(isShow)  > -1)}" @click="downloadFile2">下载</li>
-      <li :class="{disabled:!([2, 4, 5].indexOf(isShow)  > -1)}" @click="copyFile">复制到</li>
-      <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow)  > -1)}" @click="moveFile">移动到</li>
-      <li :class="{disabled:!([2, 4].indexOf(isShow) > -1)}" @click="updateFile">更新</li>
-      <li :class="{disabled:!([2, 4].indexOf(isShow)  > -1)}" @click="showVersion">版本</li>
-      <li :class="{disabled:!([1, 2, 4].indexOf(isShow)  > -1)}" @click="rename">重命名</li>
-      <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow) > -1)}" @click="deleteFile">删除</li>
-      <li :class="{disabled:!([1, 2, 4].indexOf(isShow)  > -1)}" @click="getDetail">详情</li>
-    </ul>
     <div class="action-wrap">
       <div class="item">
         <div class="action-item" @click="typeShow('List')" title="列表">
@@ -88,6 +90,13 @@ export default {
     }
   },
   methods: {
+    click({ target }) {
+      const action = target.getAttribute('data-action') || target.parentElement.getAttribute('data-action')
+      console.log(action)
+      if (action) {
+        this.$emit('action', action)
+      }
+    },
     typeShow(type) {
       this.$emit('list_type_toggle', type)
     },

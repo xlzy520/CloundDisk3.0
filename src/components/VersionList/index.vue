@@ -2,10 +2,11 @@
   <div>
     <el-dialog
       title="版本列表"
-      :visible.sync="versionVisible"
+      :visible="true"
       :modal-append-to-body="false"
       custom-class="version-list"
       :close-on-click-modal="true"
+      @close="close"
       width="750px">
       <el-dialog
         width="80%"
@@ -81,7 +82,7 @@
               <a
                 href="javascript:void(0)"
                 @click="rollBack(scope.row.filesgin)"
-                title="设为最新版本" v-if="scope.row.fdisplay">回退</a>
+                title="设为最新版本" v-if="!scope.row.fdisplay">回退</a>
               <a size="mini" @click="fileType(scope.row)">查看</a>
             </template>
           </el-table-column>
@@ -107,7 +108,7 @@
           </el-select>
           <el-button @click="diff" size="small" type="success" :loading="diffLoading">版本对比</el-button>
         </div>
-        <el-button @click="dialogClose" size="small" type="warning">关闭</el-button>
+        <el-button @click="close" size="small" type="warning">关闭</el-button>
       </div>
     </el-dialog>
   </div>
@@ -125,15 +126,6 @@
       vueCodeDiff
     },
     computed: {
-      versionVisible: {
-        get() {
-          return this.$store.state.file.versionVisible
-        },
-        set() {
-          this.$store.dispatch('ToggleVersionVisible')
-          this.$store.dispatch('Refresh')
-        }
-      },
       ...mapGetters([
         'selectedData'
       ]),
@@ -166,8 +158,8 @@
         evt.target.href = process.env.UPLOAD_API + '/djcpsdocument/fileManager/downloadFile.do?id=' + id
         evt.target.download = filename // 暂时不加版本号
       },
-      dialogClose() {
-        this.$store.dispatch('ToggleVersionVisible')
+      close() {
+        this.$emit('closeDialog', 'versionVisible')
         this.$store.dispatch('Refresh')
       },
       async rollBack(newVer) {
@@ -187,7 +179,7 @@
       },
       async requestData() {
         this.loading = true
-        if (this.selectedData.length === 1 && this.versionVisible === true) {
+        if (this.selectedData.length === 1) {
           try {
             const versionListInfo = await getVersionList(this.selectedData[0].fversionsign)
             if (versionListInfo.success) {

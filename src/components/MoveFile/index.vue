@@ -1,7 +1,8 @@
 <template>
   <el-dialog
     :title="title"
-    :visible.sync="move.visible"
+    :visible="true"
+    @close="close"
     width="420px"
     custom-class="move-file"
   >
@@ -11,7 +12,7 @@
     <span slot="footer" class="dialog-footer">
     <el-button v-if="moveType" type="primary" @click="moveFile">确 定</el-button>
     <el-button v-if="!moveType" type="primary" @click="copyFile">确 定</el-button>
-    <el-button @click="closeMove">取 消</el-button>
+    <el-button @click="close">取 消</el-button>
   </span>
   </el-dialog>
 </template>
@@ -29,31 +30,27 @@
         idList: []
       }
     },
+    props: {
+      type: {
+        type: String,
+        required: true
+      }
+    },
     computed: {
-      moveVisible: {
-        get() {
-          return this.$store.state.file.move.visible
-        },
-        set() {
-          this.$store.dispatch('ToggleMoveVisible')
-          this.$store.dispatch('Refresh')
-        }
-      },
       ...mapGetters([
         'selectedData',
-        'move',
         'parentId'
       ]),
       title() {
-        return this.move.type === 'move' ? '移动到' : '复制到'
+        return this.type === 'move' ? '移动到' : '复制到'
       },
       moveType() {
-        return this.move.type === 'move'
+        return this.type === 'move'
       }
     },
     methods: {
-      closeMove() {
-        this.$store.dispatch('ToggleMoveVisible')
+      close() {
+        this.$emit('closeDialog', 'moveVisible')
       },
       getFolderid(data) {
         this.id = data
@@ -61,21 +58,19 @@
       async moveFile() {
         moveFile(this.idList, this.id, this.parentId).then(moveInfo => {
           this.$message1000('文件移动成功', 'success')
-          this.$store.dispatch('ToggleMoveVisible')
+          this.close()
           this.$store.dispatch('Refresh')
         }).catch(() => {
-          this.$store.dispatch('ToggleMoveVisible')
-          // this.$store.dispatch('Refresh')
+          this.close()
         })
       },
       async copyFile() {
         copyFile(this.idList, this.id).then(copyInfo => {
           this.$message1000('文件复制成功', 'success')
-          this.$store.dispatch('ToggleMoveVisible')
+          this.close()
           this.$store.dispatch('Refresh')
         }).catch(() => {
-          this.$store.dispatch('ToggleMoveVisible')
-          // this.$store.dispatch('Refresh')
+          this.close()
         })
       }
     },

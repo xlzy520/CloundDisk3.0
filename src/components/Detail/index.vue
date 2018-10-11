@@ -2,10 +2,11 @@
   <div class="el-dialog__detail">
     <el-dialog
       :title="topTitle"
-      :visible.sync="detailVisible"
+      :visible="true"
       :modal-append-to-body="false"
       custom-class="file-detail"
       :close-on-click-modal="true"
+      @close="close"
       width="380px">
       <div class="detail-content">
         <div class="detail-item">
@@ -82,8 +83,8 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-                <el-button @click="dialogClose" size="small" type="primary">关 闭</el-button>
-              </span>
+        <el-button @click="close" size="small" type="primary">关 闭</el-button>
+      </span>
     </el-dialog>
   </div>
 </template>
@@ -91,6 +92,7 @@
   import { mapGetters } from 'vuex'
   import { formatSize, parseTime } from '@/utils/index'
   import { getVersionList } from '@/api/file'
+
   export default {
     name: 'Detail',
     data() {
@@ -103,14 +105,6 @@
       }
     },
     computed: {
-      detailVisible: {
-        get() {
-          return this.$store.state.file.detailVisible
-        },
-        set() {
-          this.$store.dispatch('ToggleDetailVisible')
-        }
-      },
       ...mapGetters([
         'selectedData'
       ]),
@@ -138,15 +132,15 @@
       }
     },
     methods: {
-      dialogClose() {
-        this.$store.dispatch('ToggleDetailVisible')
+      close() {
+        this.$emit('closeDialog', 'detailVisible')
       },
       async requestData() {
-        if (this.selectedData.length === 1 && this.detailVisible === true) {
+        if (this.selectedData.length === 1 && this.selectedData[0].ffiletype !== 1) {
           const versionListInfo = await getVersionList(this.selectedData[0].fversionsign, this.$store.getters.parentId)
           if (versionListInfo.success) {
             versionListInfo.data.filter((item) => {
-              if (!item.fdisplay) {
+              if (item.fdisplay) {
                 this.detail.newestVersion = item.fversion
                 this.detail.fremarks = item.fremarks
               }
@@ -165,23 +159,28 @@
   .file-detail .el-dialog__body {
     padding: 10px 20px !important;
   }
+
   .file-detail .el-dialog__header {
     padding: 10px 20px 5px 20px !important;
   }
+
   .file-detail .el-dialog__headerbtn {
-    top:14px;
+    top: 14px;
   }
+
   .file-detail .detail-content .detail-item {
     border-bottom: 1px solid #ddd;
     padding-bottom: 8px;
     margin-bottom: 8px;
   }
+
   .file-detail .detail-content .label {
     float: left;
     width: 100px;
     line-height: 22px;
     color: #888;
   }
+
   .file-detail .detail-content .content {
     float: right;
     margin-left: 0;
@@ -194,6 +193,7 @@
     word-break: break-all;
     overflow: hidden;
   }
+
   .file-detail .detail-content .clear {
     clear: both;
   }

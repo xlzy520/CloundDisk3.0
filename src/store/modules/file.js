@@ -9,13 +9,7 @@ const file = {
       visible: false,
       type: ''
     },
-    move: {
-      visible: false,
-      type: ''
-    },
     deleteVisible: false,
-    detailVisible: false,
-    versionVisible: false,
     imgEditor: {
       visible: false,
       id: ''
@@ -45,20 +39,9 @@ const file = {
       state.imgEditor.visible = !state.imgEditor.visible
       state.imgEditor.id = data
     },
-    TOGGLE_DETAIL_VISIBLE: state => {
-      state.detailVisible = !state.detailVisible
-    },
-    TOGGLE_VERSION_VISIBLE: state => {
-      state.versionVisible = !state.versionVisible
-      state.loadVisible = false
-    },
     TOGGLE_PREVIEW_VISIBLE: (state, data) => {
       state.preview.type = data
       state.preview.visible = !state.preview.visible
-    },
-    TOGGLE_MOVE_VISIBLE: (state, data) => {
-      state.move.visible = !state.move.visible
-      state.move.type = data
     },
     RIGHT_TOGGLE_MENU_VISIBLE: (state, data) => {
       state.coordinate = data
@@ -94,20 +77,11 @@ const file = {
     ToggleDeleteVisible: ({ commit }) => {
       commit('TOGGLE_DELETE_VISIBLE')
     },
-    ToggleDetailVisible: ({ commit }) => {
-      commit('TOGGLE_DETAIL_VISIBLE')
-    },
     ToggleImgEditor: ({ commit }, data) => {
       commit('TOGGLE_IMG_EDITOR', data)
     },
-    ToggleVersionVisible: ({ commit }) => {
-      commit('TOGGLE_VERSION_VISIBLE')
-    },
     TogglePreviewVisible: ({ commit }, data) => {
       commit('TOGGLE_PREVIEW_VISIBLE', data)
-    },
-    ToggleMoveVisible: ({ commit }, type) => {
-      commit('TOGGLE_MOVE_VISIBLE', type)
     },
     RightTogglemenuVisible: ({ commit }, data) => {
       commit('RIGHT_TOGGLE_MENU_VISIBLE', data)
