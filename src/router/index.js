@@ -64,6 +64,18 @@ export const constantRouterMap = [
       }
     ]
   },
+  {
+    path: '/record',
+    component: Layout,
+    redirect: '/record/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/record/index'),
+        name: '操作记录'
+      }
+    ]
+  },
   { path: '*', redirect: '/404', hidden: true }
 ]
 

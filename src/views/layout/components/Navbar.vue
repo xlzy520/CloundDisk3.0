@@ -9,25 +9,29 @@
       <img src="@/assets/logo/logo.png" width="36" height="36" class="nav__logo__img">
       <span class="nav__logo__title">东经云盘</span>
     </div>
-    <div class="recycle">
-      <svg-icon icon-class="recycle"></svg-icon>
-      <router-link to="/recycle" class="recycle-text">回收站</router-link>
+    <div class="nav-router">
+      <router-link to="/recycle" class="nav-router-text recycle">回收站</router-link>
+      <router-link to="/record"  v-if="false" class="nav-router-text record">操作记录</router-link>
     </div>
     <!--<form action="www.baidu.com" enctype="multipart/form-data" method="post">-->
       <!--<input type="hidden" name="type" value="1"/>-->
       <!--<input id="dir" type="file" name="file" webkitdirectory mozdirectory onchange="haha(this)"/>-->
       <!--<input id="uploadDir" type="submit" value="提交文件夹">-->
     <!--</form>-->
-    <div class="search_wrap">
+    <div class="search_wrap"  @focus="showSwitch($event)"
+         @blur="showSwitch($event)">
       <el-switch
+        v-show="inputHover"
+        style="float: left;margin-top: 15px;"
         v-model="query.fullTextBoolean"
         active-color="#13ce66"
         active-text="全文搜索">
       </el-switch>
       <md-input
-        style="width: 48%"
         icon="search"
         name="search"
+        @focus="showSwitch"
+        @blur="showSwitch"
         v-model="query.queryString"
         title="请输入搜索关键词"
         placeholder="请输入关键词，回车搜索"
@@ -82,10 +86,18 @@ export default {
         fullTextBoolean: false,
         queryString: ''
       },
-      maxlength: 30
+      maxlength: 30,
+      inputHover: false
     }
   },
   methods: {
+    showSwitch(event) {
+      if (event.type === 'focus') {
+        this.inputHover = event.target.className === 'material-input' || event.target.className === 'search_wrap'
+      } else {
+        this.inputHover = !(event.target.className === 'material-input' || event.target.className === 'search_wrap')
+      }
+    },
     toggleSideBar() {
       this.$store.dispatch('ToggleSideBar')
     },
@@ -139,30 +151,29 @@ export default {
       font-size: 20px;
     }
   }
-  .recycle{
+  .nav-router{
     color: #9e9e9e;
     font-size: 18px;
     float: left;
-    margin-left: 30px;
-    padding: 0 10px;
     cursor: pointer;
-    &:hover{
-      color: #1296db;
+    .nav-router-text{
+      margin-left: 30px;
+      padding: 0 10px;
+      &:hover{
+        color: #8b80db;
+      }
     }
-    .recycle-text{
-
+    .router-link-active{
+      color: #1296db;
     }
   }
   .search_wrap{
     position: absolute;
-    width: 500px;
-    right: 10%;
-    float: left;
+    right: 15%;
     .material-input__component{
-      position: absolute;
-      top: 12%;
-      right: 30%;
-      margin-top: 0;
+     float: left;
+      width: 225px;
+      margin-top: 5px;
     }
   }
   .avatar-container {

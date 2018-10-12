@@ -22,7 +22,6 @@
       :on-error="onError"
       :on-progress="onProgress"
       multiple
-
     >
       <i class="el-icon-upload"></i>
       <p class="upload-speed">{{speed}}</p>
@@ -127,8 +126,9 @@ export default {
       this.speed = ''
       if (response.success === true) {
         this.$message1000('文件上传成功', 'success')
-        this.$emit('closeDialog', 'uploadVisible')
         this.$refs.upload.clearFiles()
+        this.fileList = []
+        this.$emit('closeDialog', 'uploadVisible')
         this.$store.dispatch('Refresh')
       } else {
         let msg = response.msg
@@ -137,8 +137,9 @@ export default {
         }
         msg = '文件上传出错：' + msg
         this.$message1000(msg, 'error')
-        this.$emit('closeDialog', 'uploadVisible')
         this.$refs.upload.clearFiles()
+        this.fileList = []
+        this.$emit('closeDialog', 'uploadVisible')
         this.$store.dispatch('Refresh')
       }
     },
@@ -167,7 +168,7 @@ export default {
           fparentid: this.parentId
         }
 
-        if (this.selectedData.length === 1) {
+        if (this.selectedData.length === 1 && this.type === 'update') {
           this.uploadData = {
             fparentid: this.parentId,
             fcategoryid: this.selectedData[0].fcategoryid,
@@ -180,6 +181,7 @@ export default {
       var uploadingFiles = []
       for (let i = 0; i < this.fileList.length; ++i) {
         if (this.fileList[i].status === 'uploading') {
+          console.log(3);
           uploadingFiles.push(this.fileList[i])
         }
       }
