@@ -156,7 +156,7 @@
               this.$refs.multipleTable.toggleRowSelection(this.fileList[searchIndex])
               const elScrollBar = this.$refs['elscrollbar'].$refs['wrap']
               this.$nextTick(() => {
-                elScrollBar.scrollTop = (53) * this.fileList.indexOf(searchIndex)
+                elScrollBar.scrollTop = (53) * searchIndex
               })
             } else {
               this.$message1000('源文件未找到，文件可能已经被删除', 'info')
