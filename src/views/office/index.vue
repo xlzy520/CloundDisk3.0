@@ -20,7 +20,7 @@
       }
     },
     created() {
-      dynamicLoadScripts('http://192.168.12.228:9000/web-apps/apps/api/documents/api.js').then(() => {
+      dynamicLoadScripts('http://192.168.23.170:32916/web-apps/apps/api/documents/api.js').then(() => {
         this.getOfficeData().then(() => {
           const onRequestHistoryClose = function() {
             document.location.reload()
