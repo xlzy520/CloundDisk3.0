@@ -219,16 +219,16 @@
             break
           case 3:
             // TODO office编辑之后，文件系统中未设置成最新版本
-            window.open(`http://192.168.2.91:9528/#/office?id=${filesgin}&vid=${fvsgin}`)
+            window.open(`${process.env.OFFICE_API}/#/office?id=${filesgin}&vid=${fvsgin}`)
             break
           case 4:
-            window.open(`http://192.168.2.91:9528/#/office?id=${filesgin}&vid=${fvsgin}`)
+            window.open(`${process.env.OFFICE_API}/#/office?id=${filesgin}&vid=${fvsgin}`)
             break
           case 5:
-            window.open(`http://192.168.2.91:9528/#/office?id=${filesgin}&vid=${fvsgin}`)
+            window.open(`${process.env.OFFICE_API}/#/office?id=${filesgin}&vid=${fvsgin}`)
             break
           case 6:
-            window.open(`http://192.168.2.171:8081/djcpsdocument/fileManager/previewPdf.do?id=${filesgin}`)
+            window.open(`${process.env.OFFICE_API}/djcpsdocument/fileManager/previewPdf.do?id=${filesgin}`)
             break
           case 7:
             this.$store.dispatch('ToggleImgEditor', filesgin)
