@@ -148,7 +148,7 @@
         await this.$store.dispatch('ToggleSearch', false)
         await this.$store.dispatch('GetCategory', searchObj.fparentid).then((res) => {
           if (res.success) {
-            const searchIndex = this.fileList.findIndex((item) => {
+            const searchIndex = this.fileList.findIndex(item => {
               return item.fcategoryid === searchObj.fcategoryid
             })
             if (searchIndex !== -1) {

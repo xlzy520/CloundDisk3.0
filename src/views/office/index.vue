@@ -65,9 +65,6 @@
           }
         } catch (err) {
           this.$message1000(err.msg, 'error')
-          setTimeout(() => {
-            window.close()
-          }, 300)
         }
       }
     },
