@@ -27,7 +27,6 @@
           }
           const onRequestHistoryData = (event) => {
             var version = event.data
-            console.log(version)
             this.historyData = this.data.historys[version - 1]
             this.historyData.version = version
             window.docEditor.setHistoryData(this.data.historys[version - 1])

@@ -14,7 +14,7 @@
         <ul>
           <li v-for="(item, index) in fileList" :key="index">
             <div class="box"
-                 @contextmenu.prevent="falseFunc"
+                 @contextmenu.prevent="()=>{return false}"
                  :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''"
                  :title="item.fname"
                  @click="fileType(item)">
@@ -27,7 +27,7 @@
                 class="icon"
                 width="100"
                 height="100"
-                :src="'/api_zhq/djcpsdocument/fileManager/downloadFile.do?id='+item.fcategoryid"/>
+                :src="imgSrc(item)"/>
               <div v-if="item.isEditor">
                 <rename-file type="Thumbnail"></rename-file>
               </div>
@@ -64,8 +64,8 @@
       }
     },
     methods: {
-      falseFunc() {
-        return false
+      imgSrc(item) {
+        return `${process.env.UPLOAD_API}/djcpsdocument/fileManager/downloadFile.do?id=` + item.fcategoryid
       },
       handleCheckAllChange(val) {
         this.selectedData = val ? this.fileList : []

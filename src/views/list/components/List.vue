@@ -113,11 +113,9 @@
       },
       clickRow(row) {
         this.fileList.forEach(item => {
-          if (item.fcategoryid === row.fcategoryid) {
-            this.$refs.multipleTable.toggleRowSelection(row, true)
-          } else {
-            this.$refs.multipleTable.toggleRowSelection(item, false)
-          }
+          item.fcategoryid === row.fcategoryid
+            ? this.$refs.multipleTable.toggleRowSelection(row, true)
+            : this.$refs.multipleTable.toggleRowSelection(item, false)
         })
       },
       dblclickRow(row) {

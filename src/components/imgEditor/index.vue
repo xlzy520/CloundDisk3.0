@@ -73,7 +73,7 @@
       }
     },
     mounted() {
-      this.data.url = '/api_zhq/djcpsdocument/fileManager/downloadFile.do?id=' + this.imgEditor.id
+      this.data.url = `${process.env.UPLOAD_API}/djcpsdocument/fileManager/downloadFile.do?id=${this.imgEditor.id}`
     }
   }
 </script>
