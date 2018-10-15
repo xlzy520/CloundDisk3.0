@@ -148,17 +148,18 @@
         await this.$store.dispatch('ToggleSearch', false)
         await this.$store.dispatch('GetCategory', searchObj.fparentid).then((res) => {
           if (res.success) {
-            for (const item of this.fileList) {
-              if (item.fcategoryid === searchObj.fcategoryid) {
-                this.selectRow.push(this.fileList.indexOf(item))
-                this.$refs.multipleTable.toggleRowSelection(item)
-                const elScrollBar = this.$refs['elscrollbar'].$refs['wrap']
-                this.$nextTick(() => {
-                  elScrollBar.scrollTop = (53) * this.fileList.indexOf(item)
-                })
-              } else {
-                this.$message1000('源文件未找到，文件可能已经被删除', 'info')
-              }
+            const searchIndex = this.fileList.findIndex((item) => {
+              return item.fcategoryid === searchObj.fcategoryid
+            })
+            if (searchIndex !== -1) {
+              this.rows.push(searchIndex)
+              this.$refs.multipleTable.toggleRowSelection(this.fileList[searchIndex])
+              const elScrollBar = this.$refs['elscrollbar'].$refs['wrap']
+              this.$nextTick(() => {
+                elScrollBar.scrollTop = (53) * this.fileList.indexOf(searchIndex)
+              })
+            } else {
+              this.$message1000('源文件未找到，文件可能已经被删除', 'info')
             }
           }
         })
