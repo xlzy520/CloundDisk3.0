@@ -114,14 +114,22 @@ const file = {
       } else {
         searchList = await getSearchResult(queryString)
       }
-      if (searchList.success) {
-        Message({
-          type: 'success',
-          message: '查询成功',
-          duration: 1000
-        })
-        commit('SET_SEARCH_LIST', searchList.data)
-        commit('TOGGLE_SEARCH', true)
+      if (searchList && searchList.success) {
+        if (searchList.data.bookList.length === 0) {
+          Message({
+            type: 'info',
+            message: '搜索成功,搜索结果为空',
+            duration: 1000
+          })
+        } else {
+          Message({
+            type: 'success',
+            message: '搜索成功',
+            duration: 1000
+          })
+          commit('SET_SEARCH_LIST', searchList.data)
+          commit('TOGGLE_SEARCH', true)
+        }
       }
     },
     ToggleSearch({ commit }, data) {
