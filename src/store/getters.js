@@ -7,9 +7,6 @@ const getters = {
   roles: state => state.user.roles,
 
   upload: state => state.file.upload,
-  deleteVisible: state => state.file.deleteVisible,
-  detailVisible: state => state.file.detailVisible,
-  versionVisible: state => state.file.versionVisible,
   fileList: state => state.file.fileList,
   folderNav: state => state.file.folderNav,
   selectedData: state => state.file.selectedData,

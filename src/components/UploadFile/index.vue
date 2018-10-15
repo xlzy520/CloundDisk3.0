@@ -181,7 +181,6 @@ export default {
       var uploadingFiles = []
       for (let i = 0; i < this.fileList.length; ++i) {
         if (this.fileList[i].status === 'uploading') {
-          console.log(3);
           uploadingFiles.push(this.fileList[i])
         }
       }
