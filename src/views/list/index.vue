@@ -2,7 +2,7 @@
   <div>
     <list-header @action="dispatchAction"></list-header>
     <List v-if="component" :fileList="List"></List>
-    <thumbnail v-if="!component" :fileList="List"></thumbnail>
+    <thumbnail v-else :fileList="List"></thumbnail>
     <upload-file :visible="upload.visible" :type="upload.type" @closeDialog="closeDialog"></upload-file>
     <delete-file :visible="deleteVisible" @closeDialog="closeDialog"></delete-file>
     <detail v-if="detailVisible" @closeDialog="closeDialog"></detail>
