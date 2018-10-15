@@ -86,7 +86,7 @@
         const fidArr = Object.keys(urlJson)
         const { length } = fidArr
         return (
-          <router-link to={`/list/index?dirid=${fidArr[length - 1]}`} class="record-fileName">{fname}</router-link>
+          <router-link to={`/list/index?dirid=${fidArr[length - 1]}`} class='record-fileName'>{fname}</router-link>
         )
       },
       formatterDetail(rows) {
