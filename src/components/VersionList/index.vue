@@ -217,14 +217,7 @@
           case 2:
             this.$store.dispatch('GetDocInfo', filesgin)
             break
-          case 3:
-            // TODO office编辑之后，文件系统中未设置成最新版本
-            window.open(`${process.env.OFFICE_API}/#/office?id=${filesgin}&vid=${fvsgin}`)
-            break
-          case 4:
-            window.open(`${process.env.OFFICE_API}/#/office?id=${filesgin}&vid=${fvsgin}`)
-            break
-          case 5:
+          case 3: case 4: case 5:
             window.open(`${process.env.OFFICE_API}/#/office?id=${filesgin}&vid=${fvsgin}`)
             break
           case 6:
