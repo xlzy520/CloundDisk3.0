@@ -64,11 +64,7 @@
           return false
         } else if (row.length >= 1) {
           try {
-            const editInfo = await renameFile(row[0].fcategoryid,
-              row[0].fname,
-              this.value,
-              row[0].fparentid,
-              row[0].ffiletype)
+            const editInfo = await renameFile({ ...row[0], newName: this.value })
             if (editInfo.success) {
               this.loading = false
               this.$message1000('文件夹重命名成功', 'success')
@@ -103,7 +99,10 @@
         }
       },
       selection(event) {
-        const dotIndex = this.value.lastIndexOf('.')
+        let dotIndex = this.value.lastIndexOf('.')
+        if (this.selectedData[0].ffiletype === 1) {
+          dotIndex = this.selectedData[0].fname.length
+        }
         setTimeout(function() {
           event.target.selectionStart = 0
           event.target.selectionEnd = dotIndex
