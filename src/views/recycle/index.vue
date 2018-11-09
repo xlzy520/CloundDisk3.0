@@ -1,11 +1,11 @@
 <template>
   <div class="recycle-container">
     <div class="recycle-btns clearfix">
-      <div class="recycle-btns-left" v-show="selected.length > 0">
+      <div class="left" v-show="selected.length > 0">
         <el-button size="medium" @click="revert" icon="el-icon-refresh">还原</el-button>
         <el-button size="medium" @click="realDelete" icon="el-icon-delete">删除</el-button>
       </div>
-      <div class="recycle-btns-right" :style="selected.length > 0? '': 'float: left'">
+      <div :class="selected.length > 0? 'right': 'left'">
         <el-button size="medium" @click="clearRecycle" icon="el-icon-delete">清空回收站</el-button>
       </div>
     </div>
@@ -153,15 +153,18 @@ export default {
 </script>
 
 <style lang="scss">
+  .left{
+    float: left;
+  }
+  .right{
+    float: right;
+  }
   .recycle-container{
     padding: 14px 24px 0 24px;
     .recycle-btns{
       padding: 5px 0;
-      .recycle-btns-left{
-        float: left;
-      }
-      .recycle-btns-right{
-        float: right;
+      .el-button{
+        box-shadow: inset 0 0 20px 1px powderblue;
       }
     }
     .el-table--enable-row-hover .el-table__body tr:hover>td {

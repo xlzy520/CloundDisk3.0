@@ -110,6 +110,9 @@ export default {
       const loadingSearch = Loading.service({ fullscreen: true })
       this.$store.dispatch('SetSearchList', this.query).then(res => {
         loadingSearch.close()
+        if (this.$route.name === '回收站') {
+          this.$router.push({ path: `/list/index` })
+        }
       }).catch(res => {
         loadingSearch.close()
       })
