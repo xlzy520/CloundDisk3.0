@@ -94,15 +94,11 @@ export default {
         type: 'success'
       }).then(() => {
         recycleRecover(this.categoryids).then(res => {
-          if (res.success === true) {
-            this.$message1000('还原成功', 'success')
-            window.location.reload()
-          }
+          this.$message1000('还原成功', 'success')
+          this.RecycleList()
         }).catch(() => {
           this.$message1000('还原失败', 'error')
         })
-      }).catch(() => {
-        this.$message1000('已取消还原', 'info')
       })
     },
     realDelete() {
@@ -112,15 +108,11 @@ export default {
         type: 'warning'
       }).then(() => {
         recycleDelete(this.categoryids).then(res => {
-          if (res.success === true) {
-            this.$message1000('删除成功', 'success')
-            window.location.reload()
-          }
+          this.$message1000('删除成功', 'success')
+          this.RecycleList()
         }).catch(() => {
           this.$message1000('删除失败', 'error')
         })
-      }).catch(() => {
-        this.$message1000('已取消删除', 'info')
       })
     },
     clearRecycle() {
@@ -134,21 +126,20 @@ export default {
         type: 'warning'
       }).then(() => {
         recycleDelete(this.categoryids).then(res => {
-          if (res.success === true) {
-            this.$message1000('清空成功', 'success')
-            window.location.reload()
-          }
+          this.$message1000('清空成功', 'success')
+          this.RecycleList()
         }).catch(() => {
           this.$message1000('清空失败', 'error')
         })
-      }).catch(() => {
-        this.$message1000('已取消清空', 'info')
       })
     }
   },
   mounted() {
     this.RecycleList()
   }
+  // beforeRouteEnter(to, from, next) {
+  //   next()
+  // }
 }
 </script>
 
