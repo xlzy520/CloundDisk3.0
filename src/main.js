@@ -4,6 +4,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import { Message } from 'element-ui'
 import '@/styles/index.scss' // global css
+import 'font-awesome/css/font-awesome.min.css'
 
 import App from './App'
 import router from './router'
