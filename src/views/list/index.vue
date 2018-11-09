@@ -150,7 +150,11 @@
       }
     },
     async mounted() {
-      this.$router.push({ path: `/list/index?`, query: { dirid: '0' }})
+      if (this.$route.query) {
+        this.$router.push({ path: this.$route.fullPath })
+      } else {
+        this.$router.push({ path: `/list/index?dirid=0` })
+      }
       this.$store.dispatch('GetCategory', this.$route.query.dirid)
       window.addEventListener('popstate', () => {
         if (this.$route.query.dirid) {
