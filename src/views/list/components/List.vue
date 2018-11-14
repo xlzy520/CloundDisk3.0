@@ -84,7 +84,7 @@
             this.$store.dispatch('GetDocInfo', { fcategoryid, fversionsign })
             break
           case 3: case 4: case 5:
-            window.open(`${process.env.OFFICE_API}/#/office?id=${fcategoryid}&vid=${fversionsign}`)
+            window.open(`/#/office?id=${fcategoryid}&vid=${fversionsign}`)
             break
           case 6:
             window.open(`${process.env.OFFICE_API}/djcpsdocument/fileManager/previewPdf.do?id=${fcategoryid}`)
