@@ -107,8 +107,6 @@
           event.target.selectionStart = 0;
           event.target.selectionEnd = dotIndex;
         });
-        // setTimeout(function() {
-        // }, 80)
       }
     },
     mounted() {
