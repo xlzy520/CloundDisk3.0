@@ -35,9 +35,9 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import '@/styles/markdown.css'
-  import { updateMarkdown } from '@/api/file'
+  import { mapGetters } from 'vuex';
+  import '@/styles/markdown.css';
+  import { updateMarkdown } from '@/api/file';
   export default {
     name: 'MDEditor',
     computed: {
@@ -48,14 +48,14 @@
       preview: {
         get() {
           if (this.$store.getters.preview.type === 'create') {
-            this.isField = true
-            this.barsFlag = true
-            this.isEditMk = false
+            this.isField = true;
+            this.barsFlag = true;
+            this.isEditMk = false;
           }
-          return this.$store.getters.preview
+          return this.$store.getters.preview;
         },
         set() {
-          this.$store.dispatch('TogglePreviewVisible')
+          this.$store.dispatch('TogglePreviewVisible');
         }
       }
     },
@@ -74,7 +74,7 @@
           markdown_css: false,
           hljs_js: function() {
             // 这是你的hljs文件路径
-            return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js'
+            return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js';
           }
         },
         toolbars: {
@@ -111,84 +111,84 @@
           subfield: true, // 单双栏模式
           preview: true // 预览
         }
-      }
+      };
     },
     methods: {
       closeMkdown() {
-        this.$store.dispatch('TogglePreviewVisible')
-        this.isField = false
-        this.barsFlag = false
-        this.isEditMk = true
+        this.$store.dispatch('TogglePreviewVisible');
+        this.isField = false;
+        this.barsFlag = false;
+        this.isEditMk = true;
       },
       fileEdit() {
-        this.isField = true
-        this.barsFlag = true
-        this.isEditMk = false
+        this.isField = true;
+        this.barsFlag = true;
+        this.isEditMk = false;
       },
       async saveFile() {
-        const markdownData = new FormData()
-        markdownData.append('fparentid', this.$store.getters.parentId)
+        const markdownData = new FormData();
+        markdownData.append('fparentid', this.$store.getters.parentId);
         if (!this.docValue.name) {
           this.$prompt('请输入文件名', '文件名', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             inputPattern: /^[^\\\\\\/:*?\\"<>|]+$/,
             center: true,
-            inputErrorMessage: '文件名中不能为空或包含\/:*?"<>|等特殊字符'
+            inputErrorMessage: '文件名中不能为空或包含/:*?"<>|等特殊字符'
           }).then(({ value }) => {
-            const markdownFile = new File([this.docValue.file], value + '.md')
-            markdownData.append('file', markdownFile)
+            const markdownFile = new File([this.docValue.file], value + '.md');
+            markdownData.append('file', markdownFile);
             updateMarkdown(markdownData).then((res) => {
               if (res.success) {
-                this.$message1000('文档新建成功。', 'success')
-                this.closeMkdown()
-                this.$store.dispatch('Refresh')
+                this.$message1000('文档新建成功。', 'success');
+                this.closeMkdown();
+                this.$store.dispatch('Refresh');
               }
             }).catch(() => {
-              this.docValue.name = null
+              this.docValue.name = null;
               // this.$message1000('文档新建失败。' + err.message, 'error')
-            })
+            });
           }).catch(() => {
-            this.$message1000('取消输入。', 'info')
-          })
+            this.$message1000('取消输入。', 'info');
+          });
         } else {
-          const markdownFile = new File([this.docValue.file], this.docValue.name)
-          markdownData.append('file', markdownFile)
-          markdownData.append('fcategoryid', this.docValue.id)
-          markdownData.append('fversionsign', this.docValue.fversionsign)
+          const markdownFile = new File([this.docValue.file], this.docValue.name);
+          markdownData.append('file', markdownFile);
+          markdownData.append('fcategoryid', this.docValue.id);
+          markdownData.append('fversionsign', this.docValue.fversionsign);
           this.$prompt('请输入更新描述', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             center: true
           }).then(({ value }) => {
-            value = value === null ? '' : value
-            markdownData.append('fremarks', value)
+            value = value === null ? '' : value;
+            markdownData.append('fremarks', value);
             updateMarkdown(markdownData).then((res) => {
               if (res.success) {
-                this.$message1000('文档保存成功。', 'success')
-                this.closeMkdown()
-                this.$store.dispatch('Refresh')
+                this.$message1000('文档保存成功。', 'success');
+                this.closeMkdown();
+                this.$store.dispatch('Refresh');
               }
             }).catch(() => {
-              this.$message1000('文档保存失败。', 'error')
-            })
+              this.$message1000('文档保存失败。', 'error');
+            });
           }).catch(() => {
-            this.$message1000('取消输入。', 'info')
-          })
+            this.$message1000('取消输入。', 'info');
+          });
         }
       },
       async imgAdd(pos, $file) {
-        const formdata = new FormData()
-        formdata.append('file', $file)
-        formdata.append('fparentid', '1')
-        const imgInfo = await updateMarkdown(formdata)
-        this.$refs.md.$img2Url(pos, process.env.UPLOAD_API + '/djcpsdocument/fileManager/downloadFile.do?id=' + imgInfo.data.id)
+        const formdata = new FormData();
+        formdata.append('file', $file);
+        formdata.append('fparentid', '1');
+        const imgInfo = await updateMarkdown(formdata);
+        this.$refs.md.$img2Url(pos, process.env.UPLOAD_API + '/djcpsdocument/fileManager/downloadFile.do?id=' + imgInfo.data.id);
       }
     },
     async mounted() {
 
     }
-  }
+  };
 </script>
 <style lang="scss">
   @import "@/styles/mixin.scss";

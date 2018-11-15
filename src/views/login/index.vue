@@ -64,42 +64,42 @@ export default {
       loading: false,
       eye: 'eye_close',
       pwdType: 'password'
-    }
+    };
   },
   methods: {
     showPwd() {
       if (this.pwdType === 'password') {
-        this.pwdType = ''
-        this.eye = 'eye_open'
+        this.pwdType = '';
+        this.eye = 'eye_open';
       } else {
-        this.pwdType = 'password'
-        this.eye = 'eye_close'
+        this.pwdType = 'password';
+        this.eye = 'eye_close';
       }
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true
+          this.loading = true;
           this.$store.dispatch('Login', this.loginForm).then(() => {
-            this.loading = false
-            this.$router.push({ path: '/' })
-            this.$message1000('登录成功', 'success')
+            this.loading = false;
+            this.$router.push({ path: '/' });
+            this.$message1000('登录成功', 'success');
           }).catch(() => {
-            this.loading = false
+            this.loading = false;
             // this.$router.push({ path: '/' }) //  跳过后台验证
-          })
+          });
         } else {
-          console.log('error submit!!')
-          return false
+          console.log('error submit!!');
+          return false;
         }
-      })
+      });
     }
   },
   mounted() {
-    import('@/utils/keyDown')
-    import('@/utils/canvasLogin')
+    import('@/utils/keyDown');
+    import('@/utils/canvasLogin');
   }
-}
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss">

@@ -45,7 +45,7 @@
 </template>
 
 <script>
-  import { getAllOperationRecord } from '@/api/record'
+  import { getAllOperationRecord } from '@/api/record';
 
   export default {
     name: 'index',
@@ -67,39 +67,39 @@
           { label: '回收站删除', value: 10 },
           { label: '上传文件夹', value: 11 }
         ]
-      }
+      };
     },
     methods: {
       async getRecord() {
         try {
-          const res = await getAllOperationRecord()
-          this.tableData = res.data
+          const res = await getAllOperationRecord();
+          this.tableData = res.data;
         } catch (e) {
-          this.$message1000(e.message, 'error')
+          this.$message1000(e.message, 'error');
         }
       },
       formatterType({ foperationtype }) {
-        return this.operationOptions[foperationtype - 1].label
+        return this.operationOptions[foperationtype - 1].label;
       },
       formatterObj({ fname, fevent }) {
-        const urlJson = JSON.parse(fevent)
-        const fidArr = Object.keys(urlJson)
-        const { length } = fidArr
+        const urlJson = JSON.parse(fevent);
+        const fidArr = Object.keys(urlJson);
+        const { length } = fidArr;
         return (
           <router-link to={`/list/index?dirid=${fidArr[length - 1]}`} class='record-fileName'>{fname}</router-link>
-        )
+        );
       },
-      formatterDetail(rows) {
-        // const {fupdatetime, foperator, foperationtype, fname, fid, fevent } = rows
-      },
+      // formatterDetail(rows) {
+      //   // const {fupdatetime, foperator, foperationtype, fname, fid, fevent } = rows
+      // },
       onSubmit() {
 
       }
     },
     mounted() {
-      this.getRecord()
+      this.getRecord();
     }
-  }
+  };
 </script>
 
 <style lang="scss">

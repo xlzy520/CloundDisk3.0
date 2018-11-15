@@ -1,10 +1,10 @@
-import request from '@/utils/request'
+import request from '@/utils/request';
 
 export function getRecycleList() {
   return request({
     url: '/djcpsdocument/category/selectRecycle.do',
     method: 'post'
-  })
+  });
 }
 
 export function recycleRecover(categoryids) {
@@ -14,7 +14,7 @@ export function recycleRecover(categoryids) {
     data: {
       list: categoryids
     }
-  })
+  });
 }
 export function recycleDelete(categoryids) {
   return request({
@@ -23,5 +23,5 @@ export function recycleDelete(categoryids) {
     data: {
       list: categoryids
     }
-  })
+  });
 }

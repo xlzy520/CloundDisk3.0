@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import { getRecycleList, recycleRecover, recycleDelete } from '@/api/recycle'
-import { formatSize, parseTime } from '@/utils/index'
+import { getRecycleList, recycleRecover, recycleDelete } from '@/api/recycle';
+import { formatSize, parseTime } from '@/utils/index';
 export default {
   name: 'Recycle',
   data() {
@@ -46,46 +46,46 @@ export default {
       loading: false,
       selected: [],
       categoryids: []
-    }
+    };
   },
   methods: {
     async RecycleList() {
-      this.loading = true
+      this.loading = true;
       try {
-        const recycleList = await getRecycleList()
-        this.recycleData = recycleList.data
+        const recycleList = await getRecycleList();
+        this.recycleData = recycleList.data;
       } catch (e) {
-        this.$message1000('获取回收站信息错误', 'error')
+        this.$message1000('获取回收站信息错误', 'error');
       } finally {
-        this.loading = false
+        this.loading = false;
       }
     },
     formatterTime(row) {
       if (row.fupdatetime) {
-        return parseTime(row.fupdatetime)
+        return parseTime(row.fupdatetime);
       }
     },
     sizeFormatter(row) {
       if (row.fsize !== null) {
-        return formatSize(Number(row.fsize.replace('B', '')))
+        return formatSize(Number(row.fsize.replace('B', '')));
       }
     },
-    highlightRow({ row, rowIndex }) {
+    highlightRow({ row }) {
       if (this.selected.includes(row)) {
         return {
           'background-color': '#d4ecff'
-        }
+        };
       }
     },
     handleSelectionChange(rows) {
-      this.selected = rows
-      this.categoryids = []
+      this.selected = rows;
+      this.categoryids = [];
       this.selected.forEach(item => {
-        this.categoryids.push(item.fcategoryid)
-      })
+        this.categoryids.push(item.fcategoryid);
+      });
     },
     clickRow(row) {
-      this.$refs.recycleTable.toggleRowSelection(row)
+      this.$refs.recycleTable.toggleRowSelection(row);
     },
     revert() {
       this.$confirm('确认还原选中的文件？', '确认还原', {
@@ -93,13 +93,13 @@ export default {
         cancelButtonText: '取消',
         type: 'success'
       }).then(() => {
-        recycleRecover(this.categoryids).then(res => {
-          this.$message1000('还原成功', 'success')
-          this.RecycleList()
+        recycleRecover(this.categoryids).then(() => {
+          this.$message1000('还原成功', 'success');
+          this.RecycleList();
         }).catch(() => {
-          this.$message1000('还原失败', 'error')
-        })
-      })
+          this.$message1000('还原失败', 'error');
+        });
+      });
     },
     realDelete() {
       this.$confirm('文件删除后将无法恢复，您确认要彻底删除所选文件吗？', '彻底删除', {
@@ -107,40 +107,40 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        recycleDelete(this.categoryids).then(res => {
-          this.$message1000('删除成功', 'success')
-          this.RecycleList()
+        recycleDelete(this.categoryids).then(() => {
+          this.$message1000('删除成功', 'success');
+          this.RecycleList();
         }).catch(() => {
-          this.$message1000('删除失败', 'error')
-        })
-      })
+          this.$message1000('删除失败', 'error');
+        });
+      });
     },
     clearRecycle() {
-      this.categoryids = []
+      this.categoryids = [];
       this.recycleData.forEach(item => {
-        this.categoryids.push(item.fcategoryid)
-      })
+        this.categoryids.push(item.fcategoryid);
+      });
       this.$confirm('清空回收站？', '清空回收站', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        recycleDelete(this.categoryids).then(res => {
-          this.$message1000('清空成功', 'success')
-          this.RecycleList()
+        recycleDelete(this.categoryids).then(() => {
+          this.$message1000('清空成功', 'success');
+          this.RecycleList();
         }).catch(() => {
-          this.$message1000('清空失败', 'error')
-        })
-      })
+          this.$message1000('清空失败', 'error');
+        });
+      });
     }
   },
   mounted() {
-    this.RecycleList()
+    this.RecycleList();
   }
   // beforeRouteEnter(to, from, next) {
   //   next()
   // }
-}
+};
 </script>
 
 <style lang="scss">

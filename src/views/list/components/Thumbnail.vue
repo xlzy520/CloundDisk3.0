@@ -46,8 +46,8 @@
 </template>
 
 <script>
-  import nameEditor from '@/components/RenameFile'
-  import RenameFile from '@/components/RenameFile/index'
+  import nameEditor from '@/components/RenameFile';
+  import RenameFile from '@/components/RenameFile/index';
 
   export default {
     props: {
@@ -61,79 +61,79 @@
       return {
         isIndeterminate: false,
         disabled: false
-      }
+      };
     },
     methods: {
       imgSrc(item) {
-        return `${process.env.UPLOAD_API}/djcpsdocument/fileManager/downloadFile.do?id=` + item.fcategoryid
+        return `${process.env.UPLOAD_API}/djcpsdocument/fileManager/downloadFile.do?id=` + item.fcategoryid;
       },
       handleCheckAllChange(val) {
-        this.selectedData = val ? this.fileList : []
-        this.$store.dispatch('SetSelectedData', this.selectedData)
-        this.isIndeterminate = false
+        this.selectedData = val ? this.fileList : [];
+        this.$store.dispatch('SetSelectedData', this.selectedData);
+        this.isIndeterminate = false;
       },
       handleCheckItemChange(value) {
         if (this.fileList[0].faothority === 'newFolder') {
-          this.fileList.shift()
-          this.selectedData = []
+          this.fileList.shift();
+          this.selectedData = [];
         } else {
-          this.$store.dispatch('SetSelectedData', value)
-          const checkedCount = value.length
-          this.isIndeterminate = checkedCount > 0 && checkedCount < this.fileList.length
+          this.$store.dispatch('SetSelectedData', value);
+          const checkedCount = value.length;
+          this.isIndeterminate = checkedCount > 0 && checkedCount < this.fileList.length;
           this.fileList.forEach(item => {
             if (item.isEditor !== undefined) {
-              this.$set(item, 'isEditor', false)
+              this.$set(item, 'isEditor', false);
             }
-          })
+          });
         }
       },
       fileType({ ffiletype, fcategoryid, fversionsign }) {
         switch (ffiletype) {
           case 1:
-            this.$store.dispatch('GetCategory', fcategoryid)
-            this.$store.dispatch('SetParentId', fcategoryid)
+            this.$store.dispatch('GetCategory', fcategoryid);
+            this.$store.dispatch('SetParentId', fcategoryid);
             if (this.selectedData.length >= 1) {
-              this.handleCheckAllChange()
+              this.handleCheckAllChange();
             }
             if (this.$router.path !== '/list/index') {
-              this.$router.push({ path: `/list/index?`, query: { dirid: fcategoryid }})
+              this.$router.push({ path: `/list/index?`, query: { dirid: fcategoryid }});
             }
-            break
+            break;
           case 2:
-            this.$store.dispatch('GetDocInfo', fcategoryid)
-            break
+            this.$store.dispatch('GetDocInfo', fcategoryid);
+            break;
           case 3: case 4: case 5:
-            window.open(`${process.env.OFFICE_API}/#/office?id=${fcategoryid}&vid=${fversionsign}`)
-            break
+            window.open(`${process.env.OFFICE_API}/#/office?id=${fcategoryid}&vid=${fversionsign}`);
+            break;
           case 6:
-            window.open(`${process.env.OFFICE_API}/djcpsdocument/fileManager/previewPdf.do?id=${fcategoryid}`)
-            break
+            window.open(`${process.env.OFFICE_API}/djcpsdocument/fileManager/previewPdf.do?id=${fcategoryid}`);
+            break;
           case 7:
-            this.$store.dispatch('ToggleImgEditor', fcategoryid)
-            break
+            this.$store.dispatch('ToggleImgEditor', fcategoryid);
+            break;
         }
       }
     },
     computed: {
       selectedData: {
         get() {
-          return this.$store.getters.selectedData
+          return this.$store.getters.selectedData;
         },
         set(newValue) {
-          this.$store.dispatch('SetSelectedData', newValue)
+          this.$store.dispatch('SetSelectedData', newValue);
         }
       }
     },
     mounted() {
-      const totalLength = this.fileList.length
-      const checkedDataLength = this.selectedData.length
+      const totalLength = this.fileList.length;
+      const checkedDataLength = this.selectedData.length;
       if (totalLength === 0) {
-        this.disabled = true
+        this.disabled = true;
       } else if (checkedDataLength > 0 && checkedDataLength < totalLength) {
-        this.isIndeterminate = true
+        this.isIndeterminate = true;
       }
     }
-  }
+  };
 </script>
 <style lang="scss">
   .list {

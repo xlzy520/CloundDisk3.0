@@ -23,7 +23,7 @@
     data() {
       return {
         downloadable: typeof document.createElement('a').download !== 'undefined'
-      }
+      };
     },
     props: {
       data: {
@@ -34,14 +34,14 @@
 
     methods: {
       click({ target }) {
-        const action = target.getAttribute('data-action') || target.parentElement.getAttribute('data-action')
+        const action = target.getAttribute('data-action') || target.parentElement.getAttribute('data-action');
 
         if (action) {
-          this.$emit('change', action)
+          this.$emit('change', action);
         }
       }
     }
-  }
+  };
 </script>
 
 <style scoped lang="scss">

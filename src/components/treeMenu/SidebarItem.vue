@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import path from 'path'
+import path from 'path';
 
 export default {
   name: 'SidebarItem',
@@ -52,27 +52,27 @@ export default {
   data() {
     return {
       onlyOneChild: null
-    }
+    };
   },
   methods: {
     hasOneShowingChild(children) {
       const showingChildren = children.filter(item => {
         if (item.hidden) {
-          return false
+          return false;
         } else {
           // temp set(will be used if only has one showing child )
-          this.onlyOneChild = item
-          return true
+          this.onlyOneChild = item;
+          return true;
         }
-      })
+      });
       if (showingChildren.length === 1) {
-        return true
+        return true;
       }
-      return false
+      return false;
     },
     resolvePath(...paths) {
-      return path.resolve(this.basePath, ...paths)
+      return path.resolve(this.basePath, ...paths);
     }
   }
-}
+};
 </script>

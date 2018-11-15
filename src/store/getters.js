@@ -19,5 +19,5 @@ const getters = {
   coordinate: state => state.file.coordinate,
   move: state => state.file.move,
   imgEditor: state => state.file.imgEditor
-}
-export default getters
+};
+export default getters;

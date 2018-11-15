@@ -31,8 +31,8 @@
 </template>
 
 <script>
-  import treeMenu from '@/components/treeMenu/index'
-  import { mapGetters } from 'vuex'
+  import treeMenu from '@/components/treeMenu/index';
+  import { mapGetters } from 'vuex';
   export default {
     components: { treeMenu },
     computed: {
@@ -40,10 +40,10 @@
         'sidebar'
       ]),
       isCollapse() {
-        return !this.sidebar.opened
+        return !this.sidebar.opened;
       }
     }
-  }
+  };
 </script>
 
 <style lang="scss">

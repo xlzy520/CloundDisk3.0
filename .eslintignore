@@ -1,4 +1,10 @@
-build/*.js
-config/*.js
-src/assets
-src/utils
+node_modules
+*.md
+*.scss
+*.less
+/build/
+/config/
+/dist/
+/test/unit/coverage/
+/src/assets/
+/src/autoLogin/

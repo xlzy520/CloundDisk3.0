@@ -40,8 +40,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { formatSize } from '@/utils/index'
+import { mapGetters } from 'vuex';
+import { formatSize } from '@/utils/index';
 export default {
   name: 'UploadFile',
   props: {
@@ -66,7 +66,7 @@ export default {
       speed: '',
       time: '',
       loaded: 0
-    }
+    };
   },
   computed: {
     ...mapGetters([
@@ -75,135 +75,135 @@ export default {
       'selectedData'
     ]),
     uploadFileUrl() {
-      return process.env.UPLOAD_API + '/djcpsdocument/category/fileUpload.do?'
+      return process.env.UPLOAD_API + '/djcpsdocument/category/fileUpload.do?';
     },
     title() {
-      return this.type === 'upload' ? '文件上传' : '文件更新'
+      return this.type === 'upload' ? '文件上传' : '文件更新';
     },
     updateType() {
-      return this.type === 'update'
+      return this.type === 'update';
     },
     tip() {
-      let tip = ''
+      let tip = '';
       for (var i = 0; i < this.folderNav.length; ++i) {
-        tip += '/' + this.folderNav[i].fname
+        tip += '/' + this.folderNav[i].fname;
       }
-      return tip
+      return tip;
     }
   },
   methods: {
-    onProgress(event, file, fileList) {
-      const interval = new Date().getTime() - this.time
-      this.time = new Date().getTime()
-      const size = event.loaded - this.loaded
-      this.speed = formatSize((size / (interval / 1000)).toFixed(0)) + '/s'
-      this.loaded = event.loaded
+    onProgress(event) {
+      const interval = new Date().getTime() - this.time;
+      this.time = new Date().getTime();
+      const size = event.loaded - this.loaded;
+      this.speed = formatSize((size / (interval / 1000)).toFixed(0)) + '/s';
+      this.loaded = event.loaded;
     },
     onError() {
-      this.$message1000('文件上传出错：网络错误', 'error')
-      this.$emit('closeDialog', 'uploadVisible')
-      this.$refs.upload.clearFiles()
-      this.$store.dispatch('Refresh')
-      this.speed = ''
+      this.$message1000('文件上传出错：网络错误', 'error');
+      this.$emit('closeDialog', 'uploadVisible');
+      this.$refs.upload.clearFiles();
+      this.$store.dispatch('Refresh');
+      this.speed = '';
     },
     onRemove(file, filelist) {
-      this.speed = ''
-      this.fileList = filelist
+      this.speed = '';
+      this.fileList = filelist;
       if (filelist.length === 0) {
-        this.btDisable = true
+        this.btDisable = true;
       }
     },
     submitUpload() {
       if (this.currentFile == null) {
-        return
+        return;
       }
-      this.uploadData.fremarks = this.fileDesc
-      this.$refs.upload.submit()
-      this.time = new Date().getTime()
-      this.btDisable = true
+      this.uploadData.fremarks = this.fileDesc;
+      this.$refs.upload.submit();
+      this.time = new Date().getTime();
+      this.btDisable = true;
     },
-    uploadOk(response, file, filelist) {
-      this.speed = ''
+    uploadOk(response) {
+      this.speed = '';
       if (response.success === true) {
-        this.$message1000('文件上传成功', 'success')
-        this.$refs.upload.clearFiles()
-        this.fileList = []
-        this.$emit('closeDialog', 'uploadVisible')
-        this.$store.dispatch('Refresh')
+        this.$message1000('文件上传成功', 'success');
+        this.$refs.upload.clearFiles();
+        this.fileList = [];
+        this.$emit('closeDialog', 'uploadVisible');
+        this.$store.dispatch('Refresh');
       } else {
-        let msg = response.msg
+        let msg = response.msg;
         if (msg == null || msg === '') {
-          msg = '服务器错误'
+          msg = '服务器错误';
         }
-        msg = '文件上传出错：' + msg
-        this.$message1000(msg, 'error')
-        this.$refs.upload.clearFiles()
-        this.fileList = []
-        this.$emit('closeDialog', 'uploadVisible')
-        this.$store.dispatch('Refresh')
+        msg = '文件上传出错：' + msg;
+        this.$message1000(msg, 'error');
+        this.$refs.upload.clearFiles();
+        this.fileList = [];
+        this.$emit('closeDialog', 'uploadVisible');
+        this.$store.dispatch('Refresh');
       }
     },
     onFileChange(file, filelist) {
       if (this.type === 'update') {
         if (file.name !== this.selectedData[0].fname) {
-          filelist.pop()
-          this.$message1000('文件上传失败！上传文件名与更新文件名不符', 'error')
+          filelist.pop();
+          this.$message1000('文件上传失败！上传文件名与更新文件名不符', 'error');
         }
       }
       if (filelist.length > 1) {
         for (let i = 0; i < filelist.length - 1; i++) {
           if (filelist[i].name === file.name) {
-            filelist.pop()
-            this.$message1000('上传失败！文件上传列表中存在同名文件', 'error')
+            filelist.pop();
+            this.$message1000('上传失败！文件上传列表中存在同名文件', 'error');
           }
         }
       }
-      this.fileList = filelist
+      this.fileList = filelist;
 
       if (file.status === 'ready') {
-        this.$store.dispatch('Refresh')
-        this.btDisable = false
-        this.currentFile = file
+        this.$store.dispatch('Refresh');
+        this.btDisable = false;
+        this.currentFile = file;
         this.uploadData = {
           fparentid: this.parentId
-        }
+        };
 
         if (this.selectedData.length === 1 && this.type === 'update') {
           this.uploadData = {
             fparentid: this.parentId,
             fcategoryid: this.selectedData[0].fcategoryid,
             fversionsign: this.selectedData[0].fversionsign
-          }
+          };
         }
       }
     },
     close() {
-      var uploadingFiles = []
+      var uploadingFiles = [];
       for (let i = 0; i < this.fileList.length; ++i) {
         if (this.fileList[i].status === 'uploading') {
-          uploadingFiles.push(this.fileList[i])
+          uploadingFiles.push(this.fileList[i]);
         }
       }
       if (this.fileList.length > 0) {
         if (confirm('文件正在上传中，关闭后上传被中止, 是否继续?')) {
           for (let v = 0; v < uploadingFiles.length; ++v) {
-            this.$refs.upload.abort(uploadingFiles[v])
+            this.$refs.upload.abort(uploadingFiles[v]);
           }
-          this.speed = ''
-          this.$refs.upload.clearFiles()
-          this.fileList = []
-          this.$emit('closeDialog', 'uploadVisible')
+          this.speed = '';
+          this.$refs.upload.clearFiles();
+          this.fileList = [];
+          this.$emit('closeDialog', 'uploadVisible');
         } else {
-          return
+          return;
         }
-        this.$message1000('文件上传被中止', 'warning')
+        this.$message1000('文件上传被中止', 'warning');
       }
-      this.$refs.upload.clearFiles()
-      this.fileList = []
-      this.$emit('closeDialog', 'uploadVisible')
+      this.$refs.upload.clearFiles();
+      this.fileList = [];
+      this.$emit('closeDialog', 'uploadVisible');
     }
   }
-}
+};
 </script>
 
 <style>

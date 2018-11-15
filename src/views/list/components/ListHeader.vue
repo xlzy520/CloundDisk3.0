@@ -56,8 +56,8 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Breadcrumb from '../../../components/Breadcrumb/index'
+import { mapGetters } from 'vuex';
+import Breadcrumb from '../../../components/Breadcrumb/index';
 export default {
   name: 'ListHeader',
   components: { Breadcrumb },
@@ -71,21 +71,21 @@ export default {
       'coordinate'
     ]),
     isShow() {
-      const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length
-      const fileCheckedCount = this.selectedData.filter(item => item.ffiletype === 2).length
-      const previewCheckedCount = this.selectedData.filter(item => item.ffiletype !== 1 && item.ffiletype !== 2).length
+      const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length;
+      const fileCheckedCount = this.selectedData.filter(item => item.ffiletype === 2).length;
+      const previewCheckedCount = this.selectedData.filter(item => item.ffiletype !== 1 && item.ffiletype !== 2).length;
       if (this.selectedData.length > 1) {
         if (folderCheckedCount === 0) {
-          return 5
+          return 5;
         } else {
-          return 3
+          return 3;
         }
       } else if (folderCheckedCount === 1 && fileCheckedCount === 0) {
-        return 1
+        return 1;
       } else if (folderCheckedCount === 0 && fileCheckedCount === 1) {
-        return 2
+        return 2;
       } else if (folderCheckedCount === 0 && fileCheckedCount === 0 && previewCheckedCount === 1) {
-        return 4
+        return 4;
       }
     }
   },
@@ -93,9 +93,9 @@ export default {
     click({ target }) {
       const action = target.getAttribute('data-action') ||
         target.parentElement.getAttribute('data-action') ||
-        target.parentElement.parentElement.getAttribute('data-action')
+        target.parentElement.parentElement.getAttribute('data-action');
       if (action) {
-        this.$emit('action', action)
+        this.$emit('action', action);
       }
     },
     newFolder() {
@@ -115,30 +115,30 @@ export default {
           fupdateor: null,
           fupdatetime: null,
           rowid: null
-        })
-        this.$set(this.fileList[0], 'isEditor', true)
-        this.$store.dispatch('SetSelectedData', [])
-      })
+        });
+        this.$set(this.fileList[0], 'isEditor', true);
+        this.$store.dispatch('SetSelectedData', []);
+      });
     },
     downloadFile() {
-      this.$refs.downloadBtn.href = `${process.env.UPLOAD_API}/djcpsdocument/fileManager/downloadFile.do?id=${this.selectedData[0].fcategoryid}`
-      this.$refs.downloadBtn.download = this.selectedData[0].fname
+      this.$refs.downloadBtn.href = `${process.env.UPLOAD_API}/djcpsdocument/fileManager/downloadFile.do?id=${this.selectedData[0].fcategoryid}`;
+      this.$refs.downloadBtn.download = this.selectedData[0].fname;
     },
     downloadFile2() {
-      this.downloadFile()
-      this.$refs.downloadBtn.click()
+      this.downloadFile();
+      this.$refs.downloadBtn.click();
     },
     handleCommand(command) {
       switch (command) {
-        case 'newFolder': this.newFolder(); break
+        case 'newFolder': this.newFolder(); break;
         case 'newMarkdown':
-          this.$store.dispatch('NewMarkdownFile')
-          break
-        default: return false
+          this.$store.dispatch('NewMarkdownFile');
+          break;
+        default: return false;
       }
     }
   }
-}
+};
 </script>
 
 <style lang="scss">

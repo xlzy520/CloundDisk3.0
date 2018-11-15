@@ -14,17 +14,17 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import Thumbnail from './components/Thumbnail'
-  import List from './components/List'
-  import ListHeader from './components/ListHeader'
-  import UploadFile from '@/components/UploadFile'
-  import DeleteFile from '@/components/DeleteFile'
-  import Detail from '@/components/Detail'
-  import VersionList from '@/components/VersionList'
-  import MDEditor from '@/components/MDEditor'
-  import MoveFile from '@/components/MoveFile'
-  import ImgEditor from '@/components/imgEditor'
+  import { mapGetters } from 'vuex';
+  import Thumbnail from './components/Thumbnail';
+  import List from './components/List';
+  import ListHeader from './components/ListHeader';
+  import UploadFile from '@/components/UploadFile';
+  import DeleteFile from '@/components/DeleteFile';
+  import Detail from '@/components/Detail';
+  import VersionList from '@/components/VersionList';
+  import MDEditor from '@/components/MDEditor';
+  import MoveFile from '@/components/MoveFile';
+  import ImgEditor from '@/components/imgEditor';
   // TODO 用事件冒泡的方式处理listHeader里的按钮
   export default {
     name: 'index',
@@ -42,7 +42,7 @@
           visible: false,
           type: 'upload'
         }
-      }
+      };
     },
     computed: {
       ...mapGetters([
@@ -52,7 +52,7 @@
         'imgEditor'
       ]),
       List() {
-        return this.$store.getters.hasSearch === false ? this.fileList : this.searchList.bookList
+        return this.$store.getters.hasSearch === false ? this.fileList : this.searchList.bookList;
       }
     },
     components: {
@@ -71,98 +71,98 @@
       closeDialog(component) {
         switch (component) {
           case 'moveVisible':
-            this.move.visible = false
-            break
+            this.move.visible = false;
+            break;
           case 'uploadVisible':
-            this.upload.visible = false
-            break
+            this.upload.visible = false;
+            break;
           default:
-            this[component] = false
-            break
+            this[component] = false;
+            break;
         }
       },
       dispatchAction(action) {
         switch (action) {
           case 'refresh':
-            this.refresh()
-            break
+            this.refresh();
+            break;
           case 'upload':
             this.upload = {
               visible: true,
               type: 'upload'
-            }
-            break
+            };
+            break;
           case 'rename':
-            this.rename()
-            break
+            this.rename();
+            break;
           case 'copyTo':
             this.move = {
               visible: true,
               type: 'copy'
-            }
-            break
+            };
+            break;
           case 'moveTo':
             this.move = {
               visible: true,
               type: 'move'
-            }
-            break
+            };
+            break;
           case 'update':
             this.upload = {
               visible: true,
               type: 'update'
-            }
-            break
+            };
+            break;
           case 'version':
-            this.versionVisible = true
-            break
+            this.versionVisible = true;
+            break;
           case 'delete':
-            this.deleteVisible = true
-            break
+            this.deleteVisible = true;
+            break;
           case 'detail':
-            this.detailVisible = true
-            break
+            this.detailVisible = true;
+            break;
           case 'back2FileList':
-            this.$store.dispatch('ToggleSearch', false)
-            break
+            this.$store.dispatch('ToggleSearch', false);
+            break;
           case 'List':
-            this.component = true
-            break
+            this.component = true;
+            break;
           case 'Thumbnail':
-            this.component = false
-            break
+            this.component = false;
+            break;
           default:
-            break
+            break;
         }
       },
       refresh() {
         this.$store.dispatch('Refresh').then(res => {
           if (res.success) {
-            this.$message1000('刷新成功', 'success')
+            this.$message1000('刷新成功', 'success');
           }
-        })
+        });
       },
       rename() {
         if (this.selectedData.length === 1) {
-          this.$set(this.selectedData[0], 'isEditor', true)
+          this.$set(this.selectedData[0], 'isEditor', true);
         }
-        this.$store.dispatch('RightTogglemenuVisible', [false])
+        this.$store.dispatch('RightTogglemenuVisible', [false]);
       }
     },
     async mounted() {
       if (this.$route.query) {
-        this.$router.push({ path: this.$route.fullPath })
+        this.$router.push({ path: this.$route.fullPath });
       } else {
-        this.$router.push({ path: `/list/index?dirid=0` })
+        this.$router.push({ path: `/list/index?dirid=0` });
       }
-      this.$store.dispatch('GetCategory', this.$route.query.dirid)
+      this.$store.dispatch('GetCategory', this.$route.query.dirid);
       window.addEventListener('popstate', () => {
         if (this.$route.query.dirid) {
-          this.$store.dispatch('GetCategory', this.$route.query.dirid)
+          this.$store.dispatch('GetCategory', this.$route.query.dirid);
         }
-      }, false)
+      }, false);
     }
-  }
+  };
 </script>
 
 <style lang="scss">
