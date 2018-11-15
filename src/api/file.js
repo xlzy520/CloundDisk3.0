@@ -1,11 +1,11 @@
-import request from '@/utils/request'
+import request from '@/utils/request';
 
 export function getDocInfo(id) {
   return request({
     url: '/djcpsdocument/fileManager/getFile.do',
     method: 'get',
     params: { id }
-  })
+  });
 }
 
 export function getCategory(id) {
@@ -15,7 +15,7 @@ export function getCategory(id) {
     data: {
       fcategoryid: id
     }
-  })
+  });
 }
 
 export function deleteCategory(categoryids, fparentid) {
@@ -26,7 +26,7 @@ export function deleteCategory(categoryids, fparentid) {
       list: categoryids,
       fparentid: fparentid
     }
-  })
+  });
 }
 
 export function getVersionList(fversionsign) {
@@ -36,7 +36,7 @@ export function getVersionList(fversionsign) {
     data: {
       fvsgin: fversionsign
     }
-  })
+  });
 }
 export function versionRollback(oldVer, newVer) {
   return request({
@@ -46,7 +46,7 @@ export function versionRollback(oldVer, newVer) {
       oldDisplayFileSgin: oldVer,
       newDisplayFileSgin: newVer
     }
-  })
+  });
 }
 
 export function updateMarkdown(data) {
@@ -56,7 +56,7 @@ export function updateMarkdown(data) {
     processData: false,
     contentType: false,
     data: data
-  })
+  });
 }
 
 export function downloadFile(id) {
@@ -64,7 +64,7 @@ export function downloadFile(id) {
     url: '/djcpsdocument/fileManager/downloadFile.do',
     method: 'get',
     params: { id }
-  })
+  });
 }
 
 export function addCategory(parentid, name) {
@@ -75,11 +75,11 @@ export function addCategory(parentid, name) {
       fparentid: parentid,
       fname: name
     }
-  })
+  });
 }
 
 export function renameFile(values) {
-  const { fcategoryid, newName, fparentid, ffiletype, fname } = values
+  const { fcategoryid, newName, fparentid, ffiletype, fname } = values;
   return request({
     url: '/djcpsdocument/category/setCategoryName.do',
     method: 'post',
@@ -90,10 +90,10 @@ export function renameFile(values) {
       fparentid,
       ffiletype
     }
-  })
+  });
 }
 
-export function getSearchResult(queryString, categoryName, sort, curPage) {
+export function getSearchResult(queryString, categoryName) {
   return request({
     url: '/djcpsdocument/search/list.do',
     method: 'post',
@@ -103,9 +103,9 @@ export function getSearchResult(queryString, categoryName, sort, curPage) {
       sort: 1,
       curPage: 1
     }
-  })
+  });
 }
-export function getFullTextSearchResult(queryString, categoryName, sort, curPage) {
+export function getFullTextSearchResult(queryString, categoryName) {
   return request({
     url: '/djcpsdocument/search/fullList.do',
     method: 'post',
@@ -115,7 +115,7 @@ export function getFullTextSearchResult(queryString, categoryName, sort, curPage
       sort: 1,
       curPage: 1
     }
-  })
+  });
 }
 export function moveFile(idList, fparentid) {
   return request({
@@ -125,7 +125,7 @@ export function moveFile(idList, fparentid) {
       list: idList,
       fparentid: fparentid
     }
-  })
+  });
 }
 export function copyFile(idList, fparentid) {
   return request({
@@ -135,5 +135,5 @@ export function copyFile(idList, fparentid) {
       list: idList,
       fparentid: fparentid
     }
-  })
+  });
 }

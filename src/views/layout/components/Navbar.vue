@@ -64,10 +64,10 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import Hamburger from '@/components/Hamburger'
-import MdInput from '@/components/MDinput'
-import { Loading } from 'element-ui'
+import { mapGetters } from 'vuex';
+import Hamburger from '@/components/Hamburger';
+import MdInput from '@/components/MDinput';
+import { Loading } from 'element-ui';
 export default {
   components: {
     MdInput,
@@ -88,37 +88,37 @@ export default {
       },
       maxlength: 30,
       inputHover: false
-    }
+    };
   },
   methods: {
     showSwitch(event) {
       if (event.type === 'focus') {
-        this.inputHover = event.target.className === 'material-input' || event.target.className === 'search_wrap'
+        this.inputHover = event.target.className === 'material-input' || event.target.className === 'search_wrap';
       } else {
-        this.inputHover = !(event.target.className === 'material-input' || event.target.className === 'search_wrap')
+        this.inputHover = !(event.target.className === 'material-input' || event.target.className === 'search_wrap');
       }
     },
     toggleSideBar() {
-      this.$store.dispatch('ToggleSideBar')
+      this.$store.dispatch('ToggleSideBar');
     },
     logout() {
       this.$store.dispatch('LogOut').then(() => {
-        location.reload() // 为了重新实例化vue-router对象 避免bug
-      })
+        location.reload(); // 为了重新实例化vue-router对象 避免bug
+      });
     },
     getSearchResult() {
-      const loadingSearch = Loading.service({ fullscreen: true })
-      this.$store.dispatch('SetSearchList', this.query).then(res => {
-        loadingSearch.close()
+      const loadingSearch = Loading.service({ fullscreen: true });
+      this.$store.dispatch('SetSearchList', this.query).then(() => {
+        loadingSearch.close();
         if (this.$route.name === '回收站') {
-          this.$router.push({ path: `/list/index` })
+          this.$router.push({ path: `/list/index` });
         }
-      }).catch(res => {
-        loadingSearch.close()
-      })
+      }).catch(() => {
+        loadingSearch.close();
+      });
     }
   }
-}
+};
 </script>
 
 <style rel="stylesheet/scss" lang="scss">

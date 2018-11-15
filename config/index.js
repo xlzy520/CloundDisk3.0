@@ -1,120 +1,39 @@
 'use strict'
-// Template version: 1.2.6
-// see http://vuejs-templates.github.io/webpack for documentation.
-
 const path = require('path')
 
 module.exports = {
   dev: {
-
-    // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api_zhq':{
-        target: 'http://192.168.2.171:8081/',
+      '/djcpsdocument':{
+        // target: 'http://192.168.2.170:8081/',              //德煌
+        target: 'http://192.168.2.171:8081/',              //弘权
         changeOrigin: true,
-        pathRewrite:{'^/api_zhq': ''}
-      },
-      '/api_ldh':{
-        target: 'http://192.168.12.99:8080/',
-        changeOrigin: true,
-        pathRewrite:{'^/api_ldh': ''}
-      },
-      '/api_py':{
-        target: 'http://192.168.13.25:8081/',
-        changeOrigin: true,
-        pathRewrite:{'^/api_py': ''}
-      },
-      '/api_lw':{
-        target: 'http://192.168.2.169:8081/',
-        changeOrigin: true,
-        pathRewrite:{'^/api_lw': ''}
-      },
-      '/api_oyny':{
-        target: 'http://192.168.2.131:8080/',
-        changeOrigin: true,
-        pathRewrite:{'^/api_oyny': ''}
-      },
-      '/api_office':{
-        target: 'http://192.168.12.23:8081/',
-        changeOrigin: true,
-        pathRewrite:{'^/api_office': ''}
       }
     },
-
-    // Various Dev Server settings
-    host: '192.168.2.91', // can be overwritten by process.env.HOST
-    port: 9528, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-    autoOpenBrowser: true,
+    host: '0.0.0.0',
+    port: 9528,
+    autoOpenBrowser: false,
     errorOverlay: true,
     notifyOnErrors: false,
-    poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
-
-    // Use Eslint Loader?
-    // If true, your code will be linted during bundling and
-    // linting errors and warnings will be shown in the console.
+    poll: false,
     useEslint: true,
-    // If true, eslint errors and warnings will also be shown in the error overlay
-    // in the browser.
     showEslintErrorsInOverlay: false,
-
-    /**
-     * Source Maps
-     */
-
-    // https://webpack.js.org/configuration/devtool/#development
     devtool: 'cheap-source-map',
-
-    // If you have problems debugging vue-files in devtools,
-    // set this to false - it *may* help
-    // https://vue-loader.vuejs.org/en/options.html#cachebusting
     cacheBusting: true,
-
-    // CSS Sourcemaps off by default because relative paths are "buggy"
-    // with this option, according to the CSS-Loader README
-    // (https://github.com/webpack/css-loader#sourcemaps)
-    // In our experience, they generally work as expected,
-    // just be aware of this issue when enabling this option.
     cssSourceMap: false,
   },
 
   build: {
-    // Template for index.html
     index: path.resolve(__dirname, '../dist/index.html'),
-
-    // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
-
-    /**
-     * You can set by youself according to actual condition
-     * You will need to set this if you plan to deploy your site under a sub path,
-     * for example GitHub pages. If you plan to deploy your site to https://foo.github.io/bar/,
-     * then assetsPublicPath should be set to "/bar/".
-     * In most cases please use '/' !!!
-     */
-    assetsPublicPath: './', // If you are deployed on the root path, please use '/'
-
-    /**
-     * Source Maps
-     */
-
+    assetsPublicPath: './',
     productionSourceMap: false,
-    // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
-
-    // Gzip off by default as many popular static hosts such as
-    // Surge or Netlify already gzip all static assets for you.
-    // Before setting to `true`, make sure to:
-    // npm install --save-dev compression-webpack-plugin
     productionGzip: false,
     productionGzipExtensions: ['js', 'css'],
-
-    // Run the build command with an extra argument to
-    // View the bundle analyzer report after build finishes:
-    // `npm run build --report`
-    // Set to `true` or `false` to always turn it on or off
     bundleAnalyzerReport: process.env.npm_config_report
   }
 }

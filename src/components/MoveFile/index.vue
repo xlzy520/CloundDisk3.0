@@ -18,9 +18,9 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import treeMenu from '@/components/treeMenu/index'
-  import { moveFile, copyFile } from '@/api/file'
+  import { mapGetters } from 'vuex';
+  import treeMenu from '@/components/treeMenu/index';
+  import { moveFile, copyFile } from '@/api/file';
   export default {
     name: 'MoveFile',
     components: { treeMenu },
@@ -28,7 +28,7 @@
       return {
         id: '',
         idList: []
-      }
+      };
     },
     props: {
       type: {
@@ -42,44 +42,44 @@
         'parentId'
       ]),
       title() {
-        return this.type === 'move' ? '移动到' : '复制到'
+        return this.type === 'move' ? '移动到' : '复制到';
       },
       moveType() {
-        return this.type === 'move'
+        return this.type === 'move';
       }
     },
     methods: {
       close() {
-        this.$emit('closeDialog', 'moveVisible')
+        this.$emit('closeDialog', 'moveVisible');
       },
       getFolderid(data) {
-        this.id = data
+        this.id = data;
       },
       async moveFile() {
-        moveFile(this.idList, this.id, this.parentId).then(moveInfo => {
-          this.$message1000('文件移动成功', 'success')
-          this.close()
-          this.$store.dispatch('Refresh')
+        moveFile(this.idList, this.id, this.parentId).then(() => {
+          this.$message1000('文件移动成功', 'success');
+          this.close();
+          this.$store.dispatch('Refresh');
         }).catch(() => {
-          this.close()
-        })
+          this.close();
+        });
       },
       async copyFile() {
-        copyFile(this.idList, this.id).then(copyInfo => {
-          this.$message1000('文件复制成功', 'success')
-          this.close()
-          this.$store.dispatch('Refresh')
+        copyFile(this.idList, this.id).then(() => {
+          this.$message1000('文件复制成功', 'success');
+          this.close();
+          this.$store.dispatch('Refresh');
         }).catch(() => {
-          this.close()
-        })
+          this.close();
+        });
       }
     },
     mounted() {
       this.selectedData.forEach(item => {
-        this.idList.push(item.fcategoryid)
-      })
+        this.idList.push(item.fcategoryid);
+      });
     }
-  }
+  };
 </script>
 
 <style lang="scss">
