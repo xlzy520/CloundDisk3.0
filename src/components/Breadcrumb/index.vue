@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters } from 'vuex';
 
   export default {
     name: 'Breadcrumb',
@@ -26,19 +26,19 @@
         'folderNav'
       ]),
       navNum() {
-        return this.folderNav.length
+        return this.folderNav.length;
       }
     },
     methods: {
       jumpFolder(fcategoryid) {
-        this.$store.dispatch('SetSelectedData', [])
-        this.$store.dispatch('GetCategory', fcategoryid)
-        this.$store.dispatch('SetParentId', fcategoryid)
-        this.$store.dispatch('ToggleSearch', false)
-        this.$router.push({ path: `/list/index?`, query: { dirid: fcategoryid }})
+        this.$store.dispatch('SetSelectedData', []);
+        this.$store.dispatch('GetCategory', fcategoryid);
+        this.$store.dispatch('SetParentId', fcategoryid);
+        this.$store.dispatch('ToggleSearch', false);
+        this.$router.push({ path: `/list/index?`, query: { dirid: fcategoryid }});
       }
     }
-  }
+  };
 </script>
 
 <style lang="scss">

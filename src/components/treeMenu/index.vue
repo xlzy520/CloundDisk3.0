@@ -16,9 +16,9 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import { getCategory } from '@/api/file'
-  import SidebarItem from './SidebarItem'
+  import { mapGetters } from 'vuex';
+  import { getCategory } from '@/api/file';
+  import SidebarItem from './SidebarItem';
 
   export default {
     data() {
@@ -34,7 +34,7 @@
           children: 'childrenFolder',
           label: 'fname'
         }
-      }
+      };
     },
     components: { SidebarItem },
     props: ['type'],
@@ -48,44 +48,44 @@
     methods: {
       handleNodeClick(data) {
         if (this.type === 'sidebar') {
-          this.$store.dispatch('GetCategory', data.fcategoryid)
-          this.$store.dispatch('SetParentId', data.fcategoryid)
+          this.$store.dispatch('GetCategory', data.fcategoryid);
+          this.$store.dispatch('SetParentId', data.fcategoryid);
           if (this.$router.path !== '/list/index') {
-            this.$router.push({ path: `/list/index?`, query: { dirid: data.fcategoryid }})
+            this.$router.push({ path: `/list/index?`, query: { dirid: data.fcategoryid }});
           }
         } else {
-          this.$emit('getFolderid', data.fcategoryid)
+          this.$emit('getFolderid', data.fcategoryid);
         }
       },
       async nodeExpand(data, node) {
-        let arr = await getCategory(data.fcategoryid)
-        arr = arr.data.tableList
-        node.childNodes = []
+        let arr = await getCategory(data.fcategoryid);
+        arr = arr.data.tableList;
+        node.childNodes = [];
         if (arr.length >= 1) {
           for (const item of this.CreateFolderObj(arr)) {
-            this.$refs.folderTree.append(item, node)
+            this.$refs.folderTree.append(item, node);
           }
           node.childNodes.map((item) => {
             if (item.data.fsortorder === 1) {
-              item.isLeaf = false
+              item.isLeaf = false;
             }
-          })
+          });
         }
       },
       getFolder(arr) {
         return arr.filter((item) => {
-          return item.ffiletype === 1
-        })
+          return item.ffiletype === 1;
+        });
       },
       CreateFolderObj(arr) {
-        const folderArr = this.getFolder(arr)
+        const folderArr = this.getFolder(arr);
         folderArr.map((item) => {
-          Object.defineProperties(item, { 'childrenFolder': { value: [], writable: true }})
-        })
-        return folderArr
+          Object.defineProperties(item, { 'childrenFolder': { value: [], writable: true }});
+        });
+        return folderArr;
       }
     }
-  }
+  };
 </script>
 
 <style lang="scss">

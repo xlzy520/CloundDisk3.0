@@ -115,10 +115,10 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import { getVersionList, versionRollback, getDocInfo } from '@/api/file'
-  import { formatSize, parseTime } from '@/utils/index'
-  import vueCodeDiff from 'vue-code-diff'
+  import { mapGetters } from 'vuex';
+  import { getVersionList, versionRollback, getDocInfo } from '@/api/file';
+  import { formatSize, parseTime } from '@/utils/index';
+  import vueCodeDiff from 'vue-code-diff';
 
   export default {
     name: 'VersionList',
@@ -130,7 +130,7 @@
         'selectedData'
       ]),
       outputFormat() {
-        return this.lineSwitch === true ? 'line-by-line' : 'side-by-side'
+        return this.lineSwitch === true ? 'line-by-line' : 'side-by-side';
       }
     },
     data() {
@@ -151,111 +151,111 @@
         numDiff: 5,
         loading: false,
         diffLoading: false
-      }
+      };
     },
     methods: {
-      downloadVersion(id, evt, filename, fversion) {
-        evt.target.href = process.env.UPLOAD_API + '/djcpsdocument/fileManager/downloadFile.do?id=' + id
-        evt.target.download = filename // 暂时不加版本号
+      downloadVersion(id, evt, filename) {
+        evt.target.href = process.env.UPLOAD_API + '/djcpsdocument/fileManager/downloadFile.do?id=' + id;
+        evt.target.download = filename; // 暂时不加版本号
       },
       close() {
-        this.$emit('closeDialog', 'versionVisible')
-        this.$store.dispatch('Refresh')
+        this.$emit('closeDialog', 'versionVisible');
+        this.$store.dispatch('Refresh');
       },
       async rollBack(newVer) {
-        this.loading = true
+        this.loading = true;
         if (this.selectedData.length === 1) {
-          const version = await versionRollback(this.tableData[0].filesgin, newVer)
+          const version = await versionRollback(this.tableData[0].filesgin, newVer);
           if (version.success) {
-            this.loading = false
-            this.$message1000('版本回退成功', 'success')
-            this.requestData()
+            this.loading = false;
+            this.$message1000('版本回退成功', 'success');
+            this.requestData();
             // this.$store.dispatch('Refresh')  //刷新文件列表
           } else {
-            this.loading = false
-            this.$message1000('版本回退失败', 'warning')
+            this.loading = false;
+            this.$message1000('版本回退失败', 'warning');
           }
         }
       },
       async requestData() {
-        this.loading = true
+        this.loading = true;
         if (this.selectedData.length === 1) {
           try {
-            const versionListInfo = await getVersionList(this.selectedData[0].fversionsign)
+            const versionListInfo = await getVersionList(this.selectedData[0].fversionsign);
             if (versionListInfo.success) {
-              this.loading = false
-              this.tableData = versionListInfo.data
+              this.loading = false;
+              this.tableData = versionListInfo.data;
               if (versionListInfo.data.length > 1 && this.newVersion.value === '' && this.oldVersion.value === '') {
-                this.newVersion.label = versionListInfo.data[0].fversion
-                this.newVersion.value = versionListInfo.data[0].filesgin
-                this.oldVersion.label = versionListInfo.data[1].fversion
-                this.oldVersion.value = versionListInfo.data[1].filesgin
+                this.newVersion.label = versionListInfo.data[0].fversion;
+                this.newVersion.value = versionListInfo.data[0].filesgin;
+                this.oldVersion.label = versionListInfo.data[1].fversion;
+                this.oldVersion.value = versionListInfo.data[1].filesgin;
               }
             }
           } catch (e) {
-            this.loading = false
+            this.loading = false;
           }
         }
       },
-      formatterTime(row, column) {
-        return parseTime(row.fupdatetime)
+      formatterTime(row) {
+        return parseTime(row.fupdatetime);
       },
       sizeFormatter(row) {
         if (row.filesize !== null) {
-          return formatSize(Number(row.filesize.replace('B', '')))
+          return formatSize(Number(row.filesize.replace('B', '')));
         }
       },
       fileType({ fvsgin, filesgin }) {
         switch (this.selectedData[0].ffiletype) {
           case 1:
-            this.$store.dispatch('GetCategory', filesgin)
-            this.$store.dispatch('SetParentId', filesgin)
+            this.$store.dispatch('GetCategory', filesgin);
+            this.$store.dispatch('SetParentId', filesgin);
             if (this.$router.path !== '/list/index') {
-              this.$router.push({ path: `/list/index?`, query: { dirid: filesgin }})
+              this.$router.push({ path: `/list/index?`, query: { dirid: filesgin }});
             }
-            break
+            break;
           case 2:
-            this.$store.dispatch('GetDocInfo', filesgin)
-            break
+            this.$store.dispatch('GetDocInfo', filesgin);
+            break;
           case 3: case 4: case 5:
-            window.open(`${process.env.OFFICE_API}/#/office?id=${filesgin}&vid=${fvsgin}`)
-            break
+            window.open(`${process.env.OFFICE_API}/#/office?id=${filesgin}&vid=${fvsgin}`);
+            break;
           case 6:
-            window.open(`${process.env.OFFICE_API}/djcpsdocument/fileManager/previewPdf.do?id=${filesgin}`)
-            break
+            window.open(`${process.env.OFFICE_API}/djcpsdocument/fileManager/previewPdf.do?id=${filesgin}`);
+            break;
           case 7:
-            this.$store.dispatch('ToggleImgEditor', filesgin)
-            break
+            this.$store.dispatch('ToggleImgEditor', filesgin);
+            break;
         }
       },
       async diff() {
-        this.diffLoading = true
+        this.diffLoading = true;
         if (this.oldVersion.value === '' || this.newVersion.value === '') {
-          this.$message1000('请选择旧版本或者新版本', 'warning')
-          this.diffLoading = false
-          return
+          this.$message1000('请选择旧版本或者新版本', 'warning');
+          this.diffLoading = false;
+          return;
         }
         try {
-          const oldVersion = await getDocInfo(this.oldVersion.value)
-          const newVersion = await getDocInfo(this.newVersion.value)
-          this.oldStr = oldVersion.data.file
-          this.newStr = newVersion.data.file
-          this.diffLoading = false
-          this.versionDiff = true
+          const oldVersion = await getDocInfo(this.oldVersion.value);
+          const newVersion = await getDocInfo(this.newVersion.value);
+          this.oldStr = oldVersion.data.file;
+          this.newStr = newVersion.data.file;
+          this.diffLoading = false;
+          this.versionDiff = true;
         } catch (e) {
-          this.$message1000('网络连接失败', 'warning')
-          this.versionDiff = false
-          this.diffLoading = false
+          this.$message1000('网络连接失败', 'warning');
+          this.versionDiff = false;
+          this.diffLoading = false;
         } finally {
-          this.oldVersion.value = ''
-          this.oldVersion.label = ''
+          this.oldVersion.value = '';
+          this.oldVersion.label = '';
         }
       }
     },
     mounted() {
-      this.requestData()
+      this.requestData();
     }
-  }
+  };
 </script>
 
 <style>

@@ -18,8 +18,8 @@
   </div>
 </template>
 <script>
-  import { mapGetters } from 'vuex'
-  import { renameFile, addCategory } from '@/api/file'
+  import { mapGetters } from 'vuex';
+  import { renameFile, addCategory } from '@/api/file';
   export default {
     name: 'RenameFile',
     props: {
@@ -35,14 +35,14 @@
       ]),
       value: {
         get() {
-          return this.fileName
+          return this.fileName;
         },
         set(newValue) {
           if (!(/^[^\\\\\\/:*?\\"<>|]+$/).test(newValue)) {
-            this.correct = false
+            this.correct = false;
           } else {
-            this.correct = true
-            this.fileName = newValue
+            this.correct = true;
+            this.fileName = newValue;
           }
         }
       }
@@ -53,69 +53,71 @@
         fileName: '',
         correct: true,
         loading: false
-      }
+      };
     },
     methods: {
       async confirmEdit() {
-        this.loading = true
-        const row = this.selectedData
+        this.loading = true;
+        const row = this.selectedData;
         if (!(/^[^\\\\\\/:*?\\"<>|]+$/).test(this.fileName)) {
-          this.$message1000('文件名中不能包含空格/:*?"<>|等特殊字符', 'error')
-          return false
+          this.$message1000('文件名中不能包含空格/:*?"<>|等特殊字符', 'error');
+          return false;
         } else if (row.length >= 1) {
           try {
-            const editInfo = await renameFile({ ...row[0], newName: this.value })
+            const editInfo = await renameFile({ ...row[0], newName: this.value });
             if (editInfo.success) {
-              this.loading = false
-              this.$message1000('文件夹重命名成功', 'success')
-              row[0].isEditor = false
-              this.$set(this.selectedData[0], 'fname', this.value)
+              this.loading = false;
+              this.$message1000('文件夹重命名成功', 'success');
+              row[0].isEditor = false;
+              this.$set(this.selectedData[0], 'fname', this.value);
             }
           } catch (e) {
-            this.loading = false
-            row[0].isEditor = false
+            this.loading = false;
+            row[0].isEditor = false;
           }
         } else {
           try {
-            const editInfo = await addCategory(this.$store.getters.parentId, this.value)
+            const editInfo = await addCategory(this.$store.getters.parentId, this.value);
             if (editInfo.success) {
-              this.loading = false
-              this.$message1000('文件夹新建成功', 'success')
-              this.$store.dispatch('Refresh')
+              this.loading = false;
+              this.$message1000('文件夹新建成功', 'success');
+              this.$store.dispatch('Refresh');
             }
           } catch (e) {
-            this.loading = false
-            this.fileList[0].isEditor = false
-            this.fileList.shift()
+            this.loading = false;
+            this.fileList[0].isEditor = false;
+            this.fileList.shift();
           }
         }
       },
       cancelEdit() {
         if (this.selectedData.length >= 1) {
-          this.selectedData[0].isEditor = false
+          this.selectedData[0].isEditor = false;
         } else {
-          this.fileList.shift()
-          this.$set(this.fileList[0], 'isEditor', false)
+          this.fileList.shift();
+          this.$set(this.fileList[0], 'isEditor', false);
         }
       },
       selection(event) {
-        let dotIndex = this.value.lastIndexOf('.')
+        let dotIndex = this.value.lastIndexOf('.');
         if (this.selectedData[0].ffiletype === 1) {
-          dotIndex = this.selectedData[0].fname.length
+          dotIndex = this.selectedData[0].fname.length;
         }
-        setTimeout(function() {
-          event.target.selectionStart = 0
-          event.target.selectionEnd = dotIndex
-        }, 80)
+        this.$nextTick(() => {
+          event.target.selectionStart = 0;
+          event.target.selectionEnd = dotIndex;
+        });
+        // setTimeout(function() {
+        // }, 80)
       }
     },
     mounted() {
       if (this.selectedData[0]) {
-        this.value = this.selectedData[0].fname
+        this.value = this.selectedData[0].fname;
       }
-      document.querySelector('.rename-edit input').focus()
+      document.querySelector('.rename-edit input').focus();
     }
-  }
+  };
 </script>
 
 <style lang="scss">

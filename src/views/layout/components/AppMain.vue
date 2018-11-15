@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 export default {
   name: 'AppMain',
   computed: {
@@ -17,14 +17,14 @@ export default {
     ]),
     app_main_width() {
       if (!this.sidebar.opened) {
-        return 'width: 90%;margin: auto;'
+        return 'width: 90%;margin: auto;';
       }
     }
     // key() {
     //   return this.$route.name !== undefined ? this.$route.name + +new Date() : this.$route + +new Date()
     // }
   }
-}
+};
 </script>
 
 <style>

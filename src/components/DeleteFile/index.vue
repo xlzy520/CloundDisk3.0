@@ -35,8 +35,8 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import { deleteCategory } from '@/api/file'
+  import { mapGetters } from 'vuex';
+  import { deleteCategory } from '@/api/file';
   export default {
     name: 'DeleteFile',
     props: {
@@ -55,46 +55,46 @@
         err: '',
         deleteInfo: '',
         deleting: false
-      }
+      };
     },
     methods: {
       close() {
         if (this.deleting) {
           if (confirm('删除未完成，您关闭对话框后，删除将继续进行，仍要关闭对话框吗？')) {
-            this.$emit('closeDialog', 'deleteVisible')
-            return
+            this.$emit('closeDialog', 'deleteVisible');
+            return;
           }
-          return
+          return;
         }
-        this.$emit('closeDialog', 'deleteVisible')
+        this.$emit('closeDialog', 'deleteVisible');
       },
       submitForm() {
-        this.deleting = true
-        const categoryids = []
+        this.deleting = true;
+        const categoryids = [];
         this.selectedData.forEach(item => {
-          categoryids.push(item.fcategoryid)
-        })
+          categoryids.push(item.fcategoryid);
+        });
         deleteCategory(categoryids, this.$store.getters.parentId)
           .then(res => {
-            this.$emit('closeDialog', 'deleteVisible')
+            this.$emit('closeDialog', 'deleteVisible');
             if (res.success) {
-              this.$message1000(res.msg, 'success')
-              this.deleting = false
-              this.$store.dispatch('Refresh')
+              this.$message1000(res.msg, 'success');
+              this.deleting = false;
+              this.$store.dispatch('Refresh');
             }
           })
           .catch(err => {
             if (this.$store.getters.hasSearch) {
-              this.$message1000(err.message, 'info')
+              this.$message1000(err.message, 'info');
             }
-            this.deleting = false
-            this.close()
+            this.deleting = false;
+            this.close();
           }).finally(() => {
-            this.$store.dispatch('SetSelectedData', [])
-          })
+            this.$store.dispatch('SetSelectedData', []);
+          });
       }
     }
-  }
+  };
 </script>
 
 <style>

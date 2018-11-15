@@ -89,9 +89,9 @@
   </div>
 </template>
 <script>
-  import { mapGetters } from 'vuex'
-  import { formatSize, parseTime } from '@/utils/index'
-  import { getVersionList } from '@/api/file'
+  import { mapGetters } from 'vuex';
+  import { formatSize, parseTime } from '@/utils/index';
+  import { getVersionList } from '@/api/file';
 
   export default {
     name: 'Detail',
@@ -102,7 +102,7 @@
           newestVersion: '',
           fremarks: ''
         }
-      }
+      };
     },
     computed: {
       ...mapGetters([
@@ -110,49 +110,49 @@
       ]),
       isFolder() {
         if (this.selectedData.length === 1) {
-          return this.selectedData[0].ffiletype === 1
+          return this.selectedData[0].ffiletype === 1;
         }
       },
       title() {
         if (this.selectedData.length === 1) {
-          return this.isFolder ? '文件夹' : '文件'
+          return this.isFolder ? '文件夹' : '文件';
         }
       },
       topTitle() {
-        return this.title + '详情'
+        return this.title + '详情';
       },
       size() {
-        return formatSize(Number(this.selectedData[0].fsize.replace('B', '')))
+        return formatSize(Number(this.selectedData[0].fsize.replace('B', '')));
       },
       timeEdit() {
-        return parseTime(this.selectedData[0].fupdatetime)
+        return parseTime(this.selectedData[0].fupdatetime);
       },
       timeCreate() {
-        return parseTime(this.selectedData[0].fcreatetime)
+        return parseTime(this.selectedData[0].fcreatetime);
       }
     },
     methods: {
       close() {
-        this.$emit('closeDialog', 'detailVisible')
+        this.$emit('closeDialog', 'detailVisible');
       },
       async requestData() {
         if (this.selectedData.length === 1 && this.selectedData[0].ffiletype !== 1) {
-          const versionListInfo = await getVersionList(this.selectedData[0].fversionsign, this.$store.getters.parentId)
+          const versionListInfo = await getVersionList(this.selectedData[0].fversionsign, this.$store.getters.parentId);
           if (versionListInfo.success) {
             versionListInfo.data.filter((item) => {
               if (item.fdisplay) {
-                this.detail.newestVersion = item.fversion
-                this.detail.fremarks = item.fremarks
+                this.detail.newestVersion = item.fversion;
+                this.detail.fremarks = item.fremarks;
               }
-            })
+            });
           }
         }
       }
     },
     mounted() {
-      this.requestData()
+      this.requestData();
     }
-  }
+  };
 </script>
 
 <style>

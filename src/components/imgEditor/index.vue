@@ -18,9 +18,9 @@
 </template>
 
 <script>
-  import 'cropperjs/dist/cropper.css'
-  import Editor from './Editor'
-  import ImgNavbar from './ImgNavbar'
+  import 'cropperjs/dist/cropper.css';
+  import Editor from './Editor';
+  import ImgNavbar from './ImgNavbar';
   export default {
     name: 'ImgEditor',
     data() {
@@ -34,15 +34,15 @@
           type: '',
           url: ''
         }
-      }
+      };
     },
     computed: {
       imgEditor: {
         get() {
-          return this.$store.state.file.imgEditor
+          return this.$store.state.file.imgEditor;
         },
         set() {
-          this.$store.dispatch('ToggleImgEditor', {})
+          this.$store.dispatch('ToggleImgEditor', {});
         }
       }
     },
@@ -51,31 +51,31 @@
     },
     methods: {
       change(action) {
-        const { editor } = this.$refs
+        const { editor } = this.$refs;
         switch (action) {
           case 'crop':
-            editor.crop()
-            break
+            editor.crop();
+            break;
           case 'clear':
-            editor.clear()
-            break
+            editor.clear();
+            break;
           case 'restore':
-            editor.restore()
-            break
+            editor.restore();
+            break;
           case 'remove':
-            editor.reset()
-            break
+            editor.reset();
+            break;
           case 'close':
-            this.$store.dispatch('ToggleImgEditor', {})
-            break
+            this.$store.dispatch('ToggleImgEditor', {});
+            break;
           default:
         }
       }
     },
     mounted() {
-      this.data.url = `${process.env.UPLOAD_API}/djcpsdocument/fileManager/downloadFile.do?id=${this.imgEditor.id}`
+      this.data.url = `${process.env.UPLOAD_API}/djcpsdocument/fileManager/downloadFile.do?id=${this.imgEditor.id}`;
     }
-  }
+  };
 </script>
 
 <style>
