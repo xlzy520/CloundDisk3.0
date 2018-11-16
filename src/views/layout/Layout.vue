@@ -1,7 +1,8 @@
 <template>
-  <div class="app-wrapper" :class="classObj">
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"></div>
-    <sidebar class="sidebar-container"></sidebar>
+  <div class="app-wrapper">
+    <div class="left-menu" :class="classObj">
+      <sidebar></sidebar>
+    </div>
     <div class="main-container">
       <navbar></navbar>
       <app-main></app-main>
@@ -30,40 +31,38 @@ export default {
     },
     classObj() {
       return {
-        hideSidebar: !this.sidebar.opened,
+        hideMenu: !this.sidebar.opened,
         openSidebar: this.sidebar.opened,
         withoutAnimation: this.sidebar.withoutAnimation,
         mobile: this.device === 'mobile'
       };
     }
-  },
-  methods: {
-    handleClickOutside() {
-      this.$store.dispatch('CloseSideBar', { withoutAnimation: false });
-    }
   }
 };
 </script>
 
-<style rel="stylesheet/scss" lang="scss">
-  @import "src/styles/mixin.scss";
+<style rel="stylesheet/scss" lang="scss" scoped>
+  // @import "src/styles/mixin.scss";
   .app-wrapper {
-    @include clearfix;
+    // @include clearfix;
+    display: flex;
     position: relative;
-    height: 100%;
-    width: 100%;
-    &.mobile.openSidebar{
-      position: fixed;
-      top: 0;
+    // height: 100%;
+    // width: 100%;
+    .left-menu {
+      width: 250px;
+      background-color: rgba(239, 248, 224, 0.9);
+      transition: width 0.28s;
+      border-right: 1px solid #e2e2e2;
+      overflow: hidden;
+      &.hideMenu {
+        width: 0;
+      }
     }
-  }
-  .drawer-bg {
-    background: #000;
-    opacity: 0.3;
-    width: 100%;
-    top: 0;
-    height: 100%;
-    position: absolute;
-    z-index: 999;
+    .main-container {
+      flex-grow: 1;
+      min-width: 1300px;
+      position: relative;
+    }
   }
 </style>

@@ -76,9 +76,7 @@
           case 1:
             this.$store.dispatch('GetCategory', fcategoryid);
             this.$store.dispatch('SetParentId', fcategoryid);
-            if (this.$router.path !== '/list/index') {
-              this.$router.push({ path: `/list/index?`, query: { dirid: fcategoryid }});
-            }
+            this.$router.push({ path: '/index/list', query: { dirid: fcategoryid }});
             break;
           case 2:
             this.$store.dispatch('GetDocInfo', { fcategoryid, fversionsign });

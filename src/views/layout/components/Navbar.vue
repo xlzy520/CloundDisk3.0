@@ -10,8 +10,8 @@
       <span class="nav__logo__title">东经云盘</span>
     </div>
     <div class="nav-router">
-      <router-link to="/recycle" class="nav-router-text recycle">回收站</router-link>
-      <router-link to="/record"  v-if="false" class="nav-router-text record">操作记录</router-link>
+      <router-link to="/index/recycle" class="nav-router-text recycle">回收站</router-link>
+      <router-link to="/index/record"  v-if="false" class="nav-router-text record">操作记录</router-link>
     </div>
     <!--<form action="www.baidu.com" enctype="multipart/form-data" method="post">-->
       <!--<input type="hidden" name="type" value="1"/>-->

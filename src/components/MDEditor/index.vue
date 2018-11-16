@@ -138,6 +138,7 @@
           }).then(({ value }) => {
             const markdownFile = new File([this.docValue.file], value + '.md');
             markdownData.append('file', markdownFile);
+            console.log(markdownData);
             updateMarkdown(markdownData).then((res) => {
               if (res.success) {
                 this.$message1000('文档新建成功。', 'success');

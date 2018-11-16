@@ -43,5 +43,6 @@ module.exports = {
   // add your custom rules here
   rules: {
     'radix': 0,
+    'comma-dangle': 0
   }
 };

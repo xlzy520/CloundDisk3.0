@@ -103,12 +103,10 @@
         if (this.selectedData[0].ffiletype === 1) {
           dotIndex = this.selectedData[0].fname.length;
         }
-        this.$nextTick(() => {
+        setTimeout(function() {
           event.target.selectionStart = 0;
           event.target.selectionEnd = dotIndex;
-        });
-        // setTimeout(function() {
-        // }, 80)
+        }, 80);
       }
     },
     mounted() {
