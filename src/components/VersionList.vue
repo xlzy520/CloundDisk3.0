@@ -83,7 +83,7 @@
                 href="javascript:void(0)"
                 @click="rollBack(scope.row.filesgin)"
                 title="设为最新版本" v-if="!scope.row.fdisplay">回退</a>
-              <a size="mini" @click="fileType(scope.row)">查看</a>
+              <a size="mini" @click="fileType(scope.row)" v-if="selectedData[0].ffiletype!==0">查看</a>
             </template>
           </el-table-column>
         </el-table>
