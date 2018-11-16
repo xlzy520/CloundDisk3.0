@@ -1,8 +1,10 @@
 <template>
   <div class="admin-list">
     <list-header class="admin-list-header" @action="dispatchAction"></list-header>
-    <List v-if="component" :fileList="List"></List>
-    <thumbnail v-else :fileList="List"></thumbnail>
+    <div class="admin-list-content">
+      <List v-if="component" :fileList="List"></List>
+    </div>
+    <!-- <thumbnail v-else :fileList="List"></thumbnail> -->
     <upload-file :visible="upload.visible" :type="upload.type" @closeDialog="closeDialog"></upload-file>
     <delete-file :visible="deleteVisible" @closeDialog="closeDialog"></delete-file>
     <detail v-if="detailVisible" @closeDialog="closeDialog"></detail>
@@ -167,12 +169,16 @@
 
 <style lang="scss" scoped>
 .admin-list {
+  position: relative;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   width: 100%;
   &-header {
     flex-shrink: 0;
+  }
+  &-content {
+    flex-grow: 1;
   }
 }
 </style>

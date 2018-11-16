@@ -193,9 +193,10 @@
 <style lang="scss" scoped>
   .file-content {
     width: 100%;
-    min-width: 980px;
+    position: relative;
+    // min-width: 980px;
     height: 100%;
-    user-select: none;
+    // user-select: none;
     /deep/ .el-scrollbar {
       height: 100%;
       .el-scrollbar__thumb {
