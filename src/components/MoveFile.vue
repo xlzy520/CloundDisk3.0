@@ -19,7 +19,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import treeMenu from '@/components/treeMenu/index';
+  import treeMenu from '@/components/treeMenu';
   import { moveFile, copyFile } from '@/api/file';
   export default {
     name: 'MoveFile',

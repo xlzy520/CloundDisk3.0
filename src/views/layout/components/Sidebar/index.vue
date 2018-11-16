@@ -11,7 +11,7 @@
 </template>
 
 <script>
-  import treeMenu from '@/components/treeMenu/index';
+  import treeMenu from '@/components/treeMenu';
   import { mapGetters } from 'vuex';
   export default {
     components: { treeMenu },

@@ -1,6 +1,6 @@
 import { getCategory, getDocInfo, getSearchResult, getFullTextSearchResult } from '@/api/file';
 import { Message } from 'element-ui';
-// import { Loading } from 'element-ui';
+import { Loading } from 'element-ui';
 const file = {
   state: {
     parentId: '0',
@@ -70,15 +70,15 @@ const file = {
     },
     async GetCategory({ commit }, fcategoryid) {
       return new Promise((resolve, reject) => {
-        // const loadingInstance = Loading.service({ fullscreen: true });
+        const loadingInstance = Loading.service({ fullscreen: true });
         getCategory(fcategoryid).then(response => {
           const Category = response;
-          // loadingInstance.close();
+          loadingInstance.close();
           commit('GET_CATEGORY', Category.data.tableList);
           commit('SET_FOLDER_NAV', Category.data.navList);
           resolve(response);
         }).catch(error => {
-          // loadingInstance.close();
+          loadingInstance.close();
           reject(error);
         });
       });

@@ -65,8 +65,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import Hamburger from '@/components/Hamburger';
-import MdInput from '@/components/MDinput';
+import Hamburger from '@/components/Hamburger.vue';
+import MdInput from '@/components/MDinput.vue';
 import { Loading } from 'element-ui';
 export default {
   components: {
@@ -111,7 +111,7 @@ export default {
       this.$store.dispatch('SetSearchList', this.query).then(() => {
         loadingSearch.close();
         if (this.$route.name === '回收站') {
-          this.$router.push({ path: `/list/index` });
+          this.$router.push({ path: '/index/list' });
         }
       }).catch(() => {
         loadingSearch.close();

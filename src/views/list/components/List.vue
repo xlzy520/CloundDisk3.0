@@ -41,7 +41,7 @@
 </template>
 
 <script>
-  import RenameFile from '@/components/RenameFile';
+  import RenameFile from '@/components/RenameFile.vue';
   import { mapGetters } from 'vuex';
   import { formatSize, parseTime } from '@/utils/index';
   export default {

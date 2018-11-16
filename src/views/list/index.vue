@@ -18,12 +18,12 @@
   import Thumbnail from './components/Thumbnail';
   import List from './components/List';
   import ListHeader from './components/ListHeader';
-  import UploadFile from '@/components/UploadFile';
-  import DeleteFile from '@/components/DeleteFile';
-  import Detail from '@/components/Detail';
-  import VersionList from '@/components/VersionList';
-  import MDEditor from '@/components/MDEditor';
-  import MoveFile from '@/components/MoveFile';
+  import UploadFile from '@/components/UploadFile.vue';
+  import DeleteFile from '@/components/DeleteFile.vue';
+  import Detail from '@/components/Detail.vue';
+  import VersionList from '@/components/VersionList.vue';
+  import MDEditor from '@/components/MDEditor.vue';
+  import MoveFile from '@/components/MoveFile.vue';
   import ImgEditor from '@/components/imgEditor';
   // TODO 用事件冒泡的方式处理listHeader里的按钮
   export default {
