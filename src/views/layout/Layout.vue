@@ -46,7 +46,7 @@ export default {
     position: relative;
     display: flex;
     min-width: 1300px;
-    min-height: 900px;
+    min-height: 600px;
     height: 100%;
     &-menu {
       position: relative;
