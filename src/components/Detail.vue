@@ -23,7 +23,7 @@
             当前版本：
           </div>
           <div class="content">
-            {{detail.newestVersion}}
+            {{versionDetail.fversion}}
           </div>
           <div class="clearfix"></div>
         </div>
@@ -32,7 +32,7 @@
             版本描述：
           </div>
           <div class="content">
-            {{detail.fremarks}}
+            {{versionDetail.fremarks}}
           </div>
           <div class="clearfix"></div>
         </div>
@@ -59,7 +59,7 @@
             最后修改人：
           </div>
           <div class="content">
-            {{selectedData[0].fupdateor}}
+            {{versionDetail.fupdater}}
           </div>
           <div class="clearfix"></div>
         </div>
@@ -98,10 +98,7 @@
     data() {
       return {
         isLoad: true,
-        detail: {
-          newestVersion: '',
-          fremarks: ''
-        }
+        versionDetail: null
       };
     },
     computed: {
@@ -140,9 +137,8 @@
           const versionListInfo = await getVersionList(this.selectedData[0].fversionsign, this.$store.getters.parentId);
           if (versionListInfo.success) {
             versionListInfo.data.filter((item) => {
-              if (item.fdisplay) {
-                this.detail.newestVersion = item.fversion;
-                this.detail.fremarks = item.fremarks;
+              if (!item.fdisplay) {
+                this.versionDetail = item;
               }
             });
           }
