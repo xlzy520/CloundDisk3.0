@@ -1,6 +1,5 @@
 <template>
     <el-tree
-      style="display: inline-block;min-width: 13vw"
       :data="data"
       :props="defaultProps"
       ref="folderTree"

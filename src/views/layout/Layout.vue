@@ -1,9 +1,9 @@
 <template>
   <div class="app-wrapper">
-    <div class="left-menu" :class="classObj">
+    <div class="app-wrapper-menu" :class="classObj" @transitionend="">
       <sidebar></sidebar>
     </div>
-    <div class="main-container">
+    <div class="app-wrapper-main">
       <navbar></navbar>
       <app-main></app-main>
     </div>
@@ -43,26 +43,25 @@ export default {
   // @import "src/styles/mixin.scss";
   .app-wrapper {
     // @include clearfix;
-    display: flex;
     position: relative;
-    // height: 100%;
-    // width: 100%;
-    .left-menu {
-      width: 250px;
-      min-width: 200px;
+    display: flex;
+    min-width: 1300px;
+    &-menu {
+      position: relative;
+      width: 200px;
+      flex-shrink: 0;
       background-color: rgba(239, 248, 224, 0.9);
       transition: width 0.28s;
       border-right: 1px solid #e2e2e2;
       overflow: hidden;
       &.hideMenu {
         width: 0;
-        min-width: 0;
       }
     }
-    .main-container {
-      flex-grow: 1;
-      min-width: 1300px;
+    &-main {
       position: relative;
+      flex-shrink: 1;
+      flex-grow: 1;
     }
   }
 </style>
