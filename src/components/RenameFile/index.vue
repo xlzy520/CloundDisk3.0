@@ -7,7 +7,8 @@
     :class="{thumbEdit:!(type === 'List')}">
     <el-input size="small"
               spellcheck="false"
-              v-model.trim="value"
+              v-model="fileName"
+              @keyup.native="correctVal"
               placeholder="请输入内容"
               :style="{width:(type==='List'?'350px':'120px')}"
               @focus="selection($event)">
@@ -18,8 +19,9 @@
   </div>
 </template>
 <script>
-  import { mapGetters } from 'vuex';
-  import { renameFile, addCategory } from '@/api/file';
+  import {mapGetters} from 'vuex';
+  import {renameFile, addCategory} from '@/api/file';
+
   export default {
     name: 'RenameFile',
     props: {
@@ -32,61 +34,46 @@
       ...mapGetters([
         'selectedData',
         'fileList'
-      ]),
-      value: {
-        get() {
-          return this.fileName;
-        },
-        set(newValue) {
-          if (!(/^[^\\\\\\/:*?\\"<>|]+$/).test(newValue)) {
-            this.correct = false;
-          } else {
-            this.correct = true;
-            this.fileName = newValue;
-          }
-        }
-      }
+      ])
     },
 
     data() {
       return {
         fileName: '',
-        correct: true,
+        correct: false,
         loading: false
       };
     },
     methods: {
+      correctVal() {
+        this.correct = this.fileName.length === 0 ? false : (/^[^\\\\\\/:*?\s\\"<>|]+$/).test(this.fileName);
+      },
       async confirmEdit() {
         this.loading = true;
         const row = this.selectedData;
-        if (!(/^[^\\\\\\/:*?\\"<>|]+$/).test(this.fileName)) {
+        if (!(/^[^\\\\\\/:*?\s\\"<>|]+$/).test(this.fileName)) { //判断输入是否合法
           this.$message1000('文件名中不能包含空格/:*?"<>|等特殊字符', 'error');
+          this.loading = false;
           return false;
-        } else if (row.length >= 1) {
+        } else if (row.length >= 1) { //  重命名
           try {
-            const editInfo = await renameFile({ ...row[0], newName: this.value });
-            if (editInfo.success) {
-              this.loading = false;
-              this.$message1000('文件夹重命名成功', 'success');
-              row[0].isEditor = false;
-              this.$set(this.selectedData[0], 'fname', this.value);
-            }
-          } catch (e) {
-            this.loading = false;
+            const editInfo = await renameFile({ ...row[0], newName: this.fileName });
+            this.$message1000(editInfo.msg, 'success');
+            this.$set(this.selectedData[0], 'fname', this.fileName);
             row[0].isEditor = false;
+          } finally {
+            this.loading = false;
           }
         } else {
-          try {
-            const editInfo = await addCategory(this.$store.getters.parentId, this.value);
-            if (editInfo.success) {
-              this.loading = false;
-              this.$message1000('文件夹新建成功', 'success');
-              this.$store.dispatch('Refresh');
-            }
+          try { //新建文件夹
+            const editInfo = await addCategory(this.$store.getters.parentId, this.fileName);
+            this.$message1000(editInfo.msg, 'success');
+            this.$store.dispatch('Refresh');
           } catch (e) {
-            this.loading = false;
             this.fileList[0].isEditor = false;
             this.fileList.shift();
+          }finally {
+            this.loading = false;
           }
         }
       },
@@ -99,19 +86,22 @@
         }
       },
       selection(event) {
-        let dotIndex = this.value.lastIndexOf('.');
-        if (this.selectedData[0].ffiletype === 1) {
-          dotIndex = this.selectedData[0].fname.length;
+        let dotIndex = this.fileName.lastIndexOf('.');
+        if (this.selectedData[0]) {
+          if (this.selectedData[0].ffiletype === 1) {
+            dotIndex = this.selectedData[0].fname.length;
+          }
+          setTimeout(() => {
+            event.target.selectionStart = 0;
+            event.target.selectionEnd = dotIndex;
+          }, 80);
         }
-        this.$nextTick(() => {
-          event.target.selectionStart = 0;
-          event.target.selectionEnd = dotIndex;
-        });
       }
     },
     mounted() {
       if (this.selectedData[0]) {
-        this.value = this.selectedData[0].fname;
+        this.fileName = this.selectedData[0].fname;
+        this.correctVal();
       }
       document.querySelector('.rename-edit input').focus();
     }
@@ -119,33 +109,35 @@
 </script>
 
 <style lang="scss">
-  .rename-edit{
-    .el-button{
+  .rename-edit {
+    .el-button {
       margin-top: 2px;
       padding: 4px 4px;
     }
     .el-button--primary {
-      background-color: rgba(18,150,219,.6);
+      background-color: rgba(18, 150, 219, .6);
     }
-    .el-input{
-      input{
+    .el-input {
+      input {
         font-size: 16px;
         /*&::selection{*/
-          /*background-color: #dffff5;*/
-          /*color: #e207ef;*/
+        /*background-color: #dffff5;*/
+        /*color: #e207ef;*/
         /*}*/
       }
 
       margin-right: 10px;
     }
   }
-  .thumbEdit{
+
+  .thumbEdit {
     position: absolute;
     width: 150px;
     top: 85px;
     left: -15px;
   }
-  .fileNameTips{
+
+  .fileNameTips {
     position: absolute;
     bottom: -7px;
     left: 10px;
