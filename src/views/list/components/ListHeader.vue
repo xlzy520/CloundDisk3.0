@@ -102,22 +102,13 @@ export default {
       this.$store.dispatch('Refresh').then(() => {
         this.fileList.unshift({
           faothority: 'newFolder',
-          fcategoryid: null,
-          fcategorystatus: 1,
-          fcreatetime: null,
           ffiletype: 1,
           fname: '新建文件夹',
-          foperator: null,
-          foperatorid: null,
-          fparentid: null,
-          fsize: null,
-          fsortorder: null,
-          fupdateor: null,
-          fupdatetime: null,
-          rowid: null
+          fsize: null
         });
         this.$set(this.fileList[0], 'isEditor', true);
         this.$store.dispatch('SetSelectedData', []);
+        console.timeEnd(2);
       });
     },
     downloadFile() {
@@ -129,6 +120,7 @@ export default {
       this.$refs.downloadBtn.click();
     },
     handleCommand(command) {
+      console.time(2);
       switch (command) {
         case 'newFolder': this.newFolder(); break;
         case 'newMarkdown':

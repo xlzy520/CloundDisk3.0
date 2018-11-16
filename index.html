@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <link rel="shortcut icon" href="favicon.ico">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <meta name="renderer" content="webkit"/>
     <meta name="force-rendering" content="webkit"/>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"/>
@@ -57,7 +56,7 @@
     <!-- built files will be auto injected -->
   </body>
   <script>
-    if (!!window.ActiveXObject || 'ActiveXObject' in window) {
+    if (typeof Promise === 'undefined') {
       document.getElementsByTagName('body')[0].innerHTML = '<div class="ie-must-go-die">\n' +
         '      <div class="ie-container">\n' +
         '        <h1>\n' +
