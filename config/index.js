@@ -7,14 +7,14 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/djcpsdocument':{
-        // target: 'http://192.168.2.170:8081/',              //德煌
-        target: 'http://192.168.2.171:8081/',              //弘权
+        target: 'http://192.168.2.170:8081/',              //德煌
+        //target: 'http://192.168.2.171:8081/',              //弘权
         changeOrigin: true,
       }
     },
     host: '0.0.0.0',
     port: 9528,
-    autoOpenBrowser: false,
+    autoOpenBrowser: true,
     errorOverlay: true,
     notifyOnErrors: false,
     poll: false,
