@@ -11,15 +11,13 @@
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain } from './components';
+import childComponents from './components';
 import ResizeMixin from './mixin/ResizeHandler';
 
 export default {
   name: 'layout',
   components: {
-    Navbar,
-    Sidebar,
-    AppMain
+    ...childComponents
   },
   mixins: [ResizeMixin],
   computed: {
@@ -51,12 +49,14 @@ export default {
     // width: 100%;
     .left-menu {
       width: 250px;
+      min-width: 200px;
       background-color: rgba(239, 248, 224, 0.9);
       transition: width 0.28s;
       border-right: 1px solid #e2e2e2;
       overflow: hidden;
       &.hideMenu {
         width: 0;
+        min-width: 0;
       }
     }
     .main-container {

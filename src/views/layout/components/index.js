@@ -1,3 +1,9 @@
-export { default as Navbar } from './Navbar';
-export { default as Sidebar } from './Sidebar';
-export { default as AppMain } from './AppMain';
+import Navbar from './Navbar';
+import Sidebar from './Sidebar';
+import AppMain from './AppMain';
+
+export default {
+  Navbar,
+  Sidebar,
+  AppMain
+};

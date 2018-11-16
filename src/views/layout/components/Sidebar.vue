@@ -58,8 +58,4 @@
       }
     }
   }
-  // .left-menu {
-  //   display: inline-block;
-  //   width: 180px;
-  // }
 </style>
