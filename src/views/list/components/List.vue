@@ -71,7 +71,7 @@
           return (a - b);
         }
       },
-      fileType({ ffiletype, fcategoryid, fversionsign }) {
+      fileType({ ffiletype, fcategoryid, fversionsign, fsize}) {
         switch (ffiletype) {
           case 1:
             this.$store.dispatch('GetCategory', fcategoryid);
@@ -88,7 +88,11 @@
             window.open(`${process.env.OFFICE_API}/djcpsdocument/fileManager/previewPdf.do?id=${fcategoryid}`);
             break;
           case 7:
-            this.$store.dispatch('ToggleImgEditor', fcategoryid);
+            if (parseInt(fsize) > (1024 * 1024 * 10)) {
+              this.$message1000('图片大小超过10M,无法预览', 'error');
+            } else {
+              this.$store.dispatch('ToggleImgEditor', fcategoryid);
+            }
             break;
         }
       },
@@ -179,12 +183,10 @@
         });
       }
     },
-    async mounted() {
+    mounted() {
       this.selectedData.forEach(row => {
         this.$refs.multipleTable.toggleRowSelection(row);
       });
-    },
-    watch: {
     }
   };
 </script>

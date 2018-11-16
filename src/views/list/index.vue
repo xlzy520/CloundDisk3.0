@@ -150,10 +150,10 @@
       }
     },
     async mounted() {
-      if (this.$route.query) {
+      if (this.$route.query.hasOwnProperty('dirid')) {
         this.$router.push({ path: this.$route.fullPath });
       } else {
-        this.$router.push({ path: `/list/index?dirid=0` });
+        this.$router.push({ path: `/index/list?dirid=0` });
       }
       this.$store.dispatch('GetCategory', this.$route.query.dirid);
       window.addEventListener('popstate', () => {

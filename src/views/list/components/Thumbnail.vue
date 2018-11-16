@@ -21,9 +21,9 @@
               <div @click.stop="() => {}">
                 <el-checkbox :label="item"></el-checkbox>
               </div>
-              <svg-icon v-if="item.ffiletype!==7" :icon-class="String(item.ffiletype)" className="icon"/>
+              <svg-icon v-if="imgIsLarge(item)" :icon-class="String(item.ffiletype)" className="icon"/>
               <img
-                v-if="item.ffiletype === 7"
+                v-if="!imgIsLarge(item)"
                 class="icon"
                 width="100"
                 height="100"
@@ -46,7 +46,6 @@
 </template>
 
 <script>
-  // import nameEditor from '@/components/RenameFile';
   import RenameFile from '@/components/RenameFile.vue';
 
   export default {
@@ -64,6 +63,12 @@
       };
     },
     methods: {
+      imgIsLarge(item) {
+        if (item.ffiletype === 7) {
+          return parseInt(item.fsize) > (1024 * 1024 * 10);
+        }
+        return true;
+      },
       imgSrc(item) {
         return `${process.env.UPLOAD_API}/djcpsdocument/fileManager/downloadFile.do?id=` + item.fcategoryid;
       },
@@ -87,7 +92,7 @@
           });
         }
       },
-      fileType({ ffiletype, fcategoryid, fversionsign }) {
+      fileType({ ffiletype, fcategoryid, fversionsign, fsize }) {
         switch (ffiletype) {
           case 1:
             this.$store.dispatch('GetCategory', fcategoryid);
@@ -95,9 +100,7 @@
             if (this.selectedData.length >= 1) {
               this.handleCheckAllChange();
             }
-            if (this.$router.path !== '/list/index') {
-              this.$router.push({ path: `/list/index?`, query: { dirid: fcategoryid }});
-            }
+            this.$router.push({ path: '/index/list?', query: { dirid: fcategoryid }});
             break;
           case 2:
             this.$store.dispatch('GetDocInfo', fcategoryid);
@@ -109,7 +112,11 @@
             window.open(`${process.env.OFFICE_API}/djcpsdocument/fileManager/previewPdf.do?id=${fcategoryid}`);
             break;
           case 7:
-            this.$store.dispatch('ToggleImgEditor', fcategoryid);
+            if (parseInt(fsize) > (1024 * 1024 * 10)) {
+              this.$message1000('图片大小超过10M,无法预览', 'error');
+            } else {
+              this.$store.dispatch('ToggleImgEditor', fcategoryid);
+            }
             break;
         }
       }
