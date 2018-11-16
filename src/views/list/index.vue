@@ -22,9 +22,7 @@
   import DeleteFile from '@/components/DeleteFile.vue';
   import Detail from '@/components/Detail.vue';
   import VersionList from '@/components/VersionList.vue';
-  import MDEditor from '@/components/MDEditor.vue';
   import MoveFile from '@/components/MoveFile.vue';
-  import ImgEditor from '@/components/imgEditor';
   // TODO 用事件冒泡的方式处理listHeader里的按钮
   export default {
     name: 'index',
@@ -56,7 +54,7 @@
       }
     },
     components: {
-      ImgEditor,
+      ImgEditor: ()=>import('@/components/ImgEditor/index.vue'),
       VersionList,
       Detail,
       UploadFile,
@@ -64,7 +62,7 @@
       List,
       ListHeader,
       DeleteFile,
-      MDEditor,
+      MDEditor: ()=>import('@/components/MDEditor.vue'),
       MoveFile
     },
     methods: {

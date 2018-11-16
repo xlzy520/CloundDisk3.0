@@ -102,7 +102,7 @@
             }
             this.$router.push({ path: '/index/list?', query: { dirid: fcategoryid }});
             break;
-          case 2:
+          case 2: case 9:
             this.$store.dispatch('GetDocInfo', fcategoryid);
             break;
           case 3: case 4: case 5:

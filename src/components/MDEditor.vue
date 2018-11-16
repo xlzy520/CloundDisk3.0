@@ -132,11 +132,11 @@
           this.$prompt('请输入文件名', '文件名', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
-            inputPattern: /^[^\\\\\\/:*?\\"<>|]+$/,
+            inputPattern: /^[^\\\\\\/:*?\s\\"<>|]+$/,
             center: true,
             inputErrorMessage: '文件名中不能为空或包含/:*?"<>|等特殊字符'
           }).then(({ value }) => {
-            const markdownFile = new File([this.docValue.file], value + '.md');
+            const markdownFile = new File([this.docValue.file], value + this.docValue.suffix);
             markdownData.append('file', markdownFile);
             console.log(markdownData);
             updateMarkdown(markdownData).then((res) => {

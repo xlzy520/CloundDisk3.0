@@ -72,7 +72,7 @@
           } catch (e) {
             this.fileList[0].isEditor = false;
             this.fileList.shift();
-          }finally {
+          } finally {
             this.loading = false;
           }
         }

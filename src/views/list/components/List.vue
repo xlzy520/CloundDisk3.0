@@ -73,21 +73,21 @@
       },
       fileType({ ffiletype, fcategoryid, fversionsign, fsize}) {
         switch (ffiletype) {
-          case 1:
+          case 1: //FOLDER
             this.$store.dispatch('GetCategory', fcategoryid);
             this.$store.dispatch('SetParentId', fcategoryid);
             this.$router.push({ path: '/index/list', query: { dirid: fcategoryid }});
             break;
-          case 2:
+          case 2: case 9: //Text、Markdown
             this.$store.dispatch('GetDocInfo', { fcategoryid, fversionsign });
             break;
-          case 3: case 4: case 5:
+          case 3: case 4: case 5: //office
             window.open(`/#/office?id=${fcategoryid}&vid=${fversionsign}`);
             break;
-          case 6:
+          case 6: //PDF
             window.open(`${process.env.OFFICE_API}/djcpsdocument/fileManager/previewPdf.do?id=${fcategoryid}`);
             break;
-          case 7:
+          case 7: //IMG
             if (parseInt(fsize) > (1024 * 1024 * 10)) {
               this.$message1000('图片大小超过10M,无法预览', 'error');
             } else {
