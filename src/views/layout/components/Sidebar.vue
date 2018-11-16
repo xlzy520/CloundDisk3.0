@@ -12,18 +12,9 @@
 
 <script>
   import treeMenu from '@/components/treeMenu';
-  // import { mapGetters } from 'vuex';
   export default {
     name: 'left-menu',
     components: { treeMenu },
-    // computed: {
-    //   ...mapGetters([
-    //     'sidebar'
-    //   ]),
-    //   isCollapse() {
-    //     return !this.sidebar.opened;
-    //   }
-    // }
   };
 </script>
 

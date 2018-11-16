@@ -1,37 +1,19 @@
 <template>
-  <section class="app-main" :style="app_main_width">
-    <transition name="fade" mode="out-in">
-      <!-- <router-view :key="key"></router-view> -->
-      <router-view></router-view>
-    </transition>
-  </section>
+  <div class="app-main">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 export default {
-  name: 'AppMain',
-  computed: {
-    ...mapGetters([
-      'sidebar'
-    ]),
-    app_main_width() {
-      if (!this.sidebar.opened) {
-        return 'width: 90%;margin: auto;';
-      }
-    }
-    // key() {
-    //   return this.$route.name !== undefined ? this.$route.name + +new Date() : this.$route + +new Date()
-    // }
-  }
+  name: 'AppMain'
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
 .app-main {
-  /*50 = navbar  */
-  min-height: calc(100vh - 50px);
   position: relative;
-  overflow: hidden;
+  flex-grow: 1;
+  display: flex;
 }
 </style>
