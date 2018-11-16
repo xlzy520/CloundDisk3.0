@@ -192,17 +192,24 @@
 
 <style lang="scss" scoped>
   .file-content {
-    width: 100%;
-    min-width: 980px;
-    height: 100%;
-    user-select: none;
+    // width: 100%;
+    position: relative;
+    flex-grow: 1;
+    // min-width: 980px;
+    // height: 100%;
+    // user-select: none;
     /deep/ .el-scrollbar {
+      position: absolute;
       height: 100%;
+      width: 100%;
       .el-scrollbar__thumb {
         background-color: rgba(64, 158, 255, 0.8);
         &:hover {
           background-color: hsla(220,4%,58%,.5);
         }
+      }
+      .el-scrollbar__wrap{
+        overflow-x: hidden;
       }
     }
     .fileName{

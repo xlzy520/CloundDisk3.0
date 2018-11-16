@@ -159,12 +159,18 @@
 
 <style lang="scss" scoped>
 .admin-list {
+  position: relative;
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   width: 100%;
   &-header {
     flex-shrink: 0;
+  }
+  &-content {
+    flex-grow: 1;
+    position: relative;
+    display: flex;
   }
 }
 </style>

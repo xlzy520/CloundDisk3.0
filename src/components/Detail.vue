@@ -98,7 +98,7 @@
     data() {
       return {
         isLoad: true,
-        versionDetail: null
+        versionDetail: {}
       };
     },
     computed: {
