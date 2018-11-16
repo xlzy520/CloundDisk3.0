@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <list-header @action="dispatchAction"></list-header>
+  <div class="admin-list">
+    <list-header class="admin-list-header" @action="dispatchAction"></list-header>
     <List v-if="component" :fileList="List"></List>
     <thumbnail v-else :fileList="List"></thumbnail>
     <upload-file :visible="upload.visible" :type="upload.type" @closeDialog="closeDialog"></upload-file>
@@ -25,7 +25,7 @@
   import MoveFile from '@/components/MoveFile.vue';
   // TODO 用事件冒泡的方式处理listHeader里的按钮
   export default {
-    name: 'index',
+    name: 'admin-list',
     data() {
       return {
         component: true,
@@ -163,8 +163,14 @@
   };
 </script>
 
-<style lang="scss">
-  .el-scrollbar__thumb {
-    background-color: rgba(64, 158, 255, .8);
+<style lang="scss" scoped>
+.admin-list {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  &-header {
+    flex-shrink: 0;
   }
+}
 </style>

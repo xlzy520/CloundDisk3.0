@@ -1,3 +1,5 @@
-export { default as Navbar } from './Navbar';
-export { default as Sidebar } from './Sidebar';
-export { default as AppMain } from './AppMain';
+export default {
+  Navbar: () => import('./Navbar.vue'),
+  Sidebar: () => import('./Sidebar.vue'),
+  AppMain: () => import('./AppMain.vue'),
+};

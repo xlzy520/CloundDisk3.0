@@ -1,9 +1,9 @@
 <template>
   <div class="app-wrapper">
-    <div class="left-menu" :class="classObj">
+    <div class="app-wrapper-menu" :class="classObj" @transitionend="">
       <sidebar></sidebar>
     </div>
-    <div class="main-container">
+    <div class="app-wrapper-main">
       <navbar></navbar>
       <app-main></app-main>
     </div>
@@ -11,15 +11,13 @@
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain } from './components';
+import childComponents from './components';
 import ResizeMixin from './mixin/ResizeHandler';
 
 export default {
   name: 'layout',
   components: {
-    Navbar,
-    Sidebar,
-    AppMain
+    ...childComponents
   },
   mixins: [ResizeMixin],
   computed: {
@@ -45,12 +43,15 @@ export default {
   // @import "src/styles/mixin.scss";
   .app-wrapper {
     // @include clearfix;
-    display: flex;
     position: relative;
-    // height: 100%;
-    // width: 100%;
-    .left-menu {
-      width: 250px;
+    display: flex;
+    min-width: 1300px;
+    min-height: 900px;
+    height: 100%;
+    &-menu {
+      position: relative;
+      width: 200px;
+      flex-shrink: 0;
       background-color: rgba(239, 248, 224, 0.9);
       transition: width 0.28s;
       border-right: 1px solid #e2e2e2;
@@ -59,10 +60,13 @@ export default {
         width: 0;
       }
     }
-    .main-container {
-      flex-grow: 1;
-      min-width: 1300px;
+    &-main {
       position: relative;
+      flex-shrink: 1;
+      flex-grow: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
     }
   }
 </style>

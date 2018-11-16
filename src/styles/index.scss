@@ -2,7 +2,6 @@
 @import './mixin.scss';
 @import './transition.scss';
 @import './element-ui.scss';
-@import './sidebar.scss';
 
 body {
   height: 100%;
@@ -73,9 +72,9 @@ a:hover {
 }
 
 //main-container全局样式
-.app-main{
-  min-height: 100%
-}
+// .app-main{
+//   min-height: 100%
+// }
 
 .app-container {
   padding: 20px;
