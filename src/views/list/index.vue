@@ -1,13 +1,13 @@
 <template>
-  <div class="admin-list">
-    <list-header class="admin-list-header" @action="dispatchAction"></list-header>
-    <List v-if="component" :fileList="List"></List>
+  <div>
+    <list-header @action="dispatchAction"></list-header>
+    <List v-if="isList" :fileList="List"></List>
     <thumbnail v-else :fileList="List"></thumbnail>
-    <upload-file :visible="upload.visible" :type="upload.type" @closeDialog="closeDialog"></upload-file>
-    <delete-file :visible="deleteVisible" @closeDialog="closeDialog"></delete-file>
+    <upload-file ref="upload"></upload-file>
+    <delete-file ref="delFile"></delete-file>
     <detail v-if="detailVisible" @closeDialog="closeDialog"></detail>
     <version-list v-if="versionVisible" @closeDialog="closeDialog"></version-list>
-    <m-d-editor></m-d-editor>
+    <md-editor></md-editor>
     <move-file v-if="move.visible" :type="move.type" @closeDialog="closeDialog"></move-file>
     <img-editor v-if="imgEditor.visible"></img-editor>
   </div>
@@ -23,20 +23,16 @@
   import Detail from '@/components/Detail.vue';
   import VersionList from '@/components/VersionList.vue';
   import MoveFile from '@/components/MoveFile.vue';
+  import MdEditor from "../../components/MDEditor";
   // TODO 用事件冒泡的方式处理listHeader里的按钮
   export default {
-    name: 'admin-list',
+    name: 'index',
     data() {
       return {
-        component: true,
+        isList: true,
         detailVisible: false,
         versionVisible: false,
         move: {
-          visible: false,
-          type: 'upload'
-        },
-        deleteVisible: false,
-        upload: {
           visible: false,
           type: 'upload'
         }
@@ -54,6 +50,7 @@
       }
     },
     components: {
+      MdEditor,
       ImgEditor: ()=>import('@/components/ImgEditor/index.vue'),
       VersionList,
       Detail,
@@ -85,10 +82,7 @@
             this.refresh();
             break;
           case 'upload':
-            this.upload = {
-              visible: true,
-              type: 'upload'
-            };
+            this.$refs.upload.visible = true;
             break;
           case 'rename':
             this.rename();
@@ -106,16 +100,14 @@
             };
             break;
           case 'update':
-            this.upload = {
-              visible: true,
-              type: 'update'
-            };
+            this.$refs.upload.type = 'update';
+            this.$refs.upload.visible = true;
             break;
           case 'version':
             this.versionVisible = true;
             break;
           case 'delete':
-            this.deleteVisible = true;
+            this.$refs.delFile.visible = true;
             break;
           case 'detail':
             this.detailVisible = true;
@@ -124,10 +116,10 @@
             this.$store.dispatch('ToggleSearch', false);
             break;
           case 'List':
-            this.component = true;
+            this.isList = true;
             break;
           case 'Thumbnail':
-            this.component = false;
+            this.isList = false;
             break;
           default:
             break;
@@ -164,13 +156,13 @@
 </script>
 
 <style lang="scss" scoped>
-.admin-list {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  &-header {
-    flex-shrink: 0;
+  .admin-list {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    &-header {
+      flex-shrink: 0;
+    }
   }
-}
 </style>

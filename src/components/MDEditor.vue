@@ -39,7 +39,7 @@
   import '@/styles/markdown.css';
   import { updateMarkdown } from '@/api/file';
   export default {
-    name: 'MDEditor',
+    name: 'md-editor',
     computed: {
       ...mapGetters([
         'docValue',
