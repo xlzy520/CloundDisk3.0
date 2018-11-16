@@ -46,8 +46,8 @@
 </template>
 
 <script>
-  import nameEditor from '@/components/RenameFile';
-  import RenameFile from '@/components/RenameFile/index';
+  // import nameEditor from '@/components/RenameFile';
+  import RenameFile from '@/components/RenameFile.vue';
 
   export default {
     props: {
@@ -56,7 +56,7 @@
         required: true
       }
     },
-    components: { RenameFile, nameEditor },
+    components: { RenameFile },
     data() {
       return {
         isIndeterminate: false,

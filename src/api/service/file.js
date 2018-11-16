@@ -29,16 +29,9 @@ export function renameFile(values) {
     ffiletype
   });
 }
-
-// export function updateMarkdown(data) {
-//   return request({
-//     url: '/djcpsdocument/category/fileUpload.do',
-//     method: 'post',
-//     processData: false,
-//     contentType: false,
-//     data: data
-//   });
-// }
+export function updateMarkdown(data) {
+  return categoryService('/fileUpload.do', data, 'post', {processData: false, contentType: false});
+}
 
 // version
 export function getVersionList(fversionsign) {
@@ -47,6 +40,7 @@ export function getVersionList(fversionsign) {
 export function versionRollback(oldVer, newVer) {
   return versionService('/versionBack.do', {oldDisplayFileSgin: oldVer, newDisplayFileSgin: newVer});
 }
+
 // search
 export function getSearchResult(queryString, categoryName) {
   return searchService('/list.do', {queryString: queryString, categoryName: categoryName, sort: 1, curPage: 1});
@@ -54,6 +48,7 @@ export function getSearchResult(queryString, categoryName) {
 export function getFullTextSearchResult(queryString, categoryName) {
   return searchService('/fullList.do', {queryString: queryString, categoryName: categoryName, sort: 1, curPage: 1});
 }
+
 // fileManager
 export function getDocInfo(id) {
   return fileManagerService('/getFile.do', { id }, 'get');

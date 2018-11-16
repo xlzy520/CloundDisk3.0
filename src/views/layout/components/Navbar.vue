@@ -10,8 +10,8 @@
       <span class="nav__logo__title">东经云盘</span>
     </div>
     <div class="nav-router">
-      <router-link to="/recycle" class="nav-router-text recycle">回收站</router-link>
-      <router-link to="/record"  v-if="false" class="nav-router-text record">操作记录</router-link>
+      <router-link to="/index/recycle" class="nav-router-text recycle">回收站</router-link>
+      <router-link to="/index/record"  v-if="false" class="nav-router-text record">操作记录</router-link>
     </div>
     <!--<form action="www.baidu.com" enctype="multipart/form-data" method="post">-->
       <!--<input type="hidden" name="type" value="1"/>-->
@@ -65,8 +65,8 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import Hamburger from '@/components/Hamburger';
-import MdInput from '@/components/MDinput';
+import Hamburger from '@/components/Hamburger.vue';
+import MdInput from '@/components/MDinput.vue';
 import { Loading } from 'element-ui';
 export default {
   components: {
@@ -111,7 +111,7 @@ export default {
       this.$store.dispatch('SetSearchList', this.query).then(() => {
         loadingSearch.close();
         if (this.$route.name === '回收站') {
-          this.$router.push({ path: `/list/index` });
+          this.$router.push({ path: '/index/list' });
         }
       }).catch(() => {
         loadingSearch.close();

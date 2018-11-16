@@ -8,8 +8,8 @@
       :expand-on-click-node="false"
       @node-expand="nodeExpand"
       @node-click="handleNodeClick">
-        <span class="custom-tree-node" slot-scope="{node,data}" :title="node.label">
-          <svg-icon  icon-class="1"></svg-icon>
+        <span class="custom-tree-node" slot-scope="{node, data}" :title="node.label">
+          <svg-icon icon-class="1"></svg-icon>
           <span>{{ node.label }}</span>
         </span>
     </el-tree>
@@ -18,7 +18,6 @@
 <script>
   import { mapGetters } from 'vuex';
   import { getCategory } from '@/api/file';
-  import SidebarItem from './SidebarItem';
 
   export default {
     data() {
@@ -36,7 +35,6 @@
         }
       };
     },
-    components: { SidebarItem },
     props: ['type'],
     computed: {
       ...mapGetters([
@@ -50,19 +48,16 @@
         if (this.type === 'sidebar') {
           this.$store.dispatch('GetCategory', data.fcategoryid);
           this.$store.dispatch('SetParentId', data.fcategoryid);
-          if (this.$router.path !== '/list/index') {
-            this.$router.push({ path: `/list/index?`, query: { dirid: data.fcategoryid }});
-          }
-        } else {
-          this.$emit('getFolderid', data.fcategoryid);
+          this.$router.push({ path: '/index/list', query: { dirid: data.fcategoryid }});
         }
       },
       async nodeExpand(data, node) {
         let arr = await getCategory(data.fcategoryid);
-        arr = arr.data.tableList;
+        let folderObjs = arr.data.tableList;
         node.childNodes = [];
-        if (arr.length >= 1) {
-          for (const item of this.CreateFolderObj(arr)) {
+        if (folderObjs.length > 0) {
+          let temp = folderObjs.filter(item => item.ffiletype === 1);
+          for (const item of temp) {
             this.$refs.folderTree.append(item, node);
           }
           node.childNodes.map((item) => {
@@ -71,24 +66,12 @@
             }
           });
         }
-      },
-      getFolder(arr) {
-        return arr.filter((item) => {
-          return item.ffiletype === 1;
-        });
-      },
-      CreateFolderObj(arr) {
-        const folderArr = this.getFolder(arr);
-        folderArr.map((item) => {
-          Object.defineProperties(item, { 'childrenFolder': { value: [], writable: true }});
-        });
-        return folderArr;
       }
     }
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import "@/styles/variables.scss";
   .custom-tree-node {
     flex: 1;
@@ -97,14 +80,12 @@
     font-size: 14px;
     padding-right: 8px;
     .svg-icon {
-      width: 2em!important;
-      height: 2em!important;
+      width: 2em;
+      height: 2em;
       vertical-align: -0.15em;
       fill: currentColor;
       overflow: hidden;
-      margin-right: 0!important;
+      margin-right: 0;
     }
   }
-
-
 </style>
