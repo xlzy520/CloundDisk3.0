@@ -152,6 +152,7 @@ export default {
   }
   .recycle-container{
     padding: 14px 24px 0 24px;
+    width: 100%;
     .recycle-btns{
       padding: 5px 0;
       .el-button{
