@@ -70,7 +70,7 @@
         return true;
       },
       imgSrc(item) {
-        return `${process.env.UPLOAD_API}/djcpsdocument/fileManager/downloadFile.do?id=` + item.fcategoryid;
+        return `/djcpsdocument/fileManager/downloadFile.do?id=` + item.fcategoryid;
       },
       handleCheckAllChange(val) {
         this.selectedData = val ? this.fileList : [];
@@ -106,10 +106,10 @@
             this.$store.dispatch('GetDocInfo', fcategoryid);
             break;
           case 3: case 4: case 5:
-            window.open(`${process.env.OFFICE_API}/#/office?id=${fcategoryid}&vid=${fversionsign}`);
+            window.open(`/#/office?id=${fcategoryid}&vid=${fversionsign}`);
             break;
           case 6:
-            window.open(`${process.env.OFFICE_API}/djcpsdocument/fileManager/previewPdf.do?id=${fcategoryid}`);
+            window.open(`/djcpsdocument/fileManager/previewPdf.do?id=${fcategoryid}`);
             break;
           case 7:
             if (parseInt(fsize) > (1024 * 1024 * 10)) {
