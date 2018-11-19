@@ -103,7 +103,7 @@
             this.$router.push({ path: '/index/list?', query: { dirid: fcategoryid }});
             break;
           case 2: case 9:
-            this.$store.dispatch('GetDocInfo', fcategoryid);
+            this.$store.dispatch('GetDocInfo', {fcategoryid, fversionsign});
             break;
           case 3: case 4: case 5:
             window.open(`/#/office?id=${fcategoryid}&vid=${fversionsign}`);
