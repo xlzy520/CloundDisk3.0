@@ -67,7 +67,7 @@ export default {
       'selectedData'
     ]),
     uploadFileUrl() {
-      return process.env.UPLOAD_API + '/djcpsdocument/category/fileUpload.do?';
+      return '/djcpsdocument/category/fileUpload.do?';
     },
     title() {
       return this.type === 'upload' ? '文件上传' : '文件更新';
