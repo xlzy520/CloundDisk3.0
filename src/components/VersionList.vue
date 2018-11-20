@@ -119,9 +119,11 @@
   import { getVersionList, versionRollback, getDocInfo } from '@/api/file';
   import { formatSize, parseTime } from '@/utils/index';
   import vueCodeDiff from 'vue-code-diff';
+  import fileType from '@/mixins/fileType';
 
   export default {
     name: 'VersionList',
+    mixins: [ fileType ],
     components: {
       vueCodeDiff
     },
@@ -203,29 +205,6 @@
       sizeFormatter(row) {
         if (row.filesize !== null) {
           return formatSize(Number(row.filesize.replace('B', '')));
-        }
-      },
-      fileType({ fvsgin, filesgin }) {
-        switch (this.selectedData[0].ffiletype) {
-          case 1:
-            this.$store.dispatch('GetCategory', filesgin);
-            this.$store.dispatch('SetParentId', filesgin);
-            if (this.$router.path !== '/list/index') {
-              this.$router.push({ path: `/list/index?`, query: { dirid: filesgin }});
-            }
-            break;
-          case 2:
-            this.$store.dispatch('GetDocInfo', filesgin);
-            break;
-          case 3: case 4: case 5:
-            window.open(`/#/office?id=${filesgin}&vid=${fvsgin}`);
-            break;
-          case 6:
-            window.open(`/djcpsdocument/fileManager/previewPdf.do?id=${filesgin}`);
-            break;
-          case 7:
-            this.$store.dispatch('ToggleImgEditor', filesgin);
-            break;
         }
       },
       async diff() {

@@ -1,41 +1,5 @@
 <template>
   <div class="file-content" ref="fileContent">
-    <!-- <el-scrollbar>
-      <div class="file-list">
-          <el-table
-            ref="multipleTable"
-            :data="fileList"
-            :row-style="highlightRow"
-            @selection-change="handleSelectionChange"
-            @row-click="clickRow"
-            @cell-dblclick="dblclickRow"
-            @row-contextmenu="showMenu"
-            >
-            <el-table-column type="selection" width="55"></el-table-column>
-
-            <el-table-column label="名称" width="480px" prop="fname" sortable>
-              <template slot-scope="scope">
-                <div v-if="scope.row.isEditor">
-                <rename-file type="List"></rename-file>
-                </div>
-                <div v-else="!scope.row.isEditor">
-                  <svg-icon :icon-class="String(scope.row.ffiletype)"></svg-icon>
-                  <span class="fileName"
-                        @click.stop="fileType(scope.row)">{{ scope.row.fname }}</span>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column label="修改时间" sortable prop="fupdatetime" :formatter="formatterTime"></el-table-column>
-            <el-table-column label="大小" :formatter="sizeFormatter" sortable :sort-method="sizeSort"></el-table-column>
-            <el-table-column prop="foperator" label="创建者" v-if="!hasSearch"></el-table-column>
-            <el-table-column label="所在目录" v-if="hasSearch" key="zhibi">
-              <template slot-scope="scope">
-                <span class="fileAddress" @click.stop="enterParentDic(scope.row)" :key="scope.row.fcategoryid">文件位置</span>
-              </template>
-            </el-table-column>
-          </el-table>
-      </div>
-    </el-scrollbar> -->
     <base-scrollbar ref="scrollbar">
       <base-table
         ref="baseTable"
@@ -53,11 +17,13 @@
 <script>
   import RenameFile from '@/components/RenameFile.vue';
   import { mapGetters } from 'vuex';
+  import fileType from '@/mixins/fileType';
   import { formatSize, parseTime, sizeSort } from '@/utils/index';
-  import baseTable from '../../../components/baseTable.vue';
-  import baseScrollbar from '../../../components/baseScrollbar.vue';
+  import baseTable from '@/components/baseTable.vue';
+  import baseScrollbar from '@/components/baseScrollbar.vue';
   export default {
     name: 'List',
+    mixins: [fileType],
     props: {
       fileList: {
         require: true,
@@ -132,36 +98,6 @@
       ])
     },
     methods: {
-      fileType({ ffiletype, fcategoryid, fversionsign, fsize, fname}) {
-        switch (ffiletype) {
-          case 1: //FOLDER
-            this.$store.dispatch('GetCategory', fcategoryid);
-            this.$store.dispatch('SetParentId', fcategoryid);
-            this.$router.push({ path: '/index/list', query: { dirid: fcategoryid }});
-            break;
-          case 2: case 9: //Text、Markdown
-            this.$store.dispatch('GetDocInfo', { fcategoryid, fversionsign });
-            break;
-          case 3: case 4: case 5: //office
-            window.open(`/#/office?id=${fcategoryid}&vid=${fversionsign}`);
-            break;
-          case 6: //PDF
-            window.open(`/djcpsdocument/fileManager/previewPdf.do?id=${fcategoryid}`);
-            break;
-          case 7: //IMG
-            if (parseInt(fsize) > (1024 * 1024 * 10)) {
-              this.$message1000('图片大小超过10M,无法预览', 'error');
-            } else {
-              this.$store.dispatch('ToggleImgEditor', fcategoryid);
-            }
-            break;
-          case 8: //XMind
-            window.sessionStorage.setItem('xmindName', fname);
-            window.sessionStorage.setItem('xmindID', fcategoryid);
-            window.open(`/static/xmind/edit.html`);
-            break;
-        }
-      },
       handleSelectionChange(rows) {
         this.rows = rows;
         if (this.fileList.length > 0) {

@@ -47,8 +47,9 @@
 
 <script>
   import RenameFile from '@/components/RenameFile.vue';
-
+  import fileType from '@/mixins/fileType';
   export default {
+    mixins: [ fileType ],
     props: {
       fileList: {
         type: Array,
@@ -70,7 +71,7 @@
         return true;
       },
       imgSrc(item) {
-        return `/djcpsdocument/fileManager/downloadFile.do?id=` + item.fcategoryid;
+        return `/djcpsdocument/fileManager/downloadFile.do?id=${item.fcategoryid}`;
       },
       handleCheckAllChange(val) {
         this.selectedData = val ? this.fileList : [];
@@ -90,34 +91,6 @@
               this.$set(item, 'isEditor', false);
             }
           });
-        }
-      },
-      fileType({ ffiletype, fcategoryid, fversionsign, fsize }) {
-        switch (ffiletype) {
-          case 1:
-            this.$store.dispatch('GetCategory', fcategoryid);
-            this.$store.dispatch('SetParentId', fcategoryid);
-            if (this.selectedData.length >= 1) {
-              this.handleCheckAllChange();
-            }
-            this.$router.push({ path: '/index/list?', query: { dirid: fcategoryid }});
-            break;
-          case 2: case 9:
-            this.$store.dispatch('GetDocInfo', {fcategoryid, fversionsign});
-            break;
-          case 3: case 4: case 5:
-            window.open(`/#/office?id=${fcategoryid}&vid=${fversionsign}`);
-            break;
-          case 6:
-            window.open(`/djcpsdocument/fileManager/previewPdf.do?id=${fcategoryid}`);
-            break;
-          case 7:
-            if (parseInt(fsize) > (1024 * 1024 * 10)) {
-              this.$message1000('图片大小超过10M,无法预览', 'error');
-            } else {
-              this.$store.dispatch('ToggleImgEditor', fcategoryid);
-            }
-            break;
         }
       }
     },
