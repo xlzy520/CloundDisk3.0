@@ -108,7 +108,6 @@ export default {
         });
         this.$set(this.fileList[0], 'isEditor', true);
         this.$store.dispatch('SetSelectedData', []);
-        console.timeEnd(2);
       });
     },
     downloadFile() {
@@ -120,7 +119,6 @@ export default {
       this.$refs.downloadBtn.click();
     },
     handleCommand(command) {
-      console.time(2);
       switch (command) {
         case 'newFolder': this.newFolder(); break;
         case 'newMarkdown':

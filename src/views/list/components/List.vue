@@ -70,7 +70,7 @@
           return (a - b);
         }
       },
-      fileType({ ffiletype, fcategoryid, fversionsign, fsize}) {
+      fileType({ ffiletype, fcategoryid, fversionsign, fsize, fname}) {
         switch (ffiletype) {
           case 1: //FOLDER
             this.$store.dispatch('GetCategory', fcategoryid);
@@ -92,6 +92,11 @@
             } else {
               this.$store.dispatch('ToggleImgEditor', fcategoryid);
             }
+            break;
+          case 8: //XMind
+            window.sessionStorage.setItem('xmindName', fname);
+            window.sessionStorage.setItem('xmindID', fcategoryid);
+            window.open(`/static/xmind/edit.html`);
             break;
         }
       },
