@@ -116,7 +116,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import { getVersionList, versionRollback, getDocInfo } from '@/api/file';
+  import fileService from '@/api/service/file.js';
   import { formatSize, parseTime } from '@/utils/index';
   import vueCodeDiff from 'vue-code-diff';
   import fileType from '@/mixins/fileType';
@@ -167,7 +167,7 @@
       async rollBack(newVer) {
         this.loading = true;
         if (this.selectedData.length === 1) {
-          const version = await versionRollback(this.tableData[0].filesgin, newVer);
+          const version = await fileService.versionRollback(this.tableData[0].filesgin, newVer);
           if (version.success) {
             this.loading = false;
             this.$message1000('版本回退成功', 'success');
@@ -183,7 +183,7 @@
         this.loading = true;
         if (this.selectedData.length === 1) {
           try {
-            const versionListInfo = await getVersionList(this.selectedData[0].fversionsign);
+            const versionListInfo = await fileService.getVersionList(this.selectedData[0].fversionsign);
             if (versionListInfo.success) {
               this.loading = false;
               this.tableData = versionListInfo.data;
@@ -215,8 +215,8 @@
           return;
         }
         try {
-          const oldVersion = await getDocInfo(this.oldVersion.value);
-          const newVersion = await getDocInfo(this.newVersion.value);
+          const oldVersion = await fileService.getDocInfo(this.oldVersion.value);
+          const newVersion = await fileService.getDocInfo(this.newVersion.value);
           this.oldStr = oldVersion.data.file;
           this.newStr = newVersion.data.file;
           this.diffLoading = false;

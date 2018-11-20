@@ -91,7 +91,7 @@
 <script>
   import { mapGetters } from 'vuex';
   import { formatSize, parseTime } from '@/utils/index';
-  import { getVersionList } from '@/api/file';
+  import fileService from '@/api/service/file.js';
 
   export default {
     name: 'Detail',
@@ -134,7 +134,7 @@
       },
       async requestData() {
         if (this.selectedData.length === 1 && this.selectedData[0].ffiletype !== 1) {
-          const versionListInfo = await getVersionList(this.selectedData[0].fversionsign, this.$store.getters.parentId);
+          const versionListInfo = await fileService.getVersionList(this.selectedData[0].fversionsign, this.$store.getters.parentId);
           if (versionListInfo.success) {
             versionListInfo.data.filter((item) => {
               if (!item.fdisplay) {

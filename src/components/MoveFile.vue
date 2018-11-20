@@ -20,7 +20,7 @@
 <script>
   import { mapGetters } from 'vuex';
   import treeMenu from '@/components/treeMenu';
-  import { moveFile, copyFile } from '@/api/file';
+  import fileService from '@/api/service/file.js';
   export default {
     name: 'MoveFile',
     components: { treeMenu },
@@ -56,7 +56,7 @@
         this.id = data;
       },
       async moveFile() {
-        moveFile(this.idList, this.id, this.parentId).then(() => {
+        fileService.moveFile(this.idList, this.id, this.parentId).then(() => {
           this.$message1000('文件移动成功', 'success');
           this.close();
           this.$store.dispatch('Refresh');
@@ -65,7 +65,7 @@
         });
       },
       async copyFile() {
-        copyFile(this.idList, this.id).then(() => {
+        fileService.copyFile(this.idList, this.id).then(() => {
           this.$message1000('文件复制成功', 'success');
           this.close();
           this.$store.dispatch('Refresh');

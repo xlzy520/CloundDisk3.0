@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { getRecycleList, recycleRecover, recycleDelete } from '@/api/recycle';
+import recycleService from '@/api/service/recycle.js';
 import { formatSize, parseTime } from '@/utils/index';
 export default {
   name: 'Recycle',
@@ -52,7 +52,7 @@ export default {
     async RecycleList() {
       this.loading = true;
       try {
-        const recycleList = await getRecycleList();
+        const recycleList = await recycleService.getRecycleList();
         this.recycleData = recycleList.data;
       } catch (e) {
         this.$message1000('获取回收站信息错误', 'error');
@@ -93,7 +93,7 @@ export default {
         cancelButtonText: '取消',
         type: 'success'
       }).then(() => {
-        recycleRecover(this.categoryids).then(() => {
+        recycleService.recycleRecover(this.categoryids).then(() => {
           this.$message1000('还原成功', 'success');
           this.RecycleList();
         }).catch(() => {
@@ -107,7 +107,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        recycleDelete(this.categoryids).then(() => {
+        recycleService.recycleDelete(this.categoryids).then(() => {
           this.$message1000('删除成功', 'success');
           this.RecycleList();
         }).catch(() => {
@@ -125,7 +125,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        recycleDelete(this.categoryids).then(() => {
+        recycleService.recycleDelete(this.categoryids).then(() => {
           this.$message1000('清空成功', 'success');
           this.RecycleList();
         }).catch(() => {

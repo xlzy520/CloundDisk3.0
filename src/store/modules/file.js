@@ -1,6 +1,5 @@
-import { getCategory, getDocInfo, getSearchResult, getFullTextSearchResult } from '@/api/file';
-import { Message } from 'element-ui';
-import { Loading } from 'element-ui';
+import fileService from '@/api/service/file.js';
+import { Message, Loading } from 'element-ui';
 const file = {
   state: {
     parentId: '0',
@@ -71,7 +70,7 @@ const file = {
     async GetCategory({ commit }, fcategoryid) {
       return new Promise((resolve, reject) => {
         const loadingInstance = Loading.service({ fullscreen: true });
-        getCategory(fcategoryid).then(response => {
+        fileService.getCategory(fcategoryid).then(response => {
           const Category = response;
           loadingInstance.close();
           commit('GET_CATEGORY', Category.data.tableList);
@@ -87,7 +86,7 @@ const file = {
       commit('SET_PARENT_ID', id);
     },
     async Refresh({ commit }) {
-      const Category = await getCategory(this.getters.parentId);
+      const Category = await fileService.getCategory(this.getters.parentId);
       if (Category.success) {
         commit('GET_CATEGORY', Category.data.tableList);
         commit('SET_FOLDER_NAV', Category.data.navList);
@@ -99,7 +98,7 @@ const file = {
     },
     async GetDocInfo({ commit }, data) {
       const { fcategoryid, fversionsign } = data;
-      const docInfo = await getDocInfo(fcategoryid);
+      const docInfo = await fileService.getDocInfo(fcategoryid);
       if (docInfo.success) {
         docInfo.data.fversionsign = fversionsign;
         commit('GET_DOC_INFO', docInfo.data);
@@ -110,9 +109,9 @@ const file = {
       const { fullTextBoolean, queryString } = data;
       let searchList;
       if (fullTextBoolean) {
-        searchList = await getFullTextSearchResult(queryString);
+        searchList = await fileService.getFullTextSearchResult(queryString);
       } else {
-        searchList = await getSearchResult(queryString);
+        searchList = await fileService.getSearchResult(queryString);
       }
       if (searchList && searchList.success) {
         if (searchList.data.bookList.length === 0) {

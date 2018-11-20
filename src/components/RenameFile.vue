@@ -20,7 +20,7 @@
 </template>
 <script>
   import {mapGetters} from 'vuex';
-  import {renameFile, addCategory} from '@/api/file';
+  import fileService from '@/api/service/file.js';
 
   export default {
     name: 'RenameFile',
@@ -57,7 +57,7 @@
           return false;
         } else if (row.length >= 1) { //  重命名
           try {
-            const editInfo = await renameFile({ ...row[0], newName: this.fileName });
+            const editInfo = await fileService.renameFile({ ...row[0], newName: this.fileName });
             this.$message1000(editInfo.msg, 'success');
             this.$set(this.selectedData[0], 'fname', this.fileName);
             row[0].isEditor = false;
@@ -66,7 +66,7 @@
           }
         } else {
           try { //新建文件夹
-            const editInfo = await addCategory(this.$store.getters.parentId, this.fileName);
+            const editInfo = await fileService.addCategory(this.$store.getters.parentId, this.fileName);
             this.$message1000(editInfo.msg, 'success');
             this.$store.dispatch('Refresh');
           } catch (e) {
