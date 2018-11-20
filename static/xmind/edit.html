@@ -5,14 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <title>XMind</title>
     <script>
-      var openUrl = `/xmind/djcpsdocument/fileManager/downloadFile.do?id=${window.sessionStorage.getItem('xmindID')}`;
-      var saveUrl = '/xmind/djcpsdocument/fileManager/saveXmind.do?';
-      var saveOption = {
-        method: 'POST',
-        contentType: 'applicaiton/json',
+      var selfData = {
+        openUrl: '/djcpsdocument/fileManager/downloadFile.do?id='+ window.sessionStorage.getItem('xmindID'),
+        saveUrl: '/djcpsdocument/fileManager/saveXmind.do?',
+        saveOption: {
+          method: 'POST',
+          contentType: 'applicaiton/json',
+        },
+        personData: {
+          fid: window.sessionStorage.getItem('xmindID'),
+        },
+        afterSaveFunc: function (res) {
+
+        }
       }
-      //保存完成后回调方法
-      var afterSaveFunc = function (res) {}
     </script>
     <script src="kityminder.edit.min.js?_=1542615261686" charset="utf-8"></script>
     <script src="kityminder.config.js?_=1542615261686" charset="utf-8"></script>
