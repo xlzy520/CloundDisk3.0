@@ -1,91 +1,92 @@
 <template>
   <div class="recycle-container">
-    <div class="recycle-btns clearfix">
-      <div class="left" v-show="selected.length > 0">
+    <div class="recycle-container-button">
+      <div class="recycle-container-button-left" v-show="selected.length > 0">
         <el-button size="medium" @click="revert" icon="el-icon-refresh">还原</el-button>
         <el-button size="medium" @click="realDelete" icon="el-icon-delete">删除</el-button>
       </div>
-      <div :class="selected.length > 0? 'right': 'left'">
+      <div :class="{'recycle-container-button-right': selected.length > 0}">
         <el-button size="medium" @click="clearRecycle" icon="el-icon-delete">清空回收站</el-button>
       </div>
     </div>
-    <el-scrollbar style="height: 83vh">
-      <el-table
-        ref="recycleTable"
-        :data="recycleData"
-        :row-style="highlightRow"
-        @selection-change="handleSelectionChange"
-        @row-click="clickRow"
-        v-loading="loading" >
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column label="名称" width="480" prop="fname">
-          <template slot-scope="scope">
-            <div>
-              <svg-icon :icon-class="String(scope.row.ffiletype)"></svg-icon>
-              <span class="fileName">{{ scope.row.fname }}</span>
-            </div>
-          </template>
-        </el-table-column>
-        <el-table-column label="大小" prop="fsize" :formatter="sizeFormatter"></el-table-column>
-        <el-table-column label="删除时间" prop="fupdatetime" :formatter="formatterTime"></el-table-column>
-        <el-table-column label="创建人" prop="foperator"></el-table-column>
-        <el-table-column label="删除人" prop="fupdateor"></el-table-column>
-      </el-table>
-    </el-scrollbar>
+    <div class="recycle-container-content">
+      <base-scrollbar>
+        <base-table
+          :selection="'recycle'"
+          :table-data="tableData"
+          :table-columns="tableColumns"
+          @selection-change="selectChange">
+        </base-table>
+      </base-scrollbar>
+    </div>
   </div>
 </template>
 
 <script>
 import { getRecycleList, recycleRecover, recycleDelete } from '@/api/recycle';
-import { formatSize, parseTime } from '@/utils/index';
+import { formatSize, parseTime, sizeSort } from '@/utils/index';
+import baseTable from '../../components/baseTable.vue';
+import baseScrollbar from '../../components/baseScrollbar.vue';
 export default {
   name: 'Recycle',
   data() {
     return {
-      recycleData: [],
+      tableData: [],
+      tableColumns: [
+        {
+          label: '名称',
+          prop: 'fname',
+          width: 480,
+          sortable: true,
+          render(h, {props: {row}}) {
+            return (
+              <div>
+                <svg-icon iconClass={String(row.ffiletype)}></svg-icon>
+                <span class="file-name">{ row.fname }</span>
+              </div>
+            );
+          }
+        },
+        {
+          label: '大小',
+          prop: 'fsize',
+          sortable: true,
+          sortMethod: sizeSort,
+          formater: (row, col) => formatSize(Number(row[col.prop].replace('B', '')))
+        },
+        {
+          label: '删除时间',
+          prop: 'fupdatetime',
+          sortable: true,
+          formater: (row, col) => parseTime(row[col.prop]) },
+        { label: '创建人', prop: 'foperator' },
+        { label: '删除人', prop: 'fupdateor' },
+      ],
       loading: false,
       selected: [],
-      categoryids: []
+      categoryids: [],
     };
+  },
+  components: {
+    baseTable,
+    baseScrollbar
   },
   methods: {
     async RecycleList() {
       this.loading = true;
+      this.tableData = [];
       try {
-        const recycleList = await getRecycleList();
-        this.recycleData = recycleList.data;
+        let tableList = await getRecycleList();
+        this.tableData = tableList.data;
       } catch (e) {
         this.$message1000('获取回收站信息错误', 'error');
       } finally {
         this.loading = false;
       }
     },
-    formatterTime(row) {
-      if (row.fupdatetime) {
-        return parseTime(row.fupdatetime);
-      }
-    },
-    sizeFormatter(row) {
-      if (row.fsize !== null) {
-        return formatSize(Number(row.fsize.replace('B', '')));
-      }
-    },
-    highlightRow({ row }) {
-      if (this.selected.includes(row)) {
-        return {
-          'background-color': '#d4ecff'
-        };
-      }
-    },
-    handleSelectionChange(rows) {
-      this.selected = rows;
-      this.categoryids = [];
-      this.selected.forEach(item => {
-        this.categoryids.push(item.fcategoryid);
-      });
-    },
-    clickRow(row) {
-      this.$refs.recycleTable.toggleRowSelection(row);
+    selectChange(select) {
+      this.selected = select;
+      this.categoryids = this.selected.map(item => item.fcategoryid);
     },
     revert() {
       this.$confirm('确认还原选中的文件？', '确认还原', {
@@ -116,16 +117,12 @@ export default {
       });
     },
     clearRecycle() {
-      this.categoryids = [];
-      this.recycleData.forEach(item => {
-        this.categoryids.push(item.fcategoryid);
-      });
       this.$confirm('清空回收站？', '清空回收站', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        recycleDelete(this.categoryids).then(() => {
+        recycleDelete(this.tableData.map(item => item.fcategoryid)).then(() => {
           this.$message1000('清空成功', 'success');
           this.RecycleList();
         }).catch(() => {
@@ -137,53 +134,34 @@ export default {
   mounted() {
     this.RecycleList();
   }
-  // beforeRouteEnter(to, from, next) {
-  //   next()
-  // }
 };
 </script>
 
-<style lang="scss">
-  .left{
-    float: left;
+<style lang="scss" scoped>
+.recycle-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  &-button {
+    padding: 10px 20px;
+    & > div {
+      display: inline-block;
+    }
+    &-right {
+      float: right;
+    }
   }
-  .right{
-    float: right;
-  }
-  .recycle-container{
+  &-content {
     position: relative;
+    display: flex;
+    flex-direction: column;
     flex-grow: 1;
-    padding: 14px 24px 0 24px;
-    .recycle-btns{
-      padding: 5px 0;
-      .el-button{
-        box-shadow: inset 0 0 20px 1px powderblue;
-      }
-    }
-    .el-table--enable-row-hover .el-table__body tr:hover>td {
-      background-color: #ecf5ff;
-    }
-    .el-scrollbar__wrap{
-      overflow-x: hidden;
-    }
-    .fileName {
-      cursor: pointer;
-      line-height: 2;
-    }
-    /deep/ .el-scrollbar {
-      position: absolute;
-      height: 100%;
-      width: 100%;
-      .el-scrollbar__thumb {
-        background-color: rgba(64, 158, 255, 0.8);
-        &:hover {
-          background-color: hsla(220,4%,58%,.5);
-        }
-      }
-      .el-scrollbar__wrap{
-        overflow-x: hidden;
-      }
-    }
   }
-
+  /deep/ .file-name {
+    cursor: pointer;
+    line-height: 2;
+    user-select: none;
+  }
+}
 </style>

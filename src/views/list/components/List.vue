@@ -1,6 +1,6 @@
 <template>
   <div class="file-content" ref="fileContent">
-    <el-scrollbar>
+    <!-- <el-scrollbar>
       <div class="file-list">
           <el-table
             ref="multipleTable"
@@ -35,14 +35,27 @@
             </el-table-column>
           </el-table>
       </div>
-    </el-scrollbar>
+    </el-scrollbar> -->
+    <base-scrollbar ref="scrollbar">
+      <base-table
+        ref="baseTable"
+        :selection="'list'"
+        :table-data="fileList"
+        :table-columns="tableColumns"
+        @selection-change="handleSelectionChange"
+        @cell-dblclick="dblclickRow"
+        @row-contextmenu="showMenu">
+      </base-table>
+    </base-scrollbar>
   </div>
 </template>
 
 <script>
   import RenameFile from '@/components/RenameFile.vue';
   import { mapGetters } from 'vuex';
-  import { formatSize, parseTime } from '@/utils/index';
+  import { formatSize, parseTime, sizeSort } from '@/utils/index';
+  import baseTable from '../../../components/baseTable.vue';
+  import baseScrollbar from '../../../components/baseScrollbar.vue';
   export default {
     name: 'List',
     props: {
@@ -53,23 +66,63 @@
     },
     data() {
       return {
-        rows: []
+        rows: [],
+        tableColumns: [
+          {
+            label: '名称',
+            prop: 'fname',
+            width: 480,
+            sortable: true,
+            render(h, {props: {row}}) {
+              return (
+                <div>
+                  <svg-icon iconClass={String(row.ffiletype)}></svg-icon>
+                  <span class="file-name">{ row.fname }</span>
+                </div>
+              );
+            }
+          },
+          {
+            label: '修改时间',
+            prop: 'fupdatetime',
+            sortable: true,
+            formater: (row, col) => parseTime(row[col.prop])
+          },
+          {
+            label: '大小',
+            prop: 'fsize',
+            sortable: true,
+            sortMethod: sizeSort,
+            formater: (row, col) => formatSize(Number(row[col.prop].replace('B', '')))
+          },
+          {
+            label: '创建者',
+            prop: 'foperator',
+            hide: this.hasSearch,
+          },
+          {
+            label: '所在目录',
+            hide: !this.hasSearch,
+            render: (h, {props: {row}}) => {
+              return (
+                <span class="fileAddress" onClick={this.enterParentDic.bind(this, row)} key={row.fcategoryid}>文件位置</span>
+              );
+            }
+          },
+        ],
       };
     },
-    components: { RenameFile },
+    components: {
+      RenameFile,
+      baseTable,
+      baseScrollbar
+    },
     computed: {
       ...mapGetters([
         'selectedData', 'hasSearch'
       ])
     },
     methods: {
-      sizeSort(a, b) {
-        if (a.fsize && b.fsize) {
-          a = Number(a.fsize.replace('B', ''));
-          b = Number(b.fsize.replace('B', ''));
-          return (a - b);
-        }
-      },
       fileType({ ffiletype, fcategoryid, fversionsign, fsize}) {
         switch (ffiletype) {
           case 1:
@@ -112,27 +165,8 @@
           }
         }
       },
-      clickRow(row) {
-        this.fileList.forEach(item => {
-          item.fcategoryid === row.fcategoryid
-            ? this.$refs.multipleTable.toggleRowSelection(row, true)
-            : this.$refs.multipleTable.toggleRowSelection(item, false);
-        });
-      },
       dblclickRow(row) {
         this.fileType(row);
-      },
-      highlightRow({ row }) {
-        if (this.rows.includes(row)) {
-          return {
-            'background-color': '#d4ecff'
-          };
-        }
-      },
-      sizeFormatter(row) {
-        if (row.fsize !== null) {
-          return formatSize(Number(row.fsize.replace('B', '')));
-        }
       },
       async enterParentDic(searchObj) {
         await this.$store.dispatch('SetSelectedData', [searchObj]);
@@ -144,8 +178,8 @@
             });
             if (searchIndex !== -1) {
               this.rows.push(searchIndex);
-              this.$refs.multipleTable.toggleRowSelection(this.fileList[searchIndex]);
-              const elScrollBar = this.$refs['elscrollbar'].$refs['wrap'];
+              this.$refs.baseTable.toggleRowSelection(this.fileList[searchIndex]);
+              const elScrollBar = this.$refs['scrollbar'].$refs['elscrollbar'].$refs['wrap'];
               this.$nextTick(() => {
                 elScrollBar.scrollTop = (53) * searchIndex;
               });
@@ -155,12 +189,7 @@
           }
         });
       },
-      formatterTime({ fupdatetime }) {
-        if (fupdatetime) {
-          return parseTime(fupdatetime);
-        }
-      },
-      showMenu(row, event) {
+      showMenu({row, event}) {
         event.preventDefault();
         const x = event.clientX;
         let y = '';
@@ -170,9 +199,9 @@
           y = event.clientY - 273;
         }
         if (this.selectedData.length <= 1) {
-          this.clickRow(row);
+          this.$refs.baseTable.clickRow(row);
         } else {
-          this.$refs.multipleTable.toggleRowSelection(row, true);
+          this.$refs.baseTable.toggleRowSelection(row, true);
         }
         this.$store.dispatch('RightTogglemenuVisible', [true, x, y]);
         document.getElementsByTagName('body')[0].addEventListener('click', (e) => {
@@ -180,62 +209,35 @@
             this.$store.dispatch('RightTogglemenuVisible', [false]);
           }
         });
-      }
+      },
     },
     mounted() {
-      this.selectedData.forEach(row => {
-        this.$refs.multipleTable.toggleRowSelection(row);
-      });
+      this.$store.dispatch('SetSelectedData', []);
     }
   };
 </script>
 
 <style lang="scss" scoped>
-  .file-content {
-    // width: 100%;
-    position: relative;
-    flex-grow: 1;
-    // min-width: 980px;
-    // height: 100%;
-    // user-select: none;
-    /deep/ .el-scrollbar {
-      position: absolute;
-      height: 100%;
-      width: 100%;
-      .el-scrollbar__thumb {
-        background-color: rgba(64, 158, 255, 0.8);
-        &:hover {
-          background-color: hsla(220,4%,58%,.5);
-        }
-      }
-      .el-scrollbar__wrap{
-        overflow-x: hidden;
-      }
-    }
-    .fileName{
-      cursor: pointer;
-      line-height: 2;
-      &:hover{
-        color: #42b983;
-      }
-    }
-    .el-table--enable-row-hover .el-table__body tr:hover>td {
-      background-color: #ecf5ff;
-    }
-  }
-  .cell .svg-icon{
-    width: 2em;
-    height: 2em;
-    float: left;
-  }
-  .fileAddress{
-    color: #1296db;
-    text-decoration: underline;
+.file-content {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  /deep/ .file-name{
     cursor: pointer;
+    line-height: 2;
+    user-select: none;
     &:hover{
-      text-decoration: none;
+      color: #42b983;
     }
   }
-
+}
+/deep/ .fileAddress{
+  color: #1296db;
+  text-decoration: underline;
+  cursor: pointer;
+  &:hover{
+    text-decoration: none;
+  }
+}
 </style>
 

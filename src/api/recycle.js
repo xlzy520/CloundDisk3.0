@@ -4,6 +4,11 @@ export function getRecycleList() {
   return request({
     url: '/djcpsdocument/category/selectRecycle.do',
     method: 'post'
+  }).then(res => {
+    for (let item of res.data) {
+      item.fsize = item.fsize ? item.fsize : '';
+    }
+    return res;
   });
 }
 
