@@ -73,13 +73,17 @@
             prop: 'fname',
             width: 480,
             sortable: true,
-            render(h, {props: {row}}) {
-              return (
-                <div>
-                  <svg-icon iconClass={String(row.ffiletype)}></svg-icon>
-                  <span class="file-name">{ row.fname }</span>
-                </div>
-              );
+            render: (h, {props: {row}}) => {
+              if (row.isEditor) {
+                return <RenameFile type="List" />;
+              } else {
+                return (
+                  <div>
+                    <svg-icon iconClass={String(row.ffiletype)}></svg-icon>
+                    <span class="file-name" onClick={this.fileType.bind(this, row)}>{ row.fname }</span>
+                  </div>
+                );
+              }
             }
           },
           {

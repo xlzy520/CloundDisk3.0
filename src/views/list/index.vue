@@ -1,10 +1,8 @@
 <template>
   <div class="admin-list">
     <list-header class="admin-list-header" @action="dispatchAction"></list-header>
-    <div class="admin-list-content">
-      <List v-if="isList" :fileList="List"></List>
-      <thumbnail v-else :fileList="List"></thumbnail>
-    </div>
+    <List v-if="isList" :fileList="List"></List>
+    <thumbnail v-else :fileList="List"></thumbnail>
     <upload-file ref="upload"></upload-file>
     <delete-file ref="delFile"></delete-file>
     <detail v-if="detailVisible" @closeDialog="closeDialog"></detail>
@@ -28,7 +26,7 @@
   import MdEditor from "../../components/MDEditor";
   // TODO 用事件冒泡的方式处理listHeader里的按钮
   export default {
-    name: 'admin-list',
+    name: 'index',
     data() {
       return {
         isList: true,
@@ -163,13 +161,9 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  width: 100%;
   &-header {
     flex-shrink: 0;
-  }
-  &-content {
-    flex-grow: 1;
-    position: relative;
-    display: flex;
   }
 }
 </style>

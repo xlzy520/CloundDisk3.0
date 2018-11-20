@@ -1,6 +1,6 @@
 <template>
   <div class="app-wrapper">
-    <div class="app-wrapper-menu" :class="classObj" @transitionend="">
+    <div class="app-wrapper-menu" :class="classObj">
       <sidebar></sidebar>
     </div>
     <div class="app-wrapper-main">
@@ -34,7 +34,7 @@ export default {
         withoutAnimation: this.sidebar.withoutAnimation,
         mobile: this.device === 'mobile'
       };
-    }
+    },
   }
 };
 </script>
@@ -46,11 +46,10 @@ export default {
     position: relative;
     display: flex;
     min-width: 1300px;
-    min-height: 400px;
+    min-height: 600px;
     height: 100%;
     &-menu {
       position: relative;
-      width: 200px;
       flex-shrink: 0;
       background-color: rgba(239, 248, 224, 0.9);
       transition: width 0.28s;
