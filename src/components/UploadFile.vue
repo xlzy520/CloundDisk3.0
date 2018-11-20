@@ -44,18 +44,10 @@ import { mapGetters } from 'vuex';
 import { formatSize } from '@/utils/index';
 export default {
   name: 'UploadFile',
-  props: {
-    visible: {
-      type: Boolean,
-      required: true
-    },
-    type: {
-      type: String,
-      required: true
-    }
-  },
   data() {
     return {
+      visible: false,
+      type: 'upload',
       isLoad: true,
       detail: {},
       fileList: [],
@@ -101,7 +93,7 @@ export default {
     },
     onError() {
       this.$message1000('文件上传出错：网络错误', 'error');
-      this.$emit('closeDialog', 'uploadVisible');
+      this.visible = false;
       this.$refs.upload.clearFiles();
       this.$store.dispatch('Refresh');
       this.speed = '';
@@ -128,7 +120,7 @@ export default {
         this.$message1000('文件上传成功', 'success');
         this.$refs.upload.clearFiles();
         this.fileList = [];
-        this.$emit('closeDialog', 'uploadVisible');
+        this.visible = false;
         this.$store.dispatch('Refresh');
       } else {
         let msg = response.msg;
@@ -139,7 +131,7 @@ export default {
         this.$message1000(msg, 'error');
         this.$refs.upload.clearFiles();
         this.fileList = [];
-        this.$emit('closeDialog', 'uploadVisible');
+        this.visible = false;
         this.$store.dispatch('Refresh');
       }
     },
@@ -192,7 +184,7 @@ export default {
           this.speed = '';
           this.$refs.upload.clearFiles();
           this.fileList = [];
-          this.$emit('closeDialog', 'uploadVisible');
+          this.visible = false;
         } else {
           return;
         }
@@ -200,7 +192,7 @@ export default {
       }
       this.$refs.upload.clearFiles();
       this.fileList = [];
-      this.$emit('closeDialog', 'uploadVisible');
+      this.visible = false;
     }
   }
 };

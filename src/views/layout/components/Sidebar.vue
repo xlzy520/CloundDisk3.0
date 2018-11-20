@@ -1,10 +1,10 @@
 <template>
   <div class="left-menu" ref="menu">
-    <div class="logo">
-      <img src="@/assets/logo/logo.png" width="36" height="36" class="logo-img">
-      <span class="logo-title">东经云盘</span>
+    <div class="left-menu-logo">
+      <img src="@/assets/logo/logo.png" width="36" height="36" class="left-menu-logo-img">
+      <span class="left-menu-logo-title">东经云盘</span>
     </div>
-    <div class="left">
+    <div class="left-menu-content">
       <tree-menu type="sidebar"></tree-menu>
     </div>
   </div>
@@ -67,7 +67,7 @@
   min-width: 200px;
   max-width: 500px;
   cursor: default;
-  .logo {
+  &-logo {
     margin: auto;
     margin-top: 15px;
     margin-bottom: 15px;

@@ -39,12 +39,6 @@
   import { deleteCategory } from '@/api/file';
   export default {
     name: 'DeleteFile',
-    props: {
-      visible: {
-        type: Boolean,
-        required: true
-      }
-    },
     computed: {
       ...mapGetters([
         'selectedData'
@@ -52,6 +46,7 @@
     },
     data() {
       return {
+        visible: false,
         err: '',
         deleteInfo: '',
         deleting: false
@@ -61,12 +56,12 @@
       close() {
         if (this.deleting) {
           if (confirm('删除未完成，您关闭对话框后，删除将继续进行，仍要关闭对话框吗？')) {
-            this.$emit('closeDialog', 'deleteVisible');
+            this.visible = false;
             return;
           }
           return;
         }
-        this.$emit('closeDialog', 'deleteVisible');
+        this.visible = false;
       },
       submitForm() {
         this.deleting = true;
@@ -76,7 +71,7 @@
         });
         deleteCategory(categoryids, this.$store.getters.parentId)
           .then(res => {
-            this.$emit('closeDialog', 'deleteVisible');
+            this.visible = false;
             if (res.success) {
               this.$message1000(res.msg, 'success');
               this.deleting = false;

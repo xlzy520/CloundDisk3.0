@@ -6,7 +6,8 @@
       <h3 class="title">东经云盘</h3>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
-          <svg-icon icon-class="user" />
+          <i class="fa fa-user"></i>
+          <!--<svg-icon icon-class="user" />-->
         </span>
         <el-input name="username"
                   type="text"
@@ -18,8 +19,8 @@
                   placeholder="请输入账号" />
       </el-form-item>
       <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password"></svg-icon>
+        <span class="svg-container svg-container_login">
+          <i class="fa fa-lock"></i>
         </span>
         <el-input name="password"
                   :type="pwdType"
@@ -30,7 +31,7 @@
                   clearable
                   autoComplete="on"
                   placeholder="请输入密码"/>
-          <span class="show-pwd" @click="showPwd"><svg-icon :icon-class="eye" /></span>
+        <span class="show-pwd" @click="showPwd"><i :class="['fa',eye]"></i></span>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
@@ -62,7 +63,7 @@ export default {
         ]
       },
       loading: false,
-      eye: 'eye_close',
+      eye: 'fa-eye-slash',
       pwdType: 'password'
     };
   },
@@ -70,10 +71,10 @@ export default {
     showPwd() {
       if (this.pwdType === 'password') {
         this.pwdType = '';
-        this.eye = 'eye_open';
+        this.eye = 'fa-eye';
       } else {
         this.pwdType = 'password';
-        this.eye = 'eye_close';
+        this.eye = 'fa-eye-slash';
       }
     },
     handleLogin() {
