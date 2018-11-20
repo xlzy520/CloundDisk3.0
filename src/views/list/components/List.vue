@@ -151,7 +151,7 @@
             }
             break;
           case 8: //XMind
-            window.sessionStorage.setItem('xmindName', fname);
+            // window.sessionStorage.setItem('xmindName', fname);
             window.sessionStorage.setItem('xmindID', fcategoryid);
             window.open(`/static/xmind/edit.html`);
             break;

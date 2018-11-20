@@ -151,20 +151,6 @@ export default {
     &-right {
       float: right;
     }
-    /deep/ .el-scrollbar {
-      position: absolute;
-      height: 100%;
-      width: 100%;
-      .el-scrollbar__thumb {
-        background-color: rgba(64, 158, 255, 0.8);
-        &:hover {
-          background-color: hsla(220,4%,58%,.5);
-        }
-      }
-      .el-scrollbar__wrap{
-        overflow-x: hidden;
-      }
-    }
   }
   &-content {
     position: relative;
