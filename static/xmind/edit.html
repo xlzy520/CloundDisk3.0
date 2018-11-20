@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <title>XMind</title>
+    <script>
+      var openUrl = '/djcpsdocument/fileManager/downloadFile.do?id=a102dabf2b54415781eeb272afba63fb';
+      var saveFun = function () {
+        var url = '/djcpsdocument/fileManager/saveXmind.do?';
+        function fetch() {
+          return new Promise(function (resolve, reject) {
+            $.ajax(url, {
+              method: 'POST',
+              contentType: 'applicaiton/json',
+              data: JSON.stringify({
+                'filename': options.filename,
+                'data': JSON.parse(data)
+              }),
+            }).then(function (res) {
+              console.log(res);
+            });
+          }).then(function (e) {
+            return e.target.response;
+          });
+        }
+      }
+    </script>
+    <script src="kityminder.edit.min.js?_=1542615261686" charset="utf-8"></script>
+    <script src="kityminder.config.js?_=1542615261686" charset="utf-8"></script>
+    <script src="lang/zh-cn/zh-cn.js?_=1542615261686" charset="utf-8"></script>
+    <link href="ui/theme/default/css/default.all.css?_=1542615261686" type="text/css" rel="stylesheet" />
+</head>
+<body>
+<div id="content-wrapper">
+    <div id="panel"></div>
+    <div id="kityminder" onselectstart="return false">
+    </div>
+</div>
+</body>
+<script>
+$(function() {
+    /* 依赖库初始化 */
+    zip.inflateJSPath = 'lib/inflate.js';
+});
+
+// create km instance
+km = KM.getMinder('kityminder', window.KITYMINDER_CONFIG);
+
+// init ui for instance
+km.initUI();
+</script>
+</html>
