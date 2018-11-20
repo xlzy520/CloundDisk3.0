@@ -15,6 +15,11 @@ export function getCategory(id) {
     data: {
       fcategoryid: id
     }
+  }).then(res => {
+    for (let item of res.data.tableList) {
+      item.fsize = item.fsize ? item.fsize : '';
+    }
+    return res;
   });
 }
 

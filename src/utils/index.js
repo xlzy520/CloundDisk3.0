@@ -86,3 +86,11 @@ export function formatSize(size) {
     return size + 'B';
   }
 }
+
+export function sizeSort(a, b) {
+  if (a.fsize && b.fsize) {
+    a = Number(a.fsize.replace('B', ''));
+    b = Number(b.fsize.replace('B', ''));
+    return (a - b);
+  }
+}

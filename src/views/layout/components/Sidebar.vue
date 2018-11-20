@@ -1,5 +1,5 @@
 <template>
-  <div class="left-menu">
+  <div class="left-menu" ref="menu">
     <div class="logo">
       <img src="@/assets/logo/logo.png" width="36" height="36" class="logo-img">
       <span class="logo-title">东经云盘</span>
@@ -15,6 +15,45 @@
   export default {
     name: 'left-menu',
     components: { treeMenu },
+    data () {
+      return {
+        draging: false
+      };
+    },
+    mounted () {
+      this.$refs.menu.style.width = '200px';
+      window.addEventListener('mousemove', this.mousemove);
+      window.addEventListener('mousedown', this.mousedown);
+      window.addEventListener('mouseup', this.mouseup);
+    },
+    beforeDestroy () {
+      window.removeEventListener('mousemove', this.mousemove);
+      window.removeEventListener('mousedown', this.mousedown);
+      window.removeEventListener('mouseup', this.mouseup);
+    },
+    methods: {
+      mousemove(event) {
+        if (this.draging) {
+          this.$refs.menu.style.width = `${event.clientX}px`;
+        }
+        event.target.style.cursor = this.atBorder(event, this.$refs.menu) ? 'ew-resize' : '';
+      },
+      mousedown(event) {
+        if (this.atBorder(event, this.$refs.menu)) {
+          this.draging = true;
+        }
+      },
+      mouseup() {
+        this.draging = false;
+      },
+      atBorder(event, box) {
+        if (event.clientX > box.offsetWidth - 4 && event.clientX <= box.offsetWidth) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
   };
 </script>
 
@@ -23,8 +62,11 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: 200px;
+  height: 100%;
   min-width: 200px;
+  max-width: 500px;
+  cursor: default;
   .logo {
     margin: auto;
     margin-top: 15px;
@@ -40,18 +82,5 @@
       vertical-align: middle;
     }
   }
-  // .logo + .el-scrollbar .el-scrollbar__wrap{
-  //   // width: 13vw;
-  //   // height: 91vh;
-  //   overflow-y: hidden;
-  //   // margin-right: 0!important;
-  //   & + .el-scrollbar__bar.is-horizontal{
-  //     height: 1.5vh;
-  //     .el-scrollbar__thumb{
-  //       background-color: rgba(64,158,255,.8);
-  //       height: 1.5vh;
-  //     }
-  //   }
-  // }
 }
 </style>
