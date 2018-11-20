@@ -127,7 +127,7 @@
       ])
     },
     methods: {
-      fileType({ ffiletype, fcategoryid, fversionsign, fsize}) {
+      fileType({ ffiletype, fcategoryid, fversionsign, fsize, fname}) {
         switch (ffiletype) {
           case 1: //FOLDER
             this.$store.dispatch('GetCategory', fcategoryid);

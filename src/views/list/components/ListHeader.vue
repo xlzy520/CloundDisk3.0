@@ -154,7 +154,7 @@ export default {
       width: 100px;
       text-align: center;
       border-radius: 4px;
-      box-shadow: 0px 2px 5px #a9a7a7;
+      box-shadow: 0 2px 5px #a9a7a7;
       color: #000000;
       position: fixed;
       z-index: 200;
