@@ -150,47 +150,45 @@
     }
   };
 </script>
-
-<style>
-  .file-detail .el-dialog__body {
-    padding: 10px 20px !important;
+<style lang="scss">
+  .file-detail,.upload-file{
+    .el-dialog__body {
+      padding: 10px 20px;
+    }
+    .el-dialog__header {
+      padding: 10px 20px 5px 20px;
+    }
   }
+</style>
+<style lang="scss" scoped>
+  /deep/ .file-detail {
+    .el-dialog__headerbtn {
+      top: 14px;
+    }
+    .detail-content{
+      .detail-item {
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 8px;
+        margin-bottom: 8px;
+      }
+      .label {
+        float: left;
+        width: 100px;
+        line-height: 22px;
+        color: #888;
+      }
+      .content {
+        float: right;
+        margin-left: 0;
+        text-align: left;
+        width: 240px;
+        line-height: 22px;
 
-  .file-detail .el-dialog__header {
-    padding: 10px 20px 5px 20px !important;
-  }
-
-  .file-detail .el-dialog__headerbtn {
-    top: 14px;
-  }
-
-  .file-detail .detail-content .detail-item {
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 8px;
-    margin-bottom: 8px;
-  }
-
-  .file-detail .detail-content .label {
-    float: left;
-    width: 100px;
-    line-height: 22px;
-    color: #888;
-  }
-
-  .file-detail .detail-content .content {
-    float: right;
-    margin-left: 0;
-    text-align: left;
-    width: 240px;
-    line-height: 22px;
-
-    color: #333;
-    font-size: 14px;
-    word-break: break-all;
-    overflow: hidden;
-  }
-
-  .file-detail .detail-content .clear {
-    clear: both;
+        color: #333;
+        font-size: 14px;
+        word-break: break-all;
+        overflow: hidden;
+      }
+    }
   }
 </style>

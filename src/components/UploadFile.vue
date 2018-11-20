@@ -12,7 +12,7 @@
     <el-upload
       ref="upload"
       drag
-      :action="uploadFileUrl"
+      action="/djcpsdocument/category/fileUpload.do"
       :on-success="uploadOk"
       :data="uploadData"
       :on-change="onFileChange"
@@ -66,9 +66,6 @@ export default {
       'parentId',
       'selectedData'
     ]),
-    uploadFileUrl() {
-      return '/djcpsdocument/category/fileUpload.do?';
-    },
     title() {
       return this.type === 'upload' ? '文件上传' : '文件更新';
     },
@@ -198,31 +195,24 @@ export default {
 };
 </script>
 
-<style>
-  .upload-file .el-dialog__body {
-    padding: 10px 20px !important;
-  }
-  .upload-file .el-dialog__header {
-    padding: 10px 20px 5px 20px !important;
-  }
-  .upload-file .el-dialog__headerbtn {
-    top:14px;
-  }
-  .upload-file .el-upload__tip {
-    color: #a00;
-  }
-  .upload-file .el-upload-dragger {
-    height: 135px !important;
-  }
-  .upload-file .el-upload-dragger .el-icon-upload {
-    margin: 22px 0 16px;
-  }
-  .update-file .file-desc-label {
-    font-size: 14px;
-    margin: 5px 0 5px 0px;
-    color: #666;
-  }
-  .upload-speed{
-    color: forestgreen;
+<style lang="scss" scoped>
+  /deep/ .upload-file{
+    .el-upload__tip {
+      color: #a00;
+    }
+    .el-upload-dragger {
+      height: 135px;
+    }
+    .el-upload-dragger .el-icon-upload {
+      margin: 22px 0 16px;
+    }
+    .file-desc-label {
+      font-size: 14px;
+      margin: 5px 0 5px 0px;
+      color: #666;
+    }
+    .upload-speed{
+      color: forestgreen;
+    }
   }
 </style>
