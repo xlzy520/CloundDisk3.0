@@ -5,26 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <title>XMind</title>
     <script>
-      var openUrl = '/djcpsdocument/fileManager/downloadFile.do?id=a102dabf2b54415781eeb272afba63fb';
-      var saveFun = function () {
-        var url = '/djcpsdocument/fileManager/saveXmind.do?';
-        function fetch() {
-          return new Promise(function (resolve, reject) {
-            $.ajax(url, {
-              method: 'POST',
-              contentType: 'applicaiton/json',
-              data: JSON.stringify({
-                'filename': options.filename,
-                'data': JSON.parse(data)
-              }),
-            }).then(function (res) {
-              console.log(res);
-            });
-          }).then(function (e) {
-            return e.target.response;
-          });
-        }
+      var openUrl = `/xmind/djcpsdocument/fileManager/downloadFile.do?id=${window.sessionStorage.getItem('xmindID')}`;
+      var saveUrl = '/xmind/djcpsdocument/fileManager/saveXmind.do?';
+      var saveOption = {
+        method: 'POST',
+        contentType: 'applicaiton/json',
       }
+      //保存完成后回调方法
+      var afterSaveFunc = function (res) {}
     </script>
     <script src="kityminder.edit.min.js?_=1542615261686" charset="utf-8"></script>
     <script src="kityminder.config.js?_=1542615261686" charset="utf-8"></script>
@@ -40,14 +28,9 @@
 </body>
 <script>
 $(function() {
-    /* 依赖库初始化 */
     zip.inflateJSPath = 'lib/inflate.js';
 });
-
-// create km instance
 km = KM.getMinder('kityminder', window.KITYMINDER_CONFIG);
-
-// init ui for instance
 km.initUI();
 </script>
 </html>
