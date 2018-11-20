@@ -37,7 +37,7 @@
 <script>
   import { mapGetters } from 'vuex';
   import '@/styles/markdown.css';
-  import { updateMarkdown } from '@/api/file';
+  import fileService from '@/api/service/file.js';
   export default {
     name: 'md-editor',
     computed: {
@@ -139,7 +139,7 @@
             const markdownFile = new File([this.docValue.file], value + this.docValue.suffix);
             markdownData.append('file', markdownFile);
             console.log(markdownData);
-            updateMarkdown(markdownData).then((res) => {
+            fileService.updateMarkdown(markdownData).then((res) => {
               if (res.success) {
                 this.$message1000('文档新建成功。', 'success');
                 this.closeMkdown();
@@ -164,7 +164,7 @@
           }).then(({ value }) => {
             value = value === null ? '' : value;
             markdownData.append('fremarks', value);
-            updateMarkdown(markdownData).then((res) => {
+            fileService.updateMarkdown(markdownData).then((res) => {
               if (res.success) {
                 this.$message1000('文档保存成功。', 'success');
                 this.closeMkdown();
@@ -182,7 +182,7 @@
         const formdata = new FormData();
         formdata.append('file', $file);
         formdata.append('fparentid', '1');
-        const imgInfo = await updateMarkdown(formdata);
+        const imgInfo = await fileService.updateMarkdown(formdata);
         this.$refs.md.$img2Url(pos, '/djcpsdocument/fileManager/downloadFile.do?id=' + imgInfo.data.id);
       }
     },

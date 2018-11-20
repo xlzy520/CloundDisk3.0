@@ -45,7 +45,7 @@
 </template>
 
 <script>
-  import { getAllOperationRecord } from '@/api/record';
+  import recordService from '@/api/service/record.js';
 
   export default {
     name: 'index',
@@ -72,7 +72,7 @@
     methods: {
       async getRecord() {
         try {
-          const res = await getAllOperationRecord();
+          const res = await recordService.getAllOperationRecord();
           this.tableData = res.data;
         } catch (e) {
           this.$message1000(e.message, 'error');

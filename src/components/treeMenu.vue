@@ -16,7 +16,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import { getCategory } from '@/api/file';
+  import fileService from '@/api/service/file.js';
 
   export default {
     data() {
@@ -51,7 +51,7 @@
         }
       },
       async nodeExpand(data, node) {
-        let arr = await getCategory(data.fcategoryid);
+        let arr = await fileService.getCategory(data.fcategoryid);
         let folderObjs = arr.data.tableList;
         node.childNodes = [];
         if (folderObjs.length > 0) {

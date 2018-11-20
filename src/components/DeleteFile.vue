@@ -36,7 +36,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import { deleteCategory } from '@/api/file';
+  import fileService from '@/api/service/file.js';
   export default {
     name: 'DeleteFile',
     computed: {
@@ -69,7 +69,7 @@
         this.selectedData.forEach(item => {
           categoryids.push(item.fcategoryid);
         });
-        deleteCategory(categoryids, this.$store.getters.parentId)
+        fileService.deleteCategory(categoryids, this.$store.getters.parentId)
           .then(res => {
             this.visible = false;
             if (res.success) {

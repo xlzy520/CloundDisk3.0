@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { getRecycleList, recycleRecover, recycleDelete } from '@/api/recycle';
+import recycleService from '@/api/service/recycle.js';
 import { formatSize, parseTime, sizeSort } from '@/utils/index';
 import baseTable from '../../components/baseTable.vue';
 import baseScrollbar from '../../components/baseScrollbar.vue';
@@ -81,7 +81,7 @@ export default {
       this.loading = true;
       this.tableData = [];
       try {
-        let tableList = await getRecycleList();
+        let tableList = await recycleService.getRecycleList();
         this.tableData = tableList.data;
       } catch (e) {
         this.$message1000('获取回收站信息错误', 'error');
@@ -99,7 +99,7 @@ export default {
         cancelButtonText: '取消',
         type: 'success'
       }).then(() => {
-        recycleRecover(this.categoryids).then(() => {
+        recycleService.recycleRecover(this.categoryids).then(() => {
           this.$message1000('还原成功', 'success');
           this.RecycleList();
         }).catch(() => {
@@ -113,7 +113,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        recycleDelete(this.categoryids).then(() => {
+        recycleService.recycleDelete(this.categoryids).then(() => {
           this.$message1000('删除成功', 'success');
           this.RecycleList();
         }).catch(() => {
@@ -127,7 +127,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        recycleDelete(this.tableData.map(item => item.fcategoryid)).then(() => {
+        recycleService.recycleDelete(this.tableData.map(item => item.fcategoryid)).then(() => {
           this.$message1000('清空成功', 'success');
           this.RecycleList();
         }).catch(() => {
