@@ -52,7 +52,12 @@ export default {
           prop: 'fsize',
           sortable: true,
           sortMethod: sizeSort,
-          formater: (row, col) => formatSize(Number(row[col.prop].replace('B', '')))
+          formater: (row, col) => {
+            if (row.ffiletype !== 1) {
+              return formatSize(Number(row[col.prop].replace('B', '')));
+            }
+            return null;
+          }
         },
         {
           label: '删除时间',
