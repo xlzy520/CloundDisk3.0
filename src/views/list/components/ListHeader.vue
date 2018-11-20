@@ -108,11 +108,10 @@ export default {
         });
         this.$set(this.fileList[0], 'isEditor', true);
         this.$store.dispatch('SetSelectedData', []);
-        console.timeEnd(2);
       });
     },
     downloadFile() {
-      this.$refs.downloadBtn.href = `${process.env.UPLOAD_API}/djcpsdocument/fileManager/downloadFile.do?id=${this.selectedData[0].fcategoryid}`;
+      this.$refs.downloadBtn.href = `/djcpsdocument/fileManager/downloadFile.do?id=${this.selectedData[0].fcategoryid}`;
       this.$refs.downloadBtn.download = this.selectedData[0].fname;
     },
     downloadFile2() {
@@ -120,7 +119,6 @@ export default {
       this.$refs.downloadBtn.click();
     },
     handleCommand(command) {
-      console.time(2);
       switch (command) {
         case 'newFolder': this.newFolder(); break;
         case 'newMarkdown':

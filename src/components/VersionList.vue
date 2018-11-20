@@ -82,7 +82,7 @@
               <a
                 href="javascript:void(0)"
                 @click="rollBack(scope.row.filesgin)"
-                title="设为最新版本" v-if="!scope.row.fdisplay">回退</a>
+                title="设为最新版本" v-if="scope.row.fdisplay">回退</a>
               <a size="mini" @click="fileType(scope.row)" v-if="selectedData[0].ffiletype!==0">查看</a>
             </template>
           </el-table-column>
@@ -155,7 +155,7 @@
     },
     methods: {
       downloadVersion(id, evt, filename) {
-        evt.target.href = process.env.UPLOAD_API + '/djcpsdocument/fileManager/downloadFile.do?id=' + id;
+        evt.target.href = '/djcpsdocument/fileManager/downloadFile.do?id=' + id;
         evt.target.download = filename; // 暂时不加版本号
       },
       close() {
@@ -218,10 +218,10 @@
             this.$store.dispatch('GetDocInfo', filesgin);
             break;
           case 3: case 4: case 5:
-            window.open(`${process.env.OFFICE_API}/#/office?id=${filesgin}&vid=${fvsgin}`);
+            window.open(`/#/office?id=${filesgin}&vid=${fvsgin}`);
             break;
           case 6:
-            window.open(`${process.env.OFFICE_API}/djcpsdocument/fileManager/previewPdf.do?id=${filesgin}`);
+            window.open(`/djcpsdocument/fileManager/previewPdf.do?id=${filesgin}`);
             break;
           case 7:
             this.$store.dispatch('ToggleImgEditor', filesgin);

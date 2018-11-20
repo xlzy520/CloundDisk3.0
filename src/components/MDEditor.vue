@@ -183,7 +183,7 @@
         formdata.append('file', $file);
         formdata.append('fparentid', '1');
         const imgInfo = await updateMarkdown(formdata);
-        this.$refs.md.$img2Url(pos, process.env.UPLOAD_API + '/djcpsdocument/fileManager/downloadFile.do?id=' + imgInfo.data.id);
+        this.$refs.md.$img2Url(pos, '/djcpsdocument/fileManager/downloadFile.do?id=' + imgInfo.data.id);
       }
     },
     async mounted() {

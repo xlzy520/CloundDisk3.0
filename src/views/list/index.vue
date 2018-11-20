@@ -26,7 +26,7 @@
   import MdEditor from "../../components/MDEditor";
   // TODO 用事件冒泡的方式处理listHeader里的按钮
   export default {
-    name: 'index',
+    name: 'admin-list',
     data() {
       return {
         isList: true,
