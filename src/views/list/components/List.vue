@@ -1,41 +1,5 @@
 <template>
   <div class="file-content" ref="fileContent">
-    <!-- <el-scrollbar>
-      <div class="file-list">
-          <el-table
-            ref="multipleTable"
-            :data="fileList"
-            :row-style="highlightRow"
-            @selection-change="handleSelectionChange"
-            @row-click="clickRow"
-            @cell-dblclick="dblclickRow"
-            @row-contextmenu="showMenu"
-            >
-            <el-table-column type="selection" width="55"></el-table-column>
-
-            <el-table-column label="名称" width="480px" prop="fname" sortable>
-              <template slot-scope="scope">
-                <div v-if="scope.row.isEditor">
-                <rename-file type="List"></rename-file>
-                </div>
-                <div v-else="!scope.row.isEditor">
-                  <svg-icon :icon-class="String(scope.row.ffiletype)"></svg-icon>
-                  <span class="fileName"
-                        @click.stop="fileType(scope.row)">{{ scope.row.fname }}</span>
-                </div>
-              </template>
-            </el-table-column>
-            <el-table-column label="修改时间" sortable prop="fupdatetime" :formatter="formatterTime"></el-table-column>
-            <el-table-column label="大小" :formatter="sizeFormatter" sortable :sort-method="sizeSort"></el-table-column>
-            <el-table-column prop="foperator" label="创建者" v-if="!hasSearch"></el-table-column>
-            <el-table-column label="所在目录" v-if="hasSearch" key="zhibi">
-              <template slot-scope="scope">
-                <span class="fileAddress" @click.stop="enterParentDic(scope.row)" :key="scope.row.fcategoryid">文件位置</span>
-              </template>
-            </el-table-column>
-          </el-table>
-      </div>
-    </el-scrollbar> -->
     <base-scrollbar ref="scrollbar">
       <base-table
         ref="baseTable"
@@ -53,7 +17,7 @@
 <script>
   import RenameFile from '@/components/RenameFile.vue';
   import { mapGetters } from 'vuex';
-  import { formatSize, parseTime, sizeSort } from '@/utils/index';
+  import { formatSize, parseTime, sizeSort, nameSort } from '@/utils/index';
   import baseTable from '../../../components/baseTable.vue';
   import baseScrollbar from '../../../components/baseScrollbar.vue';
   export default {
@@ -73,6 +37,7 @@
             prop: 'fname',
             width: 480,
             sortable: true,
+            sortMethod: nameSort,
             render: (h, {props: {row}}) => {
               if (row.isEditor) {
                 return <RenameFile type="List" />;
@@ -101,7 +66,7 @@
               if (row.ffiletype !== 1) {
                 return formatSize(Number(row[col.prop].replace('B', '')));
               }
-              return null;
+              return '';
             }
           },
           {
@@ -244,13 +209,13 @@
       color: #42b983;
     }
   }
-}
-/deep/ .fileAddress{
-  color: #1296db;
-  text-decoration: underline;
-  cursor: pointer;
-  &:hover{
-    text-decoration: none;
+  /deep/ .fileAddress{
+    color: #1296db;
+    text-decoration: underline;
+    cursor: pointer;
+    &:hover{
+      text-decoration: none;
+    }
   }
 }
 </style>

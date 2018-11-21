@@ -2,11 +2,12 @@
   <div class="base-table">
     <el-table
       ref="baseTable"
-      :data="tableData"
       highlight-current-row
+      :data="tableData"
+      :row-class-name="tableRowClassName"
+      :header-cell-class-name="'header-cell'"
       @row-click="clickRow"
       @selection-change="handleSelectionChange"
-      :row-class-name="tableRowClassName"
       @cell-dblclick="dblclickRow"
       @row-contextmenu="showMenu">
       <el-table-column
@@ -17,7 +18,7 @@
       <el-table-column v-for="col in columns"
         v-if="!col.hide"
         :key="col.label"
-        v-bind="getColBind(col)"
+        v-bind="col"
         align="left"
         header-align="left">
         <template slot-scope="scope"
@@ -91,16 +92,11 @@ export default {
     });
   },
   methods: {
-    tableRowClassName(row, index) {
+    tableRowClassName({rowIndex: index}) {
       if (index % 2 === 1) {
-        return 'gray-row';
+        return 'double-row';
       }
       return '';
-    },
-    getColBind(col) {
-      const bind = Object.assign({}, col);
-      delete bind.render;
-      return bind;
     },
     getCptBind({ row, column, $index }, col) {
       let index = $index;
@@ -111,11 +107,11 @@ export default {
       if (this.selection === 'list') {
         this.tableData.forEach(item => {
           item.fcategoryid === row.fcategoryid
-            ? this.$refs.baseTable.toggleRowSelection(row, true)
-            : this.$refs.baseTable.toggleRowSelection(item, false);
+            ? this.toggleRowSelection(row, true)
+            : this.toggleRowSelection(item, false);
         });
       } else {
-        this.$refs.baseTable.toggleRowSelection(row);
+        this.toggleRowSelection(row);
       }
     },
     toggleRowSelection(row, boolean) {
@@ -136,7 +132,10 @@ export default {
 <style lang="scss" scoped>
 .base-table {
   width: 100%;
-  .gray-row {
+  /deep/ .double-row {
+    background-color: #f6fdf3;
+  }
+  /deep/ .header-cell {
     background-color: #f4f5fb;
   }
 }
