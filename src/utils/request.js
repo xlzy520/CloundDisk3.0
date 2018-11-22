@@ -22,12 +22,7 @@ service.interceptors.response.use(
   response => {
     const res = response.data;
     if (!res.success) {
-      Message({
-        message: res.msg,
-        type: 'error',
-        duration: 1500
-      });
-      if (res.code === 100602) {
+      if (res.code === 100602 || res.msg === 'token已过期') { //exchangeToken接口没有code，只有msg
         if (router.history.current.path !== '/login') {
           MessageBox.confirm('Token 过期了，您可以取消继续留在该页面，或者重新登录', '确定登出', {
             confirmButtonText: '重新登录',
@@ -35,10 +30,19 @@ service.interceptors.response.use(
             type: 'warning'
           }).then(() => {
             store.dispatch('FedLogOut').then(() => {
-              location.reload();// 为了重新实例化vue-router对象 避免bug
+              router.push('/login');
+              //location.reload();// 为了重新实例化vue-router对象 避免bug
             });
           });
         }
+      } else if (res.msg === '120') {
+        // 报120时，统一登录平台标志
+      } else {
+        Message({
+          message: res.msg,
+          type: 'error',
+          duration: 1500
+        });
       }
       return Promise.reject(res);
     } else {
