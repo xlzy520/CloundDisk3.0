@@ -1,17 +1,16 @@
 <template>
   <el-dialog
-    :title="title"
+    :title="type === 'move' ? '移动到' : '复制到'"
     :visible="true"
     @close="close"
     width="420px"
     custom-class="move-file"
   >
     <el-scrollbar style="height: 100%">
-      <tree-menu type="moveFile" @getFolderid="getFolderid"></tree-menu>
+      <tree-menu type="copyMove" @getFolderid="getFolderId" ></tree-menu>
     </el-scrollbar>
     <span slot="footer" class="dialog-footer">
-    <el-button v-if="moveType" type="primary" @click="moveFile">确 定</el-button>
-    <el-button v-if="!moveType" type="primary" @click="copyFile">确 定</el-button>
+    <el-button type="primary" @click="moveFile">确 定</el-button>
     <el-button @click="close">取 消</el-button>
   </span>
   </el-dialog>
@@ -20,7 +19,7 @@
 <script>
   import { mapGetters } from 'vuex';
   import treeMenu from '@/components/treeMenu';
-  import fileService from '@/api/service/file.js';
+  import fileService from '@/api/service/file';
   export default {
     name: 'MoveFile',
     components: { treeMenu },
@@ -38,40 +37,34 @@
     },
     computed: {
       ...mapGetters([
-        'selectedData',
-        'parentId'
-      ]),
-      title() {
-        return this.type === 'move' ? '移动到' : '复制到';
-      },
-      moveType() {
-        return this.type === 'move';
-      }
+        'selectedData'
+      ])
     },
     methods: {
       close() {
         this.$emit('closeDialog', 'moveVisible');
       },
-      getFolderid(data) {
-        this.id = data;
+      getFolderId(data) {
+        this.id = data.fcategoryid;
       },
-      async moveFile() {
-        fileService.moveFile(this.idList, this.id, this.parentId).then(() => {
-          this.$message1000('文件移动成功', 'success');
-          this.close();
-          this.$store.dispatch('Refresh');
-        }).catch(() => {
-          this.close();
-        });
-      },
-      async copyFile() {
-        fileService.copyFile(this.idList, this.id).then(() => {
-          this.$message1000('文件复制成功', 'success');
-          this.close();
-          this.$store.dispatch('Refresh');
-        }).catch(() => {
-          this.close();
-        });
+      moveFile() {
+        if (this.type === 'move') {
+          fileService.moveFile(this.idList, this.id).then(() => {
+            this.$message1000('文件移动成功', 'success');
+            this.close();
+            this.$store.dispatch('Refresh');
+          }).catch(() => {
+            this.close();
+          });
+        } else {
+          fileService.copyFile(this.idList, this.id).then(() => {
+            this.$message1000('文件复制成功', 'success');
+            this.close();
+            this.$store.dispatch('Refresh');
+          }).catch(() => {
+            this.close();
+          });
+        }
       }
     },
     mounted() {
