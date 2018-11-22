@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import {mapGetters} from 'vuex';
   import Thumbnail from './components/Thumbnail';
   import List from './components/List';
   import ListHeader from './components/ListHeader';
@@ -24,6 +24,8 @@
   import VersionList from '@/components/VersionList.vue';
   import MoveFile from '@/components/MoveFile.vue';
   import MdEditor from "../../components/MDEditor";
+
+  import request from '@/utils/request';
   // TODO 用事件冒泡的方式处理listHeader里的按钮
   export default {
     name: 'index',
@@ -51,7 +53,7 @@
     },
     components: {
       MdEditor,
-      ImgEditor: ()=>import('@/components/ImgEditor/index.vue'),
+      ImgEditor: () => import('@/components/ImgEditor/index.vue'),
       VersionList,
       Detail,
       UploadFile,
@@ -59,7 +61,7 @@
       List,
       ListHeader,
       DeleteFile,
-      MDEditor: ()=>import('@/components/MDEditor.vue'),
+      MDEditor: () => import('@/components/MDEditor.vue'),
       MoveFile
     },
     methods: {
@@ -137,18 +139,39 @@
           this.$set(this.selectedData[0], 'isEditor', true);
         }
         this.$store.dispatch('RightTogglemenuVisible', [false]);
+      },
+      signIn() {
+        this.$store.dispatch('GetInfo');
+        this.$store.dispatch('GetCategory', this.$route.query.dirid || '0');
       }
     },
     async mounted() {
-      if (this.$route.query.hasOwnProperty('dirid')) {
-        this.$router.push({ path: this.$route.fullPath });
-      } else {
-        this.$router.push({ path: `/index/list?dirid=0` });
+      // 如果来自统一登录平台，保存标志
+      if (location.search.indexOf('from') !== -1) {
+        sessionStorage.setItem('from', 'sso');
       }
-      this.$store.dispatch('GetCategory', this.$route.query.dirid);
+      if (location.search.indexOf('oncetoken') !== -1) { //如果oncetoken存在，就拿去请求网盘token，然后获取个人信息
+        if (this.$store.getters.name.length === 0) {
+          const oncetoken = location.search.substring(location.search.indexOf("=") + 1);
+          request.get(`/djcpsdocument/sso/exchangeToken.do?oncetoken=${oncetoken}`)
+          .then(() => {
+            this.signIn();
+          });
+        } else {
+          this.signIn();
+        }
+      } else {
+        this.$store.dispatch('GetCategory', this.$route.query.dirid || '0').catch(err => {
+          if (err.msg === "120") {
+            // 判断来源，如果来自统一登录平台，则根据120跳转，否则跳转到系统本身的登录界面
+            sessionStorage.getItem('from') ? location.href = err.data.url : this.$router.push('/login');
+          }
+        });
+      }
+
       window.addEventListener('popstate', () => {
         if (this.$route.query.dirid) {
-          this.$store.dispatch('GetCategory', this.$route.query.dirid);
+          this.$store.dispatch('GetCategory', this.$route.query.dirid || '0');
         }
       }, false);
     }
@@ -156,14 +179,14 @@
 </script>
 
 <style lang="scss" scoped>
-.admin-list {
-  position: relative;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  &-header {
-    flex-shrink: 0;
+  .admin-list {
+    position: relative;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    &-header {
+      flex-shrink: 0;
+    }
   }
-}
 </style>
