@@ -1,4 +1,4 @@
-import loginService from '@/api/service/login.js';
+import loginService from '@/api/service/login';
 import { getToken, setToken, removeToken } from '@/utils/auth';
 import md5 from 'md5';
 
@@ -43,6 +43,8 @@ const user = {
       return new Promise((resolve, reject) => {
         loginService.getInfo(state.token).then(response => {
           const data = response.data;
+          setToken(data.token);
+          commit('SET_TOKEN', data.token);
           commit('SET_NAME', data.userName);
           commit('SET_AVATAR', data.userIco);
           resolve(response);
