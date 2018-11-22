@@ -102,8 +102,11 @@ export default {
       this.$store.dispatch('ToggleSideBar');
     },
     logout() {
-      this.$store.dispatch('LogOut').then(() => {
-        location.reload(); // 为了重新实例化vue-router对象 避免bug
+      this.$store.dispatch('LogOut').then(()=>{
+        this.$message1000('注销成功。', 'success');
+      }).finally(()=>{
+        this.$router.push('/login');
+        //location.reload(); // 为了重新实例化vue-router对象 避免bug
       });
     },
     getSearchResult() {
@@ -111,7 +114,7 @@ export default {
       this.$store.dispatch('SetSearchList', this.query).then(() => {
         loadingSearch.close();
         if (this.$route.name === '回收站') {
-          this.$router.push({ path: '/index/list' });
+          this.$router.push('/index/list');
         }
       }).catch(() => {
         loadingSearch.close();
