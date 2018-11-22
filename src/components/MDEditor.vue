@@ -136,7 +136,7 @@
             center: true,
             inputErrorMessage: '文件名中不能为空或包含/:*?"<>|等特殊字符'
           }).then(({ value }) => {
-            const markdownFile = new File([this.docValue.file], value + this.docValue.suffix);
+            const markdownFile = new File([this.docValue.file], value + '.md');
             markdownData.append('file', markdownFile);
             console.log(markdownData);
             fileService.updateMarkdown(markdownData).then((res) => {

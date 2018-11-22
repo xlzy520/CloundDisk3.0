@@ -1,52 +1,50 @@
 <template>
   <div class="list">
-    <div class="hd">
+    <div class="list-header">
       <el-checkbox
         :indeterminate="isIndeterminate"
         v-model="selectedData.length >= 1"
         @change="handleCheckAllChange"
-        class="allCheck"
+        class="all-check"
         :disabled="disabled">全选
       </el-checkbox>
     </div>
-    <el-scrollbar tag="ul" style="height: 76vh">
-      <el-checkbox-group v-model="selectedData" @change="handleCheckItemChange">
-        <ul>
-          <li v-for="(item, index) in fileList" :key="index">
-            <div class="box"
-                 @contextmenu.prevent="()=>{return false}"
-                 :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''"
-                 :title="item.fname"
-                 @click="fileType(item)">
-              <div @click.stop="() => {}">
-                <el-checkbox :label="item"></el-checkbox>
+    <div class="list-content" v-if="fileList.length">
+      <base-scrollbar>
+        <el-checkbox-group v-model="selectedData" @change="handleCheckItemChange">
+          <ul>
+            <li v-for="(item, index) in fileList" :key="index">
+              <div class="box"
+                  @contextmenu.prevent="()=>{return false}"
+                  :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''"
+                  :title="item.fname"
+                  @click="fileType(item)">
+                <div @click.stop>
+                  <el-checkbox :label="item"></el-checkbox>
+                </div>
+                <svg-icon v-if="imgIsLarge(item)" :icon-class="String(item.ffiletype)" class-name="icon"/>
+                <img v-else class="icon" :src="imgSrc(item)"/>
+                <div v-if="item.isEditor">
+                  <rename-file type="Thumbnail"></rename-file>
+                </div>
+                <div v-else class="file-name">
+                  <span>{{item.fname}}</span>
+                </div>
               </div>
-              <svg-icon v-if="imgIsLarge(item)" :icon-class="String(item.ffiletype)" className="icon"/>
-              <img
-                v-if="!imgIsLarge(item)"
-                class="icon"
-                width="100"
-                height="100"
-                :src="imgSrc(item)"/>
-              <div v-if="item.isEditor">
-                <rename-file type="Thumbnail"></rename-file>
-              </div>
-              <div class="fileName">
-                <span v-show="!item.isEditor">{{item.fname}}</span>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </el-checkbox-group>
-    </el-scrollbar>
+            </li>
+          </ul>
+        </el-checkbox-group>
+      </base-scrollbar>
+    </div>
     <div class="empty-block" v-if="!fileList.length">
-      <span class="empty-text">暂无数据</span>
+      <span>暂无数据</span>
     </div>
   </div>
 </template>
 
 <script>
   import RenameFile from '@/components/RenameFile.vue';
+  import baseScrollbar from '@/components/baseScrollbar.vue';
 
   export default {
     props: {
@@ -55,7 +53,10 @@
         required: true
       }
     },
-    components: { RenameFile },
+    components: {
+      RenameFile,
+      baseScrollbar
+    },
     data() {
       return {
         isIndeterminate: false,
@@ -142,80 +143,75 @@
     }
   };
 </script>
-<style lang="scss">
-  .list {
-    .el-scrollbar__wrap {
-      overflow-x: hidden;
-    }
-  }
-</style>
 
 <style scoped lang="scss">
   .list {
-    margin: auto;
-    justify-content: center;
-    min-height: 200px;
-    overflow: hidden;
-    .hd {
-      .el-dropdown {
+    position: relative;
+    margin-top: 30px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    &-header {
+      .all-check {
         margin-left: 20px;
-        .el-icon-sort-down {
-          padding: 0 6px;
-        }
       }
-      .allCheck {
-        margin-left: 1.5vw;
-      }
+    }
+    &-content {
+      position: relative;
+      display: flex;
+      flex-grow: 1;
     }
     ul {
       list-style: none;
       display: flex;
-      flex-direction: row;
       flex-wrap: wrap;
       text-align: center;
       li {
-        width: 115px;
-        height: 140px;
-        margin: 0 10px;
-        .box-hover {
-          background: #F4F4F4;
-          .el-checkbox {
-            display: block !important;
-          }
-        }
+        margin: 0px 10px 20px 10px;
         .box {
+          position: relative;
           width: 115px;
           height: 120px;
           border-radius: 6px;
           cursor: pointer;
-          position: absolute;
-          user-select: none;
+          .el-checkbox {
+            display: none;
+            position: absolute;
+            right: 6px;
+            top: 6px;
+            /deep/ .el-checkbox__label {
+              display: none;
+            }
+            /deep/ .el-checkbox__inner {
+              width: 18px;
+              height: 18px;
+              &::after {
+                height: 10px;
+                left: 5px;
+                width: 5px;
+              }
+            }
+          }
           &:hover {
             background: #e3ecf76b;
             .el-checkbox {
               display: block;
             }
           }
-          .el-checkbox {
-            display: none;
-            position: absolute;
-            right: 6px;
-            top: 6px;
-          }
-          .fileName {
-            font-size: 14px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 2;
-            span {
-              display: inline-block;
-              width: 100px;
-              overflow: hidden;
-              white-space: nowrap;
-              text-overflow: ellipsis;
+          &.box-hover {
+            background: #F4F4F4;
+            .el-checkbox {
+              display: block;
             }
+          }
+          .file-name {
+            display: inline-block;
+            width: 100px;
+            font-size: 14px;
+            text-align: center;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
           }
           .icon {
             width: 100px;
@@ -225,35 +221,12 @@
       }
     }
     .empty-block {
-      min-height: 60px;
-      text-align: center;
-      width: 100%;
-      height: 100%;
-      .empty-text {
-        position: absolute;
-        left: 50%;
-        top: 50%;
-        transform: translate(-50%, -50%);
-        color: #909399;
-      }
+      position: relative;
+      display: flex;
+      flex-grow: 1;
+      justify-content: center;
+      align-items: center;
+      color: #909399;
     }
-
-  }
-</style>
-
-<style scoped>
-  .box >>> .el-checkbox .el-checkbox__label {
-    display: none;
-  }
-
-  .box >>> .el-checkbox__inner {
-    width: 18px !important;
-    height: 18px !important;
-  }
-
-  .box >>> .el-checkbox__inner::after {
-    height: 10px;
-    left: 5px;
-    width: 5px
   }
 </style>

@@ -5,7 +5,7 @@
         <el-button type="primary" icon="el-icon-refresh" data-action="refresh">刷新</el-button>
         <el-button type="primary" icon="el-icon-upload" data-action="upload">上传</el-button>
         <el-dropdown type="primary" @command="handleCommand">
-          <el-button type="primary"><i class="el-icon-plus"></i>&nbsp新建<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+          <el-button type="primary" icon="el-icon-plus">新建<i class="el-icon-arrow-down el-icon--right"></i></el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="newFolder">文件夹</el-dropdown-item>
             <el-dropdown-item divided command="newMarkdown">Markdown</el-dropdown-item>
@@ -14,18 +14,13 @@
         <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-edit-outline" data-action="rename">重命名</el-button>
         <el-button type="primary" v-if="[2, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" data-action="copyTo">复制到</el-button>
         <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" data-action="moveTo">移动到</el-button>
-        <a
-          class="el-button el-button--primary"
-          v-if="[2,4].indexOf(isShow) > -1"
-          icon="el-icon-download"
-          @click="downloadFile"
-          ref="downloadBtn"><i class="el-icon-download"></i>下载</a>
+        <a ref="downloadBtn" v-if="[2, 4].indexOf(isShow) > -1" class="el-button el-button--primary el-icon-download" @click="downloadFile">下载</a>
         <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-edit" data-action="update">更新</el-button>
         <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-tickets" data-action="version">版本</el-button>
         <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" data-action="delete">删除</el-button>
         <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-info" data-action="detail">详情</el-button>
       </div>
-      <ul id="menu-btn" v-show="menuVisible" :style="{top:(coordinate[2]+'px'),left:(coordinate[1]+'px')}">
+      <!-- <ul id="menu-btn" v-show="menuVisible" :style="{top:(coordinate[2]+'px'),left:(coordinate[1]+'px')}">
         <li :class="{disabled:!([2, 4].indexOf(isShow)  > -1)}" @click="downloadFile2">下载</li>
         <li :class="{disabled:!([2, 4, 5].indexOf(isShow)  > -1)}" data-action="copyTo">复制到</li>
         <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow)  > -1)}" data-action="moveTo">移动到</li>
@@ -34,17 +29,17 @@
         <li :class="{disabled:!([1, 2, 4].indexOf(isShow)  > -1)}" data-action="rename">重命名</li>
         <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow) > -1)}" data-action="delete">删除</li>
         <li :class="{disabled:!([1, 2, 4].indexOf(isShow)  > -1)}" data-action="detail">详情</li>
-      </ul>
+      </ul> -->
     </div>
     <div class="action-wrap">
       <div class="item">
         <div class="action-item" data-action="List" title="列表">
-          <svg-icon icon-class="list" className="icon" />
+          <svg-icon icon-class="list" class-name="icon" />
         </div>
       </div>
       <div class="item">
         <div class="action-item" data-action="Thumbnail" title="缩略图">
-          <svg-icon icon-class="abbr" className="icon" />
+          <svg-icon icon-class="abbr" class-name="icon" />
         </div>
       </div>
     </div>
@@ -72,20 +67,14 @@ export default {
     ]),
     isShow() {
       const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length;
-      const fileCheckedCount = this.selectedData.filter(item => item.ffiletype === 2).length;
-      const previewCheckedCount = this.selectedData.filter(item => item.ffiletype !== 1 && item.ffiletype !== 2).length;
+      const markdownCheckedCount = this.selectedData.filter(item => item.ffiletype === 2).length;
       if (this.selectedData.length > 1) {
-        if (folderCheckedCount === 0) {
-          return 5;
-        } else {
-          return 3;
-        }
-      } else if (folderCheckedCount === 1 && fileCheckedCount === 0) {
-        return 1;
-      } else if (folderCheckedCount === 0 && fileCheckedCount === 1) {
-        return 2;
-      } else if (folderCheckedCount === 0 && fileCheckedCount === 0 && previewCheckedCount === 1) {
-        return 4;
+        if (folderCheckedCount === 0) return 5;
+        else return 3;
+      } else if (this.selectedData.length === 1) {
+        if (folderCheckedCount === 1) return 1;
+        else if (markdownCheckedCount === 1) return 2;
+        else return 4;
       }
     }
   },
@@ -114,10 +103,10 @@ export default {
       this.$refs.downloadBtn.href = `/djcpsdocument/fileManager/downloadFile.do?id=${this.selectedData[0].fcategoryid}`;
       this.$refs.downloadBtn.download = this.selectedData[0].fname;
     },
-    downloadFile2() {
-      this.downloadFile();
-      this.$refs.downloadBtn.click();
-    },
+    // downloadFile2() {
+    //   this.downloadFile();
+    //   this.$refs.downloadBtn.click();
+    // },
     handleCommand(command) {
       switch (command) {
         case 'newFolder': this.newFolder(); break;
