@@ -17,6 +17,16 @@
           :table-columns="tableColumns"
           @selection-change="selectChange">
         </base-table>
+        <el-pagination
+          class="recycle-pagination"
+          @current-change="handleCurrentChange"
+          :current-page="pagination.currentPage"
+          :page-size="pagination.size"
+          prev-text="上一页"
+          next-text="下一页"
+          layout="prev, pager, next, jumper"
+          :total="pagination.total">
+        </el-pagination>
       </base-scrollbar>
     </div>
   </div>
@@ -70,6 +80,11 @@ export default {
       loading: false,
       selected: [],
       categoryids: [],
+      pagination: {
+        currentPage: 1,
+        total: 0,
+        size: 20
+      }
     };
   },
   components: {
@@ -77,13 +92,17 @@ export default {
     baseScrollbar
   },
   methods: {
+    handleCurrentChange: function (val) {
+      this.pagination.currentPage = val;
+      this.RecycleList();
+    },
     async RecycleList() {
       this.loading = true;
-      this.tableData = [];
       try {
-        let tableList = await recycleService.getRecycleList();
-        this.tableData = tableList.data;
-      } catch (e) {
+        let tableList = await recycleService.getRecycleList(this.pagination.currentPage);
+        this.tableData = tableList.data.result;
+        this.pagination.total = tableList.data.total;
+      } catch (err) {
         this.$message1000('获取回收站信息错误', 'error');
       } finally {
         this.loading = false;
@@ -168,5 +187,41 @@ export default {
     line-height: 2;
     user-select: none;
   }
+  .recycle-pagination{
+    text-align: center;
+    padding: 20px 20px;
+  }
+
 }
+</style>
+<style lang="scss">
+  .recycle-container-content{
+    .el-pagination{
+      .btn-next, .btn-prev{
+        background: #f7f7f7;
+        border-radius: 2px;
+        font-weight: normal;
+        padding: 0 8px;
+      }
+      button:disabled{
+        background: #f7f7f7;
+      }
+      button:disabled:hover{
+        color: #c0c4cc;
+        background: #f7f7f7;
+        cursor: not-allowed;
+      }
+      button:hover,.el-pager li:hover {
+        background: #1886e3;
+        color: #d8d8d8;
+      }
+    }
+    .el-pager li{
+      font-weight: lighter;
+      border-radius: 2px;
+      color: #4d4d4d;
+      background: #f7f7f7;
+      margin-left: 5px;
+    }
+  }
 </style>

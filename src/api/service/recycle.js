@@ -1,8 +1,11 @@
 import categoryService from '../base-service/category.js';
 
 export default {
-  getRecycleList() {
-    return categoryService('/selectRecycle.do');
+  getRecycleList(page) {
+    return categoryService('/selectRecycle.do', {
+      pageSize: 20,
+      pageNo: page
+    });
   },
   recycleRecover(categoryids) {
     return categoryService('/recycleRecover.do', {list: categoryids});
