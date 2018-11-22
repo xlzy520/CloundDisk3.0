@@ -209,4 +209,9 @@
       color: #909399;
     }
   }
+  @media screen and (max-width: 1367px){
+    .list{
+      margin-top: 10px;
+    }
+  }
 </style>
