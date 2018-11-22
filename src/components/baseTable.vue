@@ -4,8 +4,6 @@
       ref="baseTable"
       highlight-current-row
       :data="tableData"
-      :row-class-name="tableRowClassName"
-      :header-cell-class-name="'header-cell'"
       @row-click="clickRow"
       @selection-change="handleSelectionChange"
       @cell-dblclick="dblclickRow"
