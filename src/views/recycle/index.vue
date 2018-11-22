@@ -94,19 +94,18 @@ export default {
   methods: {
     handleCurrentChange: function (val) {
       this.pagination.currentPage = val;
-      this.RecycleList();
+      this.recycleList();
     },
-    async RecycleList() {
+    recycleList() {
       this.loading = true;
-      try {
-        let tableList = await recycleService.getRecycleList(this.pagination.currentPage);
-        this.tableData = tableList.data.result;
-        this.pagination.total = tableList.data.total;
-      } catch (err) {
+      recycleService.getRecycleList(this.pagination.currentPage).then(res=>{
+        this.tableData = res.data.result;
+        this.pagination.total = res.data.total;
+      }).catch(()=>{
         this.$message1000('获取回收站信息错误', 'error');
-      } finally {
+      }).finally(()=>{
         this.loading = false;
-      }
+      });
     },
     selectChange(select) {
       this.selected = select;
@@ -134,7 +133,7 @@ export default {
       }).then(() => {
         recycleService.recycleDelete(this.categoryids).then(() => {
           this.$message1000('删除成功', 'success');
-          this.RecycleList();
+          this.recycleList();
         }).catch(() => {
           this.$message1000('删除失败', 'error');
         });
@@ -148,7 +147,7 @@ export default {
       }).then(() => {
         recycleService.recycleDelete(this.tableData.map(item => item.fcategoryid)).then(() => {
           this.$message1000('清空成功', 'success');
-          this.RecycleList();
+          this.recycleList();
         }).catch(() => {
           this.$message1000('清空失败', 'error');
         });
@@ -156,7 +155,7 @@ export default {
     }
   },
   mounted() {
-    this.RecycleList();
+    this.recycleList();
   }
 };
 </script>
