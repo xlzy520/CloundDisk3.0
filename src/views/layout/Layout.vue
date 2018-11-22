@@ -24,9 +24,6 @@ export default {
     sidebar() {
       return this.$store.state.app.sidebar;
     },
-    device() {
-      return this.$store.state.app.device;
-    },
     classObj() {
       return {
         hideMenu: !this.sidebar.opened,
@@ -48,6 +45,7 @@ export default {
     min-width: 1300px;
     min-height: 600px;
     height: 100%;
+    user-select: none;
     &-menu {
       position: relative;
       flex-shrink: 0;

@@ -18,7 +18,7 @@
   import RenameFile from '@/components/RenameFile.vue';
   import { mapGetters } from 'vuex';
   import fileType from '@/mixins/fileType';
-  import { formatSize, parseTime, sizeSort } from '@/utils/index';
+  import { formatSize, parseTime, sizeSort, nameSort} from '@/utils/index';
   import baseTable from '@/components/baseTable.vue';
   import baseScrollbar from '@/components/baseScrollbar.vue';
   export default {
@@ -39,6 +39,7 @@
             prop: 'fname',
             width: 480,
             sortable: true,
+            sortMethod: nameSort,
             render: (h, {props: {row}}) => {
               if (row.isEditor) {
                 return <RenameFile type="List" />;
@@ -67,7 +68,7 @@
               if (row.ffiletype !== 1) {
                 return formatSize(Number(row[col.prop].replace('B', '')));
               }
-              return null;
+              return '';
             }
           },
           {
@@ -180,13 +181,13 @@
       color: #42b983;
     }
   }
-}
-/deep/ .fileAddress{
-  color: #1296db;
-  text-decoration: underline;
-  cursor: pointer;
-  &:hover{
-    text-decoration: none;
+  /deep/ .fileAddress{
+    color: #1296db;
+    text-decoration: underline;
+    cursor: pointer;
+    &:hover{
+      text-decoration: none;
+    }
   }
 }
 </style>

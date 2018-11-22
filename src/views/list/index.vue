@@ -1,8 +1,8 @@
 <template>
   <div class="admin-list">
     <list-header class="admin-list-header" @action="dispatchAction"></list-header>
-    <List v-if="isList" :fileList="List"></List>
-    <thumbnail v-else :fileList="List"></thumbnail>
+    <list v-if="isList" :file-list="List"></list>
+    <thumbnail v-else :file-list="List"></thumbnail>
     <upload-file ref="upload"></upload-file>
     <delete-file ref="delFile"></delete-file>
     <detail v-if="detailVisible" @closeDialog="closeDialog"></detail>

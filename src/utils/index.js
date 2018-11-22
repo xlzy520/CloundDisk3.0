@@ -1,7 +1,3 @@
-/**
- * Created by jiachenpan on 16/11/18.
- */
-
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
     return null;
@@ -58,21 +54,6 @@ export function formatTime(time, option) {
 }
 
 export function formatSize(size) {
-  /**
-   * qint64 kb = 1024;
-   qint64 mb = kb * 1024;
-   qint64 gb = mb * 1024;
-
-   if (size >= gb) {
-        return QString::number(qRound(100*(double)size/gb)/100.0)+"GB";
-    } else if (size >= mb) {
-        return QString::number(qRound(100*(double)size/mb)/100.0)+"MB";
-    } else if (size >= kb) {
-        return QString::number(qRound(100*(double)size/kb)/100.0)+"KB";
-    } else {
-        return QString::number(size)+"B";
-    }
-   */
   const kb = 1024;
   const mb = kb * 1024;
   const gb = mb * 1024;
@@ -89,8 +70,20 @@ export function formatSize(size) {
 
 export function sizeSort(a, b) {
   if (a.fsize && b.fsize) {
-    a = Number(a.fsize.replace('B', ''));
-    b = Number(b.fsize.replace('B', ''));
-    return (a - b);
+    let number_a = Number(a.fsize.replace('B', ''));
+    let number_b = Number(b.fsize.replace('B', ''));
+    if (a.ffiletype === 1 && b.ffiletype !== 1) return 1;
+    if (a.ffiletype !== 1 && b.ffiletype === 1) return -1;
+    if (a.ffiletype !== 1 && b.ffiletype !== 1) return number_a - number_b;
+  }
+}
+
+export function nameSort(a, b) {
+  if (a.fname && b.fname) {
+    if (a.ffiletype === 1 && b.ffiletype !== 1) return 1;
+    if (a.ffiletype !== 1 && b.ffiletype === 1) return -1;
+    let nameCode_a = a.fname.charCodeAt(0);
+    let nameCode_b = b.fname.charCodeAt(0);
+    if (a.ffiletype !== 1 && b.ffiletype !== 1 || a.ffiletype === 1 && b.ffiletype === 1) return nameCode_a - nameCode_b;
   }
 }

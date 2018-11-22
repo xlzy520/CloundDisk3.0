@@ -6,7 +6,6 @@ const getters = {
   name: state => state.user.name,
   roles: state => state.user.roles,
 
-  upload: state => state.file.upload,
   fileList: state => state.file.fileList,
   folderNav: state => state.file.folderNav,
   selectedData: state => state.file.selectedData,
