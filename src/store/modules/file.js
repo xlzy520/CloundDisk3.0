@@ -4,18 +4,12 @@ const file = {
   state: {
     parentId: '0',
     selectedData: [],
-    menuVisible: false,
     fileList: [],
     folderNav: [],
     searchList: null,
     hasSearch: false,
-    coordinate: []
   },
   mutations: {
-    RIGHT_TOGGLE_MENU_VISIBLE: (state, data) => {
-      state.coordinate = data;
-      state.menuVisible = state.coordinate[2];
-    },
     GET_CATEGORY: (state, data) => {
       state.fileList = data;
     },
@@ -36,9 +30,6 @@ const file = {
     }
   },
   actions: {
-    RightTogglemenuVisible: ({ commit }, data) => {
-      commit('RIGHT_TOGGLE_MENU_VISIBLE', data);
-    },
     GetCategory({ commit }, fcategoryid) {
       return new Promise((resolve, reject) => {
         const loadingInstance = Loading.service({ fullscreen: true });

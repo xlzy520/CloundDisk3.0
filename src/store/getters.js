@@ -9,8 +9,6 @@ const getters = {
   selectedData: state => state.file.selectedData,
   parentId: state => state.file.parentId,
   searchList: state => state.file.searchList,
-  hasSearch: state => state.file.hasSearch,
-  menuVisible: state => state.file.menuVisible,
-  coordinate: state => state.file.coordinate
+  hasSearch: state => state.file.hasSearch
 };
 export default getters;

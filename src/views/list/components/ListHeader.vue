@@ -20,7 +20,7 @@
         <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" data-action="delete">删除</el-button>
         <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-info" data-action="detail">详情</el-button>
       </div>
-      <ul id="menu-btn" v-show="menuVisible" :style="{top:(coordinate[2]+'px'),left:(coordinate[1]+'px')}">
+      <ul id="menu-btn" v-show="contextMenu.visible" :style="{top:(contextMenu.y+'px'),left:(contextMenu.x+'px')}">
         <li :class="{disabled:!([2, 4].indexOf(isShow)  > -1)}" @click="downloadFile2">下载</li>
         <li :class="{disabled:!([2, 4, 5].indexOf(isShow)  > -1)}" data-action="copy">复制到</li>
         <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow)  > -1)}" data-action="move">移动到</li>
@@ -56,6 +56,15 @@ import Breadcrumb from '../../../components/Breadcrumb.vue';
 export default {
   name: 'ListHeader',
   components: { Breadcrumb },
+  props: {
+    contextMenu: {
+      type: Object,
+      required: true,
+      default: function () {
+        return {visible: false, x: 0, y: 0};
+      }
+    }
+  },
   computed: {
     ...mapGetters([
       'selectedData',

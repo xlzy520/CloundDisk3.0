@@ -1,8 +1,8 @@
 <template>
   <div class="admin-list">
-    <list-header class="admin-list-header" @action="dispatchAction"></list-header>
-    <list v-if="isList" :file-list="List" @viewImg="viewImg" @md="md"></list>
-    <thumbnail v-else :file-list="List" @viewImg="viewImg"></thumbnail>
+    <list-header class="admin-list-header" @action="dispatchAction" :contextMenu="contextMenu"></list-header>
+    <list v-if="isList" :file-list="List" @viewImg="viewImg" @md="md" @context-menu="showMenu"></list>
+    <thumbnail v-else :file-list="List" @viewImg="viewImg" @md="md" @context-menu="showMenu"></thumbnail>
     <upload-file ref="upload"></upload-file>
     <delete-file ref="delete"></delete-file>
     <detail ref="detail"></detail>
@@ -26,13 +26,13 @@
   import MdEditor from "../../components/MDEditor";
 
   import request from '@/utils/request';
-  // TODO 用事件冒泡的方式处理listHeader里的按钮
   export default {
     name: 'index',
     data() {
       return {
         isList: true,
-        mdConfig: {}
+        mdConfig: {},
+        contextMenu: {}
       };
     },
     computed: {
@@ -115,6 +115,9 @@
           this.$refs.md.getDocInfo();
         });
       },
+      showMenu(val) {
+        this.contextMenu = val;
+      },
       refresh() {
         this.$store.dispatch('Refresh').then(() => {
           this.$message1000('刷新成功', 'success');
@@ -124,7 +127,7 @@
         if (this.selectedData.length === 1) {
           this.$set(this.selectedData[0], 'isEditor', true);
         }
-        this.$store.dispatch('RightTogglemenuVisible', [false]);
+        this.contextMenu.visible = false;
       },
       signIn() {
         this.$store.dispatch('GetInfo');

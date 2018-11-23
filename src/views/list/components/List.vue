@@ -107,7 +107,7 @@
             this.rows = [];
           } else {
             this.$store.dispatch('SetSelectedData', rows);
-            this.$store.dispatch('RightTogglemenuVisible', [false]);
+            this.$emit('context-menu', {visible: false});
             this.fileList.forEach(item => {
               if (item.isEditor !== undefined) {
                 this.$set(item, 'isEditor', false);
@@ -154,10 +154,10 @@
         } else {
           this.$refs.baseTable.toggleRowSelection(row, true);
         }
-        this.$store.dispatch('RightTogglemenuVisible', [true, x, y]);
+        this.$emit('context-menu', {visible: true, x: x, y: y});
         document.getElementsByTagName('body')[0].addEventListener('click', (e) => {
           if (!document.getElementById('menu-btn').contains(e.target)) {
-            this.$store.dispatch('RightTogglemenuVisible', [false]);
+            this.$emit('context-menu', {visible: false});
           }
         });
       },
