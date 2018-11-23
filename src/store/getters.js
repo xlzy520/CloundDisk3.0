@@ -1,10 +1,8 @@
 const getters = {
   sidebar: state => state.app.sidebar,
-  device: state => state.app.device,
   token: state => state.user.token,
   avatar: state => state.user.avatar,
   name: state => state.user.name,
-  roles: state => state.user.roles,
 
   fileList: state => state.file.fileList,
   folderNav: state => state.file.folderNav,
@@ -15,8 +13,6 @@ const getters = {
   searchList: state => state.file.searchList,
   hasSearch: state => state.file.hasSearch,
   menuVisible: state => state.file.menuVisible,
-  coordinate: state => state.file.coordinate,
-  move: state => state.file.move,
-  imgEditor: state => state.file.imgEditor
+  coordinate: state => state.file.coordinate
 };
 export default getters;

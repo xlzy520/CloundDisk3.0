@@ -1,7 +1,8 @@
 <template>
   <div class="img-editor">
     <el-dialog
-      :visible.sync="imgEditor.visible"
+      v-if="visible"
+      :visible.async="true"
       :modal-append-to-body="false"
       :close-on-click-modal="true"
       :show-close="false"
@@ -25,6 +26,8 @@
     name: 'ImgEditor',
     data() {
       return {
+        visible: false,
+        id: '',
         data: {
           cropped: false,
           cropping: false,
@@ -35,16 +38,6 @@
           url: ''
         }
       };
-    },
-    computed: {
-      imgEditor: {
-        get() {
-          return this.$store.state.file.imgEditor;
-        },
-        set() {
-          this.$store.dispatch('ToggleImgEditor', {});
-        }
-      }
     },
     components: {
       Editor, ImgNavbar
@@ -66,14 +59,14 @@
             editor.reset();
             break;
           case 'close':
-            this.$store.dispatch('ToggleImgEditor', {});
+            this.visible = false;
             break;
           default:
         }
       }
     },
     mounted() {
-      this.data.url = `/djcpsdocument/fileManager/downloadFile.do?id=${this.imgEditor.id}`;
+      this.data.url = `/djcpsdocument/fileManager/downloadFile.do?id=${this.id}`;
     }
   };
 </script>

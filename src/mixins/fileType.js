@@ -29,7 +29,7 @@ const fileType = {
           if (parseInt(fsize) > (1024 * 1024 * 10)) {
             this.$message1000('图片大小超过10M,无法预览', 'error');
           } else {
-            this.$store.dispatch('ToggleImgEditor', fcategoryid);
+            this.$emit('viewImg', fcategoryid);
           }
           break;
         case 8: //XMind

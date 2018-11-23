@@ -1,8 +1,9 @@
 <template>
   <div>
     <el-dialog
+      v-if="visible"
       title="版本列表"
-      :visible="true"
+      :visible.asynv="true"
       :modal-append-to-body="false"
       custom-class="version-list"
       :close-on-click-modal="true"
@@ -137,6 +138,7 @@
     },
     data() {
       return {
+        visible: false,
         versionDiff: false,
         tableData: [],
         oldStr: '',
@@ -161,7 +163,7 @@
         evt.target.download = filename; // 暂时不加版本号
       },
       close() {
-        this.$emit('closeDialog', 'versionVisible');
+        this.visible = false;
         this.$store.dispatch('Refresh');
       },
       async rollBack(newVer) {

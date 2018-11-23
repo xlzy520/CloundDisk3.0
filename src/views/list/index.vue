@@ -1,15 +1,15 @@
 <template>
   <div class="admin-list">
     <list-header class="admin-list-header" @action="dispatchAction"></list-header>
-    <list v-if="isList" :file-list="List"></list>
-    <thumbnail v-else :file-list="List"></thumbnail>
+    <list v-if="isList" :file-list="List" @viewImg="viewImg"></list>
+    <thumbnail v-else :file-list="List" @viewImg="viewImg"></thumbnail>
     <upload-file ref="upload"></upload-file>
-    <delete-file ref="delFile"></delete-file>
-    <detail v-if="detailVisible" @closeDialog="closeDialog"></detail>
-    <version-list v-if="versionVisible" @closeDialog="closeDialog"></version-list>
+    <delete-file ref="delete"></delete-file>
+    <detail ref="detail"></detail>
+    <version-list ref="version"></version-list>
     <md-editor></md-editor>
-    <move-file v-if="move.visible" :type="move.type" @closeDialog="closeDialog"></move-file>
-    <img-editor v-if="imgEditor.visible"></img-editor>
+    <move-file ref="move"></move-file>
+    <img-editor ref="img"></img-editor>
   </div>
 </template>
 
@@ -36,7 +36,7 @@
         versionVisible: false,
         move: {
           visible: false,
-          type: 'upload'
+          type: ''
         }
       };
     },
@@ -65,54 +65,24 @@
       MoveFile
     },
     methods: {
-      closeDialog(component) {
-        switch (component) {
-          case 'moveVisible':
-            this.move.visible = false;
-            break;
-          case 'uploadVisible':
-            this.upload.visible = false;
-            break;
-          default:
-            this[component] = false;
-            break;
-        }
-      },
       dispatchAction(action) {
         switch (action) {
           case 'refresh':
             this.refresh();
             break;
-          case 'upload':
-            this.$refs.upload.visible = true;
+          case 'upload': case 'version': case 'delete': case 'detail':
+            this.$refs[action].visible = true;
             break;
           case 'rename':
             this.rename();
             break;
-          case 'copyTo':
-            this.move = {
-              visible: true,
-              type: 'copy'
-            };
-            break;
-          case 'moveTo':
-            this.move = {
-              visible: true,
-              type: 'move'
-            };
+          case 'copy': case 'move':
+            this.$refs.move.visible = true;
+            this.$refs.move.type = action;
             break;
           case 'update':
             this.$refs.upload.type = 'update';
             this.$refs.upload.visible = true;
-            break;
-          case 'version':
-            this.versionVisible = true;
-            break;
-          case 'delete':
-            this.$refs.delFile.visible = true;
-            break;
-          case 'detail':
-            this.detailVisible = true;
             break;
           case 'back2FileList':
             this.$store.dispatch('ToggleSearch', false);
@@ -126,6 +96,10 @@
           default:
             break;
         }
+      },
+      viewImg(id) {
+        this.$refs.img.id = id;
+        this.$refs.img.visible = true;
       },
       refresh() {
         this.$store.dispatch('Refresh').then(() => {

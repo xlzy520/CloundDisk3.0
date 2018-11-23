@@ -1,7 +1,8 @@
 <template>
   <el-dialog
     :title="type === 'move' ? '移动到' : '复制到'"
-    :visible="true"
+    :visible.async="true"
+    v-if="visible"
     @close="close"
     width="420px"
     custom-class="move-file"
@@ -25,15 +26,11 @@
     components: { treeMenu },
     data() {
       return {
+        visible: false,
+        type: 'move',
         id: '',
         idList: []
       };
-    },
-    props: {
-      type: {
-        type: String,
-        required: true
-      }
     },
     computed: {
       ...mapGetters([
@@ -42,7 +39,7 @@
     },
     methods: {
       close() {
-        this.$emit('closeDialog', 'moveVisible');
+        this.visible = false;
       },
       getFolderId(data) {
         this.id = data.fcategoryid;

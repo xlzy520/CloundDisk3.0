@@ -1,8 +1,9 @@
 <template>
   <div class="el-dialog__detail">
     <el-dialog
+      v-if="visible"
       :title="topTitle"
-      :visible="true"
+      :visible.async="true"
       :modal-append-to-body="false"
       custom-class="file-detail"
       :close-on-click-modal="true"
@@ -97,6 +98,7 @@
     name: 'Detail',
     data() {
       return {
+        visible: false,
         isLoad: true,
         versionDetail: {}
       };
@@ -130,7 +132,7 @@
     },
     methods: {
       close() {
-        this.$emit('closeDialog', 'detailVisible');
+        this.visible = false;
       },
       async requestData() {
         if (this.selectedData.length === 1 && this.selectedData[0].ffiletype !== 1) {
