@@ -1,7 +1,7 @@
 <template>
   <div class="img-editor">
     <el-dialog
-      v-if="setImgUrl"
+      v-if="visible"
       :visible.async="true"
       :modal-append-to-body="false"
       :close-on-click-modal="true"
@@ -28,7 +28,6 @@
     data() {
       return {
         visible: false,
-        id: '',
         data: {
           cropped: false,
           cropping: false,
@@ -39,14 +38,6 @@
           url: ''
         }
       };
-    },
-    computed: {
-      setImgUrl() {
-        if (this.visible) {
-          this.data.url = `/djcpsdocument/fileManager/downloadFile.do?id=${this.id}`;
-        }
-        return this.visible;
-      }
     },
     components: {
       Editor, ImgNavbar

@@ -92,7 +92,7 @@
         }
       },
       viewImg(id) {
-        this.$refs.img.id = id;
+        this.$refs.img.data.url = `/djcpsdocument/fileManager/downloadFile.do?id=${id}`;
         this.$refs.img.visible = true;
       },
       refresh() {
