@@ -5,7 +5,6 @@ const file = {
     parentId: '0',
     selectedData: [],
     menuVisible: false,
-    loadVisible: true,
     fileList: [],
     folderNav: [],
     searchList: null,
@@ -13,21 +12,12 @@ const file = {
     coordinate: []
   },
   mutations: {
-    TOGGLE_IMG_EDITOR: (state, data) => {
-      state.imgEditor.visible = !state.imgEditor.visible;
-      state.imgEditor.id = data;
-    },
-    TOGGLE_PREVIEW_VISIBLE: (state, data) => {
-      state.preview.type = data;
-      state.preview.visible = !state.preview.visible;
-    },
     RIGHT_TOGGLE_MENU_VISIBLE: (state, data) => {
       state.coordinate = data;
       state.menuVisible = state.coordinate[2];
     },
     GET_CATEGORY: (state, data) => {
       state.fileList = data;
-      state.loadVisible = false;
     },
     SET_PARENT_ID: (state, data) => {
       state.parentId = data;
@@ -46,12 +36,6 @@ const file = {
     }
   },
   actions: {
-    ToggleImgEditor: ({ commit }, data) => {
-      commit('TOGGLE_IMG_EDITOR', data);
-    },
-    TogglePreviewVisible: ({ commit }, data) => {
-      commit('TOGGLE_PREVIEW_VISIBLE', data);
-    },
     RightTogglemenuVisible: ({ commit }, data) => {
       commit('RIGHT_TOGGLE_MENU_VISIBLE', data);
     },
