@@ -125,6 +125,9 @@ export default {
     },
     handleSelectionChange(select) {
       this.$emit('selection-change', select);
+    },
+    clearSelection() {
+      this.$refs.baseTable.clearSelection();
     }
   }
 };

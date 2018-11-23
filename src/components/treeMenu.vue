@@ -48,6 +48,8 @@
           this.$store.dispatch('GetCategory', data.fcategoryid);
           this.$store.dispatch('SetParentId', data.fcategoryid);
           this.$router.push({ path: '/index/list', query: { dirid: data.fcategoryid }});
+        } else {
+          this.$emit('get-folderid', data.fcategoryid);
         }
       },
       async nodeExpand(data, node) {

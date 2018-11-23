@@ -1,104 +1,102 @@
 <template>
   <el-dialog
     :title="title"
-    :visible="true"
+    :visible="dialogVisible"
     @close="close"
     width="420px"
-    custom-class="move-file"
-  >
-    <el-scrollbar style="height: 100%">
-      <tree-menu type="moveFile" @getFolderid="getFolderid"></tree-menu>
-    </el-scrollbar>
+    custom-class="move-file">
+    <div class="dialog-content">
+      <base-scrollbar>
+        <tree-menu v-if="dialogVisible" type="moveFile" @get-folderid="id = $event"></tree-menu>
+      </base-scrollbar>
+    </div>
     <span slot="footer" class="dialog-footer">
-    <el-button v-if="moveType" type="primary" @click="moveFile">确 定</el-button>
-    <el-button v-if="!moveType" type="primary" @click="copyFile">确 定</el-button>
-    <el-button @click="close">取 消</el-button>
-  </span>
+      <el-button v-if="this.type === 'move'" type="primary" @click="moveFile">确 定</el-button>
+      <el-button v-else type="primary" @click="copyFile">确 定</el-button>
+      <el-button @click="close">取 消</el-button>
+    </span>
   </el-dialog>
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import treeMenu from '@/components/treeMenu';
   import fileService from '@/api/service/file.js';
+  import baseScrollbar from '@/components/baseScrollbar.vue';
   export default {
     name: 'MoveFile',
-    components: { treeMenu },
+    components: {
+      treeMenu,
+      baseScrollbar
+    },
     data() {
       return {
+        dialogVisible: false,
         id: '',
-        idList: []
+        idList: [],
+        type: 'move'
       };
     },
-    props: {
-      type: {
-        type: String,
-        required: true
-      }
-    },
     computed: {
-      ...mapGetters([
-        'selectedData',
-        'parentId'
-      ]),
       title() {
         return this.type === 'move' ? '移动到' : '复制到';
-      },
-      moveType() {
-        return this.type === 'move';
       }
     },
     methods: {
       close() {
-        this.$emit('closeDialog', 'moveVisible');
+        this.restValues();
       },
-      getFolderid(data) {
-        this.id = data;
+      restValues() {
+        this.dialogVisible = false;
+        this.id = '';
+        this.idList = [];
       },
-      async moveFile() {
-        fileService.moveFile(this.idList, this.id, this.parentId).then(() => {
+      openFrame(rows, type = 'move') {
+        this.idList = rows.map(item => item.fcategoryid);
+        this.type = type;
+        this.dialogVisible = true;
+      },
+      moveFile() {
+        fileService.moveFile(this.idList, this.id, this.$route.query.dirid).then(() => {
           this.$message1000('文件移动成功', 'success');
+          this.$emit('success');
           this.close();
-          this.$store.dispatch('Refresh');
+          // this.$store.dispatch('Refresh');
         }).catch(() => {
           this.close();
         });
       },
-      async copyFile() {
+      copyFile() {
         fileService.copyFile(this.idList, this.id).then(() => {
           this.$message1000('文件复制成功', 'success');
+          this.$emit('success');
           this.close();
-          this.$store.dispatch('Refresh');
+          // this.$store.dispatch('Refresh');
         }).catch(() => {
           this.close();
         });
       }
     },
-    mounted() {
-      this.selectedData.forEach(item => {
-        this.idList.push(item.fcategoryid);
-      });
-    }
   };
 </script>
 
-<style lang="scss">
-  .move-file{
-    height: 290px;
-    padding: 0 12px;
-    .el-button {
-      padding: 8px 12px;
-    }
-    .el-dialog__body{
-      border: 1px solid #ddd;
-      height: 185px;
-    }
-    .el-dialog__header {
-      padding: 15px 20px 10px;
-    }
-    .el-scrollbar__wrap {
-      overflow-x: hidden;
-    }
+<style lang="scss" scoped>
+/deep/ .move-file{
+  height: 290px;
+  padding: 0 12px;
+  .el-button {
+    padding: 8px 12px;
   }
-
+  .el-dialog__body{
+    border: 1px solid #ddd;
+    height: 185px;
+  }
+  .el-dialog__header {
+    padding: 15px 20px 10px;
+  }
+  .dialog-content {
+    position: relative;
+    display: flex;
+    height: 100%;
+  }
+}
 </style>

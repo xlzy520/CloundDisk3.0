@@ -1,9 +1,9 @@
 <template>
   <div
     class="rename-edit"
-    @click.stop="() => {}"
-    @dblclick.stop="()=>{}"
-    @contextmenu.stop="()=>{}"
+    @click.stop
+    @dblclick.stop
+    @contextmenu.stop
     :class="{thumbEdit:!(type === 'List')}">
     <el-input size="small"
               spellcheck="false"
@@ -20,7 +20,7 @@
 </template>
 <script>
   import {mapGetters} from 'vuex';
-  import fileService from '@/api/service/file.js';
+  // import fileService from '@/api/service/file.js';
 
   export default {
     name: 'RenameFile',
@@ -57,18 +57,20 @@
           return false;
         } else if (row.length >= 1) { //  重命名
           try {
-            const editInfo = await fileService.renameFile({ ...row[0], newName: this.fileName });
-            this.$message1000(editInfo.msg, 'success');
-            this.$set(this.selectedData[0], 'fname', this.fileName);
-            row[0].isEditor = false;
+            // const editInfo = await fileService.renameFile({ ...row[0], newName: this.fileName });
+            // this.$message1000(editInfo.msg, 'success');
+            // this.$set(this.selectedData[0], 'fname', this.fileName);
+            // row[0].isEditor = false;
+            this.$emit('confirm-edit', this.fileName);
           } finally {
             this.loading = false;
           }
         } else {
           try { //新建文件夹
-            const editInfo = await fileService.addCategory(this.$store.getters.parentId, this.fileName);
-            this.$message1000(editInfo.msg, 'success');
-            this.$store.dispatch('Refresh');
+            // const editInfo = await fileService.addCategory(this.$store.getters.parentId, this.fileName);
+            // this.$message1000(editInfo.msg, 'success');
+            // this.$store.dispatch('Refresh');
+            this.$emit('confirm-edit', this.fileName);
           } catch (e) {
             this.fileList[0].isEditor = false;
             this.fileList.shift();
@@ -78,12 +80,13 @@
         }
       },
       cancelEdit() {
-        if (this.selectedData.length >= 1) {
-          this.selectedData[0].isEditor = false;
-        } else {
-          this.fileList.shift();
-          this.$set(this.fileList[0], 'isEditor', false);
-        }
+        this.$emit('cancel-edit');
+        // if (this.selectedData.length >= 1) {
+        //   this.selectedData[0].isEditor = false;
+        // } else {
+        //   this.fileList.shift();
+        //   this.$set(this.fileList[0], 'isEditor', false);
+        // }
       },
       selection(event) {
         let dotIndex = this.fileName.lastIndexOf('.');

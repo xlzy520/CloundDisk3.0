@@ -10,23 +10,23 @@
       :show-close="false"
       width="430px">
       <div class="file-list">
-        <div v-for="(item, index) in selectedData" :key="index" class="item">
-          <svg-icon :icon-class="String(item.ffiletype)" className="icon"/> <span class="item-name">{{item.fname}}</span>
+        <div v-for="(item, index) in selected" :key="index" class="item">
+          <svg-icon :icon-class="String(item.ffiletype)" class-name="icon"/> <span class="item-name">{{item.fname}}</span>
         </div>
       </div>
       <div class="info-panel">
-        <span class="info" v-if="deleting===true">
+        <span class="info" v-if="deleting === true">
           <i class="el-icon-loading"></i> 正在删除...
         </span>
-        <span class="info2" v-if="deleteInfo!==''">
+        <!-- <span class="info2" v-if="deleteInfo !== ''">
           {{deleteInfo}}
         </span>
         <span class="err" v-if="err !== ''">
           {{err}}
-        </span>
+        </span> -->
       </div>
       <span slot="footer" class="dialog-footer">
-        <span class="tooltip">{{err}}</span>
+        <!-- <span class="tooltip">{{err}}</span> -->
         <el-button type="primary" @click="submitForm" size="small">开始删除</el-button>
         <el-button @click="close" size="small">关闭</el-button>
       </span>
@@ -35,57 +35,69 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  // import { mapGetters } from 'vuex';
   import fileService from '@/api/service/file.js';
   export default {
     name: 'DeleteFile',
-    computed: {
-      ...mapGetters([
-        'selectedData'
-      ])
-    },
+    // computed: {
+    //   ...mapGetters([
+    //     'selected'
+    //   ])
+    // },
     data() {
       return {
         visible: false,
-        err: '',
-        deleteInfo: '',
-        deleting: false
+        // err: '',
+        // deleteInfo: '',
+        deleting: false,
+        selected: []
       };
     },
     methods: {
       close() {
         if (this.deleting) {
           if (confirm('删除未完成，您关闭对话框后，删除将继续进行，仍要关闭对话框吗？')) {
-            this.visible = false;
-            return;
+            this.restValues();
           }
-          return;
+        } else {
+          this.restValues();
         }
+      },
+      restValues() {
         this.visible = false;
+        this.selected = [];
+        // this.deleteInfo = '';
+        // this.err = '';
+        this.deleting = false;
+      },
+      openFrame(rows) {
+        this.selected = rows;
+        this.visible = true;
       },
       submitForm() {
         this.deleting = true;
-        const categoryids = [];
-        this.selectedData.forEach(item => {
-          categoryids.push(item.fcategoryid);
-        });
-        fileService.deleteCategory(categoryids, this.$store.getters.parentId)
+        // const categoryids = [];
+        // this.selected.forEach(item => {
+        //   categoryids.push(item.fcategoryid);
+        // });
+        fileService.deleteCategory(this.selected.map(item => item.fcategoryid), this.$store.getters.parentId)
           .then(res => {
-            this.visible = false;
+            // this.visible = false;
             if (res.success) {
               this.$message1000(res.msg, 'success');
-              this.deleting = false;
-              this.$store.dispatch('Refresh');
+              // this.deleting = false;
+              this.$emit('delete-success');
+              // this.$store.dispatch('Refresh');
             }
           })
           .catch(err => {
             if (this.$store.getters.hasSearch) {
               this.$message1000(err.message, 'info');
             }
-            this.deleting = false;
-            this.close();
+            // this.deleting = false;
+            // this.close();
           }).finally(() => {
-            this.$store.dispatch('SetSelectedData', []);
+            this.close();
           });
       }
     }

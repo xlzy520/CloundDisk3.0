@@ -2,7 +2,7 @@
   <div class="el-dialog__detail">
     <el-dialog
       :title="topTitle"
-      :visible="true"
+      :visible="dialogVisible"
       :modal-append-to-body="false"
       custom-class="file-detail"
       :close-on-click-modal="true"
@@ -14,7 +14,7 @@
             {{title}}名称：
           </div>
           <div class="content">
-            {{selectedData[0].fname}}
+            {{selectedData.fname}}
           </div>
           <div class="clearfix"></div>
         </div>
@@ -41,7 +41,7 @@
             创建人：
           </div>
           <div class="content">
-            {{selectedData[0].foperator}}
+            {{selectedData.foperator}}
           </div>
           <div class="clearfix"></div>
         </div>
@@ -97,44 +97,63 @@
     name: 'Detail',
     data() {
       return {
+        dialogVisible: false,
         isLoad: true,
-        versionDetail: {}
+        versionDetail: {
+          fupdater: ''
+        },
+        selectedData: {
+          fname: '',
+          fversion: '',
+          fremarks: '',
+          foperator: '',
+          fcreatetime: '',
+          fupdatetime: '',
+          fsize: ''
+        }
       };
     },
     computed: {
       ...mapGetters([
-        'selectedData'
+        // 'selectedData'
       ]),
       isFolder() {
-        if (this.selectedData.length === 1) {
-          return this.selectedData[0].ffiletype === 1;
-        }
+        return this.selectedData && this.selectedData.ffiletype === 1;
       },
       title() {
-        if (this.selectedData.length === 1) {
-          return this.isFolder ? '文件夹' : '文件';
-        }
+        return this.selectedData && this.isFolder ? '文件夹' : '文件';
       },
       topTitle() {
         return this.title + '详情';
       },
       size() {
-        return formatSize(Number(this.selectedData[0].fsize.replace('B', '')));
+        if (this.selectedData) {
+          return formatSize(Number(this.selectedData.fsize.replace('B', '')));
+        }
       },
       timeEdit() {
-        return parseTime(this.selectedData[0].fupdatetime);
+        if (this.selectedData) {
+          return parseTime(this.selectedData.fupdatetime);
+        }
       },
       timeCreate() {
-        return parseTime(this.selectedData[0].fcreatetime);
+        if (this.selectedData) {
+          return parseTime(this.selectedData.fcreatetime);
+        }
       }
     },
     methods: {
       close() {
-        this.$emit('closeDialog', 'detailVisible');
+        this.dialogVisible = false;
+      },
+      openFrame(row) {
+        this.dialogVisible = true;
+        this.selectedData = row;
+        this.requestData();
       },
       async requestData() {
-        if (this.selectedData.length === 1 && this.selectedData[0].ffiletype !== 1) {
-          const versionListInfo = await fileService.getVersionList(this.selectedData[0].fversionsign, this.$store.getters.parentId);
+        if (this.selectedData && this.selectedData.ffiletype !== 1) {
+          const versionListInfo = await fileService.getVersionList(this.selectedData.fversionsign, this.$store.getters.parentId);
           if (versionListInfo.success) {
             versionListInfo.data.filter((item) => {
               if (!item.fdisplay) {
@@ -145,9 +164,6 @@
         }
       }
     },
-    mounted() {
-      this.requestData();
-    }
   };
 </script>
 <style lang="scss">

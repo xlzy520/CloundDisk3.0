@@ -2,7 +2,7 @@
   <div>
     <el-dialog
       title="版本列表"
-      :visible="true"
+      :visible="dialogVisible"
       :modal-append-to-body="false"
       custom-class="version-list"
       :close-on-click-modal="true"
@@ -83,13 +83,13 @@
                 href="javascript:void(0)"
                 @click="rollBack(scope.row.filesgin)"
                 title="设为最新版本" v-if="scope.row.fdisplay">回退</a>
-              <a size="mini" @click="fileType(scope.row)" v-if="selectedData[0].ffiletype!==0">查看</a>
+              <a size="mini" @click="fileType(scope.row)" v-if="selectedData.ffiletype !== 0">查看</a>
             </template>
           </el-table-column>
         </el-table>
       </div>
       <div slot="footer" class="dialog-footer">
-        <div class="diff-select clearfix" v-if="selectedData[0].ffiletype === 2&&tableData.length>1">
+        <div class="diff-select clearfix" v-if="selectedData.ffiletype === 2 && tableData.length > 1">
           <el-select v-model="oldVersion.value" filterable placeholder="请选择旧版本" size="small">
             <el-option
               v-for="item in tableData"
@@ -115,7 +115,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import fileService from '@/api/service/file.js';
   import { formatSize, parseTime } from '@/utils/index';
   import vueCodeDiff from 'vue-code-diff';
@@ -126,9 +125,6 @@
       vueCodeDiff
     },
     computed: {
-      ...mapGetters([
-        'selectedData'
-      ]),
       outputFormat() {
         return this.lineSwitch === true ? 'line-by-line' : 'side-by-side';
       }
@@ -136,7 +132,11 @@
     data() {
       return {
         versionDiff: false,
+        dialogVisible: false,
         tableData: [],
+        selectedData: {
+          ffiletype: ''
+        },
         oldStr: '',
         newStr: '',
         oldVersion: {
@@ -159,8 +159,12 @@
         evt.target.download = filename; // 暂时不加版本号
       },
       close() {
-        this.$emit('closeDialog', 'versionVisible');
-        this.$store.dispatch('Refresh');
+        this.dialogVisible = false;
+      },
+      openFrame(row) {
+        this.dialogVisible = true;
+        this.selectedData = row;
+        this.requestData();
       },
       async rollBack(newVer) {
         this.loading = true;
@@ -179,9 +183,9 @@
       },
       async requestData() {
         this.loading = true;
-        if (this.selectedData.length === 1) {
+        if (this.selectedData) {
           try {
-            const versionListInfo = await fileService.getVersionList(this.selectedData[0].fversionsign);
+            const versionListInfo = await fileService.getVersionList(this.selectedData.fversionsign);
             if (versionListInfo.success) {
               this.loading = false;
               this.tableData = versionListInfo.data;
@@ -206,7 +210,7 @@
         }
       },
       fileType({ fvsgin, filesgin }) {
-        switch (this.selectedData[0].ffiletype) {
+        switch (this.selectedData.ffiletype) {
           case 1:
             this.$store.dispatch('GetCategory', filesgin);
             this.$store.dispatch('SetParentId', filesgin);
@@ -252,9 +256,6 @@
         }
       }
     },
-    mounted() {
-      this.requestData();
-    }
   };
 </script>
 

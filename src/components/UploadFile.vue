@@ -57,14 +57,16 @@ export default {
       fileDesc: '',
       speed: '',
       time: '',
-      loaded: 0
+      loaded: 0,
+      selectedData: null
     };
   },
+  props: ['navList'],
   computed: {
     ...mapGetters([
-      'folderNav',
+      // 'folderNav',
       'parentId',
-      'selectedData'
+      // 'selectedData'
     ]),
     title() {
       return this.type === 'upload' ? '文件上传' : '文件更新';
@@ -74,8 +76,8 @@ export default {
     },
     tip() {
       let tip = '';
-      for (var i = 0; i < this.folderNav.length; ++i) {
-        tip += '/' + this.folderNav[i].fname;
+      for (var i = 0; i < this.navList.length; ++i) {
+        tip += '/' + this.navList[i].fname;
       }
       return tip;
     }
@@ -102,6 +104,18 @@ export default {
         this.btDisable = true;
       }
     },
+    openFrame(row, type = 'upload') {
+      this.visible = true;
+      this.type = type;
+      this.selectedData = row;
+    },
+    restValues() {
+      this.$refs.upload.clearFiles();
+      this.fileList = [];
+      this.fileDesc = '';
+      this.selectedData = null;
+      this.visible = false;
+    },
     submitUpload() {
       if (this.currentFile == null) {
         return;
@@ -115,10 +129,9 @@ export default {
       this.speed = '';
       if (response.success === true) {
         this.$message1000('文件上传成功', 'success');
-        this.$refs.upload.clearFiles();
-        this.fileList = [];
-        this.visible = false;
-        this.$store.dispatch('Refresh');
+        this.restValues();
+        this.$emit('upload-success');
+        // this.$store.dispatch('Refresh');
       } else {
         let msg = response.msg;
         if (msg == null || msg === '') {
@@ -126,15 +139,12 @@ export default {
         }
         msg = '文件上传出错：' + msg;
         this.$message1000(msg, 'error');
-        this.$refs.upload.clearFiles();
-        this.fileList = [];
-        this.visible = false;
-        this.$store.dispatch('Refresh');
+        this.restValues();
       }
     },
     onFileChange(file, filelist) {
       if (this.type === 'update') {
-        if (file.name !== this.selectedData[0].fname) {
+        if (file.name !== this.selectedData.fname) {
           filelist.pop();
           this.$message1000('文件上传失败！上传文件名与更新文件名不符', 'error');
         }
@@ -154,14 +164,14 @@ export default {
         this.btDisable = false;
         this.currentFile = file;
         this.uploadData = {
-          fparentid: this.parentId
+          fparentid: this.$route.query.dirid
         };
 
-        if (this.selectedData.length === 1 && this.type === 'update') {
+        if (this.selectedData && this.type === 'update') {
           this.uploadData = {
-            fparentid: this.parentId,
-            fcategoryid: this.selectedData[0].fcategoryid,
-            fversionsign: this.selectedData[0].fversionsign
+            fparentid: this.$route.query.dirid,
+            fcategoryid: this.selectedData.fcategoryid,
+            fversionsign: this.selectedData.fversionsign
           };
         }
       }
@@ -187,9 +197,7 @@ export default {
         }
         this.$message1000('文件上传被中止', 'warning');
       }
-      this.$refs.upload.clearFiles();
-      this.fileList = [];
-      this.visible = false;
+      this.restValues();
     }
   }
 };

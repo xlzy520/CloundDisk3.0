@@ -3,7 +3,7 @@
     <div class="list-header">
       <el-checkbox
         :indeterminate="isIndeterminate"
-        v-model="selectedData.length >= 1"
+        v-model="selected.length >= 1"
         @change="handleCheckAllChange"
         class="all-check"
         :disabled="disabled">全选
@@ -11,12 +11,12 @@
     </div>
     <div class="list-content" v-if="fileList.length">
       <base-scrollbar>
-        <el-checkbox-group v-model="selectedData" @change="handleCheckItemChange">
+        <el-checkbox-group v-model="selected" @change="handleCheckItemChange">
           <ul>
             <li v-for="(item, index) in fileList" :key="index">
               <div class="box"
                   @contextmenu.prevent="()=>{return false}"
-                  :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''"
+                  :class="selected.indexOf(item) > -1 ? 'box-hover' : ''"
                   :title="item.fname"
                   @click="fileType(item)">
                 <div @click.stop>
@@ -25,7 +25,11 @@
                 <svg-icon v-if="imgIsLarge(item)" :icon-class="String(item.ffiletype)" class-name="icon"/>
                 <img v-else class="icon" :src="imgSrc(item)"/>
                 <div v-if="item.isEditor">
-                  <rename-file type="Thumbnail"></rename-file>
+                  <rename-file
+                    type="Thumbnail"
+                    @confirm-edit="$emit('confirm-edit', $event)"
+                    @cancel-edit="$emit('cancel-edit')">
+                  </rename-file>
                 </div>
                 <div v-else class="file-name">
                   <span>{{item.fname}}</span>
@@ -51,6 +55,10 @@
       fileList: {
         type: Array,
         required: true
+      },
+      value: {
+        type: Array,
+        default: []
       }
     },
     components: {
@@ -60,7 +68,8 @@
     data() {
       return {
         isIndeterminate: false,
-        disabled: false
+        disabled: false,
+        selected: []
       };
     },
     methods: {
@@ -71,14 +80,16 @@
         return true;
       },
       imgSrc(item) {
-        return `/djcpsdocument/fileManager/downloadFile.do?id=` + item.fcategoryid;
+        return '/djcpsdocument/fileManager/downloadFile.do?id=' + item.fcategoryid;
       },
       handleCheckAllChange(val) {
-        this.selectedData = val ? this.fileList : [];
-        this.$store.dispatch('SetSelectedData', this.selectedData);
+        this.selected = val ? this.fileList : [];
+        this.$emit('input', this.selected);
+        // this.$store.dispatch('SetSelectedData', this.selectedData);
         this.isIndeterminate = false;
       },
       handleCheckItemChange(value) {
+        this.$emit('input', value);
         if (this.fileList[0].faothority === 'newFolder') {
           this.fileList.shift();
           this.selectedData = [];
@@ -133,8 +144,9 @@
       }
     },
     mounted() {
+      this.selected = this.value;
       const totalLength = this.fileList.length;
-      const checkedDataLength = this.selectedData.length;
+      const checkedDataLength = this.selected.length;
       if (totalLength === 0) {
         this.disabled = true;
       } else if (checkedDataLength > 0 && checkedDataLength < totalLength) {

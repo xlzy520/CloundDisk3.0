@@ -16,16 +16,20 @@
 
 <script>
   import RenameFile from '@/components/RenameFile.vue';
-  import { mapGetters } from 'vuex';
-  import { formatSize, parseTime, sizeSort, nameSort } from '@/utils/index';
   import baseTable from '../../../components/baseTable.vue';
   import baseScrollbar from '../../../components/baseScrollbar.vue';
+  import { mapGetters } from 'vuex';
+  import { formatSize, parseTime, sizeSort, nameSort } from '@/utils/index';
   export default {
     name: 'List',
     props: {
       fileList: {
         require: true,
         type: Array
+      },
+      value: {
+        type: Array,
+        default: []
       }
     },
     data() {
@@ -40,7 +44,9 @@
             sortMethod: nameSort,
             render: (h, {props: {row}}) => {
               if (row.isEditor) {
-                return <RenameFile type="List" />;
+                return <RenameFile type="List"
+                          onCancel-edit={() => this.$emit('cancel-edit')}
+                          onConfirm-edit={event => this.$emit('confirm-edit', event)} />;
               } else {
                 return (
                   <div>
@@ -128,6 +134,7 @@
         }
       },
       handleSelectionChange(rows) {
+        this.$emit('input', rows);
         this.rows = rows;
         if (this.fileList.length > 0) {
           if (this.fileList[0].faothority === 'newFolder') {
@@ -189,9 +196,16 @@
           }
         });
       },
+      clearSelection() {
+        this.$refs.baseTable.clearSelection();
+      }
     },
     mounted() {
-      this.$store.dispatch('SetSelectedData', []);
+      for (let item of this.value) {
+        this.$refs.baseTable.toggleRowSelection(item, true);
+      }
+      // this.$refs.baseTable.toggleRowSelection(this.value, true);
+      // this.$store.dispatch('SetSelectedData', []);
     }
   };
 </script>
