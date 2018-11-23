@@ -152,6 +152,9 @@
         }
       }
     },
+    mounted () {
+      this.restValues();
+    },
     watch: {
       fileList() {
         this.restValues();

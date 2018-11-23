@@ -181,9 +181,9 @@
           categoryService.renameFile({ ...this.selected[0], newName: fileName }).then(res => {
             this.$message1000(res.msg, 'success');
             this.selected[0].fname = fileName;
+            this.selected[0].isEditor = false;
           });
         }
-        this.selected[0].isEditor = false;
       },
       cancelEdit() {
         if (this.selected.length === 0) {
