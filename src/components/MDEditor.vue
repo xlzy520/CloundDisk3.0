@@ -1,8 +1,8 @@
 <template>
   <div class="markdown">
     <el-dialog
-      v-if="preview.visible"
-      :visible.sync="preview.visible"
+      v-if="visible"
+      :visible.sync="visible"
       :modal-append-to-body="true"
       :show-close="false"
       :close-on-press-escape="false"
@@ -194,6 +194,7 @@
       },
       getDocInfo() {
         fileService.getDocInfo(this.mdConfig.fcategoryid).then(res=>{
+          this.visible = true;
           this.docValue = res.data;
           this.docValue.fversionsign = this.mdConfig.fversionsign;
         }).catch(()=>{

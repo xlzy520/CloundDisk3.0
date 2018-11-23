@@ -108,8 +108,7 @@
       },
       md(val) {
         this.mdConfig = {
-          ...val,
-          visible: true
+          ...val
         };
         this.$nextTick(()=>{
           this.$refs.md.getDocInfo();
