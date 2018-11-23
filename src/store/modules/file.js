@@ -4,19 +4,10 @@ const file = {
   state: {
     parentId: '0',
     selectedData: [],
-    imgEditor: {
-      visible: false,
-      id: ''
-    },
     menuVisible: false,
     loadVisible: true,
     fileList: [],
     folderNav: [],
-    preview: {
-      visible: false,
-      type: 'preview' // 新建markdown时需要首先展示编辑界面
-    },
-    docValue: {},
     searchList: null,
     hasSearch: false,
     coordinate: []
@@ -47,9 +38,6 @@ const file = {
     SET_SELECTED_DATA: (state, data) => {
       state.selectedData = data;
     },
-    GET_DOC_INFO: (state, data) => {
-      state.docValue = data;
-    },
     SET_SEARCH_LIST: (state, data) => {
       state.searchList = data;
     },
@@ -67,18 +55,17 @@ const file = {
     RightTogglemenuVisible: ({ commit }, data) => {
       commit('RIGHT_TOGGLE_MENU_VISIBLE', data);
     },
-    async GetCategory({ commit }, fcategoryid) {
+    GetCategory({ commit }, fcategoryid) {
       return new Promise((resolve, reject) => {
         const loadingInstance = Loading.service({ fullscreen: true });
-        fileService.getCategory(fcategoryid).then(response => {
-          const Category = response;
+        fileService.getCategory(fcategoryid).then(res => {
           loadingInstance.close();
-          commit('GET_CATEGORY', Category.data.tableList);
-          commit('SET_FOLDER_NAV', Category.data.navList);
-          resolve(response);
-        }).catch(error => {
+          commit('GET_CATEGORY', res.data.tableList);
+          commit('SET_FOLDER_NAV', res.data.navList);
+          resolve(res);
+        }).catch(err => {
           loadingInstance.close();
-          reject(error);
+          reject(err);
         });
       });
     },
@@ -95,15 +82,6 @@ const file = {
     },
     SetSelectedData({ commit }, data) {
       commit('SET_SELECTED_DATA', data);
-    },
-    async GetDocInfo({ commit }, data) {
-      const { fcategoryid, fversionsign } = data;
-      const docInfo = await fileService.getDocInfo(fcategoryid);
-      if (docInfo.success) {
-        docInfo.data.fversionsign = fversionsign;
-        commit('GET_DOC_INFO', docInfo.data);
-        commit('TOGGLE_PREVIEW_VISIBLE', 'preview');
-      }
     },
     async SetSearchList({ commit }, data) {
       const { fullTextBoolean, queryString } = data;
@@ -134,10 +112,6 @@ const file = {
     ToggleSearch({ commit }, data) {
       commit('TOGGLE_SEARCH', data);
     },
-    NewMarkdownFile({ commit }) {
-      commit('GET_DOC_INFO', {});
-      commit('TOGGLE_PREVIEW_VISIBLE', 'create');
-    }
   }
 };
 export default file;

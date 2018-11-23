@@ -1,13 +1,13 @@
 <template>
   <div class="admin-list">
     <list-header class="admin-list-header" @action="dispatchAction"></list-header>
-    <list v-if="isList" :file-list="List" @viewImg="viewImg"></list>
+    <list v-if="isList" :file-list="List" @viewImg="viewImg" @md="md"></list>
     <thumbnail v-else :file-list="List" @viewImg="viewImg"></thumbnail>
     <upload-file ref="upload"></upload-file>
     <delete-file ref="delete"></delete-file>
     <detail ref="detail"></detail>
     <version-list ref="version"></version-list>
-    <md-editor></md-editor>
+    <md-editor ref="md" :mdConfig="mdConfig"></md-editor>
     <move-file ref="move"></move-file>
     <img-editor ref="img"></img-editor>
   </div>
@@ -31,7 +31,8 @@
     name: 'index',
     data() {
       return {
-        isList: true
+        isList: true,
+        mdConfig: {}
       };
     },
     computed: {
@@ -64,11 +65,11 @@
           case 'refresh':
             this.refresh();
             break;
-          case 'version':
-            this.$refs.version.requestData();
-            this.$refs.version.visible = true;
+          case 'version': case 'detail':
+            this.$refs[action].requestData();
+            this.$refs[action].visible = true;
             break;
-          case 'upload': case 'delete': case 'detail':
+          case 'upload': case 'delete':
             this.$refs[action].visible = true;
             break;
           case 'rename':
@@ -91,6 +92,12 @@
           case 'Thumbnail':
             this.isList = false;
             break;
+          case 'newMD':
+            this.mdConfig = {
+              visible: true,
+              type: 'create'
+            };
+            break;
           default:
             break;
         }
@@ -98,6 +105,15 @@
       viewImg(id) {
         this.$refs.img.data.url = `/djcpsdocument/fileManager/downloadFile.do?id=${id}`;
         this.$refs.img.visible = true;
+      },
+      md(val) {
+        this.mdConfig = {
+          ...val,
+          visible: true
+        };
+        this.$nextTick(()=>{
+          this.$refs.md.getDocInfo();
+        });
       },
       refresh() {
         this.$store.dispatch('Refresh').then(() => {

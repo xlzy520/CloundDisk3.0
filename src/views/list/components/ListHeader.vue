@@ -111,7 +111,7 @@ export default {
       switch (command) {
         case 'newFolder': this.newFolder(); break;
         case 'newMarkdown':
-          this.$store.dispatch('NewMarkdownFile');
+          this.$emit('action', 'newMD');
           break;
         default: return false;
       }

@@ -1,6 +1,7 @@
 <template>
   <div class="markdown">
     <el-dialog
+      v-if="preview.visible"
       :visible.sync="preview.visible"
       :modal-append-to-body="true"
       :show-close="false"
@@ -23,7 +24,7 @@
               codeStyle="monokai-sublime"
               :scrollStyle="true"
               :subfield="isField"
-              :defaultOpen="isPreview"
+              defaultOpen="preview"
               :toolbarsFlag="barsFlag"
               @imgAdd="imgAdd"
             />
@@ -40,19 +41,24 @@
   import fileService from '@/api/service/file';
   export default {
     name: 'md-editor',
+    props: {
+      mdConfig: {
+        type: Object,
+        required: true
+      }
+    },
     computed: {
       ...mapGetters([
-        'docValue',
         'selectedData'
       ]),
       preview: {
         get() {
-          if (this.$store.getters.preview.type === 'create') {
+          if (this.mdConfig.type === 'create') {
             this.isField = true;
             this.barsFlag = true;
             this.isEditMk = false;
           }
-          return this.$store.getters.preview;
+          return this.mdConfig;
         },
         set() {
           this.$store.dispatch('TogglePreviewVisible');
@@ -61,9 +67,10 @@
     },
     data() {
       return {
+        visible: false,
+        docValue: {},
         disabled: false,
         isField: false, // 是否双栏
-        isPreview: 'preview', // 预览或编辑
         barsFlag: false, // 是否显示工具栏
         isEditMk: true,
         externalLink: {
@@ -115,7 +122,8 @@
     },
     methods: {
       closeMkdown() {
-        this.$store.dispatch('TogglePreviewVisible');
+        this.mdConfig.visible = false;
+        this.docValue = {};
         this.isField = false;
         this.barsFlag = false;
         this.isEditMk = true;
@@ -183,10 +191,14 @@
         formdata.append('fparentid', '1');
         const imgInfo = await fileService.updateMarkdown(formdata);
         this.$refs.md.$img2Url(pos, '/djcpsdocument/fileManager/downloadFile.do?id=' + imgInfo.data.id);
+      },
+      getDocInfo() {
+        fileService.getDocInfo(this.mdConfig.fcategoryid).then(res=>{
+          this.docValue = res.data;
+          this.docValue.fversionsign = this.mdConfig.fversionsign;
+        }).catch(()=>{
+        });
       }
-    },
-    async mounted() {
-
     }
   };
 </script>

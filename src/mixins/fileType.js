@@ -1,7 +1,7 @@
 const fileType = {
   methods: {
     fileType(row) {
-      let { ffiletype, fcategoryid, fversionsign, fsize, fname, fvsgin, filesgin} = row;
+      let {ffiletype, fcategoryid, fversionsign, fsize, fname, fvsgin, filesgin} = row;
       if (ffiletype === undefined) { //在版本列表组件中，没有文件类型
         ffiletype = this.selectedData[0].ffiletype;
         fname = this.selectedData[0].fname;
@@ -14,14 +14,18 @@ const fileType = {
         case 1: //FOLDER
           this.$store.dispatch('GetCategory', fcategoryid);
           this.$store.dispatch('SetParentId', fcategoryid);
-          this.$router.push({ path: '/index/list', query: { dirid: fcategoryid }});
+          this.$router.push({path: '/index/list', query: {dirid: fcategoryid}});
           break;
-        case 2: case 9: //Text、Markdown
-        this.$store.dispatch('GetDocInfo', { fcategoryid, fversionsign });
-        break;
-        case 3: case 4: case 5: //office
-        window.open(`/#/office?id=${fcategoryid}&vid=${fversionsign}`);
-        break;
+        case 2:
+        case 9: //Text、Markdown
+          this.$emit('md', {fcategoryid, fversionsign, type: 'preview'});
+          // this.$store.dispatch('GetDocInfo', {fcategoryid, fversionsign});
+          break;
+        case 3:
+        case 4:
+        case 5: //office
+          window.open(`/#/office?id=${fcategoryid}&vid=${fversionsign}`);
+          break;
         case 6: //PDF
           window.open(`/djcpsdocument/fileManager/previewPdf.do?id=${fcategoryid}`);
           break;
@@ -36,6 +40,11 @@ const fileType = {
           window.sessionStorage.setItem('xmindName', fname);
           window.sessionStorage.setItem('xmindID', fcategoryid);
           window.open(`/static/xmind/edit.html`);
+          break;
+        case 10: //ZIP,RAR
+          console.log('预览压缩包');
+          break;
+        default:
           break;
       }
     }
