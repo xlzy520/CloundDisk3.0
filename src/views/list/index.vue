@@ -64,7 +64,11 @@
           case 'refresh':
             this.refresh();
             break;
-          case 'upload': case 'version': case 'delete': case 'detail':
+          case 'version':
+            this.$refs.version.requestData();
+            this.$refs.version.visible = true;
+            break;
+          case 'upload': case 'delete': case 'detail':
             this.$refs[action].visible = true;
             break;
           case 'rename':
@@ -111,7 +115,7 @@
         this.$store.dispatch('GetCategory', this.$route.query.dirid || '0');
       }
     },
-    async mounted() {
+     mounted() {
       if (location.search.indexOf('from') !== -1) {
         sessionStorage.setItem('from', 'sso'); // 如果来自统一登录平台，保存标志
       }

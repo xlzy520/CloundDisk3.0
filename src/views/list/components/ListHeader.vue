@@ -20,7 +20,7 @@
         <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" data-action="delete">删除</el-button>
         <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-info" data-action="detail">详情</el-button>
       </div>
-      <!-- <ul id="menu-btn" v-show="menuVisible" :style="{top:(coordinate[2]+'px'),left:(coordinate[1]+'px')}">
+      <ul id="menu-btn" v-show="menuVisible" :style="{top:(coordinate[2]+'px'),left:(coordinate[1]+'px')}">
         <li :class="{disabled:!([2, 4].indexOf(isShow)  > -1)}" @click="downloadFile2">下载</li>
         <li :class="{disabled:!([2, 4, 5].indexOf(isShow)  > -1)}" data-action="copy">复制到</li>
         <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow)  > -1)}" data-action="move">移动到</li>
@@ -29,7 +29,7 @@
         <li :class="{disabled:!([1, 2, 4].indexOf(isShow)  > -1)}" data-action="rename">重命名</li>
         <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow) > -1)}" data-action="delete">删除</li>
         <li :class="{disabled:!([1, 2, 4].indexOf(isShow)  > -1)}" data-action="detail">详情</li>
-      </ul> -->
+      </ul>
     </div>
     <div class="action-wrap">
       <div class="item">
@@ -103,10 +103,10 @@ export default {
       this.$refs.downloadBtn.href = `/djcpsdocument/fileManager/downloadFile.do?id=${this.selectedData[0].fcategoryid}`;
       this.$refs.downloadBtn.download = this.selectedData[0].fname;
     },
-    // downloadFile2() {
-    //   this.downloadFile();
-    //   this.$refs.downloadBtn.click();
-    // },
+    downloadFile2() {
+      this.downloadFile();
+      this.$refs.downloadBtn.click();
+    },
     handleCommand(command) {
       switch (command) {
         case 'newFolder': this.newFolder(); break;

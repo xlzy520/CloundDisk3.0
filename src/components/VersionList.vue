@@ -232,9 +232,6 @@
           this.oldVersion.label = '';
         }
       }
-    },
-    mounted() {
-      this.requestData();
     }
   };
 </script>
