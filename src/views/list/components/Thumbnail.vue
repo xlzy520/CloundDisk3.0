@@ -131,6 +131,15 @@
             }
             break;
         }
+      },
+      restValues() {
+        this.selected = this.value;
+        const totalLength = this.fileList.length;
+        const checkedDataLength = this.selected.length;
+        this.disabled = totalLength === 0;
+        if (checkedDataLength > 0 && checkedDataLength < totalLength) {
+          this.isIndeterminate = true;
+        }
       }
     },
     computed: {
@@ -143,14 +152,12 @@
         }
       }
     },
-    mounted() {
-      this.selected = this.value;
-      const totalLength = this.fileList.length;
-      const checkedDataLength = this.selected.length;
-      if (totalLength === 0) {
-        this.disabled = true;
-      } else if (checkedDataLength > 0 && checkedDataLength < totalLength) {
-        this.isIndeterminate = true;
+    watch: {
+      fileList() {
+        this.restValues();
+      },
+      value() {
+        this.restValues();
       }
     }
   };

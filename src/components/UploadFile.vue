@@ -1,52 +1,41 @@
 <template>
-  <el-dialog
-    :title="title"
-    :visible.sync="visible"
-    @close="close"
-    :modal-append-to-body="false"
-    custom-class="upload-file"
-    :close-on-click-modal="true"
-    :close-on-press-escape="false"
-    :show-close="false"
-    width="400px">
-    <el-upload
-      ref="upload"
-      drag
-      action="/djcpsdocument/category/fileUpload.do"
-      :on-success="uploadOk"
-      :data="uploadData"
-      :on-change="onFileChange"
-      :auto-upload="false"
-      :on-remove="onRemove"
-      :show-file-list="true"
-      :on-error="onError"
-      :on-progress="onProgress"
-      multiple
-    >
-      <i class="el-icon-upload"></i>
-      <p class="upload-speed">{{speed}}</p>
-      <div class="el-upload__text">将文件拖到此处或点击上传</div>
-      <div class="el-upload__tip" slot="tip" v-if="!updateType"><span style="color: #888;padding-right: 2px;">当前文件夹：</span>{{tip}}</div>
-      <div class="el-upload__tip" slot="tip" v-if="updateType"><span style="color: #888;padding-right: 2px;">要更新的文件：</span>{{tip}}</div>
-    </el-upload>
-    <div class="file-desc-label" v-if="updateType">文件描述</div>
-    <el-input type="textarea" v-model="fileDesc" v-if="updateType"></el-input>
-    <span slot="footer" class="dialog-footer">
-      <el-button size="small"  v-if="!updateType" type="primary" @click="submitUpload" :disabled="btDisable">开始上传</el-button>
-      <el-button size="small" v-if="updateType" type="primary" @click="submitUpload" :disabled="btDisable">开始更新</el-button>
-      <el-button @click="close()" size="small">关 闭</el-button>
-    </span>
-  </el-dialog>
+  <div class="upload-file">
+    <base-dialog ref="dialog" :title="title" @close="close">
+      <el-upload
+        ref="upload"
+        drag
+        action="/djcpsdocument/category/fileUpload.do"
+        :on-success="uploadOk"
+        :data="uploadData"
+        :on-change="onFileChange"
+        :auto-upload="false"
+        :on-remove="onRemove"
+        :show-file-list="true"
+        :on-error="onError"
+        :on-progress="onProgress"
+        multiple>
+        <i class="el-icon-upload"></i>
+        <p class="upload-speed">{{speed}}</p>
+        <div class="el-upload__text">将文件拖到此处或点击上传</div>
+        <div class="el-upload__tip" slot="tip"><span>{{updateType ? '要更新的文件：' : '当前文件夹：'}}</span>{{tip}}</div>
+      </el-upload>
+      <div class="file-desc-label" v-if="updateType">文件描述</div>
+      <el-input type="textarea" v-model="fileDesc" v-if="updateType"></el-input>
+      <div slot="footer" class="upload-file-footer">
+        <el-button size="small" type="primary" @click="submitUpload" :disabled="btDisable">{{updateType ? '开始更新' : '开始上传'}}</el-button>
+        <el-button @click="close" size="small">关 闭</el-button>
+      </div>
+    </base-dialog>
+  </div>
 </template>
 
 <script>
-// import { mapGetters } from 'vuex';
+import baseDialog from '@/components/baseDialog.vue';
 import { formatSize } from '@/utils/index';
 export default {
   name: 'UploadFile',
   data() {
     return {
-      visible: false,
       type: 'upload',
       isLoad: true,
       detail: {},
@@ -61,13 +50,11 @@ export default {
       selectedData: null
     };
   },
+  components: {
+    baseDialog
+  },
   props: ['navList'],
   computed: {
-    // ...mapGetters([
-    //   // 'folderNav',
-    //   // 'parentId',
-    //   // 'selectedData'
-    // ]),
     title() {
       return this.type === 'upload' ? '文件上传' : '文件更新';
     },
@@ -105,7 +92,7 @@ export default {
       }
     },
     openFrame(row, type = 'upload') {
-      this.visible = true;
+      this.$refs.dialog.dialogVisible = true;
       this.type = type;
       this.selectedData = row;
     },
@@ -114,7 +101,7 @@ export default {
       this.fileList = [];
       this.fileDesc = '';
       this.selectedData = null;
-      this.visible = false;
+      this.$refs.dialog.dialogVisible = false;
     },
     submitUpload() {
       if (this.currentFile == null) {
@@ -204,23 +191,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  /deep/ .upload-file{
-    .el-upload__tip {
-      color: #a00;
-    }
-    .el-upload-dragger {
-      height: 135px;
-    }
-    .el-upload-dragger .el-icon-upload {
-      margin: 22px 0 16px;
-    }
-    .file-desc-label {
-      font-size: 14px;
-      margin: 5px 0 5px 0px;
-      color: #666;
-    }
-    .upload-speed{
-      color: forestgreen;
+.upload-file {
+  &-footer {
+    text-align: right;
+    padding: 20px;
+  }
+  .el-upload__tip {
+    color: #a00;
+    span {
+      color: #888;
+      padding-right: 2px;
     }
   }
+  .file-desc-label {
+    font-size: 14px;
+    margin: 5px 0 5px 0px;
+    color: #666;
+  }
+  .upload-speed{
+    color: forestgreen;
+  }
+  /deep/ .el-upload-dragger {
+    height: 135px;
+    .el-icon-upload {
+      margin: 22px 0 16px;
+    }
+  }
+}
 </style>

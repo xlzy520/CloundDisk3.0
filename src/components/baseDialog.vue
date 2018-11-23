@@ -1,25 +1,27 @@
 <template>
   <div class="base-dialog">
     <el-dialog
+      ref="dialog"
       :visible="dialogVisible"
       :show-close="true"
+      top="0"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       @close="closeDialog">
       <div class="base-dialog-title" v-if="title">
         {{ title }}
       </div>
-      <slot></slot>
+      <div class="base-dialog-content">
+        <slot></slot>
+      </div>
       <slot name="footer">
         <div class="base-dialog-footer" v-if="!notFooterBtn">
           <div class="base-dialog-footer-button">
+            <div class="base-dialog-footer-button-ok">
+              <el-button type="primary" @click="handleOk">确 定</el-button>
+            </div>
             <div class="base-dialog-footer-button-close">
               <el-button @click="closeDialog">取 消</el-button>
-            </div>
-            <div class="base-dialog-footer-button-ok">
-              <el-button type="primary"
-                @click="handleOk"
-                :disabled="state !== 'edit'">保 存</el-button>
             </div>
           </div>
         </div>
@@ -34,20 +36,14 @@ export default {
   props: ['title', 'notFooterBtn'],
   data() {
     return {
-      dialogVisible: false,
-      state: 'edit'
+      dialogVisible: false
     };
   },
   methods: {
-    restValue() {
-      this.state = 'edit';
-    },
     closeDialog() {
-      this.restValue();
       this.$emit('close');
     },
     handleOk() {
-      this.restValue();
       this.$emit('comfirm');
     }
   }
@@ -57,31 +53,45 @@ export default {
 <style lang="scss" scoped>
 .base-dialog {
   &-title {
-    text-align: center;
-    box-shadow: 0 2px 10px #d1d6de;
-    padding: 10px 10px;
+    font-size: 18px;
+    padding: 15px 32px 10px 32px;
+  }
+  &-content {
+    padding: 0 12px;
   }
   &-footer {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-right: 30px;
     &-button {
-      text-align: center;
+      text-align: right;
       & > div {
         display: inline-block;
         & + div {
-          margin-left: 40px;
-          margin-bottom: 30px;
+          margin-left: 12px;
         }
+      }
+      .el-button {
+        padding: 8px 12px;
+        font-size: 14px;
       }
     }
   }
-  /deep/ .el-dialog__header {
-    height: 0;
-    padding: 0;
-  }
-  /deep/ .el-dialog__body {
-    padding: 0;
-  }
-  /deep/ .el-dialog--small {
-    width: auto;
+  .el-dialog__wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /deep/ .el-dialog {
+      margin-bottom: 30vh;
+      width: auto;
+    }
+    /deep/ .el-dialog__header {
+      height: 0;
+      padding: 0;
+    }
+    /deep/ .el-dialog__body {
+      padding: 0;
+    }
   }
 }
 </style>

@@ -17,7 +17,7 @@
       @confirm-edit="confirmEdit">
     </thumbnail>
     <upload-file ref="upload" :nav-list="navList" @upload-success="getCategory(null, false)"></upload-file>
-    <delete-file ref="deleteFile" @delete-success="getCategory(null, false)"></delete-file>
+    <delete-file ref="deleteFile" @delete-success="deleteSuccess"></delete-file>
     <detail ref="detail"></detail>
     <version-list ref="version"></version-list>
     <md-editor></md-editor>
@@ -55,13 +55,6 @@
         navList: [],
         selected: [],
         hasSearch: this.$store.getters.hasSearch,
-        newFolderOptions: {
-          faothority: 'newFolder',
-          ffiletype: 1,
-          fname: '新建文件夹',
-          fsize: null,
-          isEditor: true
-        }
       };
     },
     computed: {
@@ -152,11 +145,24 @@
             break;
         }
       },
-      newFolder() {
+      clearSelection() {
         if (this.isList) this.$refs.baseList.clearSelection();
         else this.selected = [];
-        this.tableList.unshift(this.newFolderOptions);
+      },
+      newFolder() {
+        this.clearSelection();
+        this.tableList.unshift({
+          faothority: 'newFolder',
+          ffiletype: 1,
+          fname: '新建文件夹',
+          fsize: null,
+          isEditor: true
+        });
         // this.$set(this.tableList[0], 'isEditor', true);
+      },
+      deleteSuccess() {
+        this.clearSelection();
+        this.getCategory();
       },
       refresh() {
         this.$store.dispatch('Refresh').then(res => {
@@ -175,9 +181,9 @@
           categoryService.renameFile({ ...this.selected[0], newName: fileName }).then(res => {
             this.$message1000(res.msg, 'success');
             this.selected[0].fname = fileName;
-            this.selected[0].isEditor = false;
           });
         }
+        this.selected[0].isEditor = false;
       },
       cancelEdit() {
         if (this.selected.length === 0) {
@@ -205,6 +211,7 @@
     watch: {
       $route(to) {
         if (!to.query.dirid) return;
+        this.selected = [];
         this.getCategory(to.query.dirid);
       }
     },

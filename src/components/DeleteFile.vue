@@ -1,6 +1,24 @@
 <template>
-  <div>
-    <el-dialog
+  <div class="delete-file">
+    <base-dialog ref="dialog" :title="'删除文件'" @close="close">
+      <div class="delete-file-list">
+        <base-scrollbar>
+          <div v-for="(item, index) in selected" :key="index" class="delete-file-list-item">
+            <svg-icon :icon-class="String(item.ffiletype)" class-name="delete-file-list-item-icon"/><span class="delete-file-list-item-name">{{item.fname}}</span>
+          </div>
+        </base-scrollbar>
+      </div>
+      <div class="info-panel">
+        <span class="info" v-if="deleting === true">
+          <i class="el-icon-loading"></i> 正在删除...
+        </span>
+      </div>
+      <div slot="footer" class="delete-file-footer">
+        <el-button type="primary" @click="submitForm" size="small">开始删除</el-button>
+        <el-button @click="close" size="small">关闭</el-button>
+      </div>
+    </base-dialog>
+    <!-- <el-dialog
       title="删除文件"
       :visible.sync="visible"
       :modal-append-to-body="false"
@@ -18,25 +36,27 @@
         <span class="info" v-if="deleting === true">
           <i class="el-icon-loading"></i> 正在删除...
         </span>
-        <!-- <span class="info2" v-if="deleteInfo !== ''">
+        <span class="info2" v-if="deleteInfo !== ''">
           {{deleteInfo}}
         </span>
         <span class="err" v-if="err !== ''">
           {{err}}
-        </span> -->
+        </span>
       </div>
       <span slot="footer" class="dialog-footer">
-        <!-- <span class="tooltip">{{err}}</span> -->
+        <span class="tooltip">{{err}}</span>
         <el-button type="primary" @click="submitForm" size="small">开始删除</el-button>
         <el-button @click="close" size="small">关闭</el-button>
       </span>
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
 <script>
   // import { mapGetters } from 'vuex';
   import fileService from '@/api/service/file.js';
+  import baseDialog from '@/components/baseDialog.vue';
+  import baseScrollbar from '@/components/baseScrollbar.vue';
   export default {
     name: 'DeleteFile',
     // computed: {
@@ -44,6 +64,10 @@
     //     'selected'
     //   ])
     // },
+    components: {
+      baseDialog,
+      baseScrollbar
+    },
     data() {
       return {
         visible: false,
@@ -55,16 +79,10 @@
     },
     methods: {
       close() {
-        if (this.deleting) {
-          if (confirm('删除未完成，您关闭对话框后，删除将继续进行，仍要关闭对话框吗？')) {
-            this.restValues();
-          }
-        } else {
-          this.restValues();
-        }
+        this.restValues();
       },
       restValues() {
-        this.visible = false;
+        this.$refs.dialog.dialogVisible = false;
         this.selected = [];
         // this.deleteInfo = '';
         // this.err = '';
@@ -72,7 +90,7 @@
       },
       openFrame(rows) {
         this.selected = rows;
-        this.visible = true;
+        this.$refs.dialog.dialogVisible = true;
       },
       submitForm() {
         this.deleting = true;
@@ -104,84 +122,27 @@
   };
 </script>
 
-<style>
-  .delete-file .el-dialog__body {
-    padding: 10px 20px !important;
-  }
-  .delete-file .el-dialog__header {
-    padding: 10px 20px 5px 20px !important;
-  }
-  .delete-file .el-form-item {
-    margin-bottom: 5px !important;
-  }
-  .delete-file .el-dialog__headerbtn {
-    top:14px;
-  }
-  .delete-file .tooltip {
-    color: #a00;
-    font-size: 12px;
-    padding-right: 10px;
-  }
-  .delete-file .file-list {
+<style lang="scss" scoped>
+.delete-file {
+  &-list {
+    display: flex;
+    width: 390px;
     height: 140px;
+    padding: 0 6px;
     border: 1px solid #ddd;
-    border-radius: 0px;
-    overflow-y: auto;
-    overflow-x: auto;
+    &-item {
+      &-name {
+        vertical-align: middle;
+      }
+      &-icon {
+        width: 1.5em;
+        height: 1.5em;
+      }
+    }
   }
-  .delete-file .file-list .item {
-    line-height: 28px;
-    padding: 0 6px 0 6px;
-    font-size: 12px;
-    white-space:nowrap;
-    text-overflow:ellipsis;
-    width: 330px;
-    overflow: hidden;
+  &-footer {
+    text-align: right;
+    padding: 20px;
   }
-  .delete-file .file-list .item img {
-    width: 18px;
-    vertical-align: -15%;
-    padding-right: 2px;
-  }
-  .delete-file .info-panel {
-    margin: 5px 0 0px 0;
-    color: #666;
-    font-size:14px;
-    line-height: 26px;
-  }
-  .delete-file .info-panel .info {
-    font-size:14px;
-    color: #888;
-  }
-  .delete-file .info-panel .info2 {
-    font-size:12px;
-    color: #a00;
-  }
-
-  .delete-file .info-panel .err {
-    color: #a00;
-    font-size: 14px;
-  }
-
-  .delete-file .dialog-footer a {
-    font-size: 12px;
-    color: #409eff;
-    text-decoration: none;
-    padding-right: 20px;
-  }
-  .delete-file .dialog-footer a:hover {
-    text-decoration: underline;
-  }
-
-</style>
-
-<style scoped>
-  .icon {
-    width: 1.5em;
-    height: 1.5em;
-    vertical-align: middle;
-  }
-  .item-name {
-    vertical-align: middle;
-  }
+}
 </style>

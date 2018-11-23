@@ -14,15 +14,14 @@
         <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-edit-outline" data-action="rename">重命名</el-button>
         <el-button type="primary" v-if="[2, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" data-action="copyTo">复制到</el-button>
         <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" data-action="moveTo">移动到</el-button>
-        <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" class="el-icon-download" @click="downloadFile">下载</el-button>
+        <a ref="downloadBtn" v-if="[2, 4].indexOf(isShow) > -1" class="el-button el-button--primary el-icon-download" @click="downloadFile">下载</a>
         <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-edit" data-action="update">更新</el-button>
         <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-tickets" data-action="version">版本</el-button>
         <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" data-action="delete">删除</el-button>
         <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-info" data-action="detail">详情</el-button>
-        <a ref="downloadDom" v-show="false"></a>
       </div>
       <ul id="menu-btn" v-show="menuVisible" :style="{top:(coordinate[2]+'px'),left:(coordinate[1]+'px')}">
-        <li :class="{disabled:!([2, 4].indexOf(isShow)  > -1)}" @click="downloadFile">下载</li>
+        <li :class="{disabled:!([2, 4].indexOf(isShow)  > -1)}" @click="downloadFile2">下载</li>
         <li :class="{disabled:!([2, 4, 5].indexOf(isShow)  > -1)}" data-action="copyTo">复制到</li>
         <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow)  > -1)}" data-action="moveTo">移动到</li>
         <li :class="{disabled:!([2, 4].indexOf(isShow) > -1)}" data-action="update">更新</li>
@@ -105,8 +104,8 @@ export default {
       // });
     },
     downloadFile() {
-      this.$refs.downloadDom.href = `/djcpsdocument/fileManager/downloadFile.do?id=${this.selectedData[0].fcategoryid}`;
-      this.$refs.downloadDom.download = this.selectedData[0].fname;
+      this.$refs.downloadBtn.href = `/djcpsdocument/fileManager/downloadFile.do?id=${this.selected[0].fcategoryid}`;
+      this.$refs.downloadBtn.download = this.selected[0].fname;
       // window.href = `/djcpsdocument/fileManager/downloadFile.do?id=${this.selected[0].fcategoryid}`;
     },
     downloadFile2() {
