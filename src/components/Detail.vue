@@ -146,9 +146,6 @@
           }
         }
       }
-    },
-    mounted() {
-      this.requestData();
     }
   };
 </script>

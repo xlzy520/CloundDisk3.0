@@ -2,7 +2,7 @@
   <div class="img-editor">
     <el-dialog
       v-if="visible"
-      :visible.async="true"
+      :visible.sync="visible"
       :modal-append-to-body="false"
       :close-on-click-modal="true"
       :show-close="false"

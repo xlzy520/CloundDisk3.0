@@ -36,7 +36,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import fileService from '@/api/service/file.js';
+  import fileService from '@/api/service/file';
   export default {
     name: 'DeleteFile',
     computed: {
