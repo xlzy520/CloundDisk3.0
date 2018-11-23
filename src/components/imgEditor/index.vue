@@ -22,6 +22,7 @@
   import 'cropperjs/dist/cropper.css';
   import Editor from './Editor';
   import ImgNavbar from './ImgNavbar';
+
   export default {
     name: 'ImgEditor',
     data() {
@@ -40,16 +41,11 @@
       };
     },
     computed: {
-      setImgUrl: {
-        get() {
-         if (this.visible) {
-           this.data.url = `/djcpsdocument/fileManager/downloadFile.do?id=${this.id}`;
-         }
-          return this.visible;
-        },
-        set(newVal) {
-          this.visible = newVal;
+      setImgUrl() {
+        if (this.visible) {
+          this.data.url = `/djcpsdocument/fileManager/downloadFile.do?id=${this.id}`;
         }
+        return this.visible;
       }
     },
     components: {
@@ -57,7 +53,7 @@
     },
     methods: {
       change(action) {
-        const { editor } = this.$refs;
+        const {editor} = this.$refs;
         switch (action) {
           case 'crop':
             editor.crop();
@@ -83,12 +79,12 @@
 
 <style lang="scss">
   .img-editor {
-    .el-dialog{
-      margin-top: 0!important;
-      background: unset ;
-      box-shadow: unset ;
+    .el-dialog {
+      margin-top: 0 !important;
+      background: unset;
+      box-shadow: unset;
     }
-    .el-dialog__header{
+    .el-dialog__header {
       padding: 0;
     }
     .header {
