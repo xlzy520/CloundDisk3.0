@@ -31,13 +31,7 @@
     name: 'index',
     data() {
       return {
-        isList: true,
-        detailVisible: false,
-        versionVisible: false,
-        move: {
-          visible: false,
-          type: ''
-        }
+        isList: true
       };
     },
     computed: {

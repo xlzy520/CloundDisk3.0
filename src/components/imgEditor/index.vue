@@ -1,7 +1,7 @@
 <template>
   <div class="img-editor">
     <el-dialog
-      v-if="visible"
+      v-if="setImgUrl"
       :visible.async="true"
       :modal-append-to-body="false"
       :close-on-click-modal="true"
@@ -39,6 +39,19 @@
         }
       };
     },
+    computed: {
+      setImgUrl: {
+        get() {
+         if (this.visible) {
+           this.data.url = `/djcpsdocument/fileManager/downloadFile.do?id=${this.id}`;
+         }
+          return this.visible;
+        },
+        set(newVal) {
+          this.visible = newVal;
+        }
+      }
+    },
     components: {
       Editor, ImgNavbar
     },
@@ -64,55 +77,48 @@
           default:
         }
       }
-    },
-    mounted() {
-      this.data.url = `/djcpsdocument/fileManager/downloadFile.do?id=${this.id}`;
     }
   };
 </script>
 
-<style>
+<style lang="scss">
   .img-editor {
-
-  }
-  .img-editor .el-dialog{
-    margin-top: 0!important;
-    background: unset !important;
-    box-shadow: unset !important;
-  }
-  .img-editor .el-dialog__header{
-    padding: 0!important;
-  }
-  .img-editor .header {
-    height: 3rem;
-    overflow: hidden;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    position: relative;
-    z-index: 1;
-  }
-
-  @media (min-width: 768px) {
-    .header {
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
+    .el-dialog{
+      margin-top: 0!important;
+      background: unset ;
+      box-shadow: unset ;
     }
-  }
-
-  .img-editor .title {
-    color: #fff;
-    display: block;
-    float: left;
-    font-size: 1.125rem;
-    line-height: 3rem;
-  }
-
-  .img-editor .main {
-    height: 90vh;
-    bottom: 0;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 5vh;
+    .el-dialog__header{
+      padding: 0;
+    }
+    .header {
+      height: 3rem;
+      overflow: hidden;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    @media (min-width: 768px) {
+      .header {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+      }
+    }
+    .title {
+      color: #fff;
+      display: block;
+      float: left;
+      font-size: 1.125rem;
+      line-height: 3rem;
+    }
+    .main {
+      height: 90vh;
+      bottom: 0;
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: 5vh;
+    }
   }
 </style>
