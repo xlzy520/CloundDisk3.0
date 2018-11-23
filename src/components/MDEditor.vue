@@ -51,23 +51,21 @@
       ...mapGetters([
         'selectedData'
       ]),
-      preview: {
+      visible: {
         get() {
           if (this.mdConfig.type === 'create') {
-            this.isField = true;
-            this.barsFlag = true;
-            this.isEditMk = false;
+            this.fileEdit();
           }
-          return this.mdConfig;
+          return this.isVisible;
         },
-        set() {
-          this.$store.dispatch('TogglePreviewVisible');
+        set(newVal) {
+          this.isVisible = newVal;
         }
       }
     },
     data() {
       return {
-        visible: false,
+        isVisible: false,
         docValue: {},
         disabled: false,
         isField: false, // 是否双栏
@@ -122,7 +120,7 @@
     },
     methods: {
       closeMkdown() {
-        this.mdConfig.visible = false;
+        this.visible = false;
         this.docValue = {};
         this.isField = false;
         this.barsFlag = false;
@@ -206,7 +204,6 @@
 <style lang="scss">
   @import "@/styles/mixin.scss";
   @import "@/styles/variables.scss";
-  /*@import "@/styles/code.scss";*/
 
   .markdown .el-dialog{
     margin-top: 8vh!important;

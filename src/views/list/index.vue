@@ -93,10 +93,8 @@
             this.isList = false;
             break;
           case 'newMD':
-            this.mdConfig = {
-              visible: true,
-              type: 'create'
-            };
+            this.mdConfig = {type: 'create'};
+            this.$refs.md.visible = true;
             break;
           default:
             break;
@@ -107,9 +105,7 @@
         this.$refs.img.visible = true;
       },
       md(val) {
-        this.mdConfig = {
-          ...val
-        };
+        this.mdConfig = val;
         this.$nextTick(()=>{
           this.$refs.md.getDocInfo();
         });
