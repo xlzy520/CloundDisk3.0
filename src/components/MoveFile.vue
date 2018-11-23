@@ -11,8 +11,8 @@
       </base-scrollbar>
     </div>
     <span slot="footer" class="dialog-footer">
-      <el-button v-if="this.type === 'move'" type="primary" @click="moveFile">确 定</el-button>
-      <el-button v-else type="primary" @click="copyFile">确 定</el-button>
+      <el-button type="primary" @click="type === 'move' ? moveFile($event) : copyFile($event)">确 定</el-button>
+      <!-- <el-button v-else type="primary" @click="copyFile">确 定</el-button> -->
       <el-button @click="close">取 消</el-button>
     </span>
   </el-dialog>

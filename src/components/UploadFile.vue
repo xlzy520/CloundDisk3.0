@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+// import { mapGetters } from 'vuex';
 import { formatSize } from '@/utils/index';
 export default {
   name: 'UploadFile',
@@ -63,11 +63,11 @@ export default {
   },
   props: ['navList'],
   computed: {
-    ...mapGetters([
-      // 'folderNav',
-      'parentId',
-      // 'selectedData'
-    ]),
+    // ...mapGetters([
+    //   // 'folderNav',
+    //   // 'parentId',
+    //   // 'selectedData'
+    // ]),
     title() {
       return this.type === 'upload' ? '文件上传' : '文件更新';
     },
