@@ -12,21 +12,15 @@
     <div class="recycle-container-content">
       <base-scrollbar>
         <base-table
+          :total="pagination.total"
+          :pageNo="pagination.currentPage"
+          :pageSize="pagination.size"
+          @changePage="changePage"
           :selection="'recycle'"
           :table-data="tableData"
           :table-columns="tableColumns"
           @selection-change="selectChange">
         </base-table>
-        <el-pagination
-          class="recycle-pagination"
-          @current-change="handleCurrentChange"
-          :current-page="pagination.currentPage"
-          :page-size="pagination.size"
-          prev-text="上一页"
-          next-text="下一页"
-          layout="prev, pager, next, jumper"
-          :total="pagination.total">
-        </el-pagination>
       </base-scrollbar>
     </div>
   </div>
@@ -92,7 +86,7 @@ export default {
     baseScrollbar
   },
   methods: {
-    handleCurrentChange: function (val) {
+    changePage(val) {
       this.pagination.currentPage = val;
       this.recycleList();
     },
@@ -186,41 +180,5 @@ export default {
     line-height: 2;
     user-select: none;
   }
-  .recycle-pagination{
-    text-align: center;
-    padding: 20px 20px;
-  }
-
 }
-</style>
-<style lang="scss">
-  .recycle-container-content{
-    .el-pagination{
-      .btn-next, .btn-prev{
-        background: #f7f7f7;
-        border-radius: 2px;
-        font-weight: normal;
-        padding: 0 8px;
-      }
-      button:disabled{
-        background: #f7f7f7;
-      }
-      button:disabled:hover{
-        color: #c0c4cc;
-        background: #f7f7f7;
-        cursor: not-allowed;
-      }
-      button:hover,.el-pager li:hover {
-        background: #1886e3;
-        color: #d8d8d8;
-      }
-    }
-    .el-pager li{
-      font-weight: lighter;
-      border-radius: 2px;
-      color: #4d4d4d;
-      background: #f7f7f7;
-      margin-left: 5px;
-    }
-  }
 </style>
