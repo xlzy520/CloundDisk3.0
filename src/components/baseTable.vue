@@ -157,6 +157,9 @@
         font-weight: normal;
         padding: 0 8px;
       }
+      .btn-next{
+        margin-left: 5px;
+      }
       button:disabled {
         background: #f7f7f7;
       }
