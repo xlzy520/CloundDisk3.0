@@ -1,6 +1,7 @@
 const fileType = {
   methods: {
-    fileType(row) {
+    fileType(row, event) {
+      event.stopPropagation(); //防止点击文件名之后选择该文件
       let {ffiletype, fcategoryid, fversionsign, fsize, fname, fvsgin, filesgin} = row;
       if (ffiletype === undefined) { //在版本列表组件中，没有文件类型
         ffiletype = this.selectedData[0].ffiletype;
@@ -43,6 +44,9 @@ const fileType = {
           break;
         case 10: //ZIP,RAR
           console.log('预览压缩包');
+          break;
+        case 11: //code
+          console.log('代码编辑器');
           break;
         default:
           break;
