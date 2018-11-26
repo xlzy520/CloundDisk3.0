@@ -48,7 +48,7 @@
     },
     components: {
       MdEditor,
-      ImgEditor: () => import('@/components/ImgEditor/index.vue'),
+      ImgEditor: () => import('@/components/imgEditor/index.vue'),
       VersionList,
       Detail,
       UploadFile,
