@@ -45,6 +45,9 @@
         this.id = data.fcategoryid;
       },
       moveFile() {
+        this.selectedData.forEach(item => {
+          this.idList.push(item.fcategoryid);
+        });
         if (this.type === 'move') {
           fileService.moveFile(this.idList, this.id).then(() => {
             this.$message1000('文件移动成功', 'success');
@@ -63,11 +66,6 @@
           });
         }
       }
-    },
-    mounted() {
-      this.selectedData.forEach(item => {
-        this.idList.push(item.fcategoryid);
-      });
     }
   };
 </script>
