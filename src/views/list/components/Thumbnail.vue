@@ -18,7 +18,7 @@
                   @contextmenu.prevent="()=>{return false}"
                   :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''"
                   :title="item.fname"
-                  @click="fileType(item)">
+                  @click.stop="fileType(item)">
                 <div @click.stop>
                   <el-checkbox :label="item"></el-checkbox>
                 </div>

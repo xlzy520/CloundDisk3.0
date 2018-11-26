@@ -1,7 +1,7 @@
 const fileType = {
   methods: {
     fileType(row, event) {
-      event.stopPropagation(); //防止点击文件名之后选择该文件
+      if (event) event.stopPropagation(); //防止点击文件名之后选择该文件,render方式,Vue使用.stop
       let {ffiletype, fcategoryid, fversionsign, fsize, fname, fvsgin, filesgin} = row;
       if (ffiletype === undefined) { //在版本列表组件中，没有文件类型
         ffiletype = this.selectedData[0].ffiletype;
