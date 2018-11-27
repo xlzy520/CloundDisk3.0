@@ -1,6 +1,11 @@
 {
   "presets": [
-    ["env", {"modules": false}],
+    ["env", {
+      "modules": false,
+      "targets": {
+        "node": "8.11.3"
+      }
+    }],
     "stage-2"
   ],
   "plugins":["transform-vue-jsx", "transform-runtime"]

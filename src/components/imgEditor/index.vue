@@ -1,8 +1,7 @@
 <template>
   <div class="img-editor">
     <el-dialog
-      v-if="visible"
-      :visible.sync="visible"
+      :visible="true"
       :modal-append-to-body="false"
       :close-on-click-modal="true"
       :show-close="false"
@@ -25,9 +24,9 @@
 
   export default {
     name: 'ImgEditor',
+    props: ['imgUrl'],
     data() {
       return {
-        visible: false,
         data: {
           cropped: false,
           cropping: false,
@@ -35,7 +34,7 @@
           name: '',
           previousUrl: '',
           type: '',
-          url: ''
+          url: this.imgUrl
         }
       };
     },
@@ -59,7 +58,7 @@
             editor.reset();
             break;
           case 'close':
-            this.visible = false;
+            this.$emit('close');
             break;
           default:
         }

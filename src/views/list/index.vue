@@ -7,9 +7,9 @@
     <delete-file ref="delete"></delete-file>
     <detail ref="detail"></detail>
     <version-list ref="version"></version-list>
-    <md-editor ref="md"></md-editor>
+    <md-editor ref="md" v-if="visible==='mdEditor'" :docInfo="docInfo" @close="close"></md-editor>
     <move-file ref="move"></move-file>
-    <img-editor ref="img"></img-editor>
+    <img-editor ref="img" v-if="visible==='img'" :imgUrl="imgUrl" @close="close"></img-editor>
   </div>
 </template>
 
@@ -26,14 +26,17 @@
   import MdEditor from "../../components/MDEditor";
 
   import fileService from '@/api/service/file';
-
   import request from '@/utils/request';
+
   export default {
     name: 'index',
     data() {
       return {
         isList: true,
-        contextMenu: {}
+        visible: '', // 展示某个弹窗组件
+        contextMenu: {}, //右键菜单
+        imgUrl: '', //  图片预览链接
+        docInfo: {}, //markdown文件预览信息
       };
     },
     computed: {
@@ -93,24 +96,30 @@
             this.isList = false;
             break;
           case 'newMD':
-            this.$refs.md.fileEdit(true); //打开为编辑模式
-            this.$refs.md.docInfo = Object.assign({}, {visible: true, docValue: {}});
+            this.docInfo = {};
+            this.visible = 'mdEditor';
             break;
           default:
             break;
         }
       },
-      viewImg(id) {
-        this.$refs.img.data.url = `/djcpsdocument/fileManager/downloadFile.do?id=${id}`;
-        this.$refs.img.visible = true;
+      close() {
+        this.visible = '';
       },
-      openMD(val) { //  打开markdown文件时先访问再判断是否打开窗口，默认为预览
+      viewImg(id) {
+        this.imgUrl = `/djcpsdocument/fileManager/downloadFile.do?id=${id}`;
+        this.visible = 'img';
+      },
+      openMD(val) { //  打开markdown文件时先访问再判断是否打开窗口，默认为编辑
         fileService.getDocInfo(val.fcategoryid).then(res=>{
-          this.$refs.md.docInfo = Object.assign({}, {
-            visible: true,
-            docValue: res.data,
-            fversionsign: val.fversionsign
-          });
+          this.visible = 'mdEditor';
+          this.docInfo = {
+            type: 'view',
+            fversionsign: val.fversionsign,
+            name: res.data.name,
+            id: res.data.id,
+            content: res.data.file,
+          };
         });
       },
       showMenu(val) {

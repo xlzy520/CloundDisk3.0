@@ -99,12 +99,6 @@
           }
         });
       }
-    },
-    mounted() {
-
-    },
-    destroyed() {
-      console.log('destroyed');
     }
   };
 </script>

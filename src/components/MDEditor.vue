@@ -1,7 +1,6 @@
 <template>
   <div class="markdown">
     <el-dialog
-      v-if="docInfo.visible"
       :visible="true"
       :modal-append-to-body="true"
       :show-close="false"
@@ -9,7 +8,7 @@
       :close-on-click-modal="false"
       width="80vw">
       <div class="previewFile">
-        <el-button @click="closeMkdown" class="close-mkdown">关闭</el-button>
+        <el-button @click="closeMDEditor" class="close-md-editor">关闭</el-button>
         <el-button @click="fileEdit(true)" class="file-edit" v-show="isEditMk">编辑</el-button>
         <el-button @click="saveFile" class="file-edit" v-show="!isEditMk">保存</el-button>
       </div>
@@ -18,10 +17,9 @@
           <div class="detail">
             <mavon-editor
               ref="md"
-              v-model="docInfo.docValue.file"
+              v-model="content"
               :toolbars="toolbars"
               :externalLink="externalLink"
-              codeStyle="monokai-sublime"
               :scrollStyle="true"
               :subfield="isField"
               defaultOpen="preview"
@@ -41,6 +39,11 @@
   import fileService from '@/api/service/file';
   export default {
     name: 'md-editor',
+    props: {
+      docInfo: {
+        type: Object
+      }
+    },
     computed: {
       ...mapGetters([
         'selectedData'
@@ -48,11 +51,11 @@
     },
     data() {
       return {
-        docInfo: {},
+        content: '',
         disabled: false,
-        isField: false, // 是否双栏
-        barsFlag: false, // 是否显示工具栏
-        isEditMk: true,
+        isField: true, // 是否双栏
+        barsFlag: true, // 是否显示工具栏
+        isEditMk: false,
         externalLink: {
           hljs_css: false,
           katex_css: false, // `false`表示禁用自动加载，它也可以是个函数，如果它是个函数，那么这个函数应该返回一个可访问的`katex`的css路径字符串
@@ -60,8 +63,7 @@
           katex_js: false,
           markdown_css: false,
           hljs_js: function() {
-            // 这是你的hljs文件路径
-            return 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js';
+            return './static/highlight/highlight.min.js';
           }
         },
         toolbars: {
@@ -101,9 +103,8 @@
       };
     },
     methods: {
-      closeMkdown() {
-        this.docInfo.visible = false;
-        this.docInfo.docValue = {};
+      closeMDEditor() {
+        this.$emit('close');
         this.fileEdit(false);
       },
       fileEdit(isFileEdit) {
@@ -112,9 +113,10 @@
         this.isEditMk = !isFileEdit;
       },
       async saveFile() {
+        const {id, fversionsign, name} = this.docInfo;
         const markdownData = new FormData();
         markdownData.append('fparentid', this.$store.getters.parentId);
-        if (!this.docInfo.docValue.name) {
+        if (!this.docInfo.name) {
           this.$prompt('请输入文件名', '文件名', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -122,21 +124,19 @@
             center: true,
             inputErrorMessage: '文件名中不能为空或包含/:*?"<>|等特殊字符'
           }).then(({ value }) => {
-            const markdownFile = new File([this.docInfo.docValue.file], value + '.md');
+            const markdownFile = new File([this.content], value + '.md');
             markdownData.append('file', markdownFile);
             fileService.updateMarkdown(markdownData).then(() => {
               this.$message1000('文档新建成功。', 'success');
-              this.closeMkdown();
+              this.closeMDEditor();
               this.$store.dispatch('Refresh');
-            }).catch(() => {
-              this.docInfo.docValue.name = null;
             });
           }).catch(() => {});
         } else {
-          const markdownFile = new File([this.docInfo.docValue.file], this.docInfo.docValue.name);
+          const markdownFile = new File([this.content], name);
           markdownData.append('file', markdownFile);
-          markdownData.append('fcategoryid', this.docInfo.docValue.id);
-          markdownData.append('fversionsign', this.docInfo.fversionsign);
+          markdownData.append('fcategoryid', id);
+          markdownData.append('fversionsign', fversionsign);
           this.$prompt('请输入更新描述', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
@@ -144,12 +144,10 @@
           }).then(({ value }) => {
             value = value === null ? '' : value;
             markdownData.append('fremarks', value);
-            fileService.updateMarkdown(markdownData).then((res) => {
-              if (res.success) {
-                this.$message1000('文档保存成功。', 'success');
-                this.closeMkdown();
-                this.$store.dispatch('Refresh');
-              }
+            fileService.updateMarkdown(markdownData).then(() => {
+              this.$message1000('文档保存成功。', 'success');
+              this.closeMDEditor();
+              this.$store.dispatch('Refresh');
             }).catch(() => {
               this.$message1000('文档保存失败。', 'error');
             });
@@ -164,8 +162,13 @@
         this.$refs.md.$img2Url(pos, '/djcpsdocument/fileManager/downloadFile.do?id=' + imgInfo.data.id);
       }
     },
-    beforeDestroy() {
-      console.log(this.docInfo);
+    mounted() {
+      if (this.docInfo.type) {
+        this.content = this.docInfo.content;
+        this.fileEdit(false);
+      } else {
+        this.content = '';
+      }
     }
   };
 </script>
@@ -227,7 +230,7 @@
       float: right;
       margin-right: 10px;
     }
-    .close-mkdown{
+    .close-md-editor{
       position: fixed;
       top: 150px;
       right: 56px;
