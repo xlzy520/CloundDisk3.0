@@ -174,6 +174,8 @@ CanvasAnimate.prototype.pause = function() {
     this.Draw(this.list);
   }
 };
+CanvasAnimate.prototype.Destroy = function() {
+};
 
 const canvasAnimate = new CanvasAnimate(document.getElementById('cvs_bg'), { length: 100, clicked: true, moveon: true });
 canvasAnimate.Run();

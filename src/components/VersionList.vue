@@ -117,7 +117,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import fileService from '@/api/service/file.js';
+  import fileService from '@/api/service/file';
   import { formatSize, parseTime } from '@/utils/index';
   import vueCodeDiff from 'vue-code-diff';
   import fileType from '@/mixins/fileType';

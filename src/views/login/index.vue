@@ -45,6 +45,7 @@
 
 <script>
   // TODO  修复注销后，背景特效不加载的BUG
+  // TODO  修复登录后，背景特效内存释放
   import('@/utils/keyDown');
   import('@/utils/canvasLogin');
   export default {
@@ -101,6 +102,9 @@
     },
     mounted() {
 
+    },
+    destroyed() {
+      console.log('destroyed');
     }
   };
 </script>

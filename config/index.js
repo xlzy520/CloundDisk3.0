@@ -7,7 +7,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/djcpsdocument':{
-        // target: 'http://192.168.2.170:8081/',              //德煌
+        //target: 'http://192.168.2.170:8081/',              //德煌
         target: 'http://192.168.2.171:8081/',              //弘权
         changeOrigin: true,
       }

@@ -3,6 +3,7 @@ var cvsWidth, cvsHigh;
 var ctx, cvs;
 
 window.onload = function() {
+  console.log(2);
   var clientWidth = document.body.clientWidth;
   var clientHeight = document.documentElement.clientHeight || window.screen.height || document.body.clientHeight;
   cvs = document.getElementById('cvs_key');
