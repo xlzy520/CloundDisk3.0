@@ -19,8 +19,7 @@ const fileType = {
           break;
         case 2:
         case 9: //Text、Markdown
-          this.$emit('md', {fcategoryid, fversionsign, type: 'preview'});
-          // this.$store.dispatch('GetDocInfo', {fcategoryid, fversionsign});
+          this.$emit('md', {fcategoryid, fversionsign});
           break;
         case 3:
         case 4:

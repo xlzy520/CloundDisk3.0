@@ -1,13 +1,13 @@
 <template>
   <div class="admin-list">
     <list-header class="admin-list-header" @action="dispatchAction" :contextMenu="contextMenu"></list-header>
-    <list v-if="isList" :file-list="List" @viewImg="viewImg" @md="md" @context-menu="showMenu"></list>
-    <thumbnail v-else :file-list="List" @viewImg="viewImg" @md="md" @context-menu="showMenu"></thumbnail>
+    <list v-if="isList" :file-list="List" @viewImg="viewImg" @md="openMD" @context-menu="showMenu"></list>
+    <thumbnail v-else :file-list="List" @viewImg="viewImg" @md="openMD" @context-menu="showMenu"></thumbnail>
     <upload-file ref="upload"></upload-file>
     <delete-file ref="delete"></delete-file>
     <detail ref="detail"></detail>
     <version-list ref="version"></version-list>
-    <md-editor ref="md" :mdConfig="mdConfig"></md-editor>
+    <md-editor ref="md"></md-editor>
     <move-file ref="move"></move-file>
     <img-editor ref="img"></img-editor>
   </div>
@@ -25,13 +25,14 @@
   import MoveFile from '@/components/MoveFile.vue';
   import MdEditor from "../../components/MDEditor";
 
+  import fileService from '@/api/service/file';
+
   import request from '@/utils/request';
   export default {
     name: 'index',
     data() {
       return {
         isList: true,
-        mdConfig: {},
         contextMenu: {}
       };
     },
@@ -40,7 +41,6 @@
         'fileList',
         'searchList',
         'selectedData',
-        'imgEditor'
       ]),
       List() {
         return this.$store.getters.hasSearch === false ? this.fileList : this.searchList.bookList;
@@ -93,8 +93,8 @@
             this.isList = false;
             break;
           case 'newMD':
-            this.mdConfig = {type: 'create'};
-            this.$refs.md.visible = true;
+            this.$refs.md.fileEdit(true); //打开为编辑模式
+            this.$refs.md.docInfo = Object.assign({}, {visible: true, docValue: {}});
             break;
           default:
             break;
@@ -104,10 +104,13 @@
         this.$refs.img.data.url = `/djcpsdocument/fileManager/downloadFile.do?id=${id}`;
         this.$refs.img.visible = true;
       },
-      md(val) {
-        this.mdConfig = val;
-        this.$nextTick(()=>{
-          this.$refs.md.getDocInfo();
+      openMD(val) { //  打开markdown文件时先访问再判断是否打开窗口，默认为预览
+        fileService.getDocInfo(val.fcategoryid).then(res=>{
+          this.$refs.md.docInfo = Object.assign({}, {
+            visible: true,
+            docValue: res.data,
+            fversionsign: val.fversionsign
+          });
         });
       },
       showMenu(val) {
