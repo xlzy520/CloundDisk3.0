@@ -2,9 +2,9 @@
   <div class="toplink">
     <div class="left">
       <i class="fa fa-home" style="font-size: 14px"></i>
-      <template v-for="(item, index) in folderNav">
+      <template v-for="(item, index) in navList">
         <span v-if="index===navNum -1">{{item.fname}}</span>
-        <a href="javascript:void(0)" @click="jumpFolder(item.fcategoryid)" v-if="index!==navNum -1">{{item.fname}}</a>
+        <a href="javascript:void(0)" @click="openDir(item.fcategoryid)" v-if="index!==navNum -1">{{item.fname}}</a>
         <i v-if="index!==navNum -1" class="el-icon-arrow-right" style="color:#aaa"></i>
       </template>
     </div>
@@ -16,25 +16,24 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
-
   export default {
     name: 'Breadcrumb',
+    props: {
+      navList: {
+        type: Array
+      }
+    },
     computed: {
-      ...mapGetters([
-        'folderNav'
-      ]),
       navNum() {
-        return this.folderNav.length;
+        return this.navList.length;
       }
     },
     methods: {
-      jumpFolder(fcategoryid) {
+      openDir(fcategoryid) {
         this.$store.dispatch('SetSelectedData', []);
-        this.$store.dispatch('GetCategory', fcategoryid);
-        this.$store.dispatch('SetParentId', fcategoryid);
+        this.$emit('openDir', fcategoryid);
         this.$store.dispatch('ToggleSearch', false);
-        this.$router.push({ path: `/index/list?`, query: { dirid: fcategoryid }});
+        this.$router.push({path: `/index/list?`, query: {dirid: fcategoryid}});
       }
     }
   };

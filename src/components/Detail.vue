@@ -1,9 +1,9 @@
 <template>
   <div class="el-dialog__detail">
     <el-dialog
-      v-if="visible"
       :title="topTitle"
-      :visible.async="true"
+      v-if="visible"
+      :visible="true"
       :modal-append-to-body="false"
       custom-class="file-detail"
       :close-on-click-modal="true"

@@ -11,22 +11,16 @@
       width="430px">
       <div class="file-list">
         <div v-for="(item, index) in selectedData" :key="index" class="item">
-          <svg-icon :icon-class="String(item.ffiletype)" className="icon"/> <span class="item-name">{{item.fname}}</span>
+          <svg-icon :icon-class="String(item.ffiletype)" className="icon"/>
+          <span class="item-name">{{item.fname}}</span>
         </div>
       </div>
       <div class="info-panel">
         <span class="info" v-if="deleting===true">
           <i class="el-icon-loading"></i> 正在删除...
         </span>
-        <span class="info2" v-if="deleteInfo!==''">
-          {{deleteInfo}}
-        </span>
-        <span class="err" v-if="err !== ''">
-          {{err}}
-        </span>
       </div>
       <span slot="footer" class="dialog-footer">
-        <span class="tooltip">{{err}}</span>
         <el-button type="primary" @click="submitForm" size="small">开始删除</el-button>
         <el-button @click="close" size="small">关闭</el-button>
       </span>
@@ -35,8 +29,9 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import {mapGetters} from 'vuex';
   import fileService from '@/api/service/file';
+
   export default {
     name: 'DeleteFile',
     computed: {
@@ -47,8 +42,6 @@
     data() {
       return {
         visible: false,
-        err: '',
-        deleteInfo: '',
         deleting: false
       };
     },
@@ -72,11 +65,9 @@
         fileService.deleteCategory(categoryids, this.$store.getters.parentId)
           .then(res => {
             this.visible = false;
-            if (res.success) {
-              this.$message1000(res.msg, 'success');
-              this.deleting = false;
-              this.$store.dispatch('Refresh');
-            }
+            this.$message1000(res.msg, 'success');
+            this.deleting = false;
+            this.$emit('refresh');
           })
           .catch(err => {
             if (this.$store.getters.hasSearch) {
@@ -161,15 +152,4 @@
     text-decoration: underline;
   }
 
-</style>
-
-<style scoped>
-  .icon {
-    width: 1.5em;
-    height: 1.5em;
-    vertical-align: middle;
-  }
-  .item-name {
-    vertical-align: middle;
-  }
 </style>

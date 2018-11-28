@@ -48,8 +48,6 @@
           this.$emit('getFolderid', data); //移动复制文件时，传递文件夹ID
         }
         if (this.type === 'sidebar') {
-          this.$store.dispatch('GetCategory', data.fcategoryid);
-          this.$store.dispatch('SetParentId', data.fcategoryid);
           this.$router.push({ path: '/index/list', query: { dirid: data.fcategoryid }});
         }
       },

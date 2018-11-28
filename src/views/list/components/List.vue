@@ -161,9 +161,6 @@
           }
         });
       },
-    },
-    mounted() {
-      this.$store.dispatch('SetSelectedData', []);
     }
   };
 </script>

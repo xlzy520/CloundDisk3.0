@@ -34,7 +34,7 @@
     <span slot="footer" class="dialog-footer">
       <el-button size="small"  v-if="!updateType" type="primary" @click="submitUpload" :disabled="btDisable">开始上传</el-button>
       <el-button size="small" v-if="updateType" type="primary" @click="submitUpload" :disabled="btDisable">开始更新</el-button>
-      <el-button @click="close()" size="small">关 闭</el-button>
+      <el-button @click="close" size="small">关 闭</el-button>
     </span>
   </el-dialog>
 </template>
@@ -44,6 +44,7 @@ import { mapGetters } from 'vuex';
 import { formatSize } from '@/utils/index';
 export default {
   name: 'UploadFile',
+  props: ['navList', 'parentId'],
   data() {
     return {
       visible: false,
@@ -62,8 +63,6 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'folderNav',
-      'parentId',
       'selectedData'
     ]),
     title() {
@@ -74,8 +73,8 @@ export default {
     },
     tip() {
       let tip = '';
-      for (var i = 0; i < this.folderNav.length; ++i) {
-        tip += '/' + this.folderNav[i].fname;
+      for (var i = 0; i < this.navList.length; ++i) {
+        tip += '/' + this.navList[i].fname;
       }
       return tip;
     }
@@ -92,7 +91,7 @@ export default {
       this.$message1000('文件上传出错：网络错误', 'error');
       this.visible = false;
       this.$refs.upload.clearFiles();
-      this.$store.dispatch('Refresh');
+      this.$emit('refresh');
       this.speed = '';
     },
     onRemove(file, filelist) {
@@ -118,7 +117,7 @@ export default {
         this.$refs.upload.clearFiles();
         this.fileList = [];
         this.visible = false;
-        this.$store.dispatch('Refresh');
+        this.$emit('refresh');
       } else {
         let msg = response.msg;
         if (msg == null || msg === '') {
@@ -129,7 +128,7 @@ export default {
         this.$refs.upload.clearFiles();
         this.fileList = [];
         this.visible = false;
-        this.$store.dispatch('Refresh');
+        this.$emit('refresh');
       }
     },
     onFileChange(file, filelist) {
@@ -150,7 +149,7 @@ export default {
       this.fileList = filelist;
 
       if (file.status === 'ready') {
-        this.$store.dispatch('Refresh');
+        this.$emit('refresh');
         this.btDisable = false;
         this.currentFile = file;
         this.uploadData = {
@@ -199,6 +198,9 @@ export default {
   /deep/ .upload-file{
     .el-upload__tip {
       color: #a00;
+    }
+   .el-dialog__header {
+      padding: 10px 20px 5px 20px;
     }
     .el-upload-dragger {
       height: 135px;

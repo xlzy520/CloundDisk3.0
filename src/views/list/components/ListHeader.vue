@@ -43,7 +43,7 @@
         </div>
       </div>
     </div>
-    <breadcrumb></breadcrumb>
+    <breadcrumb :nav-list="navList" @openDir="openDir"></breadcrumb>
     <div class="back2FileList">
       <el-button type="success" plain size="mini" v-if="hasSearch" data-action="back2FileList">返回文件列表</el-button>
     </div>
@@ -59,10 +59,12 @@ export default {
   props: {
     contextMenu: {
       type: Object,
-      required: true,
       default: function () {
         return {visible: false, x: 0, y: 0};
       }
+    },
+    navList: {
+      type: Array
     }
   },
   computed: {
@@ -95,6 +97,9 @@ export default {
       if (action) {
         this.$emit('action', action);
       }
+    },
+    openDir(id) {
+      this.$emit('open-dir', id);
     },
     newFolder() {
       this.$store.dispatch('Refresh').then(() => {

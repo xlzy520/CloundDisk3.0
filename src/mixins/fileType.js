@@ -11,10 +11,10 @@ const fileType = {
         fcategoryid = filesgin;
         fversionsign = fvsgin;
       }
+      console.log(ffiletype);
       switch (ffiletype) {
         case 1: //FOLDER
-          this.$store.dispatch('GetCategory', fcategoryid);
-          this.$store.dispatch('SetParentId', fcategoryid);
+          this.$emit('open-dir', fcategoryid);
           this.$router.push({path: '/index/list', query: {dirid: fcategoryid}});
           break;
         case 2:
