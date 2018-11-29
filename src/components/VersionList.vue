@@ -3,7 +3,7 @@
     <el-dialog
       v-if="visible"
       title="版本列表"
-      :visible.asynv="true"
+      :visible="true"
       :modal-append-to-body="false"
       custom-class="version-list"
       :close-on-click-modal="true"
@@ -83,14 +83,14 @@
               <a
                 href="javascript:void(0)"
                 @click="rollBack(scope.row.filesgin)"
-                title="设为最新版本" v-if="!scope.row.fdisplay">回退</a>
+                title="设为最新版本" v-if="scope.row.fdisplay">回退</a>
               <a size="mini" @click="fileType(scope.row)" v-if="selectedData[0].ffiletype!==0">查看</a>
             </template>
           </el-table-column>
         </el-table>
       </div>
       <div slot="footer" class="dialog-footer">
-        <div class="diff-select clearfix" v-if="selectedData[0].ffiletype === 2&&tableData.length>1">
+        <div class="diff-select clearfix" v-if="[2,9].includes(selectedData[0].ffiletype)&&tableData.length>1">
           <el-select v-model="oldVersion.value" filterable placeholder="请选择旧版本" size="small">
             <el-option
               v-for="item in tableData"
