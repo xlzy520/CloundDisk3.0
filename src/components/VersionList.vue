@@ -48,53 +48,6 @@
           :table-data="tableData"
           :table-columns="tableColumns">
         </base-table>
-        <!--<el-table-->
-          <!--:data="tableData"-->
-          <!--height="260"-->
-          <!--stripe-->
-          <!--v-loading="loading"-->
-          <!--style="width: 100%">-->
-          <!--<el-table-column-->
-            <!--width="70"-->
-            <!--prop="fversion"-->
-            <!--label="版本号">-->
-          <!--</el-table-column>-->
-          <!--<el-table-column-->
-            <!--prop="fcreator"-->
-            <!--label="创建人"-->
-            <!--width="70">-->
-          <!--</el-table-column>-->
-          <!--<el-table-column-->
-            <!--width="145"-->
-            <!--:formatter="formatterTime"-->
-            <!--prop="fupdatetime"-->
-            <!--sortable-->
-            <!--label="修改时间">-->
-          <!--</el-table-column>-->
-          <!--<el-table-column-->
-            <!--prop="filesize"-->
-            <!--:formatter="sizeFormatter"-->
-            <!--label="文件大小"-->
-            <!--width="80">-->
-          <!--</el-table-column>-->
-          <!--<el-table-column-->
-            <!--prop="fremarks"-->
-            <!--label="版本描述">-->
-          <!--</el-table-column>-->
-
-          <!--<el-table-column-->
-            <!--width="120"-->
-            <!--label="操作">-->
-            <!--<template slot-scope="scope">-->
-              <!--<a @click="downloadVersion(scope.row.filesgin, $event, scope.row.filename, scope.row.fversion)">下载</a>-->
-              <!--<a-->
-                <!--href="javascript:void(0)"-->
-                <!--@click="rollBack(scope.row.filesgin)"-->
-                <!--title="设为最新版本" v-if="!scope.row.fdisplay">回退</a>-->
-              <!--<a size="mini" @click="fileType(scope.row)" v-if="selectedData[0].ffiletype!==0">查看</a>-->
-            <!--</template>-->
-          <!--</el-table-column>-->
-        <!--</el-table>-->
       </div>
       <div slot="footer" class="dialog-footer">
         <div class="diff-select clearfix" v-if="[2,9].includes(selectedData[0].ffiletype)&&tableData.length>1">
@@ -123,16 +76,16 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
+  import {mapGetters} from 'vuex';
   import fileService from '@/api/service/file';
-  import { formatSize, parseTime } from '@/utils/index';
+  import {formatSize, parseTime} from '@/utils/index';
   import vueCodeDiff from 'vue-code-diff';
   import baseTable from '@/components/baseTable.vue';
   import fileType from '@/mixins/fileType';
 
   export default {
     name: 'VersionList',
-    mixins: [ fileType ],
+    mixins: [fileType],
     components: {
       vueCodeDiff, baseTable
     },
@@ -152,28 +105,34 @@
         tableColumns: [
           {label: '版本号', prop: 'fversion', width: 70},
           {label: '创建人', prop: 'fcreator', width: 70},
-          {label: '修改时间', prop: 'fupdatetime', width: 145, sortable: true,
-            formatter: (row, col) => parseTime(row[col.prop])},
-          {label: '文件大小', prop: 'filesize', width: 80,
+          {
+            label: '修改时间', prop: 'fupdatetime', width: 145, sortable: true,
+            formatter: (row, col) => parseTime(row[col.prop])
+          },
+          {
+            label: '文件大小', prop: 'filesize', width: 80,
             formatter: (row, col) => {
               if (row.filesize !== null) {
                 return formatSize(Number(row[col.prop].replace('B', '')));
               }
               return '';
-            }},
+            }
+          },
           {label: '版本描述', prop: 'fremarks'},
-          {label: '操作', width: 120,
+          {
+            label: '操作', width: 120,
             render: (h, {props: {row}}) => {
-            return (
-              <div>
-                <a onClick={this.downloadVersion.bind(this, row.filesgin, event, row.filename, row.fversion)}>下载</a>
-                {row.fdisplay ? (null) : (
-                  <a href="javascript:void(0)" onClick={this.rollBack.bind(this, row.filesgin)} title="设为最新版本" >回退</a>
-                 )}
-                {this.selectedData[0].ffiletype !== 0 ? (<a onClick={this.fileType.bind(this, row)}>查看</a>) : null}
-              </div>
-            );
-          }}
+              return (
+                <div className="version-operate">
+                  <a onClick={(event)=>this.downloadVersion(row.filesgin, row.filename, event)}>下载</a>
+                  {row.fdisplay ? (null) : (
+                    <a href="javascript:void(0)" onClick={this.rollBack.bind(this, row.filesgin)} title="设为最新版本">回退</a>
+                  )}
+                  {this.selectedData[0].ffiletype !== 0 ? (<a onClick={this.fileType.bind(this, row)}>查看</a>) : null}
+                </div>
+              );
+            }
+          }
         ],
         oldStr: '',
         newStr: '',
@@ -193,22 +152,22 @@
       };
     },
     methods: {
-      downloadVersion(id, evt, filename) {
+      downloadVersion(id, filename, evt) {
         evt.target.href = '/djcpsdocument/fileManager/downloadFile.do?id=' + id;
         evt.target.download = filename; // 暂时不加版本号
       },
       close() {
         this.visible = false;
-        if (this.modify) this.$emit('refresh'); //点了回退按钮才刷新。
+        if (this.modify) this.$emit('refresh'); //点过回退按钮才刷新。
       },
-       rollBack(newVer) {
+      rollBack(newVer) {
         this.loading = true;
-        fileService.versionRollback(this.tableData[0].filesgin, newVer).then(()=>{
+        fileService.versionRollback(this.tableData[0].filesgin, newVer).then(() => {
           this.loading = false;
           this.modify = true;
           this.$message1000('版本回退成功', 'success');
           this.requestData();
-        }).catch(()=>{
+        }).catch(() => {
           this.loading = false;
         });
       },
@@ -230,14 +189,6 @@
           } catch (e) {
             this.loading = false;
           }
-        }
-      },
-      formatterTime(row) {
-        return parseTime(row.fupdatetime);
-      },
-      sizeFormatter(row) {
-        if (row.filesize !== null) {
-          return formatSize(Number(row.filesize.replace('B', '')));
         }
       },
       async diff() {
@@ -267,91 +218,80 @@
   };
 </script>
 
-<style>
-  .version-list .el-dialog__body {
-    padding: 10px 20px !important;
-  }
-
-  .version-list .el-dialog__header {
-    padding: 10px 20px 5px 20px !important;
-  }
-
-  .version-list .el-form-item {
-    margin-bottom: 5px !important;
-  }
-
-  .version-list .el-dialog__headerbtn {
-    top: 14px;
-  }
-
-  .version-list .tooltip {
-    color: #a00;
-    font-size: 12px;
-    padding-right: 10px;
-  }
-
-  .version-list .file-list {
-
-    border: 1px solid #ddd;
-    border-radius: 0px;
-    overflow-y: auto;
-    overflow-x: auto;
-  }
-
-  .version-list .file-list .item {
-    line-height: 28px;
-    padding: 0 6px 0 6px;
-    font-size: 12px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    width: 330px;
-    overflow: hidden;
-  }
-
-  .version-list .el-table__row {
-    font-size: 12px;
-    color: #333;
-  }
-
-  .version-list .el-table__row a {
-    color: #409eff;
-    height: 30px;
-    text-decoration: none;
-  }
-
-  .version-list .el-table__row a:hover {
-    text-decoration: underline;
-  }
-
-  .version-list .el-table__row .cell {
-    line-height: 18px;
-  }
-
-  .el-table__body-wrapper.is-scrolling-none::-webkit-scrollbar {
-    width: 6px;
-    background-color: #e5e5e5;
-  }
-
-  .el-table__body-wrapper.is-scrolling-none::-webkit-scrollbar-thumb {
-    overflow-x: hidden;
-    overflow-y: auto;
-    border-radius: 4px;
-    background-color: rgba(18, 150, 219, .8);
-  }
-  .diff-select{
-    float: left;
-  }
-  .diffMaster{
-    margin-top: 8vh!important;
-  }
-  .lineSwitch{
-    position: absolute;
-    top: 22px;
-    left: 40%;
-  }
-  .rangeDiff{
-    position: absolute;
-    top: 11px;
-    left: 60%;
+<style lang="scss" scoped>
+  /deep/ .version-list {
+    .el-dialog__body {
+      padding: 10px 20px;
+    }
+    .el-dialog__header {
+      padding: 10px 20px 5px 20px;
+    }
+    .el-dialog__headerbtn {
+      top: 14px;
+    }
+    .tooltip {
+      color: #a00;
+      font-size: 12px;
+      padding-right: 10px;
+    }
+    .file-list {
+      border: 1px solid #ddd;
+      border-radius: 0;
+      overflow-y: auto;
+      overflow-x: auto;
+      .item {
+        line-height: 28px;
+        padding: 0 6px 0 6px;
+        font-size: 12px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        width: 330px;
+        overflow: hidden;
+      }
+    }
+    .el-table__row {
+      font-size: 12px;
+      color: #333;
+      a {
+        color: #409eff;
+        height: 30px;
+        padding: 0 3px;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      .cell {
+        line-height: 18px;
+      }
+    }
+    .el-table__body-wrapper.is-scrolling-none {
+      &::-webkit-scrollbar {
+        width: 6px;
+        background-color: #e5e5e5;
+      }
+      &::-webkit-scrollbar-thumb {
+        overflow-x: hidden;
+        overflow-y: auto;
+        border-radius: 4px;
+        background-color: rgba(18, 150, 219, .8);
+      }
+    }
+    .diff-select {
+      float: left;
+    }
+    .diffMaster {
+      margin-top: 8vh !important;
+    }
+    .lineSwitch {
+      position: absolute;
+      top: 22px;
+      left: 40%;
+    }
+    .rangeDiff {
+      position: absolute;
+      top: 11px;
+      left: 60%;
+    }
   }
 </style>

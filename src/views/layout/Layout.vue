@@ -5,19 +5,24 @@
     </div>
     <div class="app-wrapper-main">
       <navbar></navbar>
-      <app-main></app-main>
+      <app-main ref="appMain"></app-main>
+    </div>
+    <div class="app-wrapper-right-menu">
+      <right-menu @action="event => $refs.appMain.$refs.content.dispatchAction(event)"></right-menu>
     </div>
   </div>
 </template>
 
 <script>
 import childComponents from './components';
+import rightMenu from '../list/components/rightMenu/index.vue';
 import ResizeMixin from './mixin/ResizeHandler';
 
 export default {
   name: 'layout',
   components: {
-    ...childComponents
+    ...childComponents,
+    rightMenu
   },
   mixins: [ResizeMixin],
   computed: {
@@ -27,9 +32,9 @@ export default {
     classObj() {
       return {
         hideMenu: !this.sidebar.opened,
-        openSidebar: this.sidebar.opened,
-        withoutAnimation: this.sidebar.withoutAnimation,
-        mobile: this.device === 'mobile'
+        // openSidebar: this.sidebar.opened,
+        // withoutAnimation: this.sidebar.withoutAnimation,
+        // mobile: this.device === 'mobile'
       };
     },
   }
@@ -64,6 +69,10 @@ export default {
       overflow: hidden;
       display: flex;
       flex-direction: column;
+    }
+    &-right-menu {
+      position: absolute;
+      display: none;
     }
   }
 </style>

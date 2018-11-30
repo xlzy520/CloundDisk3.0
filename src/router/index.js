@@ -34,6 +34,11 @@ export const constantRouterMap = [
         path: 'record',
         component: () => import('@/views/record/index'),
         name: '操作记录'
+      },
+      {
+        path: 'search',
+        component: () => import('@/views/search/index'),
+        name: '搜索结果'
       }
     ]
   },

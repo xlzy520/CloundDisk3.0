@@ -150,6 +150,7 @@
   };
 </script>
 <style lang="scss" scoped>
+  @import "@/styles/pagination.scss";
   .base-table {
     width: 100%;
     /deep/ .double-row {
@@ -157,31 +158,6 @@
     }
     /deep/ .header-cell {
       background-color: #f4f5fb;
-    }
-    /deep/ .pagination.el-pagination {
-      text-align: center;
-      padding: 20px 20px;
-      .btn-next, .btn-prev {
-        background: #f7f7f7;
-        border-radius: 2px;
-        font-weight: normal;
-        padding: 0 8px;
-      }
-      .btn-next{
-        margin-left: 5px;
-      }
-      button:disabled {
-        background: #f7f7f7;
-      }
-      button:disabled:hover {
-        color: #c0c4cc;
-        background: #f7f7f7;
-        cursor: not-allowed;
-      }
-      button:hover, .el-pager li:hover {
-        background: #1886e3;
-        color: #d8d8d8;
-      }
     }
     /deep/ .el-pager li {
       font-weight: lighter;

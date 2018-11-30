@@ -13,13 +13,7 @@
       <router-link to="/index/recycle" class="nav-router-text recycle">回收站</router-link>
       <router-link to="/index/record"  v-if="false" class="nav-router-text record">操作记录</router-link>
     </div>
-    <!--<form action="www.baidu.com" enctype="multipart/form-data" method="post">-->
-      <!--<input type="hidden" name="type" value="1"/>-->
-      <!--<input id="dir" type="file" name="file" webkitdirectory mozdirectory onchange="haha(this)"/>-->
-      <!--<input id="uploadDir" type="submit" value="提交文件夹">-->
-    <!--</form>-->
-    <div class="search_wrap"  @focus="showSwitch($event)"
-         @blur="showSwitch($event)">
+    <div class="search_wrap"  @focus="showSwitch($event)" @blur="showSwitch($event)">
       <el-switch
         v-show="inputHover"
         style="float: left;margin-top: 15px;"

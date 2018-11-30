@@ -67,7 +67,7 @@
             this.visible = false;
             this.$message1000(res.msg, 'success');
             this.deleting = false;
-            this.$emit('refresh', 'updateList');
+            this.$emit('refresh');
           })
           .catch(err => {
             if (this.$store.getters.hasSearch) {

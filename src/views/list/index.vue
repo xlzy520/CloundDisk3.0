@@ -3,13 +3,13 @@
     <list-header
       class="admin-list-header"
       @action="dispatchAction"
-      :nav-list="navList"
-      :contextMenu="contextMenu"></list-header>
+      :nav-list="navList"></list-header>
     <component
       :is="isList"
       :file-list="tableList"
       @viewImg="viewImg"
       @md="openMD"
+      @action="dispatchAction"
       @cancel-edit="cancelEdit"
       @confirm-edit="confirmEdit"
       @context-menu="showMenu"></component>
@@ -54,17 +54,12 @@
         docInfo: {}, //markdown文件预览信息
         tableList: [],
         navList: [],
-        selected: [],
       };
     },
     computed: {
       ...mapGetters([
-        'searchList',
         'selectedData',
-      ]),
-      // List() {
-      //   return this.$store.getters.hasSearch === false ? this.fileList : this.searchList.bookList;
-      // }
+      ])
     },
     components: {
       MdEditor,
@@ -85,6 +80,9 @@
           case 'refresh':
             this.getCategory(this.$route.query.dirid, true);
             break;
+          case 'download':
+            this.downloadFile();
+            break;
           case 'version':case 'detail':
             this.$refs[action].requestData();
             this.$refs[action].visible = true;
@@ -93,14 +91,13 @@
             this.$refs[action].visible = true;
             break;
           case 'rename':
-            this.selectedData[0].isEditor = true;
-            this.contextMenu.visible = false;
+            this.$set(this.selectedData[0], 'isEditor', true);
             break;
           case 'copy':case 'move':case 'update':
             this.$refs.move.visible = true;
             this.$refs.move.type = action;
             break;
-          case 'back2FileList':
+          case 'back':
             this.$store.dispatch('ToggleSearch', false);
             break;
           case 'List': case 'Thumbnail':
@@ -149,6 +146,15 @@
           };
           this.visible = 'mdEditor';
         });
+      },
+      downloadFile() {
+        let download = document.createElement('a');
+        download.download = this.selectedData[0].fname;
+        download.style.display = 'none';
+        download.href = `/djcpsdocument/fileManager/downloadFile.do?id=${this.selectedData[0].fcategoryid}`;
+        document.body.appendChild(download);
+        download.click();
+        document.body.removeChild(download);
       },
       confirmEdit(fileName) {
         const row = this.selectedData;
@@ -216,10 +222,10 @@
           }
         });
       }
-      // 监听浏览器后退前进功能
-      window.addEventListener('popstate', () => {
-        if (this.$route.query.dirid) this.getCategory();
-      }, false);
+      // // 监听浏览器后退前进功能
+      // window.addEventListener('popstate', () => {
+      //   if (this.$route.query.dirid) this.getCategory();
+      // }, false);
     },
     //  路由参数变化请求不同的文件列表
     beforeRouteUpdate(to, from, next) {

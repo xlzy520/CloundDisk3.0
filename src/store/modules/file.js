@@ -3,18 +3,14 @@ import { Message } from 'element-ui';
 const file = {
   state: {
     selectedData: [],
-    searchList: null,
-    hasSearch: false,
+    actionArray: [],
   },
   mutations: {
     SET_SELECTED_DATA: (state, data) => {
       state.selectedData = data;
     },
-    SET_SEARCH_LIST: (state, data) => {
-      state.searchList = data;
-    },
-    TOGGLE_SEARCH: (state, data) => {
-      state.hasSearch = data;
+    SET_ACTION_ARRAY: (state, data) => {
+      state.actionArray = data;
     }
   },
   actions: {
@@ -47,8 +43,8 @@ const file = {
         }
       }
     },
-    ToggleSearch({ commit }, data) {
-      commit('TOGGLE_SEARCH', data);
+    changeActionArray({ commit }, data) {
+      commit('SET_ACTION_ARRAY', data);
     },
   }
 };

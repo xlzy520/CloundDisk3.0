@@ -4,7 +4,6 @@ const getters = {
   avatar: state => state.user.avatar,
   name: state => state.user.name,
   selectedData: state => state.file.selectedData,
-  searchList: state => state.file.searchList,
-  hasSearch: state => state.file.hasSearch
+  actionArray: state => state.file.actionArray,
 };
 export default getters;
