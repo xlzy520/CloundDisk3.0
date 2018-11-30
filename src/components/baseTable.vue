@@ -4,6 +4,8 @@
       ref="baseTable"
       highlight-current-row
       :data="tableData"
+      :stripe="stripe"
+      v-loading="loading"
       @row-click="clickRow"
       @selection-change="handleSelectionChange"
       @cell-dblclick="dblclickRow"
@@ -46,8 +48,8 @@
     return {
       functional: true,
       render(h, {props: {row, col}, _v: text}) {
-        const {formater} = col;
-        const v = formater && formater(row, col) || row[col.prop] || '';
+        const {formatter} = col;
+        const v = formatter && formatter(row, col) || row[col.prop] || '';
         return text && text(v) || v;
       }
     };
@@ -69,6 +71,14 @@
       tableColumns: {
         type: Array,
         default: []
+      },
+      stripe: {
+        type: Boolean,
+        default: false
+      },
+      loading: {
+        type: Boolean,
+        default: false
       },
       total: {
         type: Number,

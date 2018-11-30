@@ -32,7 +32,6 @@
     methods: {
       openDir(fcategoryid) {
         this.$store.dispatch('SetSelectedData', []);
-        this.$emit('openDir', fcategoryid);
         this.$store.dispatch('ToggleSearch', false);
         this.$router.push(`/index/list?dirid=${fcategoryid}`);
       }

@@ -11,7 +11,6 @@ const fileType = {
         fcategoryid = filesgin;
         fversionsign = fvsgin;
       }
-      console.log(ffiletype);
       switch (ffiletype) {
         case 1: //FOLDER
           this.$emit('open-dir', fcategoryid);

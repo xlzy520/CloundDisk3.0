@@ -14,13 +14,12 @@
               @focus="selection($event)">
     </el-input>
     <span v-show="!correct && type === 'List'" class="fileNameTips">文件名中不能为空或包含/:*?"<>|等特殊字符</span>
-    <el-button type="primary" icon="el-icon-check" @click="confirmEdit()" :loading="loading"></el-button>
+    <el-button type="primary" icon="el-icon-check" @click="confirmEdit()"></el-button>
     <el-button type="primary" icon="el-icon-close" @click="cancelEdit()"></el-button>
   </div>
 </template>
 <script>
   import {mapGetters} from 'vuex';
-  import fileService from '@/api/service/file.js';
 
   export default {
     name: 'RenameFile',
@@ -32,8 +31,7 @@
     },
     computed: {
       ...mapGetters([
-        'selectedData',
-        'fileList'
+        'selectedData'
       ])
     },
 
@@ -41,7 +39,6 @@
       return {
         fileName: '',
         correct: false,
-        loading: false
       };
     },
     methods: {
@@ -49,41 +46,14 @@
         this.correct = this.fileName.length === 0 ? false : (/^[^\\\\\\/:*?\s\\"<>|]+$/).test(this.fileName);
       },
       async confirmEdit() {
-        this.loading = true;
-        const row = this.selectedData;
         if (!(/^[^\\\\\\/:*?\s\\"<>|]+$/).test(this.fileName)) { //判断输入是否合法
           this.$message1000('文件名中不能包含空格/:*?"<>|等特殊字符', 'error');
-          this.loading = false;
           return false;
-        } else if (row.length >= 1) { //  重命名
-          try {
-            const editInfo = await fileService.renameFile({ ...row[0], newName: this.fileName });
-            this.$message1000(editInfo.msg, 'success');
-            this.$set(this.selectedData[0], 'fname', this.fileName);
-            row[0].isEditor = false;
-          } finally {
-            this.loading = false;
-          }
-        } else {
-          try { //新建文件夹
-            const editInfo = await fileService.addCategory(this.$store.getters.parentId, this.fileName);
-            this.$message1000(editInfo.msg, 'success');
-            this.$store.dispatch('Refresh');
-          } catch (e) {
-            this.fileList[0].isEditor = false;
-            this.fileList.shift();
-          } finally {
-            this.loading = false;
-          }
         }
+        this.$emit('confirm-edit', this.fileName);
       },
       cancelEdit() {
-        if (this.selectedData.length >= 1) {
-          this.selectedData[0].isEditor = false;
-        } else {
-          this.fileList.shift();
-          this.$set(this.fileList[0], 'isEditor', false);
-        }
+        this.$emit('cancel-edit');
       },
       selection(event) {
         let dotIndex = this.fileName.lastIndexOf('.');

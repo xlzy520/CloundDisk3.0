@@ -136,7 +136,7 @@
       },
       async requestData() {
         if (this.selectedData.length === 1 && this.selectedData[0].ffiletype !== 1) {
-          const versionListInfo = await fileService.getVersionList(this.selectedData[0].fversionsign, this.$store.getters.parentId);
+          const versionListInfo = await fileService.getVersionList(this.selectedData[0].fversionsign, this.$route.query.dirid || 0);
           if (versionListInfo.success) {
             versionListInfo.data.filter((item) => {
               if (!item.fdisplay) {

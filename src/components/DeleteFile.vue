@@ -62,12 +62,12 @@
         this.selectedData.forEach(item => {
           categoryids.push(item.fcategoryid);
         });
-        fileService.deleteCategory(categoryids, this.$store.getters.parentId)
+        fileService.deleteCategory(categoryids, this.$route.query.dirid || 0)
           .then(res => {
             this.visible = false;
             this.$message1000(res.msg, 'success');
             this.deleting = false;
-            this.$emit('refresh');
+            this.$emit('refresh', 'updateList');
           })
           .catch(err => {
             if (this.$store.getters.hasSearch) {

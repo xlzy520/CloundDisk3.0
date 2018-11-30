@@ -7,7 +7,7 @@
         :table-data="fileList"
         :table-columns="tableColumns"
         @selection-change="handleSelectionChange"
-        @cell-dblclick="dblclickRow"
+        @cell-dblclick="fileType"
         @row-contextmenu="showMenu">
       </base-table>
     </base-scrollbar>
@@ -42,7 +42,9 @@
             sortMethod: nameSort,
             render: (h, {props: {row}}) => {
               if (row.isEditor) {
-                return <RenameFile type="List" />;
+                return <RenameFile type="List"
+                          onCancel-edit={() => this.$emit('cancel-edit')}
+                          onConfirm-edit={fileName => this.$emit('confirm-edit', fileName)} />;
               } else {
                 return (
                   <div>
@@ -57,14 +59,14 @@
             label: '修改时间',
             prop: 'fupdatetime',
             sortable: true,
-            formater: (row, col) => parseTime(row[col.prop])
+            formatter: (row, col) => parseTime(row[col.prop])
           },
           {
             label: '大小',
             prop: 'fsize',
             sortable: true,
             sortMethod: sizeSort,
-            formater: (row, col) => {
+            formatter: (row, col) => {
               if (row.ffiletype !== 1) {
                 return formatSize(Number(row[col.prop].replace('B', '')));
               }
@@ -116,9 +118,6 @@
           }
         }
       },
-      dblclickRow(row) {
-        this.fileType(row);
-      },
       async enterParentDic(searchObj) {
         await this.$store.dispatch('SetSelectedData', [searchObj]);
         await this.$store.dispatch('ToggleSearch', false);
@@ -139,7 +138,7 @@
             }
           }
         });
-      },
+      }, //搜索页返回文件列表页
       showMenu({row, event}) {
         event.preventDefault();
         const x = event.clientX;

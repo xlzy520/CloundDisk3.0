@@ -43,7 +43,7 @@
         </div>
       </div>
     </div>
-    <breadcrumb :nav-list="navList" @openDir="openDir"></breadcrumb>
+    <breadcrumb :nav-list="navList"></breadcrumb>
     <div class="back2FileList">
       <el-button type="success" plain size="mini" v-if="hasSearch" data-action="back2FileList">返回文件列表</el-button>
     </div>
@@ -70,11 +70,7 @@ export default {
   computed: {
     ...mapGetters([
       'selectedData',
-      'fileList',
-      'parentId',
       'hasSearch',
-      'menuVisible',
-      'coordinate'
     ]),
     isShow() {
       const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length;
@@ -98,21 +94,6 @@ export default {
         this.$emit('action', action);
       }
     },
-    openDir(id) {
-      this.$emit('open-dir', id);
-    },
-    newFolder() {
-      this.$store.dispatch('Refresh').then(() => {
-        this.fileList.unshift({
-          faothority: 'newFolder',
-          ffiletype: 1,
-          fname: '新建文件夹',
-          fsize: null
-        });
-        this.$set(this.fileList[0], 'isEditor', true);
-        this.$store.dispatch('SetSelectedData', []);
-      });
-    },
     downloadFile() {
       this.$refs.downloadBtn.href = `/djcpsdocument/fileManager/downloadFile.do?id=${this.selectedData[0].fcategoryid}`;
       this.$refs.downloadBtn.download = this.selectedData[0].fname;
@@ -123,7 +104,9 @@ export default {
     },
     handleCommand(command) {
       switch (command) {
-        case 'newFolder': this.newFolder(); break;
+        case 'newFolder':
+          this.$emit('action', 'newFolder');
+          break;
         case 'newMarkdown':
           this.$emit('action', 'newMD');
           break;

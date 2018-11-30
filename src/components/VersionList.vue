@@ -41,53 +41,60 @@
           v-if="versionDiff"></vue-code-diff>
       </el-dialog>
       <div class="file-list">
-        <el-table
-          :data="tableData"
-          height="260"
+        <base-table
+          ref="baseTable"
           stripe
-          v-loading="loading"
-          style="width: 100%">
-          <el-table-column
-            width="70"
-            prop="fversion"
-            label="版本号">
-          </el-table-column>
-          <el-table-column
-            prop="fcreator"
-            label="创建人"
-            width="70">
-          </el-table-column>
-          <el-table-column
-            width="145"
-            :formatter="formatterTime"
-            prop="fupdatetime"
-            sortable
-            label="修改时间">
-          </el-table-column>
-          <el-table-column
-            prop="filesize"
-            :formatter="sizeFormatter"
-            label="文件长度"
-            width="80">
-          </el-table-column>
-          <el-table-column
-            prop="fremarks"
-            label="版本描述">
-          </el-table-column>
+          :loading="loading"
+          :table-data="tableData"
+          :table-columns="tableColumns">
+        </base-table>
+        <!--<el-table-->
+          <!--:data="tableData"-->
+          <!--height="260"-->
+          <!--stripe-->
+          <!--v-loading="loading"-->
+          <!--style="width: 100%">-->
+          <!--<el-table-column-->
+            <!--width="70"-->
+            <!--prop="fversion"-->
+            <!--label="版本号">-->
+          <!--</el-table-column>-->
+          <!--<el-table-column-->
+            <!--prop="fcreator"-->
+            <!--label="创建人"-->
+            <!--width="70">-->
+          <!--</el-table-column>-->
+          <!--<el-table-column-->
+            <!--width="145"-->
+            <!--:formatter="formatterTime"-->
+            <!--prop="fupdatetime"-->
+            <!--sortable-->
+            <!--label="修改时间">-->
+          <!--</el-table-column>-->
+          <!--<el-table-column-->
+            <!--prop="filesize"-->
+            <!--:formatter="sizeFormatter"-->
+            <!--label="文件大小"-->
+            <!--width="80">-->
+          <!--</el-table-column>-->
+          <!--<el-table-column-->
+            <!--prop="fremarks"-->
+            <!--label="版本描述">-->
+          <!--</el-table-column>-->
 
-          <el-table-column
-            width="120"
-            label="操作">
-            <template slot-scope="scope">
-              <a @click="downloadVersion(scope.row.filesgin, $event, scope.row.filename, scope.row.fversion)">下载</a>
-              <a
-                href="javascript:void(0)"
-                @click="rollBack(scope.row.filesgin)"
-                title="设为最新版本" v-if="scope.row.fdisplay">回退</a>
-              <a size="mini" @click="fileType(scope.row)" v-if="selectedData[0].ffiletype!==0">查看</a>
-            </template>
-          </el-table-column>
-        </el-table>
+          <!--<el-table-column-->
+            <!--width="120"-->
+            <!--label="操作">-->
+            <!--<template slot-scope="scope">-->
+              <!--<a @click="downloadVersion(scope.row.filesgin, $event, scope.row.filename, scope.row.fversion)">下载</a>-->
+              <!--<a-->
+                <!--href="javascript:void(0)"-->
+                <!--@click="rollBack(scope.row.filesgin)"-->
+                <!--title="设为最新版本" v-if="!scope.row.fdisplay">回退</a>-->
+              <!--<a size="mini" @click="fileType(scope.row)" v-if="selectedData[0].ffiletype!==0">查看</a>-->
+            <!--</template>-->
+          <!--</el-table-column>-->
+        <!--</el-table>-->
       </div>
       <div slot="footer" class="dialog-footer">
         <div class="diff-select clearfix" v-if="[2,9].includes(selectedData[0].ffiletype)&&tableData.length>1">
@@ -120,13 +127,14 @@
   import fileService from '@/api/service/file';
   import { formatSize, parseTime } from '@/utils/index';
   import vueCodeDiff from 'vue-code-diff';
+  import baseTable from '@/components/baseTable.vue';
   import fileType from '@/mixins/fileType';
 
   export default {
     name: 'VersionList',
     mixins: [ fileType ],
     components: {
-      vueCodeDiff
+      vueCodeDiff, baseTable
     },
     computed: {
       ...mapGetters([
@@ -141,6 +149,32 @@
         visible: false,
         versionDiff: false,
         tableData: [],
+        tableColumns: [
+          {label: '版本号', prop: 'fversion', width: 70},
+          {label: '创建人', prop: 'fcreator', width: 70},
+          {label: '修改时间', prop: 'fupdatetime', width: 145, sortable: true,
+            formatter: (row, col) => parseTime(row[col.prop])},
+          {label: '文件大小', prop: 'filesize', width: 80,
+            formatter: (row, col) => {
+              if (row.filesize !== null) {
+                return formatSize(Number(row[col.prop].replace('B', '')));
+              }
+              return '';
+            }},
+          {label: '版本描述', prop: 'fremarks'},
+          {label: '操作', width: 120,
+            render: (h, {props: {row}}) => {
+            return (
+              <div>
+                <a onClick={this.downloadVersion.bind(this, row.filesgin, event, row.filename, row.fversion)}>下载</a>
+                {row.fdisplay ? (null) : (
+                  <a href="javascript:void(0)" onClick={this.rollBack.bind(this, row.filesgin)} title="设为最新版本" >回退</a>
+                 )}
+                {this.selectedData[0].ffiletype !== 0 ? (<a onClick={this.fileType.bind(this, row)}>查看</a>) : null}
+              </div>
+            );
+          }}
+        ],
         oldStr: '',
         newStr: '',
         oldVersion: {
@@ -154,7 +188,8 @@
         lineSwitch: true,
         numDiff: 5,
         loading: false,
-        diffLoading: false
+        diffLoading: false,
+        modify: false
       };
     },
     methods: {
@@ -164,22 +199,18 @@
       },
       close() {
         this.visible = false;
-        this.$store.dispatch('Refresh');
+        if (this.modify) this.$emit('refresh'); //点了回退按钮才刷新。
       },
-      async rollBack(newVer) {
+       rollBack(newVer) {
         this.loading = true;
-        if (this.selectedData.length === 1) {
-          const version = await fileService.versionRollback(this.tableData[0].filesgin, newVer);
-          if (version.success) {
-            this.loading = false;
-            this.$message1000('版本回退成功', 'success');
-            this.requestData();
-            // this.$store.dispatch('Refresh')  //刷新文件列表
-          } else {
-            this.loading = false;
-            this.$message1000('版本回退失败', 'warning');
-          }
-        }
+        fileService.versionRollback(this.tableData[0].filesgin, newVer).then(()=>{
+          this.loading = false;
+          this.modify = true;
+          this.$message1000('版本回退成功', 'success');
+          this.requestData();
+        }).catch(()=>{
+          this.loading = false;
+        });
       },
       async requestData() {
         this.loading = true;

@@ -8,7 +8,7 @@
     custom-class="move-file"
   >
     <el-scrollbar style="height: 100%">
-      <tree-menu type="copyMove" @getFolderid="getFolderId" ></tree-menu>
+      <tree-menu type="copyMove" @getFolderId="getFolderId" ></tree-menu>
     </el-scrollbar>
     <span slot="footer" class="dialog-footer">
     <el-button type="primary" @click="moveFile">确 定</el-button>
@@ -51,17 +51,15 @@
         if (this.type === 'move') {
           fileService.moveFile(this.idList, this.id).then(() => {
             this.$message1000('文件移动成功', 'success');
-            this.close();
-            this.$store.dispatch('Refresh');
-          }).catch(() => {
+            this.$emit('refresh', 'updateList');
+          }).finally(() => {
             this.close();
           });
         } else {
           fileService.copyFile(this.idList, this.id).then(() => {
             this.$message1000('文件复制成功', 'success');
-            this.close();
-            this.$store.dispatch('Refresh');
-          }).catch(() => {
+            this.$emit('refresh', 'updateList');
+          }).finally(() => {
             this.close();
           });
         }

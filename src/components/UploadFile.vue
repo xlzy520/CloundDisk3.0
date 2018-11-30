@@ -44,7 +44,7 @@ import { mapGetters } from 'vuex';
 import { formatSize } from '@/utils/index';
 export default {
   name: 'UploadFile',
-  props: ['navList', 'parentId'],
+  props: ['navList'],
   data() {
     return {
       visible: false,
@@ -91,7 +91,7 @@ export default {
       this.$message1000('文件上传出错：网络错误', 'error');
       this.visible = false;
       this.$refs.upload.clearFiles();
-      this.$emit('refresh');
+      this.$emit('refresh', 'updateList');
       this.speed = '';
     },
     onRemove(file, filelist) {
@@ -117,7 +117,7 @@ export default {
         this.$refs.upload.clearFiles();
         this.fileList = [];
         this.visible = false;
-        this.$emit('refresh');
+        this.$emit('refresh', 'updateList');
       } else {
         let msg = response.msg;
         if (msg == null || msg === '') {
@@ -128,7 +128,7 @@ export default {
         this.$refs.upload.clearFiles();
         this.fileList = [];
         this.visible = false;
-        this.$emit('refresh');
+        this.$emit('refresh', 'updateList');
       }
     },
     onFileChange(file, filelist) {
@@ -149,16 +149,16 @@ export default {
       this.fileList = filelist;
 
       if (file.status === 'ready') {
-        this.$emit('refresh');
+        this.$emit('refresh', 'updateList');
         this.btDisable = false;
         this.currentFile = file;
         this.uploadData = {
-          fparentid: this.parentId
+          fparentid: this.$route.query.dirid || 0
         };
 
         if (this.selectedData.length === 1 && this.type === 'update') {
           this.uploadData = {
-            fparentid: this.parentId,
+            fparentid: this.$route.query.dirid || 0,
             fcategoryid: this.selectedData[0].fcategoryid,
             fversionsign: this.selectedData[0].fversionsign
           };

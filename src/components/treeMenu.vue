@@ -45,7 +45,7 @@
     methods: {
       handleNodeClick(data) {
         if (this.type === 'copyMove') {
-          this.$emit('getFolderid', data); //移动复制文件时，传递文件夹ID
+          this.$emit('getFolderId', data); //移动复制文件时，传递文件夹ID
         }
         if (this.type === 'sidebar') {
           this.$router.push({ path: '/index/list', query: { dirid: data.fcategoryid }});

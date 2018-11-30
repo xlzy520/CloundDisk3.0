@@ -112,10 +112,10 @@
         this.barsFlag = isFileEdit;
         this.isEditMk = !isFileEdit;
       },
-      async saveFile() {
+      saveFile() {
         const {id, fversionsign, name} = this.docInfo;
         const markdownData = new FormData();
-        markdownData.append('fparentid', this.$store.getters.parentId);
+        markdownData.append('fparentid', this.$route.query.dirid || 0);
         if (!this.docInfo.name) {
           this.$prompt('请输入文件名', '文件名', {
             confirmButtonText: '确定',
@@ -129,7 +129,7 @@
             fileService.updateMarkdown(markdownData).then(() => {
               this.$message1000('文档新建成功。', 'success');
               this.closeMDEditor();
-              this.$store.dispatch('Refresh');
+              this.$emit('refresh');
             });
           }).catch(() => {});
         } else {
@@ -147,7 +147,7 @@
             fileService.updateMarkdown(markdownData).then(() => {
               this.$message1000('文档保存成功。', 'success');
               this.closeMDEditor();
-              this.$store.dispatch('Refresh');
+              this.$emit('refresh');
             }).catch(() => {
               this.$message1000('文档保存失败。', 'error');
             });
