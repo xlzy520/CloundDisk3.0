@@ -24,6 +24,7 @@
                @refresh="dispatchAction('textEdit')"></md-editor>
     <move-file ref="move" @refresh="getCategory"></move-file>
     <img-editor ref="img" v-if="visible==='img'" :imgUrl="imgUrl" @close="dispatchAction('close')"></img-editor>
+    <zip-reader ref="zipReader" @action="dispatchAction"></zip-reader>
   </div>
 </template>
 
@@ -38,6 +39,7 @@
   import VersionList from '@/components/VersionList.vue';
   import MoveFile from '@/components/MoveFile.vue';
   import MdEditor from "../../components/MDEditor";
+  import zipReader from '@/components/zipReader.vue';
 
   import fileService from '@/api/service/file';
   import request from '@/utils/request';
@@ -72,7 +74,8 @@
       ListHeader,
       DeleteFile,
       MDEditor: () => import('@/components/MDEditor.vue'),
-      MoveFile
+      MoveFile,
+      zipReader
     },
     methods: {
       dispatchAction(action) {
@@ -116,6 +119,9 @@
           case 'textEdit':
             this.getCategory();
             if (this.$refs.version.visible) this.$refs.version.visible = false; //版本查看可以编辑文档，触发更新之后没有关闭版本窗口
+            break;
+          case 'zipReader':
+            this.$refs.zipReader.openFrame();
             break;
           default:
             break;

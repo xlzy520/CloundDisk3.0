@@ -1,3 +1,7 @@
+import fileManagerService from '@/api/service/fileManager.js';
+import JSZip from 'JSZip';
+import { getZipTree } from '../utils/getZipTree.js';
+
 const fileType = {
   methods: {
     fileType(row, event) {
@@ -40,8 +44,18 @@ const fileType = {
           window.sessionStorage.setItem('xmindID', fcategoryid);
           window.open(`/static/xmind/edit.html`);
           break;
-        case 10: //ZIP,RAR
-          console.log('预览压缩包');
+        case 10: //zip
+          fileManagerService.downloadFile(row.fcategoryid).then(res => {
+            let zip = new JSZip();
+            zip.loadAsync(res).then(_zip => {
+              let tree = getZipTree(_zip);
+              this.$emit('action', 'zipReader', {
+                ...tree,
+                fname: row.fname,
+                _zip
+              });
+            });
+          });
           break;
         case 11: //code
           console.log('代码编辑器');

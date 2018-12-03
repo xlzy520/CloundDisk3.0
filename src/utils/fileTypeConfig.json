@@ -1,0 +1,42 @@
+{
+  "other": {
+    "value": "0",
+    "type": "other"
+  },
+  "folder": {
+    "value": "1",
+    "type": "folder"
+  },
+  "md": {
+    "value": "2",
+    "type": "md"
+  },
+  "docx": {
+    "value": "3",
+    "type": "docx"
+  },
+  "excel": {
+    "value": "4",
+    "type": "excel"
+  },
+  "ppt": {
+    "value": "5",
+    "type": "ppt"
+  },
+  "pdf": {
+    "value": "6",
+    "type": "pdf"
+  },
+  "jpg": {
+    "value": "7",
+    "type": "jpg"
+  },
+  "xmind": {
+    "value": "8",
+    "type": "xmind"
+  },
+  "txt": {
+    "value": "9",
+    "type": "txt"
+  }
+}
