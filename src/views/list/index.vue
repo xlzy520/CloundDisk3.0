@@ -78,7 +78,7 @@
       zipReader
     },
     methods: {
-      dispatchAction(action) {
+      dispatchAction(action, value) {
         switch (action) {
           case 'refresh':
             this.getCategory(this.$route.query.dirid, true);
@@ -121,7 +121,7 @@
             if (this.$refs.version.visible) this.$refs.version.visible = false; //版本查看可以编辑文档，触发更新之后没有关闭版本窗口
             break;
           case 'zipReader':
-            this.$refs.zipReader.openFrame();
+            this.$refs.zipReader.openFrame(value);
             break;
           default:
             break;
