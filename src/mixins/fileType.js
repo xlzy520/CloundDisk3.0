@@ -1,5 +1,6 @@
 import fileManagerService from '@/api/service/fileManager.js';
 import JSZip from 'JSZip';
+// import {Loading}
 import { getZipTree } from '../utils/getZipTree.js';
 
 const fileType = {
@@ -17,7 +18,6 @@ const fileType = {
       }
       switch (ffiletype) {
         case 1: //FOLDER
-          this.$store.dispatch('SetSelectedData', []);
           this.$router.push({path: '/index/list', query: {dirid: fcategoryid}});
           break;
         case 2:

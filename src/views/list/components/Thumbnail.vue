@@ -18,14 +18,15 @@
                   @contextmenu.prevent="()=>{return false}"
                   :class="selectedData.indexOf(item) > -1 ? 'box-hover' : ''"
                   :title="item.fname"
-                  @click.stop="fileType(item)">
+                  @click.stop="fileType(item);clearCheck()">
                 <div @click.stop>
                   <el-checkbox :label="item"></el-checkbox>
                 </div>
                 <svg-icon v-if="imgIsLarge(item)" :icon-class="String(item.ffiletype)" class-name="icon"/>
                 <img v-else class="icon" :src="imgSrc(item)"/>
                 <div v-if="item.isEditor">
-                  <rename-file type="Thumbnail"></rename-file>
+                  <rename-file type="Thumbnail" @cancel-edit="() => $emit('cancel-edit')"
+                  @confirm-edit="fileName => $emit('confirm-edit', fileName)"></rename-file>
                 </div>
                 <div v-else class="file-name">
                   <span>{{item.fname}}</span>
@@ -58,13 +59,28 @@
       RenameFile,
       baseScrollbar
     },
+    computed: {
+      selectedData: {
+        get() {
+          return this.$store.getters.selectedData;
+        },
+        set(newValue) {
+          this.$store.dispatch('SetSelectedData', newValue);
+        }
+      },
+      disabled() {
+        return this.fileList.length < 1;
+      }
+    },
     data() {
       return {
         isIndeterminate: false,
-        disabled: false
       };
     },
     methods: {
+      clearCheck() {
+        this.handleCheckAllChange();
+      },
       imgIsLarge(item) {
         if (item.ffiletype === 7) {
           return parseInt(item.fsize) > (1024 * 1024 * 10);
@@ -76,13 +92,12 @@
       },
       handleCheckAllChange(val) {
         this.selectedData = val ? this.fileList : [];
-        this.$store.dispatch('SetSelectedData', this.selectedData);
         this.isIndeterminate = false;
       },
       handleCheckItemChange(value) {
         if (this.fileList[0].faothority === 'newFolder') {
           this.fileList.shift();
-          this.selectedData = [];
+          this.$store.dispatch('SetSelectedData', []);
         } else {
           this.$store.dispatch('SetSelectedData', value);
           const checkedCount = value.length;
@@ -95,22 +110,10 @@
         }
       }
     },
-    computed: {
-      selectedData: {
-        get() {
-          return this.$store.getters.selectedData;
-        },
-        set(newValue) {
-          this.$store.dispatch('SetSelectedData', newValue);
-        }
-      }
-    },
     mounted() {
       const totalLength = this.fileList.length;
       const checkedDataLength = this.selectedData.length;
-      if (totalLength === 0) {
-        this.disabled = true;
-      } else if (checkedDataLength > 0 && checkedDataLength < totalLength) {
+      if (checkedDataLength > 0 && checkedDataLength < totalLength) {
         this.isIndeterminate = true;
       }
     }
