@@ -7,7 +7,6 @@
     <component
       :is="isList"
       :file-list="tableList"
-      @viewImg="viewImg"
       @md="openMD"
       @action="dispatchAction"
       @cancel-edit="cancelEdit"
@@ -19,7 +18,7 @@
     <version-list ref="version" @md="openMD" @refresh="getCategory"></version-list>
     <md-editor ref="md"
                v-if="visible==='mdEditor'"
-               :docInfo="docInfo"
+               :doc-info="docInfo"
                @close="dispatchAction('close')"
                @refresh="dispatchAction('textEdit')"></md-editor>
     <move-file ref="move" @refresh="getCategory"></move-file>
@@ -99,9 +98,6 @@
           case 'copy':case 'move':case 'update':
             this.$refs.move.visible = true;
             this.$refs.move.type = action;
-            break;
-          case 'back':
-            this.$store.dispatch('ToggleSearch', false);
             break;
           case 'List': case 'Thumbnail':
             this.isList = action;

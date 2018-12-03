@@ -29,9 +29,6 @@
       </div>
     </div>
     <breadcrumb :nav-list="navList"></breadcrumb>
-    <div class="back">
-      <el-button type="success" plain size="mini" v-if="hasSearch" data-action="back">返回文件列表</el-button>
-    </div>
   </div>
 </template>
 
@@ -138,11 +135,4 @@ export default {
         }
       }
     }
-
-  .back{
-    display: block;
-    position: absolute;
-    right: 50px;
-    top: 45px;
-  }
 </style>

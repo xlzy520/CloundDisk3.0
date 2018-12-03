@@ -4,9 +4,9 @@
       <base-scrollbar>
         <base-table
           :total="pagination.total"
-          :pageNo="pagination.currentPage"
-          :pageSize="pagination.size"
-          @changePage="changePage"
+          :page-no="pagination.currentPage"
+          :page-size="pagination.size"
+          @change-page="changePage"
           :table-data="tableData"
           :table-columns="tableColumns">
         </base-table>

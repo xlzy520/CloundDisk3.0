@@ -11,7 +11,7 @@
       width="430px">
       <div class="file-list">
         <div v-for="(item, index) in selectedData" :key="index" class="item">
-          <svg-icon :icon-class="String(item.ffiletype)" className="icon"/>
+          <svg-icon :icon-class="String(item.ffiletype)" class-name="icon"/>
           <span class="item-name">{{item.fname}}</span>
         </div>
       </div>

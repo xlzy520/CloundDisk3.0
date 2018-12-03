@@ -19,12 +19,12 @@
               ref="md"
               v-model="content"
               :toolbars="toolbars"
-              :externalLink="externalLink"
-              :scrollStyle="true"
+              :external-link="externalLink"
+              :scroll-style="true"
               :subfield="isField"
-              defaultOpen="preview"
-              :toolbarsFlag="barsFlag"
-              @imgAdd="imgAdd"
+              default-open="preview"
+              :toolbars-flag="barsFlag"
+              @img-add="imgAdd"
             />
           </div>
         </div>
@@ -40,7 +40,7 @@
   export default {
     name: 'md-editor',
     props: {
-      docInfo: {
+      'doc-info': {
         type: Object
       }
     },

@@ -13,9 +13,9 @@
       <base-scrollbar>
         <base-table
           :total="pagination.total"
-          :pageNo="pagination.currentPage"
-          :pageSize="pagination.size"
-          @changePage="changePage"
+          :page-no="pagination.currentPage"
+          :page-size="pagination.size"
+          @change-page="changePage"
           :selection="'recycle'"
           :table-data="tableData"
           :table-columns="tableColumns"
