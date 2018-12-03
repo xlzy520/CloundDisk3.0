@@ -2,6 +2,7 @@
   <div class="file-content" ref="fileContent">
     <base-scrollbar ref="scrollbar">
       <base-table
+        v-loading.fullscreen.lock="fullLoading"
         ref="baseTable"
         :selection="'list'"
         :table-data="fileList"

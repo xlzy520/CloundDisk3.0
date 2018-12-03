@@ -1,9 +1,13 @@
 import fileManagerService from '@/api/service/fileManager.js';
 import JSZip from 'JSZip';
-// import {Loading}
 import { getZipTree } from '../utils/getZipTree.js';
 
 const fileType = {
+  data() {
+    return {
+      fullLoading: false
+    };
+  },
   methods: {
     fileType(row, event) {
       if (event) event.stopPropagation(); //防止点击文件名之后选择该文件,render方式,Vue使用.stop
@@ -48,7 +52,8 @@ const fileType = {
           window.open(`/static/xmind/edit.html`);
           break;
         case 10: //zip
-          fileManagerService.downloadFile(row.fcategoryid).then(res => {
+          this.fullLoading = true;
+          fileManagerService.downloadFile(fcategoryid).then(res => {
             let zip = new JSZip();
             zip.loadAsync(res).then(_zip => {
               let tree = getZipTree(_zip);
@@ -58,6 +63,8 @@ const fileType = {
                 _zip
               });
             });
+          }).finally(()=>{
+            this.fullLoading = false;
           });
           break;
         case 11: //code

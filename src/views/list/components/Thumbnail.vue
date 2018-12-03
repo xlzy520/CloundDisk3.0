@@ -1,5 +1,5 @@
 <template>
-  <div class="list">
+  <div class="list" v-loading.fullscreen.lock="fullLoading">
     <div class="list-header">
       <el-checkbox
         :indeterminate="isIndeterminate"

@@ -8,6 +8,7 @@
       custom-class="version-list"
       :close-on-click-modal="true"
       @close="close"
+      v-loading.fullscreen.lock="fullLoading"
       width="750px">
       <el-dialog
         width="80%"
