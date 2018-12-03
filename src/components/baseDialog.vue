@@ -82,7 +82,6 @@ export default {
     justify-content: center;
     align-items: center;
     /deep/ .el-dialog {
-      margin-bottom: 30vh;
       width: auto;
     }
     /deep/ .el-dialog__header {
