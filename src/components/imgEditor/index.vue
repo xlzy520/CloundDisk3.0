@@ -58,7 +58,7 @@
             editor.reset();
             break;
           case 'close':
-            this.$emit('close');
+            this.$emit('action', 'close');
             break;
           default:
         }

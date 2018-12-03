@@ -77,18 +77,7 @@
           {
             label: '创建者',
             prop: 'foperator',
-            hide: this.hasSearch,
-          },
-          {
-            label: '所在目录',
-            hide: !this.hasSearch,
-            render: (h, {props: {row}}) => {
-              return (
-                <span class="fileAddress" onClick={this.enterParentDic.bind(this, row)}
-                      key={row.fcategoryid}>文件位置</span>
-              );
-            }
-          },
+          }
         ],
       };
     },
@@ -99,7 +88,7 @@
     },
     computed: {
       ...mapGetters([
-        'selectedData', 'hasSearch'
+        'selectedData'
       ])
     },
     methods: {

@@ -104,7 +104,7 @@
     },
     methods: {
       closeMDEditor() {
-        this.$emit('close');
+        this.$emit('action', 'close');
         this.fileEdit(false);
       },
       fileEdit(isFileEdit) {
@@ -129,7 +129,7 @@
             fileService.updateMarkdown(markdownData).then(() => {
               this.$message1000('文档新建成功。', 'success');
               this.closeMDEditor();
-              this.$emit('refresh');
+              this.$emit('action', 'textEdit');
             });
           }).catch(() => {});
         } else {
@@ -147,7 +147,7 @@
             fileService.updateMarkdown(markdownData).then(() => {
               this.$message1000('文档保存成功。', 'success');
               this.closeMDEditor();
-              this.$emit('refresh');
+              this.$emit('action', 'textEdit');
             }).catch(() => {
               this.$message1000('文档保存失败。', 'error');
             });

@@ -96,6 +96,7 @@
         this.getSearchList();
       },
       getSearchList() {
+        const {value, full} = this.$route.query;
         this.loading = true;
         request.get('./static/search.json', this.$route.query.keyword).then(res=>{
           this.pagination = {

@@ -17,12 +17,12 @@ const fileType = {
       }
       switch (ffiletype) {
         case 1: //FOLDER
-          this.$emit('open-dir', fcategoryid);
+          this.$store.dispatch('SetSelectedData', []);
           this.$router.push({path: '/index/list', query: {dirid: fcategoryid}});
           break;
         case 2:
         case 9: //Text、Markdown
-          this.$emit('md', {fcategoryid, fversionsign});
+          this.$emit('action', 'openMD', {fcategoryid, fversionsign});
           break;
         case 3:
         case 4:

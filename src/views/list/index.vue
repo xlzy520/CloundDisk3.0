@@ -7,7 +7,6 @@
     <component
       :is="isList"
       :file-list="tableList"
-      @md="openMD"
       @action="dispatchAction"
       @cancel-edit="cancelEdit"
       @confirm-edit="confirmEdit"
@@ -15,14 +14,13 @@
     <upload-file ref="upload" :nav-list="navList" @refresh="getCategory"></upload-file>
     <delete-file ref="delete" @refresh="getCategory"></delete-file>
     <detail ref="detail"></detail>
-    <version-list ref="version" @md="openMD" @refresh="getCategory"></version-list>
+    <version-list ref="version" @action="dispatchAction" @refresh="getCategory"></version-list>
     <md-editor ref="md"
                v-if="visible==='mdEditor'"
                :doc-info="docInfo"
-               @close="dispatchAction('close')"
-               @refresh="dispatchAction('textEdit')"></md-editor>
+               @action="dispatchAction"></md-editor>
     <move-file ref="move" @refresh="getCategory"></move-file>
-    <img-editor ref="img" v-if="visible==='img'" :img-config="imgConfig" @close="dispatchAction('close')"></img-editor>
+    <img-editor ref="img" v-if="visible==='img'" :img-config="imgConfig" @action="dispatchAction"></img-editor>
     <zip-reader ref="zipReader" @action="dispatchAction"></zip-reader>
   </div>
 </template>
@@ -95,9 +93,13 @@
           case 'rename':
             this.$set(this.selectedData[0], 'isEditor', true);
             break;
-          case 'copy':case 'move':case 'update':
+          case 'copy':case 'move':
             this.$refs.move.visible = true;
             this.$refs.move.type = action;
+            break;
+          case 'update':
+            this.$refs.upload.visible = true;
+            this.$refs.upload.type = action;
             break;
           case 'List': case 'Thumbnail':
             this.isList = action;
@@ -105,6 +107,9 @@
           case 'newMD':
             this.docInfo = {};
             this.visible = 'mdEditor';
+            break;
+          case 'openMD':
+            this.openMD(values);
             break;
           case 'newFolder':
             this.newFolder();
@@ -120,7 +125,8 @@
             this.$refs.zipReader.openFrame(values);
             break;
           case 'viewImg':
-            this.viewImg(values);
+            this.imgConfig = {url: values.url, name: values.name || ''};
+            this.visible = 'img';
             break;
           default:
             break;
@@ -135,13 +141,6 @@
         });
         this.tableList[0].isEditor = true;
         this.$store.dispatch('SetSelectedData', []);
-      },
-      viewImg(values) {
-        this.imgConfig = {
-          url: values.url,
-          name: values.name || ''
-        };
-        this.visible = 'img';
       },
       openMD(val) { //  打开markdown文件时先访问再判断是否打开窗口，默认为编辑
         fileService.getDocInfo(val.fcategoryid).then(res => {
@@ -237,12 +236,8 @@
     },
     //  路由参数变化请求不同的文件列表
     beforeRouteUpdate(to, from, next) {
-      console.time('切换目录用时：');
-      console.time('请求接口用时：');
-      this.getCategory(to.query.dirid).then(()=>{
-        console.timeEnd('请求接口用时：');
+      this.getCategory(to.query.dirid || 0).then(()=>{
         next();
-        console.timeEnd('切换目录用时：');
       });
     }
   };

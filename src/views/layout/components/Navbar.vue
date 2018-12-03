@@ -17,7 +17,7 @@
       <el-switch
         v-show="inputHover"
         class="switch-search"
-        v-model="query.fullTextBoolean"
+        v-model="query.full"
         active-color="#13ce66"
         active-text="全文搜索">
       </el-switch>
@@ -26,7 +26,7 @@
         name="search"
         @focus="showSwitch"
         @blur="showSwitch"
-        v-model="query.queryString"
+        v-model="query.value"
         title="请输入搜索关键词"
         placeholder="请输入关键词，回车搜索"
         :maxlength="maxlength"
@@ -61,7 +61,7 @@
 import { mapGetters } from 'vuex';
 import Hamburger from '@/components/Hamburger.vue';
 import MdInput from '@/components/MDinput.vue';
-import { Loading } from 'element-ui';
+
 export default {
   components: {
     MdInput,
@@ -77,8 +77,8 @@ export default {
   data() {
     return {
       query: {
-        fullTextBoolean: false,
-        queryString: ''
+        full: false,
+        value: ''
       },
       maxlength: 30,
       inputHover: false
@@ -104,15 +104,8 @@ export default {
       });
     },
     getSearchResult() {
-      const loadingSearch = Loading.service({ fullscreen: true });
-      this.$store.dispatch('SetSearchList', this.query).then(() => {
-        loadingSearch.close();
-        if (this.$route.name === '回收站') {
-          this.$router.push('/index/list');
-        }
-      }).catch(() => {
-        loadingSearch.close();
-      });
+      const searchQuery = this.query.full ? this.query : {query: this.query.value};
+      this.$router.push({path: '/index/search', query: searchQuery});
     }
   }
 };
