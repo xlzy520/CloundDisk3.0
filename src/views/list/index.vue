@@ -23,7 +23,7 @@
                @close="dispatchAction('close')"
                @refresh="dispatchAction('textEdit')"></md-editor>
     <move-file ref="move" @refresh="getCategory"></move-file>
-    <img-editor ref="img" v-if="visible==='img'" :imgUrl="imgUrl" @close="dispatchAction('close')"></img-editor>
+    <img-editor ref="img" v-if="visible==='img'" :img-config="imgConfig" @close="dispatchAction('close')"></img-editor>
     <zip-reader ref="zipReader" @action="dispatchAction"></zip-reader>
   </div>
 </template>
@@ -52,7 +52,7 @@
         isList: 'List',
         visible: '', // 展示某个弹窗组件
         contextMenu: {}, //右键菜单
-        imgUrl: '', //  图片预览链接
+        imgConfig: {}, //  图片预览链接
         docInfo: {}, //markdown文件预览信息
         tableList: [],
         navList: [],
@@ -78,7 +78,7 @@
       zipReader
     },
     methods: {
-      dispatchAction(action) {
+      dispatchAction(action, values) {
         switch (action) {
           case 'refresh':
             this.getCategory(this.$route.query.dirid, true);
@@ -121,7 +121,10 @@
             if (this.$refs.version.visible) this.$refs.version.visible = false; //版本查看可以编辑文档，触发更新之后没有关闭版本窗口
             break;
           case 'zipReader':
-            this.$refs.zipReader.openFrame();
+            this.$refs.zipReader.openFrame(values);
+            break;
+          case 'viewImg':
+            this.viewImg(values);
             break;
           default:
             break;
@@ -137,8 +140,11 @@
         this.tableList[0].isEditor = true;
         this.$store.dispatch('SetSelectedData', []);
       },
-      viewImg(id) {
-        this.imgUrl = `/djcpsdocument/fileManager/downloadFile.do?id=${id}`;
+      viewImg(values) {
+        this.imgConfig = {
+          url: values.url,
+          name: values.name || ''
+        };
         this.visible = 'img';
       },
       openMD(val) { //  打开markdown文件时先访问再判断是否打开窗口，默认为编辑

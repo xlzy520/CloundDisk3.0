@@ -77,7 +77,7 @@
           this._zip.file(file.name).async("base64").then(res => {
             // let blob = new Blob([res]);
             // let url = URL.createObjectURL(blob);
-            this.$emit('action', 'openImg', {
+            this.$emit('action', 'viewImg', {
               name: file.simpleName,
               url: 'data:image/jpeg;base64,' + res
             });

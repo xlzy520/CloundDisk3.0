@@ -24,17 +24,17 @@
 
   export default {
     name: 'ImgEditor',
-    props: ['imgUrl'],
+    props: ['img-config'],
     data() {
       return {
         data: {
           cropped: false,
           cropping: false,
           loaded: true,
-          name: '',
+          name: this.imgConfig.name,
           previousUrl: '',
           type: '',
-          url: this.imgUrl
+          url: this.imgConfig.url
         }
       };
     },

@@ -14,27 +14,7 @@
         <template v-for="item in actionConfig">
           <el-button type="primary" v-if="actionArray.find(ket => ket === item.value)" :icon="item.icon" :data-action="item.value">{{ item.label }}</el-button>
         </template>
-        <!-- <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-edit-outline" data-action="rename">重命名</el-button>
-        <el-button type="primary" v-if="[2, 4, 5].indexOf(isShow) > -1" icon="el-icon-sort" data-action="copyTo">复制到</el-button>
-        <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-sort" data-action="moveTo">移动到</el-button>
-        <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-download" data-action="download">下载</el-button> -->
-        <!-- <a ref="downloadBtn" v-if="[2, 4].indexOf(isShow) > -1" class="el-button el-button--primary el-icon-download" @click="downloadFile">下载</a> -->
-        <!-- <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-edit" data-action="update">更新</el-button>
-        <el-button type="primary" v-if="[2, 4].indexOf(isShow) > -1" icon="el-icon-tickets" data-action="version">版本</el-button>
-        <el-button type="primary" v-if="[1, 2, 3, 4, 5].indexOf(isShow) > -1" icon="el-icon-delete" data-action="delete">删除</el-button>
-        <el-button type="primary" v-if="[1, 2, 4].indexOf(isShow) > -1" icon="el-icon-info" data-action="detail">详情</el-button> -->
       </div>
-      <!-- <ul id="menu-btn" v-show="menuVisible" :style="{top:(coordinate[2]+'px'),left:(coordinate[1]+'px')}">
-        <li :class="{disabled:!([2, 4].indexOf(isShow)  > -1)}" @click="downloadFile2">下载</li>
-        <li :class="{disabled:!([2, 4].indexOf(isShow)  > -1)}" data-action="download">下载</li>
-        <li :class="{disabled:!([2, 4, 5].indexOf(isShow)  > -1)}" data-action="copyTo">复制到</li>
-        <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow)  > -1)}" data-action="moveTo">移动到</li>
-        <li :class="{disabled:!([2, 4].indexOf(isShow) > -1)}" data-action="update">更新</li>
-        <li :class="{disabled:!([2, 4].indexOf(isShow)  > -1)}" data-action="version">版本</li>
-        <li :class="{disabled:!([1, 2, 4].indexOf(isShow)  > -1)}" data-action="rename">重命名</li>
-        <li :class="{disabled:!([1, 2, 3, 4, 5].indexOf(isShow) > -1)}" data-action="delete">删除</li>
-        <li :class="{disabled:!([1, 2, 4].indexOf(isShow)  > -1)}" data-action="detail">详情</li>
-      </ul> -->
     </div>
     <div class="action-wrap">
       <div class="item">
