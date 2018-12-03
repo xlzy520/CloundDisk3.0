@@ -1,8 +1,8 @@
 <template>
   <div class="login-container">
-    <canvas id="cvs_bg" style="position: absolute;z-index: 1" width="1443" height="596"></canvas>
-    <canvas id="cvs_key" style="position: absolute;"></canvas>
-    <el-form class="login-form" autoComplete="on" status-icon :model="loginForm" :rules="loginRules" ref="loginForm"
+    <canvas id="cvs_bg" width="1443" height="596"></canvas>
+    <canvas id="cvs_key"></canvas>
+    <el-form class="login-form" auto-complete="on" status-icon :model="loginForm" :rules="loginRules" ref="loginForm"
              label-position="left">
       <h3 class="title">东经云盘</h3>
       <el-form-item prop="username">
@@ -14,7 +14,7 @@
                   type="text"
                   spellcheck="false"
                   v-model.trim="loginForm.username"
-                  autoComplete="on"
+                  auto-complete="on"
                   maxlength="30"
                   clearable
                   placeholder="请输入账号"/>
@@ -30,12 +30,12 @@
                   v-model.trim="loginForm.password"
                   maxlength="30"
                   clearable
-                  autoComplete="on"
+                  auto-complete="on"
                   placeholder="请输入密码"/>
         <span class="show-pwd" @click="showPwd"><i :class="['fa',eye]"></i></span>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
+        <el-button type="primary" class="login-button" :loading="loading" @click.native.prevent="handleLogin">
           登录
         </el-button>
       </el-form-item>
@@ -153,6 +153,9 @@
       padding: 35px 35px 15px 35px;
       margin: 90px auto;
       z-index: 3;
+      .login-button{
+        width: 100%;
+      }
     }
     .svg-container {
       padding: 6px 5px 6px 15px;
@@ -181,6 +184,12 @@
       color: $dark_gray;
       cursor: pointer;
       user-select: none;
+    }
+    #cvs_bg,#cvs_key{
+      position: absolute;
+    }
+    #cvs_bg{
+      z-index: 1
     }
   }
 </style>

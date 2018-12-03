@@ -36,8 +36,8 @@
           :old-string="oldStr"
           :new-string="newStr"
           :context="numDiff"
-          style="min-height: 70vh"
-          :outputFormat="outputFormat"
+          class="code-diff"
+          :output-format="outputFormat"
           v-if="versionDiff"></vue-code-diff>
       </el-dialog>
       <div class="file-list">
@@ -220,6 +220,9 @@
 
 <style lang="scss" scoped>
   /deep/ .version-list {
+    .code-diff{
+      min-height: 70vh;
+    }
     .el-dialog__body {
       padding: 10px 20px;
     }

@@ -7,8 +7,8 @@
     width="420px"
     custom-class="move-file"
   >
-    <el-scrollbar style="height: 100%">
-      <tree-menu type="copyMove" @getFolderId="getFolderId" ></tree-menu>
+    <el-scrollbar class="height100">
+      <tree-menu type="copyMove" @get-folderid="getFolderId" ></tree-menu>
     </el-scrollbar>
     <span slot="footer" class="dialog-footer">
     <el-button type="primary" @click="moveFile">确 定</el-button>
@@ -69,6 +69,9 @@
 </script>
 
 <style lang="scss">
+  .height100{
+    height: 100%;
+  }
   .move-file{
     height: 290px;
     padding: 0 12px;

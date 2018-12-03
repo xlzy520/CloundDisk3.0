@@ -1,8 +1,8 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
     <hamburger class="hamburger-container"
-               :toggleClick="toggleSideBar"
-               :isActive="sidebar.opened"
+               :toggle-click="toggleSideBar"
+               :is-active="sidebar.opened"
     title="展开侧边栏">
     </hamburger>
     <div class="nav__logo" v-show="!sidebar.opened">
@@ -16,7 +16,7 @@
     <div class="search_wrap"  @focus="showSwitch($event)" @blur="showSwitch($event)">
       <el-switch
         v-show="inputHover"
-        style="float: left;margin-top: 15px;"
+        class="switch-search"
         v-model="query.fullTextBoolean"
         active-color="#13ce66"
         active-text="全文搜索">
@@ -30,7 +30,7 @@
         title="请输入搜索关键词"
         placeholder="请输入关键词，回车搜索"
         :maxlength="maxlength"
-        :keyEnterFunction="getSearchResult">
+        :key-enter-function="getSearchResult">
       </md-input>
     </div>
     <el-dropdown class="avatar-container" trigger="click">
@@ -50,7 +50,7 @@
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
-          <span @click="logout" style="display:block;">注销</span>
+          <span @click="logout">注销</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -174,6 +174,10 @@ export default {
      float: left;
       width: 225px;
       margin-top: 5px;
+    }
+    .switch-search{
+      float: left;
+      margin-top: 15px;
     }
   }
   .avatar-container {

@@ -1,9 +1,9 @@
 <template>
-  <div id="placeholder" style="height: 400px; margin:0;"></div>
+  <div id="placeholder"></div>
 </template>
 
 <script>
-  import officeService from '@/api/service/office.js';
+  import officeService from '@/api/service/office';
   import dynamicLoadScripts from '@/utils/dynamicLoadScript';
   export default {
     name: 'office',
@@ -76,6 +76,9 @@
   };
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+  #placeholder{
+    height: 400px;
+    margin:0;
+  }
 </style>

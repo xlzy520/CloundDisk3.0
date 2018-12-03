@@ -1,15 +1,15 @@
 <template>
   <div class="toplink">
     <div class="left">
-      <i class="fa fa-home" style="font-size: 14px"></i>
+      <i class="fa fa-home"></i>
       <template v-for="(item, index) in navList">
         <span v-if="index===navNum -1">{{item.fname}}</span>
-        <a href="javascript:void(0)" @click="openDir(item.fcategoryid)" v-if="index!==navNum -1">{{item.fname}}</a>
-        <i v-if="index!==navNum -1" class="el-icon-arrow-right" style="color:#aaa"></i>
+        <a @click="openDir(item.fcategoryid)" v-if="index!==navNum -1">{{item.fname}}</a>
+        <i v-if="index!==navNum -1" class="el-icon-arrow-right"></i>
       </template>
     </div>
     <div class="right">
-      <a href="javascript:void(0)" v-if="false">返回搜索结果</a>
+      <a v-if="false">返回搜索结果</a>
     </div>
     <div class="clearfix"></div>
   </div>
@@ -49,6 +49,12 @@
     a, span {
       padding-right: 3px;
       padding-left: 3px;
+    }
+    .fa-home {
+      font-size: 14px;
+    }
+    .el-icon-arrow-right{
+      color:#aaa
     }
     a {
       color: #409eff;

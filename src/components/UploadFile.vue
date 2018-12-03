@@ -26,8 +26,8 @@
       <i class="el-icon-upload"></i>
       <p class="upload-speed">{{speed}}</p>
       <div class="el-upload__text">将文件拖到此处或点击上传</div>
-      <div class="el-upload__tip" slot="tip" v-if="!updateType"><span style="color: #888;padding-right: 2px;">当前文件夹：</span>{{tip}}</div>
-      <div class="el-upload__tip" slot="tip" v-if="updateType"><span style="color: #888;padding-right: 2px;">要更新的文件：</span>{{tip}}</div>
+      <div class="el-upload__tip" slot="tip" v-if="!updateType"><span>当前文件夹：</span>{{tip}}</div>
+      <div class="el-upload__tip" slot="tip" v-if="updateType"><span>要更新的文件：</span>{{tip}}</div>
     </el-upload>
     <div class="file-desc-label" v-if="updateType">文件描述</div>
     <el-input type="textarea" v-model="fileDesc" v-if="updateType"></el-input>
@@ -198,6 +198,9 @@ export default {
   /deep/ .upload-file{
     .el-upload__tip {
       color: #a00;
+      >span{
+        color: #888;padding-right: 2px;
+      }
     }
    .el-dialog__header {
       padding: 10px 20px 5px 20px;

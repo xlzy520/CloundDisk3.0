@@ -11,7 +11,8 @@
     "report": "npm run build --report",
     "lint:js": "eslint --ext .js,.vue src",
     "fix:js": "eslint --ext .js,.vue src --fix",
-    "test": "npm run lint"
+    "test": "npm run lint",
+    "lint:html": "htmlhint --config .htmlhintrc src/**/*.vue"
   },
   "dependencies": {
     "axios": "0.17.1",
@@ -58,6 +59,7 @@
     "file-loader": "1.1.5",
     "friendly-errors-webpack-plugin": "1.6.1",
     "html-webpack-plugin": "2.30.1",
+    "htmlhint": "^0.10.1",
     "node-notifier": "5.1.2",
     "node-sass": "^4.9.3",
     "optimize-css-assets-webpack-plugin": "3.2.0",

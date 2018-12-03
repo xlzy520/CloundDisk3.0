@@ -30,7 +30,7 @@
       </el-form>
     </div>
     <div class="record-content">
-      <el-scrollbar style="height: 83vh">
+      <el-scrollbar class="height100">
         <el-table
           :data="tableData" stripe>
           <el-table-column prop="fupdatetime" label="操作时间" width="240"></el-table-column>
@@ -133,7 +133,5 @@
         background-color: $scrollbarBlue !important;
       }
     }
-
   }
-
 </style>
