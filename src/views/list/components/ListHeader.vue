@@ -61,21 +61,17 @@ export default {
     ]),
     actionArray() {
       const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length;
+      let actionArr;
       if (this.selectedData.length > 1) {
-        return folderCheckedCount === 0 ? ['copy', 'move', 'delete']
-          : ['move', 'delete'];
+        actionArr = folderCheckedCount === 0 ? ['copy', 'move', 'delete'] : ['move', 'delete'];
       } else if (this.selectedData.length === 1) {
-        return folderCheckedCount === 1 ? ['rename', 'move', 'delete', 'detail']
+        actionArr = folderCheckedCount === 1 ? ['rename', 'move', 'delete', 'detail']
           : ['rename', 'copy', 'move', 'download', 'update', 'version', 'delete', 'detail'];
       } else {
-        return [];
+        actionArr = [];
       }
-    }
-  },
-  //TODO  will remove
-  watch: {
-    actionArray() {
-      this.$store.dispatch('changeActionArray', this.actionArray);
+      this.$store.dispatch('changeActionArray', actionArr);
+      return actionArr;
     }
   },
   methods: {
