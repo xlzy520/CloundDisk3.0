@@ -36,7 +36,10 @@ const fileType = {
           if (parseInt(fsize) > (1024 * 1024 * 10)) {
             this.$message1000('图片大小超过10M,无法预览', 'error');
           } else {
-            this.$emit('viewImg', fcategoryid);
+            this.$emit('viewImg', {
+              url: `/djcpsdocument/fileManager/downloadFile.do?id=${fcategoryid}`,
+              name: fname
+            });
           }
           break;
         case 8: //XMind
