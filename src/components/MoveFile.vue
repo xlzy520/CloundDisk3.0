@@ -51,14 +51,14 @@
         if (this.type === 'move') {
           fileService.moveFile(this.idList, this.id).then(() => {
             this.$message1000('文件移动成功', 'success');
-            this.$emit('refresh');
+            this.$emit('action', 'refresh');
           }).finally(() => {
             this.close();
           });
         } else {
           fileService.copyFile(this.idList, this.id).then(() => {
             this.$message1000('文件复制成功', 'success');
-            this.$emit('refresh');
+            this.$emit('action', 'refresh');
           }).finally(() => {
             this.close();
           });

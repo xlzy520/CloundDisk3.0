@@ -11,15 +11,15 @@
       @cancel-edit="cancelEdit"
       @confirm-edit="confirmEdit"
       @context-menu="showMenu"></component>
-    <upload-file ref="upload" :nav-list="navList" @refresh="getCategory"></upload-file>
-    <delete-file ref="delete" @refresh="getCategory"></delete-file>
+    <upload-file ref="upload" :nav-list="navList" @action="dispatchAction"></upload-file>
+    <delete-file ref="delete" @action="dispatchAction"></delete-file>
     <detail ref="detail"></detail>
-    <version-list ref="version" @action="dispatchAction" @refresh="getCategory"></version-list>
+    <version-list ref="version" @action="dispatchAction"></version-list>
     <md-editor ref="md"
                v-if="visible==='mdEditor'"
                :doc-info="docInfo"
                @action="dispatchAction"></md-editor>
-    <move-file ref="move" @refresh="getCategory"></move-file>
+    <move-file ref="move" @action="dispatchAction"></move-file>
     <img-editor ref="img" v-if="visible==='img'" :img-config="imgConfig" @action="dispatchAction"></img-editor>
     <zip-reader ref="zipReader" @action="dispatchAction"></zip-reader>
   </div>
@@ -78,6 +78,9 @@
       dispatchAction(action, values) {
         switch (action) {
           case 'refresh':
+            this.getCategory();
+            break;
+          case 'refresh-tip':
             this.getCategory(this.$route.query.dirid, true);
             break;
           case 'download':

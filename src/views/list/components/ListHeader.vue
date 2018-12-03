@@ -2,7 +2,7 @@
   <div class="list-head" @click="click">
     <div class="file-action">
       <div class="list-btn">
-        <el-button type="primary" icon="el-icon-refresh" data-action="refresh">刷新</el-button>
+        <el-button type="primary" icon="el-icon-refresh" data-action="refresh-tip">刷新</el-button>
         <el-button type="primary" icon="el-icon-upload" data-action="upload">上传</el-button>
         <el-dropdown type="primary" @command="handleCommand">
           <el-button type="primary" icon="el-icon-plus">新建<i class="el-icon-arrow-down el-icon--right"></i></el-button>
@@ -57,8 +57,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'selectedData',
-      'hasSearch',
+      'selectedData'
     ]),
     actionArray() {
       const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length;
@@ -73,7 +72,7 @@ export default {
       }
     }
   },
-  //  尽量
+  //TODO  will remove
   watch: {
     actionArray() {
       this.$store.dispatch('changeActionArray', this.actionArray);

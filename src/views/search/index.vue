@@ -96,7 +96,7 @@
         this.getSearchList();
       },
       getSearchList() {
-        const {value, full} = this.$route.query;
+        // const {value, full} = this.$route.query;
         this.loading = true;
         request.get('./static/search.json', this.$route.query.keyword).then(res=>{
           this.pagination = {
@@ -117,7 +117,6 @@
       },
       async enterParentDic(searchObj) {
         await this.$store.dispatch('SetSelectedData', [searchObj]);
-        await this.$store.dispatch('ToggleSearch', false);
         await this.$store.dispatch('GetCategory', searchObj.fparentid).then((res) => {
           if (res.success) {
             const searchIndex = this.fileList.findIndex(item => {

@@ -158,7 +158,7 @@
       },
       close() {
         this.visible = false;
-        if (this.modify) this.$emit('refresh'); //点过回退按钮才刷新。
+        if (this.modify) this.$emit('action', 'refresh'); //点过回退按钮才刷新。
       },
       rollBack(newVer) {
         this.loading = true;

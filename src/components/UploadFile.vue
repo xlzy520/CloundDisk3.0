@@ -91,7 +91,7 @@ export default {
       this.$message1000('文件上传出错：网络错误', 'error');
       this.visible = false;
       this.$refs.upload.clearFiles();
-      this.$emit('refresh');
+      this.$emit('action', 'refresh');
       this.speed = '';
     },
     onRemove(file, filelist) {
@@ -117,7 +117,7 @@ export default {
         this.$refs.upload.clearFiles();
         this.fileList = [];
         this.visible = false;
-        this.$emit('refresh');
+        this.$emit('action', 'refresh');
       } else {
         let msg = response.msg;
         if (msg == null || msg === '') {
@@ -128,7 +128,7 @@ export default {
         this.$refs.upload.clearFiles();
         this.fileList = [];
         this.visible = false;
-        this.$emit('refresh');
+        this.$emit('action', 'refresh');
       }
     },
     onFileChange(file, filelist) {
@@ -149,7 +149,7 @@ export default {
       this.fileList = filelist;
 
       if (file.status === 'ready') {
-        this.$emit('refresh');
+        this.$emit('action', 'refresh');
         this.btDisable = false;
         this.currentFile = file;
         this.uploadData = {
