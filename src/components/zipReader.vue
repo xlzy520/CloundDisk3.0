@@ -11,7 +11,7 @@
               {{ item.simpleName }}
             </div>
             <div class="zip-reader-content-item-button" v-if="item.fileType !== '1'" @click.stop>
-              <el-button type="primary" size="mini" @click="download(item)">下载</el-button>
+              <el-button size="mini" @click="download(item)">下载</el-button>
             </div>
           </div>
         </base-scrollbar>
@@ -63,7 +63,17 @@
         this.zips = this.historyNode[this.historyNode.length - 1];
       },
       download(file) {
-        console.log(file);
+        this._zip.file(file.name).async("base64").then(res => {
+          let blob = new Blob([res]);
+          let url = URL.createObjectURL(blob);
+          let download = document.createElement('a');
+          download.download = file.simpleName;
+          download.style.display = 'none';
+          download.href = url;
+          document.body.appendChild(download);
+          download.click();
+          document.body.removeChild(download);
+        });
       },
       clickFile(file) {
         if (file.fileType === "1") {
@@ -71,8 +81,6 @@
           this.historyNode.push(this.zips);
         } else if (file.type === 'jpg') {
           this._zip.file(file.name).async("base64").then(res => {
-            // let blob = new Blob([res]);
-            // let url = URL.createObjectURL(blob);
             this.$emit('action', 'viewImg', {
               name: file.simpleName,
               url: 'data:image/jpeg;base64,' + res
@@ -91,7 +99,7 @@
       position: relative;
       margin: 10px 0;
       padding: 0px 20px;
-      width: 700px;
+      width: 600px;
       height: 380px;
       &-item {
         position: relative;
@@ -110,6 +118,7 @@
         }
         &-name {
           height: 24px;
+          width: 300px;
           margin-top: 0px;
           overflow: hidden;
           text-overflow: ellipsis;
@@ -117,7 +126,7 @@
         }
         &-button {
           position: absolute;
-          right: 0;
+          right: 15px;
           height: 100%;
           button {
             margin-top: 1px;
