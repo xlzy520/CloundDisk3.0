@@ -123,13 +123,14 @@
           {
             label: '操作', width: 120,
             render: (h, {props: {row}}) => {
+              const download = (<a onClick={(event)=>this.downloadVersion(row.filesgin, row.filename, event)}>下载</a>);
+              const rollBack = (<a href="javascript:void(0)" onClick={this.rollBack.bind(this, row.filesgin)} title="设为最新版本">回退</a>);
+              const view = (<a onClick={this.fileType.bind(this, row)}>查看</a>);
               return (
                 <div className="version-operate">
-                  <a onClick={(event)=>this.downloadVersion(row.filesgin, row.filename, event)}>下载</a>
-                  {row.fdisplay ? (null) : (
-                    <a href="javascript:void(0)" onClick={this.rollBack.bind(this, row.filesgin)} title="设为最新版本">回退</a>
-                  )}
-                  {this.selectedData[0].ffiletype !== 0 ? (<a onClick={this.fileType.bind(this, row)}>查看</a>) : null}
+                  {download}
+                  {row.fdisplay ? (null) : (rollBack)}
+                  {this.selectedData[0].ffiletype !== 0 ? (view) : null}
                 </div>
               );
             }
