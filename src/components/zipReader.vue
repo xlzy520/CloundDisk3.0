@@ -63,7 +63,7 @@
         this.zips = this.historyNode[this.historyNode.length - 1];
       },
       download(file) {
-        this._zip.file(file.name).async("base64").then(res => {
+        this._zip.file(file.name).async("uint8array").then(res => {
           let blob = new Blob([res]);
           let url = URL.createObjectURL(blob);
           let download = document.createElement('a');
