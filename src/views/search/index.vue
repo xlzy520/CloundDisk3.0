@@ -1,5 +1,5 @@
 <template>
-  <div class="search-container">
+  <div class="search-container" v-loading.fullscreen.lock="fullLoading">
     <div class="search-container-content">
       <base-scrollbar>
         <base-table
@@ -21,6 +21,7 @@
   import baseTable from '../../components/baseTable.vue';
   import baseScrollbar from '../../components/baseScrollbar.vue';
   import fileType from '@/mixins/fileType';
+  import fileService from '@/api/service/file';
 
   export default {
     name: 'Search',
@@ -71,7 +72,7 @@
             label: '所在目录',
             render: (h, {props: {row}}) => {
               return (
-                <span class="fileAddress" onClick={this.enterParentDic.bind(this, row)}
+                <span class="file-address" onClick={this.goParent.bind(this, row)}
                       key={row.fcategoryid}>文件位置</span>
               );
             }
@@ -95,49 +96,38 @@
         this.pagination.currentPage = val;
         this.getSearchList();
       },
-      getSearchList() {
-        // const {value, full} = this.$route.query;
-        this.loading = true;
-        request.get('./static/search.json', this.$route.query.keyword).then(res=>{
+      async getSearchList() {
+        this.fullLoading = true;
+        const {value, full} = this.$route.query;
+        try {
+          const searchList = full ? await fileService.getFullTextSearchResult(value) : await fileService.getSearchResult(value);
           this.pagination = {
-            currentPage: res.data.curPage,
-            total: res.data.recordCount,
+            currentPage: searchList.data.curPage,
+            total: searchList.data.recordCount,
             size: 20
           };
-          this.tableData = res.data.bookList;
-        });
-        // recycleService.getRecycleList(this.pagination.currentPage).then(res => {
-        //   this.tableData = res.data.result;
-        //   this.pagination.total = res.data.total;
-        // }).catch(() => {
-        //   this.$message1000('获取回收站信息错误', 'error');
-        // }).finally(() => {
-        //   this.loading = false;
-        // });
-      },
-      async enterParentDic(searchObj) {
-        await this.$store.dispatch('SetSelectedData', [searchObj]);
-        await this.$store.dispatch('GetCategory', searchObj.fparentid).then((res) => {
-          if (res.success) {
-            const searchIndex = this.fileList.findIndex(item => {
-              return item.fcategoryid === searchObj.fcategoryid;
-            });
-            if (searchIndex !== -1) {
-              this.rows.push(searchIndex);
-              this.$refs.baseTable.toggleRowSelection(this.fileList[searchIndex]);
-              const elScrollBar = this.$refs['scrollbar'].$refs['elscrollbar'].$refs['wrap'];
-              this.$nextTick(() => {
-                elScrollBar.scrollTop = (53) * searchIndex;
-              });
-            } else {
-              this.$message1000('源文件未找到，文件可能已经被删除', 'info');
-            }
+          this.tableData = searchList.data.bookList;
+          if (this.tableData.length === 0) {
+            this.$message1000('搜索成功,搜索结果为空', 'info');
+          } else {
+            this.$message1000('搜索成功', 'success');
           }
-        });
-      }, //搜索页返回文件列表页
+        } finally {
+          this.fullLoading = false;
+        }
+      },
+      //搜索页返回文件列表页
+      goParent(row) {
+        this.$router.push(`/index/list?dirid=${row.fparentid}&origin=search&searchId=${row.fcategoryid}`);
+      }
     },
     mounted() {
       this.getSearchList();
+    },
+    beforeRouteUpdate(to, from, next) {
+      this.getSearchList().then(()=>{
+        next();
+      });
     }
   };
 </script>
@@ -157,11 +147,18 @@
         float: right;
       }
     }
-    &-content {
+    /deep/ &-content {
       position: relative;
       display: flex;
       flex-direction: column;
       flex-grow: 1;
+      .file-address{
+        cursor: pointer;
+        color: #1296dc;
+        &:hover{
+          text-decoration: underline;
+        }
+      }
     }
     /deep/ .file-name {
       cursor: pointer;

@@ -101,7 +101,7 @@
             this.rows = [];
           } else {
             this.$store.dispatch('SetSelectedData', rows);
-            this.$emit('context-menu', {visible: false});
+            this.$emit('action', 'context-menu', {visible: false});
             this.fileList.forEach(item => {
               if (item.isEditor !== undefined) {
                 this.$set(item, 'isEditor', false);

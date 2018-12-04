@@ -41,11 +41,11 @@ export default {
     return versionService('/versionBack.do', {oldDisplayFileSgin: oldVer, newDisplayFileSgin: newVer});
   },
   // search
-  getSearchResult(queryString, categoryName) {
-    return searchService('/list.do', {queryString: queryString, categoryName: categoryName, sort: 1, curPage: 1});
+  getSearchResult(queryString) {
+    return searchService('/list.do', {queryString: queryString, sort: 1, curPage: 1});
   },
-  getFullTextSearchResult(queryString, categoryName) {
-    return searchService('/fullList.do', {queryString: queryString, categoryName: categoryName, sort: 1, curPage: 1});
+  getFullTextSearchResult(queryString) {
+    return searchService('/fullList.do', {queryString: queryString, sort: 1, curPage: 1});
   },
   // fileManager
   getDocInfo(id) {

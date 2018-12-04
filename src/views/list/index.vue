@@ -5,12 +5,12 @@
       @action="dispatchAction"
       :nav-list="navList"></list-header>
     <component
+      ref="fileList"
       :is="isList"
       :file-list="tableList"
       @action="dispatchAction"
       @cancel-edit="cancelEdit"
-      @confirm-edit="confirmEdit"
-      @context-menu="showMenu"></component>
+      @confirm-edit="confirmEdit"></component>
     <upload-file ref="upload" :nav-list="navList" @action="dispatchAction"></upload-file>
     <delete-file ref="delete" @action="dispatchAction"></delete-file>
     <detail ref="detail"></detail>
@@ -86,17 +86,20 @@
           case 'download':
             this.downloadFile();
             break;
-          case 'version':case 'detail':
+          case 'version':
+          case 'detail':
             this.$refs[action].requestData();
             this.$refs[action].visible = true;
             break;
-          case 'upload': case 'delete':
+          case 'upload':
+          case 'delete':
             this.$refs[action].visible = true;
             break;
           case 'rename':
             this.$set(this.selectedData[0], 'isEditor', true);
             break;
-          case 'copy':case 'move':
+          case 'copy':
+          case 'move':
             this.$refs.move.visible = true;
             this.$refs.move.type = action;
             break;
@@ -104,7 +107,8 @@
             this.$refs.upload.visible = true;
             this.$refs.upload.type = action;
             break;
-          case 'List': case 'Thumbnail':
+          case 'List':
+          case 'Thumbnail':
             this.isList = action;
             break;
           case 'newMD':
@@ -119,6 +123,9 @@
             break;
           case 'close':
             this.visible = '';
+            break;
+          case 'context-menu':
+            this.contextMenu = values;
             break;
           case 'textEdit':
             this.getCategory();
@@ -192,9 +199,6 @@
           this.tableList[0].isEditor = false;
         }
       },
-      showMenu(val) {
-        this.contextMenu = val;
-      },
       getCategory(id = this.$route.query.dirid, refresh = false) {
         if (!id) id = 0;
         return categoryService.getCategory(id).then(res => {
@@ -208,30 +212,56 @@
       signIn() {
         this.$store.dispatch('GetInfo');
         this.getCategory();
+      },
+      // 统一登录平台
+      ssoLogin() {
+        if (location.search.indexOf('from') !== -1) {
+          sessionStorage.setItem('from', 'sso'); // 如果来自统一登录平台，保存标志
+        }
+        if (location.search.indexOf('oncetoken') !== -1) { //如果oncetoken存在，就拿去请求网盘token，然后获取个人信息
+          if (this.$store.getters.name.length === 0) {
+            const oncetoken = location.search.substring(location.search.indexOf("=") + 1);
+            request.get(`/djcpsdocument/sso/exchangeToken.do?oncetoken=${oncetoken}`)
+            .then(() => {
+              this.signIn();
+            });
+          } else {
+            this.signIn();
+          }
+        } else {
+          this.getCategory().then(() => {
+            const {origin} = this.$route.query;
+            if (origin === 'search') { //刚挂载时定位搜索结果所在位置
+              this.findSearch();
+            }
+          }).catch(err => {
+            if (err.msg === "120") {
+              // 判断来源，如果来自统一登录平台，则根据120跳转，否则跳转到系统本身的登录界面
+              sessionStorage.getItem('from') ? location.href = err.data.url : this.$router.push('/login');
+            }
+          });
+        }
+      },
+      // 搜索结果定位
+      findSearch() {
+        const searchIndex = this.tableList.findIndex(item => {
+          return item.fcategoryid === this.$route.query.searchId;
+        });
+        if (searchIndex !== -1) {
+          if (this.isList === 'List') {
+            this.$nextTick(() => {
+              this.$refs.fileList.$refs.baseTable.toggleRowSelection(this.tableList[11], true);
+              const elScrollBar = this.$refs.fileList.$refs['scrollbar'].$refs['elscrollbar'].$refs['wrap'];
+              elScrollBar.scrollTop = (53) * searchIndex;
+            });
+          }
+        } else {
+          this.$message1000('源文件未找到，文件可能已经被删除', 'info');
+        }
       }
     },
     mounted() {
-      if (location.search.indexOf('from') !== -1) {
-        sessionStorage.setItem('from', 'sso'); // 如果来自统一登录平台，保存标志
-      }
-      if (location.search.indexOf('oncetoken') !== -1) { //如果oncetoken存在，就拿去请求网盘token，然后获取个人信息
-        if (this.$store.getters.name.length === 0) {
-          const oncetoken = location.search.substring(location.search.indexOf("=") + 1);
-          request.get(`/djcpsdocument/sso/exchangeToken.do?oncetoken=${oncetoken}`)
-          .then(() => {
-            this.signIn();
-          });
-        } else {
-          this.signIn();
-        }
-      } else {
-        this.getCategory().catch(err => {
-          if (err.msg === "120") {
-            // 判断来源，如果来自统一登录平台，则根据120跳转，否则跳转到系统本身的登录界面
-            sessionStorage.getItem('from') ? location.href = err.data.url : this.$router.push('/login');
-          }
-        });
-      }
+      this.ssoLogin();
       // // 监听浏览器后退前进功能
       // window.addEventListener('popstate', () => {
       //   if (this.$route.query.dirid) this.getCategory();
@@ -239,7 +269,7 @@
     },
     //  路由参数变化请求不同的文件列表
     beforeRouteUpdate(to, from, next) {
-      this.getCategory(to.query.dirid || 0).then(()=>{
+      this.getCategory(to.query.dirid || 0).then(() => {
         next();
       });
     }
