@@ -16,7 +16,6 @@
 </template>
 
 <script>
-  import request from '@/utils/request';
   import { formatSize, parseTime, sizeSort, nameSort} from '@/utils/index';
   import baseTable from '../../components/baseTable.vue';
   import baseScrollbar from '../../components/baseScrollbar.vue';

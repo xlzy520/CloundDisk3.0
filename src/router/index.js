@@ -1,6 +1,5 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import Layout from '../views/layout/Layout';
 
 Vue.use(Router);
 
@@ -14,7 +13,7 @@ export const constantRouterMap = [
   },
   {
     path: '/index',
-    component: Layout,
+    component: ()=>import('@/views/layout/Layout'), //不使用()=>import会导致Unexpected token
     children: [
       {
         path: '',

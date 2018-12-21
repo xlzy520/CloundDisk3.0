@@ -35,7 +35,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import Breadcrumb from '../../../components/Breadcrumb.vue';
-import actionConfig from './listHeaderConfig.js';
+import actionConfig from './ListHeaderConfig.js';
 export default {
   name: 'ListHeader',
   components: { Breadcrumb },

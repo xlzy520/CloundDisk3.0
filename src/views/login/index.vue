@@ -53,8 +53,8 @@
     data() {
       return {
         loginForm: {
-          username: process.env.USER.name,
-          password: process.env.USER.password
+          username: process.env.VUE_APP_USERNAME,
+          password: process.env.VUE_APP_USER_PASSWORD
         },
         loginRules: {
           username: [

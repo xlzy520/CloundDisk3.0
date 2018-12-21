@@ -63,7 +63,7 @@
           katex_js: false,
           markdown_css: false,
           hljs_js: function() {
-            return './static/highlight/highlight.min.js';
+            return './public/highlight/highlight.min.js';
           }
         },
         toolbars: {

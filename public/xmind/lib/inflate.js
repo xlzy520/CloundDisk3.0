@@ -390,7 +390,7 @@
 		) {
 			var result;
 
-			// build literal/length tree
+			// build1 literal/length tree
 			initWorkArea(288);
 			hn[0] = 0;
 			result = huft_build(c, 0, nl, 257, cplens, cplext, tl, bl, hp, hn, v);
@@ -404,7 +404,7 @@
 				return result;
 			}
 
-			// build distance tree
+			// build1 distance tree
 			initWorkArea(288);
 			result = huft_build(c, nl, nd, 0, cpdist, cpdext, td, bd, hp, hn, v);
 

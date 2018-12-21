@@ -1,12 +1,11 @@
 import Vue from 'vue';
 
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
 import '@/styles/index.scss'; // global css
 
 import App from './App';
 import router from './router';
 import store from './store';
+import './registerServiceWorker';
 
 import '@/icons'; // icon
 
@@ -14,25 +13,16 @@ import '@/permission'; // permission control
 
 import mavonEditor from 'mavon-editor';
 import 'mavon-editor/dist/css/index.css';
+import './plugins/element.js';
 
-Vue.use(ElementUI);
 Vue.use(mavonEditor);
 
-Vue.prototype.$message1000 = (message, type) => { // 默认消息提示持续1S
-  ElementUI.Message({
-    message: message,
-    type: type,
-    duration: 1000
-  });
-};
-
-Vue.config.productionTip = false;
+Vue.config.productionTip = true;
 
 /* eslint-disable no-new */
 
 new Vue({
-  el: '#app',
   router,
   store,
   render: h => h(App)
-});
+}).$mount('#app');

@@ -1,5 +1,5 @@
 import fileManagerService from '@/api/service/fileManager.js';
-import JSZip from 'JSZip';
+import JSZip from 'jszip';
 import { getZipTree } from '../utils/getZipTree.js';
 
 const fileType = {
@@ -49,7 +49,7 @@ const fileType = {
         case 8: //XMind
           window.sessionStorage.setItem('xmindName', fname);
           window.sessionStorage.setItem('xmindID', fcategoryid);
-          window.open(`/static/xmind/edit.html`);
+          window.open(`/public/xmind/edit.html`);
           break;
         case 10: //zip
           this.fullLoading = true;

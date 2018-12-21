@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import config from '../listHeaderConfig.js';
+  import config from '../ListHeaderConfig.js';
   import { mapGetters } from 'vuex';
 
   export default {
