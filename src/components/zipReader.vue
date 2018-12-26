@@ -73,6 +73,7 @@
           document.body.appendChild(download);
           download.click();
           document.body.removeChild(download);
+          URL.revokeObjectURL(url); //释放创建的对象URL
         });
       },
       clickFile(file) {

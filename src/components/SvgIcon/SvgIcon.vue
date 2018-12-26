@@ -5,6 +5,7 @@
 </template>
 
 <script>
+  import table from './svgIconTable';
 export default {
   name: 'svg-icon',
   props: {
@@ -18,6 +19,9 @@ export default {
   },
   computed: {
     iconName() {
+      if (!Number(this.iconClass) < 0) {
+        return `#icon-${table[this.iconClass]}`;
+      }
       return `#icon-${this.iconClass}`;
     },
     svgClass() {
