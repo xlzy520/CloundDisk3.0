@@ -46,8 +46,8 @@
 <script>
   // TODO  修复注销后，背景特效不加载的BUG
   // TODO  修复登录后，背景特效内存释放
-  import('@/utils/keyDown');
-  import('@/utils/canvasLogin');
+  import {autoRun} from '@/utils/keyDown';
+  import {CanvasAnimate} from '@/utils/canvasLogin';
   export default {
     name: 'login',
     data() {
@@ -99,6 +99,11 @@
           }
         });
       }
+    },
+    mounted() {
+      const canvasAnimate = new CanvasAnimate(document.getElementById('cvs_bg'), { length: 100, clicked: true, moveon: true });
+      canvasAnimate.Run();
+      autoRun();
     }
   };
 </script>

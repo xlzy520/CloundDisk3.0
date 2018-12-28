@@ -2,8 +2,7 @@
 var cvsWidth, cvsHigh;
 var ctx, cvs;
 
-window.onload = function() {
-  console.log(2);
+export function autoRun() {
   var clientWidth = document.body.clientWidth;
   var clientHeight = document.documentElement.clientHeight || window.screen.height || document.body.clientHeight;
   cvs = document.getElementById('cvs_key');
@@ -11,11 +10,9 @@ window.onload = function() {
   cvsHigh = clientHeight;
   cvs.setAttribute('width', cvsWidth + '');
   cvs.setAttribute('height', cvsHigh + '');
-
   ctx = cvs.getContext('2d');
-
   run();
-};
+}
 
 class Word {
   constructor(word, size, color) {
@@ -356,15 +353,10 @@ var run = (function() {
 
   return function() {
     var divY = cvsHigh / 3 * 2;
-
     var c = new Controller();
-
     var kb = new KeyBoard((cvsWidth - ((cvsHigh - divY) / 4 + 10) * 10) / 2, divY + 80, (cvsHigh - divY) / 4);
-
     var key;
-
     keysInfo = kb.init();
-
     window.onkeydown = function(e) {
       if ((e.keyCode >= 49 && e.keyCode <= 59) || (e.keyCode >= 96 && e.keyCode <= 105)) {
         if (e.target.type !== 'password') {
@@ -377,7 +369,6 @@ var run = (function() {
     window.onkeyup = function() {
       kb.press();
     };
-
     function animate() {
       clearReact();
       c.animateCircle();
@@ -387,7 +378,6 @@ var run = (function() {
 
       requestAnimationFrame(animate);
     }
-
     function staticImg() {
       // 画上半部分背景色
       ctx.beginPath();
@@ -408,7 +398,6 @@ var run = (function() {
       ctx.stroke();
       ctx.closePath();
     }
-
     animate();
   };
 })();
