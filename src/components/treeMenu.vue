@@ -8,7 +8,7 @@
       @node-expand="nodeExpand"
       @node-click="handleNodeClick">
         <span class="custom-tree-node" slot-scope="{node, data}" :title="node.label">
-          <svg-icon icon-class="folder"></svg-icon>
+          <svg-icon icon-class="1"></svg-icon>
           <span>{{ node.label }}</span>
         </span>
     </el-tree>
@@ -16,7 +16,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
-  import fileService from '@/api/service/file.js';
+  import categoryService from '@/api/service/category';
 
   export default {
     data() {
@@ -51,8 +51,8 @@
         }
       },
       async nodeExpand(data, node) {
-        let arr = await fileService.getCategory(data.fcategoryid);
-        let folderObjs = arr.data.tableList;
+        let arr = await categoryService.getCategory(data.fcategoryid);
+        let folderObjs = arr.tableList;
         node.childNodes = [];
         if (folderObjs.length > 0) {
           let temp = folderObjs.filter(item => item.ffiletype === 1);
@@ -72,6 +72,22 @@
 
 <style lang="scss" scoped>
   @import "@/styles/variables.scss";
+  .el-tree{
+    background-color: transparent;
+    /deep/ .el-tree-node{
+      &__expand-icon{
+        font-size: 18px;
+        color: #67c23a;
+      }
+    }
+    .el-tree-node:focus>.el-tree-node__content, .el-tree-node__content:hover{
+      background-color: rgba(145, 212, 143, .4);
+      color: #ffffff;
+    }
+    .el-tree-node__expand-icon.is-leaf {
+      color: transparent;
+    }
+  }
   .custom-tree-node {
     flex: 1;
     display: flex;

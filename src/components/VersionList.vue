@@ -129,7 +129,7 @@
               return (
                 <div className="version-operate">
                   {download}
-                  {row.fdisplay ? (null) : (rollBack)}
+                  {row.fdisplay ? (rollBack) : (null)}
                   {this.selectedData[0].ffiletype !== 0 ? (view) : null}
                 </div>
               );
@@ -201,8 +201,8 @@
           return;
         }
         try {
-          const oldVersion = await fileService.getDocInfo(this.oldVersion.value);
-          const newVersion = await fileService.getDocInfo(this.newVersion.value);
+          const oldVersion = await fileService.downloadFile(this.oldVersion.value);
+          const newVersion = await fileService.downloadFile(this.newVersion.value);
           this.oldStr = oldVersion.data.file;
           this.newStr = newVersion.data.file;
           this.diffLoading = false;

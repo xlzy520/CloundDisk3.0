@@ -8,7 +8,7 @@
     custom-class="move-file"
   >
     <el-scrollbar class="height100">
-      <tree-menu type="copyMove" @get-folderid="getFolderId" ></tree-menu>
+      <tree-menu type="copyMove" @getFolderId="getFolderId" ></tree-menu>
     </el-scrollbar>
     <span slot="footer" class="dialog-footer">
     <el-button type="primary" @click="moveFile">确 定</el-button>
@@ -63,6 +63,7 @@
             this.close();
           });
         }
+        this.idList = [];
       }
     }
   };

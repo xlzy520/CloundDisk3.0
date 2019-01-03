@@ -30,7 +30,7 @@
 
 <script>
   import {mapGetters} from 'vuex';
-  import fileService from '@/api/service/file';
+  import categoryService from '@/api/service/category';
 
   export default {
     name: 'DeleteFile',
@@ -62,7 +62,7 @@
         this.selectedData.forEach(item => {
           categoryids.push(item.fcategoryid);
         });
-        fileService.deleteCategory(categoryids, this.$route.query.dirid || 0)
+        categoryService.deleteCategory(categoryids, this.$route.query.dirid || 0)
           .then(res => {
             this.visible = false;
             this.$message1000(res.msg, 'success');

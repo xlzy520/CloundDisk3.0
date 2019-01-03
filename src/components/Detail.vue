@@ -139,7 +139,7 @@
           const versionListInfo = await fileService.getVersionList(this.selectedData[0].fversionsign, this.$route.query.dirid || 0);
           if (versionListInfo.success) {
             versionListInfo.data.filter((item) => {
-              if (!item.fdisplay) {
+              if (item.fdisplay) {
                 this.versionDetail = item;
               }
             });

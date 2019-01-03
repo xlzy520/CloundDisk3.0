@@ -62,9 +62,7 @@
           // 我们没有设置`katex_js`, `hljs_js`, `hljs_lang`, `markdown_css`， `mavon-editor`会认为它的值为`true`，它会默认使用`cdnjs`相关外链加载
           katex_js: false,
           markdown_css: false,
-          hljs_js: function() {
-            return './static/highlight/highlight.min.js';
-          }
+          hljs_js: false
         },
         toolbars: {
           bold: true, // 粗体
