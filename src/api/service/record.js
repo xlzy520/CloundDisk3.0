@@ -1,4 +1,4 @@
-import operationRecordService from '../base-service/operationRecord.js';
+import operationRecordService from '../base-service/record.js';
 
 export default {
   getAllOperationRecord() {

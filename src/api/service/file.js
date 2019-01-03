@@ -2,26 +2,16 @@ import categoryService from '../base-service/category.js';
 import fileManagerService from '../base-service/fileManager.js';
 import versionService from '../base-service/version.js';
 import searchService from '../base-service/search.js';
+import axios from 'axios';
 
 export default {
-  // category
-  getCategory(id) {
-    return categoryService('/getCategory.do', {fcategoryid: id});
-  },
-  addCategory(parentid, name) {
-    return categoryService('/addCategory.do', {fparentid: parentid, fname: name});
-  },
-  deleteCategory(categoryids, fparentid) {
-    return categoryService('/deleteCategory.do', {list: categoryids, fparentid: fparentid});
-  },
   moveFile(idList, fparentid) {
     return categoryService('/floderMove.do', {list: idList, fparentid: fparentid});
   },
   copyFile(idList, fparentid) {
     return categoryService('/copyFile.do', {list: idList, fparentid: fparentid});
   },
-  renameFile(values) {
-    const { fcategoryid, newName, fparentid, ffiletype, fname } = values;
+  renameFile({fcategoryid, newName, fparentid, ffiletype, fname }) {
     return categoryService('/setCategoryName.do', {
       fcategoryid,
       oldName: fname,
@@ -47,11 +37,21 @@ export default {
   getFullTextSearchResult(queryString) {
     return searchService('/fullList.do', {queryString: queryString, sort: 1, curPage: 1});
   },
-  // fileManager
-  getDocInfo(id) {
-    return fileManagerService('/getFile.do', { id }, 'get');
-  },
   downloadFile(id) {
     return fileManagerService('/downloadFile.do', { id }, 'get');
+  },
+  downloadFileZip(id) {
+    // 跳过统一接口请求错误处理
+    return axios.get('/djcpsdocument/fileManager/downloadFile.do?id=' + id, {
+      responseType: 'blob'
+    }).then(res => {
+      return Promise.resolve(res.data);
+    }).catch(err=>{
+      return Promise.reject(new Error(err));
+    });
+  },
+  //office
+  getOffice(params) {
+    return fileManagerService('/getFileInfo.do', { ...params }, 'get');
   }
 };
