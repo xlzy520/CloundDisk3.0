@@ -37,15 +37,12 @@ export default {
   getFullTextSearchResult(queryString) {
     return searchService('/fullList.do', {queryString: queryString, sort: 1, curPage: 1});
   },
-  downloadFile(id) {
-    return fileManagerService('/downloadFile.do', { id }, 'get');
-  },
-  downloadFileZip(id) {
+  downloadFile(id, responseType = '') {
     // 跳过统一接口请求错误处理
     return axios.get('/djcpsdocument/fileManager/downloadFile.do?id=' + id, {
-      responseType: 'blob'
+      responseType: responseType
     }).then(res => {
-      return Promise.resolve(res.data);
+      return Promise.resolve(res.request.response);
     }).catch(err=>{
       return Promise.reject(new Error(err));
     });
