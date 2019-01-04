@@ -8,7 +8,7 @@
       <app-main ref="appMain"></app-main>
     </div>
     <div class="app-wrapper-right-menu">
-      <right-menu @action="event => $refs.appMain.$refs.content.dispatchAction(event)"></right-menu>
+      <right-menu @action="dispatchAction"></right-menu>
     </div>
   </div>
 </template>
@@ -37,6 +37,13 @@ export default {
         // mobile: this.device === 'mobile'
       };
     },
+  },
+  methods: {
+    dispatchAction(event) {
+      this.$nextTick(()=>{
+        this.$refs.appMain.$children[0].dispatchAction(event);
+      });
+    }
   }
 };
 </script>
