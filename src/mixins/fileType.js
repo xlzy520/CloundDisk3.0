@@ -1,4 +1,4 @@
-import fileManagerService from '@/api/service/fileManager.js';
+import fileService from '@/api/service/file';
 import JSZip from 'jszip';
 import { getZipTree } from '../utils/getZipTree.js';
 
@@ -25,8 +25,9 @@ const fileType = {
           this.$router.push({path: '/index/list', query: {dirid: fcategoryid}});
           break;
         case 2:
+        case 11:
         case 9: //Text、Markdown
-          this.$emit('action', 'openMD', {fcategoryid, fversionsign});
+          this.$emit('action', 'openMD', {fcategoryid, fversionsign, fname});
           break;
         case 3:
         case 4:
@@ -53,7 +54,7 @@ const fileType = {
           break;
         case 10: //zip
           this.fullLoading = true;
-          fileManagerService.downloadFile(fcategoryid).then(res => {
+          fileService.downloadFile(fcategoryid, 'blob').then(res => {
             let zip = new JSZip();
             zip.loadAsync(res).then(_zip => {
               let tree = getZipTree(_zip);
@@ -66,9 +67,6 @@ const fileType = {
           }).finally(()=>{
             this.fullLoading = false;
           });
-          break;
-        case 11: //code
-          console.log('代码编辑器');
           break;
         default:
           break;
