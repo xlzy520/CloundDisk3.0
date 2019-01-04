@@ -3,7 +3,7 @@
 </template>
 
 <script>
-  import officeService from '@/api/service/office';
+  import fileService from '@/api/service/file';
   import dynamicLoadScripts from '@/utils/dynamicLoadScript';
   export default {
     name: 'office',
@@ -54,7 +54,7 @@
     methods: {
       async getOfficeData() {
         try {
-          const res = await officeService.getOffice(this.$route.query);
+          const res = await fileService.getOffice(this.$route.query);
           if (res && res.success) {
             this.data = res.data;
             this.data.historys.map((item) => {
