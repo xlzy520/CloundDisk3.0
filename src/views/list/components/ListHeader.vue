@@ -40,12 +40,6 @@ export default {
   name: 'ListHeader',
   components: { Breadcrumb },
   props: {
-    contextMenu: {
-      type: Object,
-      default: function () {
-        return {visible: false, x: 0, y: 0};
-      }
-    },
     navList: {
       type: Array
     }
