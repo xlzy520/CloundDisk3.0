@@ -39,7 +39,7 @@ export default {
   },
   downloadFile(id, responseType = '') {
     // 跳过统一接口请求错误处理
-    return axios.get('/djcpsdocument/fileManager/downloadFile.do', id, {
+    return axios.get('/djcpsdocument/fileManager/downloadFile.do', {params: {id: id}}, {
       responseType: responseType
     }).then(res => {
       return res.request.response;
