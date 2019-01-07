@@ -1,10 +1,6 @@
 <?xml version="1.0"?>
 <svg width="1024" height="1024" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg" class="icon">
- <defs>
-  <style type="text/css"/>
- </defs>
  <g>
-  <title>Layer 1</title>
   <g stroke="null" id="svg_6">
    <path stroke="null" d="m183.03629,129.10563l678.416235,0l0,241.718339l-678.416235,0l0,-241.718339z" fill="#55C7F7" id="svg_1"/>
    <path stroke="null" d="m183.03629,370.823968l678.416235,0l0,243.228104l-678.416235,0l0,-243.228104z" fill="#F95F5D" id="svg_2"/>
