@@ -1,6 +1,6 @@
 <template>
   <div>
-    <svg-icon icon-class="list" @click.native="toggleClick" class="hamburger" :class="{'is-active':isActive}"></svg-icon>
+    <svg-icon icon-class="hamburger" @click.native="toggleClick" class="hamburger" :class="{'is-active':isActive}"></svg-icon>
   </div>
 </template>
 
@@ -24,8 +24,8 @@ export default {
 .hamburger {
 	display: inline-block;
 	cursor: pointer;
-	width: 50px;
-	height: 30px;
+	width: 20px;
+	height: 20px;
 	transform: rotate(90deg);
 	transition: .38s;
 	transform-origin: 50% 50%;
