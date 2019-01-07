@@ -57,7 +57,7 @@ export default {
       const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length;
       let actionArr;
       if (this.selectedData.length > 1) {
-        actionArr = folderCheckedCount === 0 ? ['copy', 'move', 'delete'] : ['move', 'delete'];
+        actionArr = folderCheckedCount === 0 ? ['copy', 'move', 'delete', 'download'] : ['move', 'delete'];
       } else if (this.selectedData.length === 1) {
         actionArr = folderCheckedCount === 1 ? ['rename', 'move', 'delete', 'detail']
           : ['rename', 'copy', 'move', 'download', 'update', 'version', 'delete', 'detail'];

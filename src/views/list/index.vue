@@ -48,7 +48,6 @@
       return {
         isList: 'List',
         visible: '', // 展示某个弹窗组件
-        contextMenu: {}, //右键菜单
         imgConfig: {}, //  图片预览链接
         docInfo: {}, //markdown文件预览信息
         tableList: [],
@@ -91,7 +90,6 @@
             this.$refs[action].requestData();
             this.$refs[action].visible = true;
             break;
-          case 'upload':
           case 'delete':
             this.$refs[action].visible = true;
             break;
@@ -103,6 +101,7 @@
             this.$refs.move.visible = true;
             this.$refs.move.type = action;
             break;
+          case 'upload':
           case 'update':
             this.$refs.upload.visible = true;
             this.$refs.upload.type = action;
@@ -123,9 +122,6 @@
             break;
           case 'close':
             this.visible = '';
-            break;
-          case 'context-menu':
-            this.contextMenu = values;
             break;
           case 'textEdit':
             this.getCategory();
@@ -152,24 +148,35 @@
         this.tableList[0].isEditor = true;
         this.$store.dispatch('SetSelectedData', []);
       },
-      openMD(val) { //  打开markdown文件时先访问再判断是否打开窗口，默认为编辑
-        fileService.getDocInfo(val.fcategoryid).then(res => {
+      openMD({fcategoryid, fversionsign, fname}) { //  打开markdown文件时先访问再判断是否打开窗口，默认为编辑
+        fileService.downloadFile(fcategoryid).then(res => {
           this.docInfo = {
             type: 'view',
-            fversionsign: val.fversionsign,
-            name: res.data.name,
-            id: res.data.id,
-            content: res.data.file,
+            fversionsign: fversionsign,
+            name: fname,
+            id: fcategoryid,
+            content: res,
           };
           this.visible = 'mdEditor';
         });
       },
-      downloadFile() {
+      async downloadFile() {
         let download = document.createElement('a');
-        download.download = this.selectedData[0].fname;
         download.style.display = 'none';
-        download.href = `/djcpsdocument/fileManager/downloadFile.do?id=${this.selectedData[0].fcategoryid}`;
         document.body.appendChild(download);
+        const idList = this.selectedData.map(item => item.fcategoryid);
+        if (idList.length === 1) {
+          download.download = this.selectedData[0].fname;
+          download.href = `/djcpsdocument/fileManager/downloadFile.do?id=${idList[0]}`;
+        } else {
+          download.download = this.selectedData[0].fname + '等多个文件.zip';
+          const res = await fileService.downloadZip(idList);
+          const zipUrl = URL.createObjectURL(res);
+          download.href = zipUrl;
+          setTimeout(()=>{
+            URL.revokeObjectURL(zipUrl);
+          }, 0);
+        }
         download.click();
         document.body.removeChild(download);
       },
@@ -182,7 +189,7 @@
             this.tableList[0].isEditor = false;
           });
         } else {//新建文件夹
-          fileService.addCategory(this.$route.query.dirid || 0, fileName).then(res => {
+          categoryService.addCategory(this.$route.query.dirid || 0, fileName).then(res => {
             this.$message1000(res.msg, 'success');
             this.getCategory(this.$route.query.dirid, false);
           }).catch(() => {

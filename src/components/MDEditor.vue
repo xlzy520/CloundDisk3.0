@@ -40,7 +40,7 @@
   export default {
     name: 'md-editor',
     props: {
-      'doc-info': {
+      'docInfo': {
         type: Object
       }
     },
