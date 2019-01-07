@@ -10,7 +10,7 @@
       <div class="previewFile">
         <el-button @click="closeMDEditor" class="close-md-editor">关闭</el-button>
         <el-button @click="fileEdit(true)" class="file-edit" v-show="isEditMk">编辑</el-button>
-        <el-button @click="saveFile" class="file-edit" v-show="!isEditMk">保存</el-button>
+        <el-button @click="saveFile" class="file-edit" v-else>保存</el-button>
       </div>
       <div class="viewport">
         <div class="list-detail">
@@ -199,20 +199,16 @@
       }
     }
   }
-
   .v-note-wrapper .v-note-panel .v-note-edit.divarea-wrapper.scroll-style::-webkit-scrollbar-thumb {
     background-color: $scrollbarBlue !important;
   }
-
   .v-note-wrapper .v-note-panel .v-note-show .v-show-content.scroll-style::-webkit-scrollbar-thumb,
   .v-note-wrapper .v-note-panel .v-note-show .v-show-content-html.scroll-style::-webkit-scrollbar-thumb {
     background-color: $scrollbarGreen !important;
   }
-
   .v-note-wrapper .v-note-panel.shadow {
     border-radius: 5px
   }
-
   .previewFile {
     margin: -100px 30px;
     .el-button {
@@ -220,7 +216,9 @@
       margin-right: 10px;
     }
   }
-  .v-note-wrapper .v-note-panel.shadow{border-radius: 5px}
+  .v-note-wrapper .v-note-panel.shadow{
+    border-radius: 5px
+  }
   .previewFile{
     margin:-100px 30px;
     /*position: relative;*/
