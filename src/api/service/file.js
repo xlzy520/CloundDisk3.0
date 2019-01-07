@@ -39,10 +39,19 @@ export default {
   },
   downloadFile(id, responseType = '') {
     // 跳过统一接口请求错误处理
-    return axios.get('/djcpsdocument/fileManager/downloadFile.do?id=' + id, {
+    return axios.get('/djcpsdocument/fileManager/downloadFile.do', id, {
       responseType: responseType
     }).then(res => {
-      return Promise.resolve(res.request.response);
+      return res.request.response;
+    }).catch(err=>{
+      return new Error(err);
+    });
+  },
+  downloadZip(idList) {
+    return axios.post('/djcpsdocument/fileManager/zipDownload.do', idList, {
+      responseType: 'blob'
+    }).then(res => {
+      return Promise.resolve(res.data);
     }).catch(err=>{
       return Promise.reject(new Error(err));
     });
