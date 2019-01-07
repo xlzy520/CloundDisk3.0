@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="title"
+    :title="'文件'+title"
     :visible.sync="visible"
     @close="close"
     :modal-append-to-body="false"
@@ -26,14 +26,14 @@
       <i class="el-icon-upload"></i>
       <p class="upload-speed">{{speed}}</p>
       <div class="el-upload__text">将文件拖到此处或点击上传</div>
-      <div class="el-upload__tip" slot="tip" v-if="!updateType"><span>当前文件夹：</span>{{tip}}</div>
-      <div class="el-upload__tip" slot="tip" v-if="updateType"><span>要更新的文件：</span>{{tip}}</div>
+      <div class="el-upload__tip" slot="tip"><span>{{filePath}}</span>{{tip}}</div>
     </el-upload>
-    <div class="file-desc-label" v-if="updateType">文件描述</div>
-    <el-input type="textarea" v-model="fileDesc" v-if="updateType"></el-input>
+    <div v-if="type==='update'">
+      <div class="file-desc-label">文件描述</div>
+      <el-input type="textarea" v-model="fileDesc"></el-input>
+    </div>
     <span slot="footer" class="dialog-footer">
-      <el-button size="small"  v-if="!updateType" type="primary" @click="submitUpload" :disabled="btDisable">开始上传</el-button>
-      <el-button size="small" v-if="updateType" type="primary" @click="submitUpload" :disabled="btDisable">开始更新</el-button>
+      <el-button size="small"  type="primary" @click="submitUpload" :disabled="btDisable">开始{{title}}</el-button>
       <el-button @click="close" size="small">关 闭</el-button>
     </span>
   </el-dialog>
@@ -49,8 +49,7 @@ export default {
     return {
       visible: false,
       type: 'upload',
-      isLoad: true,
-      detail: {},
+      filePath: '当前文件夹：',
       fileList: [],
       uploadData: {},
       btDisable: true,
@@ -66,16 +65,16 @@ export default {
       'selectedData'
     ]),
     title() {
-      return this.type === 'upload' ? '文件上传' : '文件更新';
-    },
-    updateType() {
-      return this.type === 'update';
+      const isUpload = this.type === 'update';
+      this.filePath = isUpload ? '要更新的文件：' : '当前文件夹：';
+      return isUpload ? '更新' : '上传';
     },
     tip() {
       let tip = '';
-      for (var i = 0; i < this.navList.length; ++i) {
-        tip += '/' + this.navList[i].fname;
+      for (const item of this.navList) {
+        tip += ' / ' + item.fname;
       }
+      if (this.type === 'update') return tip + ' / ' + this.selectedData[0].fname;
       return tip;
     }
   },
@@ -198,6 +197,7 @@ export default {
   /deep/ .upload-file{
     .el-upload__tip {
       color: #a00;
+      word-break: break-all;
       >span{
         color: #888;padding-right: 2px;
       }

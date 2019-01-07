@@ -4,7 +4,6 @@
       v-if="visible"
       title="版本列表"
       :visible="true"
-      :modal-append-to-body="false"
       custom-class="version-list"
       :close-on-click-modal="true"
       @close="close"
@@ -13,33 +12,27 @@
       <el-dialog
         width="80%"
         title="版本对比详情"
-        custom-class="diffMaster"
+        custom-class="diff_content"
         :visible.sync="versionDiff"
         append-to-body>
-        <el-switch
-          class="lineSwitch"
-          v-model="lineSwitch"
-          active-text="双栏"
-          inactive-text="单栏"
-          active-color="#13ce66"
-          inactive-color="#ff4949"></el-switch>
-        <el-form class="rangeDiff" label-width="200px">
-          <el-form-item label="差异化范围:">
-            <el-input-number
-              v-model="numDiff"
-              size="mini"
-              :min="1" :max="100"
-              label="差异化范围"></el-input-number>
-          </el-form-item>
-        </el-form>
-
-        <vue-code-diff
+        <div class="diff_config_header">
+          <el-switch
+            v-model="lineSwitch"
+            active-text="双栏"
+            inactive-text="单栏"
+            active-color="#13ce66"
+            inactive-color="#ff4949"></el-switch>
+          <div class="diff_range">
+            <label>差异化范围：</label>
+            <el-input-number v-model="numDiff" size="mini" :min="1" :max="100"></el-input-number>
+          </div>
+        </div>
+        <code-diff
           :old-string="oldStr"
           :new-string="newStr"
           :context="numDiff"
-          class="code-diff"
           :output-format="outputFormat"
-          v-if="versionDiff"></vue-code-diff>
+          v-if="versionDiff"></code-diff>
       </el-dialog>
       <div class="file-list">
         <base-table
@@ -50,8 +43,8 @@
           :table-columns="tableColumns">
         </base-table>
       </div>
-      <div slot="footer" class="dialog-footer">
-        <div class="diff-select clearfix" v-if="[2,9].includes(selectedData[0].ffiletype)&&tableData.length>1">
+      <div slot="footer" class="diff_footer">
+        <div class="diff_version_select" v-if="[2,9,11].includes(selectedData[0].ffiletype)&&tableData.length>1">
           <el-select v-model="oldVersion.value" filterable placeholder="请选择旧版本" size="small">
             <el-option
               v-for="item in tableData"
@@ -80,7 +73,7 @@
   import {mapGetters} from 'vuex';
   import fileService from '@/api/service/file';
   import {formatSize, parseTime} from '@/utils/index';
-  import vueCodeDiff from 'vue-code-diff';
+  import CodeDiff from '@/components/CodeDiff.vue';
   import baseTable from '@/components/baseTable.vue';
   import fileType from '@/mixins/fileType';
 
@@ -88,7 +81,7 @@
     name: 'VersionList',
     mixins: [fileType],
     components: {
-      vueCodeDiff, baseTable
+      CodeDiff, baseTable
     },
     computed: {
       ...mapGetters([
@@ -173,86 +166,94 @@
           this.loading = false;
         });
       },
-      async requestData() {
+      requestData() {
         this.loading = true;
         if (this.selectedData.length === 1) {
-          try {
-            const versionListInfo = await fileService.getVersionList(this.selectedData[0].fversionsign);
-            if (versionListInfo.success) {
-              this.loading = false;
-              this.tableData = versionListInfo.data;
-              if (versionListInfo.data.length > 1 && this.newVersion.value === '' && this.oldVersion.value === '') {
-                this.newVersion.label = versionListInfo.data[0].fversion;
-                this.newVersion.value = versionListInfo.data[0].filesgin;
-                this.oldVersion.label = versionListInfo.data[1].fversion;
-                this.oldVersion.value = versionListInfo.data[1].filesgin;
-              }
-            }
-          } catch (e) {
+          fileService.getVersionList(this.selectedData[0].fversionsign).then(res => {
             this.loading = false;
-          }
+            this.tableData = res.data;
+            if (res.data.length > 1 && this.newVersion.value === '' && this.oldVersion.value === '') {
+              this.newVersion.label = res.data[0].fversion;
+              this.newVersion.value = res.data[0].filesgin;
+              this.oldVersion.label = res.data[1].fversion;
+              this.oldVersion.value = res.data[1].filesgin;
+            }
+          }).catch(()=>{
+            this.loading = false;
+          });
         }
       },
-      async diff() {
+      diff() {
         this.diffLoading = true;
         if (this.oldVersion.value === '' || this.newVersion.value === '') {
           this.$message1000('请选择旧版本或者新版本', 'warning');
           this.diffLoading = false;
           return;
         }
-        try {
-          const oldVersion = await fileService.downloadFile(this.oldVersion.value);
-          const newVersion = await fileService.downloadFile(this.newVersion.value);
-          this.oldStr = oldVersion.data.file;
-          this.newStr = newVersion.data.file;
+        const oldVersion = fileService.downloadFile(this.oldVersion.value);
+        const newVersion = fileService.downloadFile(this.newVersion.value);
+        Promise.all([oldVersion, newVersion]).then(res=>{
+          this.oldStr = res[0];
+          this.newStr = res[1];
           this.diffLoading = false;
           this.versionDiff = true;
-        } catch (e) {
+        }).catch(()=>{
           this.$message1000('网络连接失败', 'warning');
           this.versionDiff = false;
           this.diffLoading = false;
-        } finally {
+        }).finally(()=>{
           this.oldVersion.value = '';
           this.oldVersion.label = '';
-        }
+        });
       }
     }
   };
 </script>
 
 <style lang="scss" scoped>
-  /deep/ .version-list {
-    .code-diff{
-      min-height: 70vh;
+  /deep/ .diff_content{
+    .el-dialog__header{
+      padding: 20px 20px 0;
     }
+  }
+  .diff_content.el-dialog{
+    .diff_config_header{
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      .diff_range{
+        flex: 5;
+      }
+      .el-switch {
+        flex: 1;
+      }
+    }
+  }
+  /deep/ .version-list {
     .el-dialog__body {
       padding: 10px 20px;
     }
-    .el-dialog__header {
+    .el-dialog__header{
       padding: 10px 20px 5px 20px;
     }
     .el-dialog__headerbtn {
       top: 14px;
     }
-    .tooltip {
-      color: #a00;
-      font-size: 12px;
-      padding-right: 10px;
+    .diff_footer{
+      display: flex;
+      justify-content: space-between;
+      .diff_version_select{
+        width: 70%;
+        display: flex;
+        .el-select{
+          margin-right: 30px;
+        }
+      }
     }
     .file-list {
       border: 1px solid #ddd;
       border-radius: 0;
-      overflow-y: auto;
-      overflow-x: auto;
-      .item {
-        line-height: 28px;
-        padding: 0 6px 0 6px;
-        font-size: 12px;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        width: 330px;
-        overflow: hidden;
-      }
+      overflow: auto;
     }
     .el-table__row {
       font-size: 12px;
@@ -281,22 +282,6 @@
         border-radius: 4px;
         background-color: rgba(18, 150, 219, .8);
       }
-    }
-    .diff-select {
-      float: left;
-    }
-    .diffMaster {
-      margin-top: 8vh !important;
-    }
-    .lineSwitch {
-      position: absolute;
-      top: 22px;
-      left: 40%;
-    }
-    .rangeDiff {
-      position: absolute;
-      top: 11px;
-      left: 60%;
     }
   }
 </style>
