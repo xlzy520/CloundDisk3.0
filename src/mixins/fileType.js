@@ -24,14 +24,10 @@ const fileType = {
         case 1: //FOLDER
           this.$router.push({path: '/index/list', query: {dirid: fcategoryid}});
           break;
-        case 2:
-        case 11:
-        case 9: //Text、Markdown
+        case 2:case 9:case 11: //Text、Markdown
           this.$emit('action', 'openMD', {fcategoryid, fversionsign, fname});
           break;
-        case 3:
-        case 4:
-        case 5: //office
+        case 3:case 4:case 5: //office
           window.open(`/#/office?id=${fcategoryid}&vid=${fversionsign}`);
           break;
         case 6: //PDF
