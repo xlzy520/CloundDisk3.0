@@ -4,17 +4,18 @@
       <img src="@/assets/logo/logo.png" width="36" height="36" class="left-menu-logo-img">
       <span class="left-menu-logo-title">东经云盘</span>
     </div>
-    <div class="left-menu-content">
+    <base-scrollbar class="left-menu-content">
       <tree-menu type="sidebar"></tree-menu>
-    </div>
+    </base-scrollbar>
   </div>
 </template>
 
 <script>
-  import treeMenu from '@/components/treeMenu';
+  import TreeMenu from '@/components/treeMenu';
+  import BaseScrollbar from "@/components/baseScrollbar";
   export default {
     name: 'left-menu',
-    components: { treeMenu },
+    components: {BaseScrollbar, TreeMenu },
     data () {
       return {
         draging: false
@@ -47,11 +48,7 @@
         this.draging = false;
       },
       atBorder(event, box) {
-        if (event.clientX > box.offsetWidth - 4 && event.clientX <= box.offsetWidth) {
-          return true;
-        } else {
-          return false;
-        }
+        return event.clientX > box.offsetWidth - 4 && event.clientX <= box.offsetWidth;
       }
     }
   };
@@ -81,6 +78,9 @@
       color: #31ba78;
       vertical-align: middle;
     }
+  }
+  &-content{
+
   }
 }
 </style>
