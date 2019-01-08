@@ -27,10 +27,10 @@
 </template>
 
 <script>
-import recycleService from '@/api/service/recycle.js';
+import recycleService from '@/api/service/recycle';
 import { formatSize, parseTime, sizeSort } from '@/utils/index';
-import baseTable from '../../components/baseTable.vue';
-import baseScrollbar from '../../components/baseScrollbar.vue';
+import BaseTable from '@/components/baseTable.vue';
+import BaseScrollbar from '@/components/baseScrollbar.vue';
 export default {
   name: 'Recycle',
   data() {
@@ -81,10 +81,7 @@ export default {
       }
     };
   },
-  components: {
-    baseTable,
-    baseScrollbar
-  },
+  components: {BaseTable, BaseScrollbar},
   methods: {
     changePage(val) {
       this.pagination.currentPage = val;
@@ -113,8 +110,9 @@ export default {
       }).then(() => {
         recycleService.recycleRecover(this.categoryids).then(() => {
           this.$message1000('还原成功', 'success');
-          this.RecycleList();
+          this.recycleList();
         }).catch(() => {
+          console.log(2);
           this.$message1000('还原失败', 'error');
         });
       });
