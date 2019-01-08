@@ -51,15 +51,15 @@
         }
       },
       async nodeExpand(data, node) {
-        let arr = await categoryService.getCategory(data.fcategoryid);
-        let folderObjs = arr.tableList;
+        const arr = await categoryService.getCategory(data.fcategoryid);
+        let folderItems = arr.tableList;
         node.childNodes = [];
-        if (folderObjs.length > 0) {
-          let temp = folderObjs.filter(item => item.ffiletype === 1);
+        if (folderItems.length > 0) {
+          let temp = folderItems.filter(item => item.ffiletype === 1);
           for (const item of temp) {
             this.$refs.folderTree.append(item, node);
           }
-          node.childNodes.map((item) => {
+          node.childNodes.forEach((item) => {
             if (item.data.fsortorder === 1) {
               item.isLeaf = false;
             }
@@ -77,7 +77,9 @@
     /deep/ .el-tree-node{
       &__expand-icon{
         font-size: 18px;
-        color: #67c23a;
+        &:not(.is-leaf){
+          color: #67c23a;
+        }
       }
     }
     .el-tree-node:focus>.el-tree-node__content, .el-tree-node__content:hover{
