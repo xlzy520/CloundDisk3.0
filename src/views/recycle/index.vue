@@ -1,13 +1,11 @@
 <template>
   <div class="recycle-container">
-    <div class="recycle-container-button">
-      <div class="recycle-container-button-left" v-show="selected.length > 0">
-        <el-button size="medium" @click="revert" icon="el-icon-refresh">还原</el-button>
-        <el-button size="medium" @click="realDelete" icon="el-icon-delete">删除</el-button>
+    <div class="recycle-container-header">
+      <div v-show="selected.length > 0">
+        <el-button size="medium"  type="success" @click="revert" icon="el-icon-refresh">还原</el-button>
+        <el-button size="medium" type="danger" @click="Delete" icon="el-icon-delete">删除</el-button>
       </div>
-      <div :class="{'recycle-container-button-right': selected.length > 0}">
-        <el-button size="medium" @click="clearRecycle" icon="el-icon-delete">清空回收站</el-button>
-      </div>
+      <el-button size="medium" type="warning" @click="clear" icon="el-icon-delete">清空回收站</el-button>
     </div>
     <div class="recycle-container-content">
       <base-scrollbar>
@@ -56,7 +54,7 @@ export default {
           prop: 'fsize',
           sortable: true,
           sortMethod: sizeSort,
-          formater: (row, col) => {
+          formatter: (row, col) => {
             if (row.ffiletype !== 1) {
               return formatSize(Number(row[col.prop].replace('B', '')));
             }
@@ -67,7 +65,7 @@ export default {
           label: '删除时间',
           prop: 'fupdatetime',
           sortable: true,
-          formater: (row, col) => parseTime(row[col.prop]) },
+          formatter: (row) => row.fupdatetime.replace('.0', '') },
         { label: '创建人', prop: 'foperator' },
         { label: '删除人', prop: 'fupdateor' },
       ],
@@ -112,12 +110,11 @@ export default {
           this.$message1000('还原成功', 'success');
           this.recycleList();
         }).catch(() => {
-          console.log(2);
           this.$message1000('还原失败', 'error');
         });
       });
     },
-    realDelete() {
+    Delete() {
       this.$confirm('文件删除后将无法恢复，您确认要彻底删除所选文件吗？', '彻底删除', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -131,7 +128,7 @@ export default {
         });
       });
     },
-    clearRecycle() {
+    clear() {
       this.$confirm('清空回收站？', '清空回收站', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -158,24 +155,17 @@ export default {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  &-button {
+  &-header {
     padding: 10px 20px;
-    & > div {
-      display: inline-block;
-    }
-    &-right {
-      float: right;
-    }
+    display: flex;
+    justify-content: space-between;
   }
   &-content {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
+   @extend .recycle-container
   }
   /deep/ .file-name {
     cursor: pointer;
-    line-height: 2;
+    line-height: 1.5;
     user-select: none;
   }
 }
