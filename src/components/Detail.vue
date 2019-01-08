@@ -1,7 +1,7 @@
 <template>
   <div class="el-dialog__detail">
     <el-dialog
-      :title="topTitle"
+      :title="title+'详情'"
       v-if="visible"
       :visible="true"
       :modal-append-to-body="false"
@@ -92,14 +92,13 @@
 <script>
   import { mapGetters } from 'vuex';
   import { formatSize, parseTime } from '@/utils/index';
-  import fileService from '@/api/service/file.js';
+  import fileService from '@/api/service/file';
 
   export default {
     name: 'Detail',
     data() {
       return {
         visible: false,
-        isLoad: true,
         versionDetail: {}
       };
     },
@@ -117,9 +116,6 @@
           return this.isFolder ? '文件夹' : '文件';
         }
       },
-      topTitle() {
-        return this.title + '详情';
-      },
       size() {
         return formatSize(Number(this.selectedData[0].fsize.replace('B', '')));
       },
@@ -134,16 +130,11 @@
       close() {
         this.visible = false;
       },
-      async requestData() {
+      requestData() {
         if (this.selectedData.length === 1 && this.selectedData[0].ffiletype !== 1) {
-          const versionListInfo = await fileService.getVersionList(this.selectedData[0].fversionsign, this.$route.query.dirid || 0);
-          if (versionListInfo.success) {
-            versionListInfo.data.filter((item) => {
-              if (item.fdisplay) {
-                this.versionDetail = item;
-              }
-            });
-          }
+          fileService.getVersionList(this.selectedData[0].fversionsign).then(res=>{
+            this.versionDetail = res.data.filter((item) => item.fdisplay === true);
+          });
         }
       }
     }
@@ -182,7 +173,6 @@
         text-align: left;
         width: 240px;
         line-height: 22px;
-
         color: #333;
         font-size: 14px;
         word-break: break-all;
