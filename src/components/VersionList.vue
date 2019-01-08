@@ -241,9 +241,10 @@
     }
     .diff_footer{
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       .diff_version_select{
         width: 70%;
+        margin-right: auto;
         display: flex;
         .el-select{
           margin-right: 30px;
