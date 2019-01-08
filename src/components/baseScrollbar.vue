@@ -20,7 +20,7 @@ export default {
     height: 100%;
     width: 100%;
     .el-scrollbar__thumb {
-      background-color: rgba(64, 158, 255, 0.8);
+      background-color: rgba(64, 158, 255, 0.6);
       &:hover {
         background-color: hsla(220,4%,58%,.5);
       }
