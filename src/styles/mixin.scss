@@ -32,3 +32,10 @@
   bottom: 0;
   right: 0;
 }
+
+@mixin flex_column{
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
