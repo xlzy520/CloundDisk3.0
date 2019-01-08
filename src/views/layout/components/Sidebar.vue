@@ -65,10 +65,7 @@
   max-width: 500px;
   cursor: default;
   &-logo {
-    margin: auto;
-    margin-top: 15px;
-    margin-bottom: 15px;
-    cursor: default;
+    margin: 15px auto;
     &-img {
       margin-right: 5px;
       vertical-align: middle;
@@ -78,9 +75,6 @@
       color: #31ba78;
       vertical-align: middle;
     }
-  }
-  &-content{
-
   }
 }
 </style>
