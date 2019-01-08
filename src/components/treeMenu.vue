@@ -15,7 +15,6 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
   import categoryService from '@/api/service/category';
 
   export default {
@@ -35,36 +34,27 @@
       };
     },
     props: ['type'],
-    computed: {
-      ...mapGetters([
-        'sidebar',
-        'selectedData'
-      ])
-    },
     methods: {
       handleNodeClick(data) {
         if (this.type === 'copyMove') {
           this.$emit('getFolderId', data); //移动复制文件时，传递文件夹ID
-        }
-        if (this.type === 'sidebar') {
+        } else if (this.type === 'sidebar') {
           this.$router.push({ path: '/index/list', query: { dirid: data.fcategoryid }});
         }
       },
-      async nodeExpand(data, node) {
-        const arr = await categoryService.getCategory(data.fcategoryid);
-        let folderItems = arr.tableList;
-        node.childNodes = [];
-        if (folderItems.length > 0) {
-          let temp = folderItems.filter(item => item.ffiletype === 1);
-          for (const item of temp) {
-            this.$refs.folderTree.append(item, node);
+      nodeExpand(data, node) {
+        categoryService.getCategory(data.fcategoryid).then(res=>{
+          const folderMap = res.tableList.filter(item => item.ffiletype === 1);
+          node.childNodes = [];//清空节点，否则点击展开关闭再展开，子节点会重复push，数组长度翻倍
+          if (folderMap.length > 0) {
+            folderMap.forEach((item)=>this.$refs.folderTree.append(item, node));
+            node.childNodes.forEach((item) => {
+              if (item.data.fsortorder === 1) {
+                item.isLeaf = false;
+              }
+            });
           }
-          node.childNodes.forEach((item) => {
-            if (item.data.fsortorder === 1) {
-              item.isLeaf = false;
-            }
-          });
-        }
+        });
       }
     }
   };
@@ -74,6 +64,7 @@
   @import "@/styles/variables.scss";
   .el-tree{
     background-color: transparent;
+    margin-bottom: 30px;
     /deep/ .el-tree-node{
       &__expand-icon{
         font-size: 18px;
@@ -81,28 +72,15 @@
           color: #67c23a;
         }
       }
-    }
-    .el-tree-node:focus>.el-tree-node__content, .el-tree-node__content:hover{
-      background-color: rgba(145, 212, 143, .4);
-      color: #ffffff;
-    }
-    .el-tree-node__expand-icon.is-leaf {
-      color: transparent;
+      &:focus>.el-tree-node__content,&__content:hover{
+          background: linear-gradient(to right,rgba(249,213,191,.7),rgba(234,179,214,.8));
+          color: #ffffff;
+      }
     }
   }
   .custom-tree-node {
-    flex: 1;
     display: flex;
     align-items: center;
     font-size: 14px;
-    padding-right: 8px;
-    .svg-icon {
-      width: 2em;
-      height: 2em;
-      vertical-align: -0.15em;
-      fill: currentColor;
-      overflow: hidden;
-      margin-right: 0;
-    }
   }
 </style>
