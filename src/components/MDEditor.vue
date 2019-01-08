@@ -9,8 +9,7 @@
       width="80vw">
       <div class="previewFile">
         <el-button @click="closeMDEditor" class="close-md-editor">关闭</el-button>
-        <el-button @click="fileEdit(true)" class="file-edit" v-show="isEditMk">编辑</el-button>
-        <el-button @click="saveFile" class="file-edit" v-else>保存</el-button>
+        <el-button @click="isEditMk?fileEdit(true):saveFile()" class="file-edit">{{isEditMk?'编辑':'保存'}}</el-button>
       </div>
       <div class="viewport">
         <div class="list-detail">
