@@ -1,7 +1,7 @@
 <template>
   <div class="right-menu" @click="click">
     <ul class="right-menu-button">
-      <li v-for="item in config" :class="{ disabled: !actionArray.find(ket => ket === item.value) }" :data-action="item.value">{{ item.label }}</li>
+      <li v-for="item in config" :key="item.value" :class="{ disabled: !actionArray.find(key => key === item.value) }" :data-action="item.value">{{ item.label }}</li>
     </ul>
   </div>
 </template>
@@ -11,7 +11,7 @@
   import { mapGetters } from 'vuex';
 
   export default {
-    name: 'right-menu',
+    name: 'ContextMenu',
     data () {
       return {
         config: config

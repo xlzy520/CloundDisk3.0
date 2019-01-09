@@ -8,20 +8,20 @@
       <app-main ref="appMain"></app-main>
     </div>
     <div class="app-wrapper-right-menu">
-      <right-menu @action="dispatchAction"></right-menu>
+      <context-menu @action="dispatchAction"></context-menu>
     </div>
   </div>
 </template>
 
 <script>
-import childComponents from './components';
-import rightMenu from '../list/components/rightMenu/index.vue';
+import ChildComponents from './components/index.js';
+import ContextMenu from '../list/components/contextMenu/index.vue';
 
 export default {
   name: 'Layout',
   components: {
-    ...childComponents,
-    rightMenu
+    ...ChildComponents,
+    ContextMenu
   },
   computed: {
     sidebar() {

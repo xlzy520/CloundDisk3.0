@@ -113,15 +113,15 @@
       showMenu({row, event}) {
         event.preventDefault();
         this.$refs.baseTable.clickRow(row);
-        let rightMenu = document.querySelector('.app-wrapper-right-menu');
-        rightMenu.style.display = 'block';
-        rightMenu.style.top = `${event.y > window.innerHeight * 2 / 3 ? event.y - rightMenu.clientHeight : event.y}px`;
-        rightMenu.style.left = `${event.x}px`;
+        let contextMenu = document.querySelector('.app-wrapper-right-menu');
+        contextMenu.style.display = 'block';
+        contextMenu.style.top = `${event.y > window.innerHeight * 2 / 3 ? event.y - contextMenu.clientHeight : event.y}px`;
+        contextMenu.style.left = `${event.x}px`;
       },
       closeMenu(event) {
-        let rightMenu = document.querySelector('.app-wrapper-right-menu');
-        if (rightMenu && event.target.className !== 'right-menu-button') {
-          rightMenu.style.display = 'none';
+        let contextMenu = document.querySelector('.app-wrapper-right-menu');
+        if (contextMenu && event.target.className !== 'right-menu-button') {
+          contextMenu.style.display = 'none';
         }
       },
     },
