@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-list">
+  <div class="admin-list" v-loading.fullscreen.lock="fullScreenLoading">
     <list-header
       class="admin-list-header"
       @action="dispatchAction"
@@ -36,7 +36,7 @@
   import VersionList from '@/components/VersionList.vue';
   import MoveFile from '@/components/MoveFile.vue';
   import MdEditor from "../../components/MDEditor";
-  import zipReader from '@/components/zipReader.vue';
+  import ZipReader from '@/components/ZipReader.vue';
 
   import fileService from '@/api/service/file';
   import request from '@/utils/request';
@@ -52,6 +52,7 @@
         docInfo: {}, //markdown文件预览信息
         tableList: [],
         navList: [],
+        fullScreenLoading: false
       };
     },
     computed: {
@@ -71,7 +72,7 @@
       DeleteFile,
       MDEditor: () => import('@/components/MDEditor.vue'),
       MoveFile,
-      zipReader
+      ZipReader
     },
     methods: {
       dispatchAction(action, values) {
@@ -161,28 +162,30 @@
         });
       },
       async downloadFile() {
+        this.fullScreenLoading = true;
         let download = document.createElement('a');
         download.style.display = 'none';
         document.body.appendChild(download);
         const idList = this.selectedData.map(item => item.fcategoryid);
-        if (idList.length === 1) {
+        if (idList.length === 1) { //单文件下载
           download.download = this.selectedData[0].fname;
           download.href = `/djcpsdocument/fileManager/downloadFile.do?id=${idList[0]}`;
-        } else {
+        } else { //多文件压缩下载
           download.download = this.selectedData[0].fname + '等多个文件.zip';
           const res = await fileService.downloadZip(idList);
           const zipUrl = URL.createObjectURL(res);
           download.href = zipUrl;
           setTimeout(()=>{
-            URL.revokeObjectURL(zipUrl);
+            URL.revokeObjectURL(zipUrl); //释放文件对象内存地址，使用0延迟完成异步释放
           }, 0);
         }
         download.click();
+        this.fullScreenLoading = false;
         document.body.removeChild(download);
       },
       confirmEdit(fileName) {
         const row = this.selectedData;
-        if (row.length >= 1) { //  重命名
+        if (row.length > 0) { //  重命名
           fileService.renameFile({...row[0], newName: fileName}).then(res => {
             this.$message1000(res.msg, 'success');
             this.tableList[0].fname = fileName;
@@ -251,17 +254,14 @@
       },
       // 搜索结果定位
       findSearch() {
-        const searchIndex = this.tableList.findIndex(item => {
-          return item.fcategoryid === this.$route.query.searchId;
-        });
-        if (searchIndex !== -1) {
-          if (this.isList === 'List') {
-            this.$nextTick(() => {
-              this.$refs.fileList.$refs.baseTable.toggleRowSelection(this.tableList[11], true);
-              const elScrollBar = this.$refs.fileList.$refs['scrollbar'].$refs['elscrollbar'].$refs['wrap'];
-              elScrollBar.scrollTop = (53) * searchIndex;
-            });
-          }
+        const searchIndex = this.tableList.findIndex(item => item.fcategoryid === this.$route.query.searchId);
+        if (searchIndex !== -1 && this.isList === 'List') {
+          this.$nextTick(() => {
+            const tableRowHeight = document.querySelector('.el-table__row').clientHeight;
+            this.$refs.fileList.$refs.baseTable.toggleRowSelection(this.tableList[searchIndex], true);
+            const elScrollBar = this.$refs.fileList.$refs['scrollbar'].$refs['elscrollbar'].$refs['wrap'];
+            elScrollBar.scrollTop = tableRowHeight * searchIndex;
+          });
         } else {
           this.$message1000('源文件未找到，文件可能已经被删除', 'info');
         }
@@ -269,7 +269,7 @@
     },
     mounted() {
       this.ssoLogin();
-      // // 监听浏览器后退前进功能
+      // 监听浏览器后退前进功能
       // window.addEventListener('popstate', () => {
       //   if (this.$route.query.dirid) this.getCategory();
       // }, false);
