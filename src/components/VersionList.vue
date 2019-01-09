@@ -222,10 +222,7 @@
       align-items: center;
       margin-bottom: 10px;
       .diff_range{
-        flex: 5;
-      }
-      .el-switch {
-        flex: 1;
+        margin-left: 50px;
       }
     }
   }
@@ -263,7 +260,6 @@
         color: #409eff;
         height: 30px;
         padding: 0 3px;
-        text-decoration: none;
         &:hover {
           text-decoration: underline;
         }
@@ -278,8 +274,7 @@
         background-color: #e5e5e5;
       }
       &::-webkit-scrollbar-thumb {
-        overflow-x: hidden;
-        overflow-y: auto;
+        overflow: auto;
         border-radius: 4px;
         background-color: rgba(18, 150, 219, .8);
       }
