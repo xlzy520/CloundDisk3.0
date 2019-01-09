@@ -1,7 +1,7 @@
 <template>
   <div class="left-menu" ref="menu">
     <div class="left-menu-logo">
-      <img src="@/assets/logo/logo.png" width="36" height="36" class="left-menu-logo-img">
+      <img src="@/assets/logo/logo.png" class="left-menu-logo-img">
       <span class="left-menu-logo-title">东经云盘</span>
     </div>
     <base-scrollbar class="left-menu-content">
@@ -13,12 +13,13 @@
 <script>
   import TreeMenu from '@/components/treeMenu';
   import BaseScrollbar from "@/components/baseScrollbar";
+
   export default {
-    name: 'left-menu',
+    name: 'Sidebar',
     components: {BaseScrollbar, TreeMenu },
     data () {
       return {
-        draging: false
+        dragging: false
       };
     },
     mounted () {
@@ -34,18 +35,18 @@
     },
     methods: {
       mousemove(event) {
-        if (this.draging) {
+        if (this.dragging) {
           this.$refs.menu.style.width = `${event.clientX}px`;
         }
         event.target.style.cursor = this.atBorder(event, this.$refs.menu) ? 'ew-resize' : '';
       },
       mousedown(event) {
         if (this.atBorder(event, this.$refs.menu)) {
-          this.draging = true;
+          this.dragging = true;
         }
       },
       mouseup() {
-        this.draging = false;
+        this.dragging = false;
       },
       atBorder(event, box) {
         return event.clientX > box.offsetWidth - 4 && event.clientX <= box.offsetWidth;
@@ -67,6 +68,8 @@
   &-logo {
     margin: 15px auto;
     &-img {
+      width: 36px;
+      height: 36px;
       margin-right: 5px;
       vertical-align: middle;
     }

@@ -63,6 +63,7 @@ import Hamburger from '@/components/Hamburger.vue';
 import MdInput from '@/components/MDinput.vue';
 
 export default {
+  name: 'Navbar',
   components: {
     MdInput,
     Hamburger
