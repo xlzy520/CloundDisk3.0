@@ -20,7 +20,7 @@
                        :key="col.label"
                        v-bind="col">
         <template slot-scope="scope" v-if="col.component">
-          <component :is="col.component" v-bind="getCptBind(scope, col)">
+          <component :is="col.component" v-bind="getComponentBind(scope, col)">
           </component>
         </template>
       </el-table-column>
@@ -51,7 +51,7 @@
     };
   };
   export default {
-    name: 'base-table',
+    name: 'BaseTable',
     props: {
       //是否有选择框
       selection: {
@@ -114,10 +114,9 @@
       handleCurrentChange(val) {
         this.$emit('changePage', val);
       },
-      getCptBind({row, column, $index}, col) {
-        let index = $index;
-        const props = {row, col, column, index};
-        return props;
+      // 使用v-bind展开props到组件上
+      getComponentBind({row, column, $index}, col) {
+        return {row, col, column, $index};
       },
       clickRow(row) {
         if (this.selection === 'list') {
