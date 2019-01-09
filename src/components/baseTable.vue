@@ -16,15 +16,11 @@
         width="55">
       </el-table-column>
       <el-table-column v-for="col in columns"
-                       v-if="!col.hide"
+                       v-if="!col.hidden"
                        :key="col.label"
-                       v-bind="col"
-                       align="left"
-                       header-align="left">
-        <template slot-scope="scope"
-                  v-if="col.component">
-          <component :is="col.component"
-                     v-bind="getCptBind(scope, col)">
+                       v-bind="col">
+        <template slot-scope="scope" v-if="col.component">
+          <component :is="col.component" v-bind="getCptBind(scope, col)">
           </component>
         </template>
       </el-table-column>
