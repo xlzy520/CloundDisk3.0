@@ -16,7 +16,7 @@
 
   export default {
     name: 'Sidebar',
-    components: {BaseScrollbar, TreeMenu },
+    components: { BaseScrollbar, TreeMenu },
     data () {
       return {
         dragging: false
@@ -24,14 +24,14 @@
     },
     mounted () {
       this.$refs.menu.style.width = '200px';
-      window.addEventListener('mousemove', this.mousemove);
-      window.addEventListener('mousedown', this.mousedown);
-      window.addEventListener('mouseup', this.mouseup);
+      document.addEventListener('mousemove', this.mousemove);
+      document.addEventListener('mousedown', this.mousedown);
+      document.addEventListener('mouseup', this.mouseup);
     },
     beforeDestroy () {
-      window.removeEventListener('mousemove', this.mousemove);
-      window.removeEventListener('mousedown', this.mousedown);
-      window.removeEventListener('mouseup', this.mouseup);
+      document.removeEventListener('mousemove', this.mousemove);
+      document.removeEventListener('mousedown', this.mousedown);
+      document.removeEventListener('mouseup', this.mouseup);
     },
     methods: {
       mousemove(event) {
@@ -49,7 +49,7 @@
         this.dragging = false;
       },
       atBorder(event, box) {
-        return event.clientX > box.offsetWidth - 4 && event.clientX <= box.offsetWidth;
+        return event.clientX > box.offsetWidth - 10 && event.clientX <= box.offsetWidth;
       }
     }
   };
@@ -60,7 +60,6 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  width: 200px;
   height: 100%;
   min-width: 200px;
   max-width: 500px;
