@@ -3,11 +3,8 @@
     :title="'文件'+title"
     :visible.sync="visible"
     @close="close"
-    custom-class="upload-file"
     :close-on-click-modal="true"
-    :close-on-press-escape="false"
-    :show-close="false"
-    width="400px">
+    width="32vw">
     <el-upload
       ref="upload"
       drag
@@ -23,13 +20,13 @@
       multiple
     >
       <i class="el-icon-upload"></i>
-      <p class="upload-speed">{{speed}}</p>
+      <p class="upload-speed" v-show="speed">{{speed}}</p>
       <div class="el-upload__text">将文件拖到此处或点击上传</div>
       <div class="el-upload__tip" slot="tip"><span>{{filePath}}</span>{{tip}}</div>
     </el-upload>
     <div v-if="type==='update'">
-      <div class="file-desc-label">文件描述</div>
-      <el-input type="textarea" v-model="fileDesc"></el-input>
+      <div class="change_log">更新内容：</div>
+      <el-input type="textarea" v-model="changeLog"></el-input>
     </div>
     <span slot="footer" class="dialog-footer">
       <el-button size="small"  type="primary" @click="submitUpload" :disabled="btDisable">开始{{title}}</el-button>
@@ -53,7 +50,7 @@ export default {
       uploadData: {},
       btDisable: true,
       currentFile: null,
-      fileDesc: '',
+      changeLog: '',
       speed: '',
       time: '',
       loaded: 0
@@ -73,7 +70,9 @@ export default {
       for (const item of this.navList) {
         tip += ' / ' + item.fname;
       }
-      if (this.type === 'update') return tip + ' / ' + this.selectedData[0].fname;
+      if (this.type === 'update' && this.selectedData.length > 0) {
+        return tip + ' / ' + this.selectedData[0].fname;
+      }
       return tip;
     }
   },
@@ -103,7 +102,7 @@ export default {
       if (this.currentFile == null) {
         return;
       }
-      this.uploadData.fremarks = this.fileDesc;
+      this.uploadData.fremarks = this.changeLog;
       this.$refs.upload.submit();
       this.time = new Date().getTime();
       this.btDisable = true;
@@ -126,10 +125,10 @@ export default {
         this.$refs.upload.clearFiles();
         this.fileList = [];
         this.visible = false;
-        this.$emit('action', 'refresh');
       }
     },
     onFileChange(file, filelist) {
+      console.log(this.$refs.upload);
       if (this.type === 'update') {
         if (file.name !== this.selectedData[0].fname) {
           filelist.pop();
@@ -145,15 +144,12 @@ export default {
         }
       }
       this.fileList = filelist;
-
       if (file.status === 'ready') {
-        this.$emit('action', 'refresh');
         this.btDisable = false;
         this.currentFile = file;
         this.uploadData = {
           fparentid: this.$route.query.dirid || 0
         };
-
         if (this.selectedData.length === 1 && this.type === 'update') {
           this.uploadData = {
             fparentid: this.$route.query.dirid || 0,
@@ -164,10 +160,10 @@ export default {
       }
     },
     close() {
-      var uploadingFiles = [];
-      for (let i = 0; i < this.fileList.length; ++i) {
-        if (this.fileList[i].status === 'uploading') {
-          uploadingFiles.push(this.fileList[i]);
+      let uploadingFiles = [];
+      for (const item of this.fileList) {
+        if (item.status === 'uploading') {
+          uploadingFiles.push(item);
         }
       }
       if (this.fileList.length > 0) {
@@ -193,30 +189,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  /deep/ .upload-file{
-    .el-upload__tip {
-      color: #a00;
+  /deep/ .el-upload{
+    display: block;
+    &__tip {
       word-break: break-all;
       >span{
-        color: #888;padding-right: 2px;
+        font-size: 14px;
+        color: #ff7676;
       }
     }
-   .el-dialog__header {
-      padding: 10px 20px 5px 20px;
+    &-list__item{
+      outline: none;
     }
-    .el-upload-dragger {
-      height: 135px;
+    &-dragger {
+      width: 100%;
+      height: 22vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      .el-icon-upload {
+        margin: 0;
+      }
     }
-    .el-upload-dragger .el-icon-upload {
-      margin: 22px 0 16px;
-    }
-    .file-desc-label {
-      font-size: 14px;
-      margin: 5px 0 5px 0px;
-      color: #666;
-    }
-    .upload-speed{
-      color: forestgreen;
-    }
+  }
+  .el-dialog__header {
+    padding: 20px 20px 5px;
+  }
+  .change_log {
+    margin: 5px 0;
+    color: #ff7676;
+  }
+  .upload-speed{
+    color: forestgreen;
   }
 </style>
