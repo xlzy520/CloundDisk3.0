@@ -4,7 +4,6 @@
       :title="title+'详情'"
       v-if="visible"
       :visible="true"
-      :modal-append-to-body="false"
       custom-class="file-detail"
       :close-on-click-modal="true"
       @close="close"

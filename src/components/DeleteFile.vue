@@ -3,7 +3,6 @@
     <el-dialog
       title="删除文件"
       :visible.sync="visible"
-      :modal-append-to-body="false"
       custom-class="delete-file"
       :close-on-click-modal="false"
       :close-on-press-escape="false"

@@ -2,7 +2,6 @@
   <div class="markdown">
     <el-dialog
       :visible="true"
-      :modal-append-to-body="true"
       :show-close="false"
       :close-on-press-escape="false"
       :close-on-click-modal="false"

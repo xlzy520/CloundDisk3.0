@@ -3,7 +3,6 @@
     :title="'文件'+title"
     :visible.sync="visible"
     @close="close"
-    :modal-append-to-body="false"
     custom-class="upload-file"
     :close-on-click-modal="true"
     :close-on-press-escape="false"

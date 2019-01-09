@@ -2,7 +2,7 @@
   <div class="img-editor">
     <el-dialog
       :visible="true"
-      :modal-append-to-body="false"
+
       :close-on-click-modal="true"
       :show-close="false"
       width="100vw">
