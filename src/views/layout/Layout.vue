@@ -1,6 +1,6 @@
 <template>
   <div class="app-wrapper">
-    <div class="app-wrapper-menu" :class="classObj">
+    <div class="app-wrapper-menu" :class="[{hideMenu: !sidebar.opened}]">
       <sidebar></sidebar>
     </div>
     <div class="app-wrapper-main">
@@ -16,27 +16,17 @@
 <script>
 import childComponents from './components';
 import rightMenu from '../list/components/rightMenu/index.vue';
-import ResizeMixin from './mixin/ResizeHandler';
 
 export default {
-  name: 'layout',
+  name: 'Layout',
   components: {
     ...childComponents,
     rightMenu
   },
-  mixins: [ResizeMixin],
   computed: {
     sidebar() {
       return this.$store.state.app.sidebar;
-    },
-    classObj() {
-      return {
-        hideMenu: !this.sidebar.opened,
-        // openSidebar: this.sidebar.opened,
-        // withoutAnimation: this.sidebar.withoutAnimation,
-        // mobile: this.device === 'mobile'
-      };
-    },
+    }
   },
   methods: {
     dispatchAction(event) {
@@ -48,10 +38,9 @@ export default {
 };
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
-  // @import "src/styles/mixin.scss";
+<style lang="scss">
+  @import "@/styles/mixin.scss";
   .app-wrapper {
-    // @include clearfix;
     position: relative;
     display: flex;
     min-width: 1300px;
@@ -70,12 +59,9 @@ export default {
       }
     }
     &-main {
-      position: relative;
+      @include flex_column;
       flex-shrink: 1;
-      flex-grow: 1;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
     }
     &-right-menu {
       position: absolute;
