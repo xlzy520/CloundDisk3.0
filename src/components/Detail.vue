@@ -116,7 +116,7 @@
         }
       },
       size() {
-        return formatSize(Number(this.selectedData[0].fsize.replace('B', '')));
+        return formatSize(this.selectedData[0].fsize);
       },
       timeEdit() {
         return parseTime(this.selectedData[0].fupdatetime);

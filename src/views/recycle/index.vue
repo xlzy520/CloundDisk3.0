@@ -56,9 +56,9 @@
             prop: 'fsize',
             sortable: true,
             sortMethod: sizeSort,
-            formatter: (row, col) => {
+            formatter: (row) => {
               if (row.ffiletype !== 1) {
-                return formatSize(Number(row[col.prop].replace('B', '')));
+                return formatSize(row.fsize);
               }
               return null;
             }

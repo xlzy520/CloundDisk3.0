@@ -105,9 +105,9 @@
           },
           {
             label: '文件大小', prop: 'filesize', width: 80,
-            formatter: (row, col) => {
+            formatter: (row) => {
               if (row.filesize !== null) {
-                return formatSize(Number(row[col.prop].replace('B', '')));
+                return formatSize(row.filesize);
               }
               return '';
             }

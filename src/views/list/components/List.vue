@@ -1,8 +1,7 @@
 <template>
-  <div class="file-content" ref="fileContent">
+  <div class="file-content" ref="fileContent" v-loading.fullscreen.lock="fullLoading">
     <base-scrollbar ref="scrollbar">
       <base-table
-        v-loading.fullscreen.lock="fullLoading"
         ref="baseTable"
         :selection="'list'"
         :table-data="fileList"
@@ -44,8 +43,7 @@
             sortMethod: nameSort,
             render: (h, {props: {row}}) => {
               if (row.isEditor) {
-                return <RenameFile type="List"
-                                   onCancel-edit={() => this.$emit('cancel-edit')}
+                return <RenameFile type="List" onCancel-edit={() => this.$emit('cancel-edit')}
                                    onConfirm-edit={fileName => this.$emit('confirm-edit', fileName)}/>;
               } else {
                 return (
@@ -68,9 +66,9 @@
             prop: 'fsize',
             sortable: true,
             sortMethod: sizeSort,
-            formatter: (row, col) => {
-              if (row.ffiletype !== 1) {
-                return formatSize(Number(row[col.prop].replace('B', '')));
+            formatter: row => {
+              if (row.ffiletype !== 1 && row.fsize !== null) {
+                return formatSize(row.fsize);
               }
               return '';
             }

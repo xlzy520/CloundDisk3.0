@@ -54,6 +54,9 @@ export function formatTime(time, option) {
 }
 
 export function formatSize(size) {
+  if (size.includes('B')) {
+    size = size.replace('B', '');
+  }
   const kb = 1024;
   const mb = kb * 1024;
   const gb = mb * 1024;
