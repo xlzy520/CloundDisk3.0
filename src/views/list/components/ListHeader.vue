@@ -12,7 +12,7 @@
           </el-dropdown-menu>
         </el-dropdown>
         <template v-for="item in actionConfig">
-          <el-button type="primary" v-if="actionArray.find(ket => ket === item.value)" :icon="item.icon" :data-action="item.value">{{ item.label }}</el-button>
+          <el-button type="primary" v-if="actionArray.find(key => key === item.value)" :icon="item.icon" :data-action="item.value">{{ item.label }}</el-button>
         </template>
       </div>
     </div>
@@ -59,7 +59,7 @@ export default {
       if (this.selectedData.length > 1) {
         actionArr = folderCheckedCount === 0 ? ['copy', 'move', 'delete', 'download'] : ['move', 'delete'];
       } else if (this.selectedData.length === 1) {
-        actionArr = folderCheckedCount === 1 ? ['rename', 'move', 'delete', 'detail']
+        actionArr = folderCheckedCount === 1 ? ['rename', 'move', 'delete', 'detail', 'dingding']
           : ['rename', 'copy', 'move', 'download', 'update', 'version', 'delete', 'detail'];
       } else {
         actionArr = [];

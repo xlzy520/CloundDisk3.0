@@ -39,4 +39,9 @@ export default [
     value: 'detail',
     icon: 'el-icon-info'
   },
+  {
+    label: '钉钉',
+    value: 'dingding',
+    icon: 'iconfont icon-dingding'
+  }
 ];
