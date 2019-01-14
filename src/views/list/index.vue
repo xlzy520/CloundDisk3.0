@@ -22,6 +22,7 @@
     <move-file ref="move" @action="dispatchAction"></move-file>
     <img-editor ref="img" v-if="visible==='img'" :img-config="imgConfig" @action="dispatchAction"></img-editor>
     <zip-reader ref="zipReader" @action="dispatchAction"></zip-reader>
+    <ding-ding ref="dingDing" @action="dispatchAction"></ding-ding>
   </div>
 </template>
 
@@ -35,13 +36,13 @@
   import Detail from '@/components/Detail.vue';
   import VersionList from '@/components/VersionList.vue';
   import MoveFile from '@/components/MoveFile.vue';
-  import MdEditor from "../../components/MDEditor";
+  import MdEditor from "@/components/MDEditor";
   import ZipReader from '@/components/ZipReader.vue';
+  import DingDing from "@/components/DingDing";
 
   import fileService from '@/api/service/file';
   import request from '@/utils/request';
-  import categoryService from '../../api/service/category';
-
+  import categoryService from '@/api/service/category';
   export default {
     name: 'index',
     data() {
@@ -61,6 +62,7 @@
       ])
     },
     components: {
+      DingDing,
       MdEditor,
       ImgEditor: () => import('@/components/imgEditor/index.vue'),
       VersionList,
@@ -134,6 +136,9 @@
           case 'viewImg':
             this.imgConfig = {url: values.url, name: values.name || ''};
             this.visible = 'img';
+            break;
+          case 'dingDing':
+            this.$refs[action].visible = true;
             break;
           default:
             break;

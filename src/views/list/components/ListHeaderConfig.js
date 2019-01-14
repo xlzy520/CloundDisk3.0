@@ -41,7 +41,7 @@ export default [
   },
   {
     label: '钉钉',
-    value: 'dingding',
+    value: 'dingDing',
     icon: 'iconfont icon-dingding'
   }
 ];
