@@ -136,16 +136,18 @@
           this.$prompt('请输入更新描述', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
-            center: true
+            center: true,
+            inputPattern: /^[^ ]+$/,
+            inputErrorMessage: '更新描述不能为空'
           }).then(({ value }) => {
             value = value === null ? '' : value;
             markdownData.append('fremarks', value);
             fileService.updateMarkdown(markdownData).then(() => {
-              this.$message1000('文档保存成功。', 'success');
+              this.$message1000('文档更新成功。', 'success');
               this.closeMDEditor();
               this.$emit('action', 'textEdit');
             }).catch(() => {
-              this.$message1000('文档保存失败。', 'error');
+              this.$message1000('文档更新失败。', 'error');
             });
           }).catch(() => {});
         }
