@@ -79,6 +79,7 @@
 
 <script>
   import BaseTable from "./baseTable";
+  import dingDingPush from '@/api/service/dingDingPush';
 
   class DDConfig {
     dingGroupName = ''
@@ -88,7 +89,7 @@
     remark = ''
     ftype = '2'
   }
-  import dingDingPush from '@/api/service/dingDingPush';
+
   export default {
     name: 'DingDing',
     components: {BaseTable},
