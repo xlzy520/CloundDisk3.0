@@ -107,16 +107,15 @@ export default {
       this.time = new Date().getTime();
       this.btDisable = true;
     },
-    uploadOk(response) {
+    uploadOk(res) {
       this.speed = '';
-      if (response.success === true) {
+      if (res.success) {
         this.$message1000('文件上传成功', 'success');
         this.$refs.upload.clearFiles();
-        this.fileList = [];
         this.visible = false;
         this.$emit('action', 'refresh');
       } else {
-        let msg = response.msg;
+        let msg = res.msg;
         if (msg == null || msg === '') {
           msg = '服务器错误';
         }
@@ -127,23 +126,23 @@ export default {
         this.visible = false;
       }
     },
-    onFileChange(file, filelist) {
-      console.log(this.$refs.upload);
-      if (this.type === 'update') {
-        if (file.name !== this.selectedData[0].fname) {
-          filelist.pop();
-          this.$message1000('文件上传失败！上传文件名与更新文件名不符', 'error');
-        }
+    onFileChange(file, fileList) {
+      if (fileList.length > 0) {
+        this.btDisable = false;
       }
-      if (filelist.length > 1) {
-        for (let i = 0; i < filelist.length - 1; i++) {
-          if (filelist[i].name === file.name) {
-            filelist.pop();
+      if (this.type === 'update' && file.name !== this.selectedData[0].fname) {
+        fileList.pop();
+        this.$message1000('文件上传失败！上传文件名与更新文件名不符', 'error');
+      }
+      if (fileList.length > 1) {
+        for (let i = 0; i < fileList.length - 1; i++) { //此时fileList里面已经包含file了，所以需要长度减一再判断
+          if (fileList[i].name === file.name) {
+            fileList.pop();
             this.$message1000('上传失败！文件上传列表中存在同名文件', 'error');
           }
         }
       }
-      this.fileList = filelist;
+      this.fileList = fileList;
       if (file.status === 'ready') {
         this.btDisable = false;
         this.currentFile = file;
