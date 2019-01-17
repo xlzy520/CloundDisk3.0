@@ -1,92 +1,89 @@
 <template>
-  <div class="el-dialog__detail">
-    <el-dialog
-      :title="title+'详情'"
-      v-if="visible"
-      :visible="true"
-      custom-class="file-detail"
-      :close-on-click-modal="true"
-      @close="close"
-      width="380px">
-      <div class="detail-content">
-        <div class="detail-item">
-          <div class="label">
-            {{title}}名称：
-          </div>
-          <div class="content">
-            {{selectedData[0].fname}}
-          </div>
-          <div class="clearfix"></div>
+  <el-dialog
+    :title="title+'详情'"
+    v-if="visible"
+    :visible="true"
+    custom-class="file-detail"
+    @close="close"
+    width="32vw">
+    <div class="detail-content">
+      <div class="detail-item">
+        <div class="label">
+          {{title}}名称：
         </div>
-        <div class="detail-item" v-if="!isFolder">
-          <div class="label">
-            当前版本：
-          </div>
-          <div class="content">
-            {{versionDetail.fversion}}
-          </div>
-          <div class="clearfix"></div>
+        <div class="content">
+          {{selectedData[0].fname}}
         </div>
-        <div class="detail-item" v-if="!isFolder">
-          <div class="label">
-            版本描述：
-          </div>
-          <div class="content">
-            {{versionDetail.fremarks}}
-          </div>
-          <div class="clearfix"></div>
-        </div>
-        <div class="detail-item">
-          <div class="label">
-            创建人：
-          </div>
-          <div class="content">
-            {{selectedData[0].foperator}}
-          </div>
-          <div class="clearfix"></div>
-        </div>
-        <div class="detail-item">
-          <div class="label">
-            创建时间：
-          </div>
-          <div class="content">
-            {{timeCreate}}
-          </div>
-          <div class="clearfix"></div>
-        </div>
-        <div class="detail-item" v-if="!isFolder">
-          <div class="label">
-            最后修改人：
-          </div>
-          <div class="content">
-            {{versionDetail.fupdater}}
-          </div>
-          <div class="clearfix"></div>
-        </div>
-        <div class="detail-item" v-if="!isFolder">
-          <div class="label">
-            修改时间：
-          </div>
-          <div class="content">
-            {{timeEdit}}
-          </div>
-          <div class="clearfix"></div>
-        </div>
-        <div class="detail-item" v-if="!isFolder">
-          <div class="label">
-            文件大小：
-          </div>
-          <div class="content">
-            {{size}}
-          </div>
-          <div class="clearfix"></div>
-        </div>
+        <div class="clearfix"></div>
       </div>
-      <span slot="footer" class="dialog-footer">
+      <div class="detail-item" v-if="!isFolder">
+        <div class="label">
+          当前版本：
+        </div>
+        <div class="content">
+          {{versionDetail.fversion}}
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="detail-item" v-if="!isFolder">
+        <div class="label">
+          版本描述：
+        </div>
+        <div class="content">
+          {{versionDetail.fremarks}}
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="detail-item">
+        <div class="label">
+          创建人：
+        </div>
+        <div class="content">
+          {{selectedData[0].foperator}}
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="detail-item">
+        <div class="label">
+          创建时间：
+        </div>
+        <div class="content">
+          {{timeCreate}}
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="detail-item" v-if="!isFolder">
+        <div class="label">
+          最后修改人：
+        </div>
+        <div class="content">
+          {{versionDetail.fupdater}}
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="detail-item" v-if="!isFolder">
+        <div class="label">
+          修改时间：
+        </div>
+        <div class="content">
+          {{timeEdit}}
+        </div>
+        <div class="clearfix"></div>
+      </div>
+      <div class="detail-item" v-if="!isFolder">
+        <div class="label">
+          文件大小：
+        </div>
+        <div class="content">
+          {{size}}
+        </div>
+        <div class="clearfix"></div>
+      </div>
+    </div>
+    <span slot="footer" class="dialog-footer">
         <el-button @click="close" size="small" type="primary">关 闭</el-button>
       </span>
-    </el-dialog>
-  </div>
+  </el-dialog>
 </template>
 <script>
   import { mapGetters } from 'vuex';
@@ -139,21 +136,8 @@
     }
   };
 </script>
-<style lang="scss">
-  .file-detail,.upload-file{
-    .el-dialog__body {
-      padding: 10px 20px;
-    }
-    .el-dialog__header {
-      padding: 10px 20px 5px 20px;
-    }
-  }
-</style>
 <style lang="scss" scoped>
   /deep/ .file-detail {
-    .el-dialog__headerbtn {
-      top: 14px;
-    }
     .detail-content{
       .detail-item {
         border-bottom: 1px solid #ddd;
