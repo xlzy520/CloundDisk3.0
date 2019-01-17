@@ -6,7 +6,8 @@ module.exports = {
   devServer: {
     proxy: {
       '/djcpsdocument': {
-        target: 'http://192.168.2.170:8081/', //德煌
+        // target: 'http://192.168.2.170:8081/', //德煌
+        target: 'http://192.168.2.21:8888/', //朱诚
         // target: 'http://192.168.2.171:8081/',              //弘权
         changeOrigin: true,
       }
