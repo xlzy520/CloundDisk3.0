@@ -15,6 +15,8 @@ router.beforeEach((to, from, next) => {
       if (store.getters.name.length === 0) {
         store.dispatch('GetInfo').then(() => { // 拉取用户信息
           next();
+        }).catch(()=>{
+          next('/login');
         });
       } else {
         next();
