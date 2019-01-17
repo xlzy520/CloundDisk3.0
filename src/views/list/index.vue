@@ -138,7 +138,7 @@
             this.visible = 'img';
             break;
           case 'dingDing':
-            this.$refs[action].visible = true;
+            this.$refs[action].open();
             break;
           default:
             break;

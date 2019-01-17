@@ -45,6 +45,14 @@
               if (row.isEditor) {
                 return <RenameFile type="List" onCancel-edit={() => this.$emit('cancel-edit')}
                                    onConfirm-edit={fileName => this.$emit('confirm-edit', fileName)}/>;
+              } else if (row.isBindingDingRobot === '1') {
+                return (
+                  <div>
+                    <svg-icon iconClass={String(row.ffiletype)}></svg-icon>
+                    <img src="/img/robot.png" class="robot_img"/>
+                    <span className="file-name" onClick={this.fileType.bind(this, row)}>{row.fname}</span>
+                  </div>
+                );
               } else {
                 return (
                   <div>
@@ -137,9 +145,8 @@
 
 <style lang="scss" scoped>
   .file-content {
-    position: relative;
-    flex-grow: 1;
     display: flex;
+    flex-grow: 1;
     /deep/ .file-name {
       cursor: pointer;
       line-height: 2;
@@ -156,8 +163,13 @@
         text-decoration: none;
       }
     }
-    &-menu {
+    /deep/ .robot_img {
       position: absolute;
+      top: 4px;
+      left: 26px;
+      width: 18px;
+      border-radius: 50%;
+      cursor: pointer;
     }
   }
 </style>
