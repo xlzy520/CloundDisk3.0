@@ -21,7 +21,7 @@ export default {
     });
   },
   updateMarkdown(data) {
-    return categoryService('/fileUpload.do', data, 'post', {processData: false, contentType: false});
+    return categoryService('/fileUpload.do', data);
   },
   // version
   getVersionList(fversionsign) {
