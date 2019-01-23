@@ -6,78 +6,10 @@
     custom-class="file-detail"
     @close="close"
     width="32vw">
-    <div class="detail-content">
-      <div class="detail-item">
-        <div class="label">
-          {{title}}名称：
-        </div>
-        <div class="content">
-          {{selectedData[0].fname}}
-        </div>
-        <div class="clearfix"></div>
-      </div>
-      <div class="detail-item" v-if="!isFolder">
-        <div class="label">
-          当前版本：
-        </div>
-        <div class="content">
-          {{versionDetail.fversion}}
-        </div>
-        <div class="clearfix"></div>
-      </div>
-      <div class="detail-item" v-if="!isFolder">
-        <div class="label">
-          版本描述：
-        </div>
-        <div class="content">
-          {{versionDetail.fremarks}}
-        </div>
-        <div class="clearfix"></div>
-      </div>
-      <div class="detail-item">
-        <div class="label">
-          创建人：
-        </div>
-        <div class="content">
-          {{selectedData[0].foperator}}
-        </div>
-        <div class="clearfix"></div>
-      </div>
-      <div class="detail-item">
-        <div class="label">
-          创建时间：
-        </div>
-        <div class="content">
-          {{timeCreate}}
-        </div>
-        <div class="clearfix"></div>
-      </div>
-      <div class="detail-item" v-if="!isFolder">
-        <div class="label">
-          最后修改人：
-        </div>
-        <div class="content">
-          {{versionDetail.fupdater}}
-        </div>
-        <div class="clearfix"></div>
-      </div>
-      <div class="detail-item" v-if="!isFolder">
-        <div class="label">
-          修改时间：
-        </div>
-        <div class="content">
-          {{timeEdit}}
-        </div>
-        <div class="clearfix"></div>
-      </div>
-      <div class="detail-item" v-if="!isFolder">
-        <div class="label">
-          文件大小：
-        </div>
-        <div class="content">
-          {{size}}
-        </div>
-        <div class="clearfix"></div>
+    <div class="detail">
+      <div v-for="item in detailItems" :key="item.id" class="detail-item">
+        <span class="detail-item__label">{{item.label}}</span>
+        <span class="detail-item__content">{{item.content}}</span>
       </div>
     </div>
     <span slot="footer" class="dialog-footer">
@@ -86,81 +18,73 @@
   </el-dialog>
 </template>
 <script>
-  import { mapGetters } from 'vuex';
-  import { formatSize, parseTime } from '@/utils/index';
-  import fileService from '@/api/service/file';
+import { mapGetters } from "vuex";
+import { formatSize, parseTime } from "@/utils/index";
+import fileService from "@/api/service/file";
 
-  export default {
-    name: 'Detail',
-    data() {
-      return {
-        visible: false,
-        versionDetail: {}
-      };
+export default {
+  name: "Detail",
+  data() {
+    return {
+      visible: false,
+      title: '',
+      versionDetail: {},
+      detailItems: []
+    };
+  },
+  computed: {
+    ...mapGetters(["selectedData"])
+  },
+  methods: {
+    close() {
+      this.visible = false;
+      this.detailItems = [];
     },
-    computed: {
-      ...mapGetters([
-        'selectedData'
-      ]),
-      isFolder() {
-        if (this.selectedData.length === 1) {
-          return this.selectedData[0].ffiletype === 1;
-        }
-      },
-      title() {
-        if (this.selectedData.length === 1) {
-          return this.isFolder ? '文件夹' : '文件';
-        }
-      },
-      size() {
-        return formatSize(this.selectedData[0].fsize);
-      },
-      timeEdit() {
-        return parseTime(this.selectedData[0].fupdatetime);
-      },
-      timeCreate() {
-        return parseTime(this.selectedData[0].fcreatetime);
-      }
-    },
-    methods: {
-      close() {
-        this.visible = false;
-      },
-      requestData() {
-        if (this.selectedData.length === 1 && this.selectedData[0].ffiletype !== 1) {
-          fileService.getVersionList(this.selectedData[0].fversionsign).then(res=>{
-            this.versionDetail = res.data.filter((item) => item.fdisplay === true);
+    requestData() {
+      if (this.selectedData.length === 1) {
+        const {ffiletype, fname, foperator, fcreatetime, fupdatetime, fsize, fversionsign} = this.selectedData[0];
+        this.title = '文件夹';
+        this.detailItems = [
+          { label: this.title + "名称：", content: fname },
+          { label: "创建人：", content: foperator },
+          { label: "创建时间：", content: parseTime(fcreatetime) }
+        ];
+        if (ffiletype !== 1) {
+          this.title = '文件';
+          fileService.getVersionList(fversionsign).then(res => {
+            this.versionDetail = res.data.find(item => item.fdisplay);
+            const { fversion, fremarks, fupdater } = this.versionDetail;
+            this.detailItems = this.detailItems.concat([
+              { label: "当前版本：", content: fversion },
+              { label: "版本描述：", content: fremarks },
+              { label: "最后修改人：", content: fupdater },
+              { label: "修改时间：", content: parseTime(fupdatetime) },
+              { label: "文件大小：", content: formatSize(fsize) }
+            ]);
           });
         }
       }
     }
-  };
+  }
+};
 </script>
 <style lang="scss" scoped>
-  /deep/ .file-detail {
-    .detail-content{
-      .detail-item {
-        border-bottom: 1px solid #ddd;
-        padding-bottom: 8px;
-        margin-bottom: 8px;
-      }
-      .label {
-        float: left;
-        width: 100px;
-        line-height: 22px;
-        color: #888;
-      }
-      .content {
-        float: right;
-        margin-left: 0;
-        text-align: left;
-        width: 240px;
-        line-height: 22px;
-        color: #333;
-        font-size: 14px;
-        word-break: break-all;
-        overflow: hidden;
-      }
+/deep/ .detail{
+  padding: 0 20px;
+  .detail-item {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    line-height: 40px;
+    &__label {
+      width: 8vw;
+      color: #3366FF;
+    }
+    &__content {
+      display: flex;
+      flex-grow: 1;
+      width: 0;
+      color: #333;
     }
   }
+}
 </style>
