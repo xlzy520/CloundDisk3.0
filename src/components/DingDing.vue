@@ -79,7 +79,7 @@
 
 <script>
   import BaseTable from "./baseTable";
-  import dingDingPush from '@/api/service/dingDingPush';
+  import dingDingPush from '@/api/service/DDPush';
 
   class DDConfig {
     dingGroupName = ''
