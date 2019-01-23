@@ -47,17 +47,17 @@
                                    onConfirm-edit={fileName => this.$emit('confirm-edit', fileName)}/>;
               } else if (row.isBindingDingRobot === '1') {
                 return (
-                  <div>
+                  <div class="flex">
                     <svg-icon iconClass={String(row.ffiletype)}></svg-icon>
                     <img src="/img/robot.png" class="robot_img"/>
-                    <span className="file-name" onClick={this.fileType.bind(this, row)}>{row.fname}</span>
+                    <span class="file-name" onClick={this.fileType.bind(this, row)} title={row.fname}>{row.fname}</span>
                   </div>
                 );
               } else {
                 return (
-                  <div>
+                  <div class="flex">
                     <svg-icon iconClass={String(row.ffiletype)}></svg-icon>
-                    <span class="file-name" onClick={this.fileType.bind(this, row)}>{row.fname}</span>
+                    <span class="file-name" onClick={this.fileType.bind(this, row)} title={row.fname}>{row.fname}</span>
                   </div>
                 );
               }
@@ -151,6 +151,9 @@
       cursor: pointer;
       line-height: 2;
       user-select: none;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
       &:hover {
         color: #42b983;
       }
