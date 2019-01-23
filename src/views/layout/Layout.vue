@@ -1,13 +1,13 @@
 <template>
-  <div class="app-wrapper">
-    <div class="app-wrapper-menu" :class="[{hideMenu: !sidebar.opened}]">
+  <div class="djcd">
+    <div class="djcd-menu" :class="[{hideMenu: !sidebar.opened}]">
       <sidebar></sidebar>
     </div>
-    <div class="app-wrapper-main">
+    <div class="djcd-main">
       <navbar></navbar>
       <app-main ref="appMain"></app-main>
     </div>
-    <div class="app-wrapper-right-menu">
+    <div class="djcd-right-menu">
       <context-menu @action="dispatchAction"></context-menu>
     </div>
   </div>
@@ -40,7 +40,7 @@ export default {
 
 <style lang="scss">
   @import "@/styles/mixin.scss";
-  .app-wrapper {
+  .djcd {
     position: relative;
     display: flex;
     min-width: 1300px;
