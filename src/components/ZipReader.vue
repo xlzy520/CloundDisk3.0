@@ -4,11 +4,9 @@
       <div class="zip-reader-content">
         <base-scrollbar>
           <div class="zip-reader-content-item" v-for="item in zips" @click="clickFile(item)">
-            <div class="zip-reader-content-item-icon">
-              <svg-icon :icon-class="String(item.fileType)" class-name="icon" />
-            </div>
-            <div class="zip-reader-content-item-name" :title="item.simpleName">
-              {{ item.simpleName }}
+            <div class="zip-reader-content-item-name">
+              <svg-icon :icon-class="String(item.fileType)"/>
+              <span :title="item.simpleName">{{ item.simpleName }}</span>
             </div>
             <div class="zip-reader-content-item-button" v-if="item.fileType !== '1'" @click.stop>
               <el-button size="mini" @click="download(item)">下载</el-button>
@@ -73,7 +71,7 @@
           document.body.appendChild(download);
           download.click();
           document.body.removeChild(download);
-          URL.revokeObjectURL(url); //释放创建的对象URL
+          // URL.revokeObjectURL(url); //释放创建的对象URL
         });
       },
       clickFile(file) {
@@ -99,28 +97,20 @@
       display: flex;
       position: relative;
       margin: 10px 0;
-      padding: 0px 20px;
+      padding: 0 20px;
       width: 600px;
       height: 380px;
       &-item {
-        position: relative;
-        vertical-align: top;
-        margin-top: 10px;
+        display: flex;
+        justify-content: space-between;
+        height: 40px;
+        line-height: 40px;
         cursor: pointer;
-        & > div {
-          display: inline-block;
-          vertical-align: middle;
-        }
         &:hover {
           background: #e3ecf76b;
         }
-        &-icon {
-          margin: auto;
-        }
         &-name {
-          height: 24px;
-          width: 300px;
-          margin-top: 0px;
+          width: 420px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
