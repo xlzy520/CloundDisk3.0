@@ -58,5 +58,6 @@
   },
   "license": "MIT",
   "main": "index.js",
-  "repository": "git@192.168.0.169:lzy/djdm.git"
+  "repository": "git@192.168.0.169:lzy/djdm.git",
+  "browserslist": ["last 2 Chrome versions"]
 }

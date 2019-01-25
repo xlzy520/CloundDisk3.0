@@ -7,8 +7,9 @@ module.exports = {
     proxy: {
       '/djcpsdocument': {
         // target: 'http://192.168.2.170:8081/', //德煌
-        target: 'http://192.168.2.21:8888/', //朱诚
-        // target: 'http://192.168.2.171:8081/',              //弘权
+        // target: 'https://www.easy-mock.com/mock/5c47cda4f513860f4ceef676/', //mock
+        // target: 'http://192.168.2.21:8888/', //朱诚
+        target: 'http://192.168.2.171:8888/',              //弘权
         changeOrigin: true,
       }
     },

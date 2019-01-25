@@ -9,3 +9,4 @@ node_modules
 /src/assets/
 /src/autoLogin/
 /static
+/public/workbox-cdn/
