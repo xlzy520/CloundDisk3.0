@@ -9,7 +9,8 @@ module.exports = {
         // target: 'http://192.168.2.170:8081/', //德煌
         // target: 'https://www.easy-mock.com/mock/5c47cda4f513860f4ceef676/', //mock
         // target: 'http://192.168.2.21:8888/', //朱诚
-        target: 'http://192.168.2.171:8888/',              //弘权
+        // target: 'http://192.168.2.171:8888/', //弘权
+        target: 'http://192.168.2.65:8082/', //弘权
         changeOrigin: true,
       }
     },
@@ -33,6 +34,14 @@ module.exports = {
     .options({
       symbolId: 'icon-[name]'
     });
+//TODO 分块
+    // config.externals = {
+    //   'vue': 'Vue',
+    //   'element-ui': 'ELEMENT',
+    //   'vue-router': 'VueRouter',
+    //   'vuex': 'Vuex',
+    //   'axios': 'axios'
+    // };
   },
   configureWebpack: {
     optimization: {
