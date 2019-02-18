@@ -3,8 +3,8 @@
     <nav class="nav" @click="click">
       <button type="button" class="nav__button" data-action="restore" title="Undo (Ctrl + Z)" v-if="data.cropped"><span
         class="fa fa-undo"></span></button>
-      <button type="button" class="nav__button nav__button--danger" data-action="remove" title="Delete (Delete)"
-              v-if="data.loaded && !data.cropping"><span class="fa fa-trash"></span></button>
+      <!-- <button type="button" class="nav__button nav__button--danger" data-action="remove" title="Delete (Delete)"
+              v-if="data.loaded && !data.cropping"><span class="fa fa-trash"></span></button> -->
       <button type="button" class="nav__button nav__button--danger" data-action="clear" title="Cancel (Esc)"
               v-if="data.cropping"><span class="fa fa-ban"></span></button>
       <button type="button" class="nav__button nav__button--success" data-action="crop" title="OK (Enter)"

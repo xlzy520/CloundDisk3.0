@@ -173,6 +173,7 @@
           type: '',
           url: ''
         });
+
       },
 
       update(data) {
