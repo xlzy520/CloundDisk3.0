@@ -193,8 +193,8 @@
         if (row.length > 0) { //  重命名
           fileService.renameFile({...row[0], newName: fileName}).then(res => {
             this.$message1000(res.msg, 'success');
-            this.tableList[0].fname = fileName;
-            this.tableList[0].isEditor = false;
+            row[0].fname = fileName;
+            row[0].isEditor = false;
           });
         } else {//新建文件夹
           categoryService.addCategory(this.$route.query.dirid || 0, fileName).then(res => {
