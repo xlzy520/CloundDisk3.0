@@ -46,7 +46,7 @@ const fileType = {
         case 8: //XMind
           window.sessionStorage.setItem('xmindName', fname);
           window.sessionStorage.setItem('xmindID', fcategoryid);
-          window.open(`/public/xmind/edit.html`);
+          window.open('/xmind/edit.html');
           break;
         case 10: //zip
           this.fullLoading = true;
