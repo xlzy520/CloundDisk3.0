@@ -3,7 +3,7 @@
     <div class="file-action">
       <div class="list-btn">
         <el-button type="primary" icon="el-icon-refresh" data-action="refresh-tip">刷新</el-button>
-        <el-button type="primary" icon="el-icon-upload" data-action="upload">上传</el-button>
+        <el-button type="primary" icon="el-icon-upload" data-action="upload" v-if="isSdbank">上传</el-button>
         <el-dropdown type="primary" @command="handleCommand">
           <el-button type="primary" icon="el-icon-plus">新建<i class="el-icon-arrow-down el-icon--right"></i></el-button>
           <el-dropdown-menu slot="dropdown">
@@ -36,6 +36,47 @@
 import { mapGetters } from 'vuex';
 import Breadcrumb from '../../../components/Breadcrumb.vue';
 import actionConfig from './ListHeaderConfig.js';
+// 计算权限
+function combine(a, b) {
+  let c = [];
+  c.length = a.length;
+  c.fill(1);
+  for (let i in a) {
+    if (a[i] === b[i]) {
+      c[i] = a[i];
+    } else {
+      c[i] = Math.min(a[i], b[i]);
+    }
+  }
+  return c;
+}
+
+// 计算按钮显示与否
+function calc(limitsArr, actionArr) {
+  if (limitsArr.length === 0) {
+    return [];
+  }
+  switch (limitsArr[1]) {
+    case 0:
+    case "0":
+      actionArr = actionArr.filter(v => v !== 'delete');
+      break;
+  }
+  switch (limitsArr[2]) {
+    case 0:
+    case "0":
+      actionArr = actionArr.filter(v => !['copy', 'move', 'rename', 'update'].includes(v));
+      break;
+  }
+  switch (limitsArr[3]) {
+    case 0:
+    case "0":
+      actionArr = actionArr.filter(v => v !== 'download');
+      break;
+  }
+  return actionArr;
+}
+
 export default {
   name: 'ListHeader',
   components: { Breadcrumb },
@@ -47,20 +88,57 @@ export default {
   data () {
     return {
       actionConfig: actionConfig,
+      limitsArr: []
     };
   },
   computed: {
     ...mapGetters([
-      'selectedData'
+      'selectedData',
+      'user'
     ]),
+    // 分享网盘
+    isSdbank: function() {
+      return true;
+    },
+    // 计算应显示哪些按钮
     actionArray() {
+      // 选中的文件夹个数
       const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length;
+      // 最终权限
+      //["查阅", "删除", "编辑", "下载"]
+      if (this.selectedData.length === 0) {
+        this.limitsArr = [];
+      } else {
+        if (this.selectedData[0].hasOwnProperty("auth")) {
+          if (this.selectedData.length > 1) {
+            this.limitsArr = this.selectedData.map(v => { return v.auth; }).reduce(combine);
+          } else {
+            this.limitsArr = this.selectedData[0].auth;
+          }
+        }
+      }
+      // 用户是否为管理员
+      const isAdmin = this.user.utype > 0;
       let actionArr;
+      // 多个被选中
       if (this.selectedData.length > 1) {
-        actionArr = folderCheckedCount === 0 ? ['copy', 'move', 'delete', 'download'] : ['move', 'delete'];
+        actionArr = folderCheckedCount === 0 ? ['copy', 'move', 'delete', 'download', 'share'] : ['move', 'delete', 'share'];
+        actionArr = calc(this.limitsArr, actionArr);
+        if (isAdmin) {
+          actionArr = actionArr.concat("assign");
+        };
+      // 单个被选中
       } else if (this.selectedData.length === 1) {
-        actionArr = folderCheckedCount === 1 ? ['rename', 'move', 'delete', 'detail', 'dingDing']
-          : ['rename', 'copy', 'move', 'download', 'update', 'version', 'delete', 'detail'];
+        actionArr = folderCheckedCount === 1 ? ['rename', 'move', 'delete', 'detail', 'share']
+          : ['rename', 'copy', 'move', 'download', 'update', 'version', 'delete', 'detail', 'share'];
+        actionArr = calc(this.limitsArr, actionArr);
+        if (isAdmin) {
+          actionArr = actionArr.concat("assign");
+        };
+        if (isAdmin && folderCheckedCount === 1) {
+          actionArr = actionArr.concat("dingDing");
+        }
+
       } else {
         actionArr = [];
       }

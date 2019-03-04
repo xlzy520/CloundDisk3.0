@@ -5,6 +5,7 @@
       :visible="dialogVisible"
       :show-close="true"
       top="0"
+      :width="width"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
       @close="closeDialog">
@@ -18,7 +19,7 @@
         <div class="base-dialog-footer" v-if="!notFooterBtn">
           <div class="base-dialog-footer-button">
             <div class="base-dialog-footer-button-ok">
-              <el-button type="primary" @click="handleOk">确 定</el-button>
+              <el-button type="primary" @click="handleOk" :disabled="isClick">确 定</el-button>
             </div>
             <div class="base-dialog-footer-button-close">
               <el-button @click="closeDialog">取 消</el-button>
@@ -33,7 +34,24 @@
 <script>
 export default {
   name: 'base-dialog',
-  props: ['title', 'notFooterBtn'],
+  props: {
+    title: {
+      type: String,
+      default: ''
+    },
+    notFooterBtn: {
+      type: Boolean,
+      default: false
+    },
+    width: {
+      type: String,
+      default: 'auto'
+    },
+    isClick: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       dialogVisible: false
@@ -81,9 +99,6 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    /deep/ .el-dialog {
-      width: auto;
-    }
     /deep/ .el-dialog__header {
       height: 0;
       padding: 0;

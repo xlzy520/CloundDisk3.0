@@ -1,37 +1,40 @@
 <template>
-    <el-tree
-      :data="data"
-      :props="defaultProps"
-      ref="folderTree"
-      :indent="10"
-      :expand-on-click-node="false"
-      @node-expand="nodeExpand"
-      @node-click="handleNodeClick">
-        <span class="custom-tree-node" slot-scope="{node, data}" :title="node.label">
-          <svg-icon icon-class="1"></svg-icon>
-          <span>{{ node.label }}</span>
-        </span>
-    </el-tree>
+  <el-tree
+    :data="data"
+    :props="defaultProps"
+    ref="folderTree"
+    :indent="10"
+    :expand-on-click-node="false"
+    @node-expand="nodeExpand"
+    @node-click="handleNodeClick">
+      <span class="custom-tree-node" slot-scope="{node, data}" :title="node.label">
+        <svg-icon icon-class="1"></svg-icon>
+        <span>{{ node.label }}</span>
+      </span>
+  </el-tree>
 </template>
 
 <script>
   import categoryService from '@/api/service/category';
-
+  import eventBus from '@/plugins/eventBus.js';
   export default {
     data() {
       return {
-        data: [
-          {
-            fname: '研发中心',
-            fcategoryid: '0',
-            childrenFolder: [{}]
-          }
-        ],
+        data: [],
         defaultProps: {
           children: 'childrenFolder',
           label: 'fname'
-        }
+        },
+        list: [],
       };
+    },
+    mounted() {
+      eventBus.$on('Category', (Arr) => {
+        for (let i in Arr) {
+          Arr[i].childrenFolder = [{}];
+        }
+        this.data = Arr;
+      });
     },
     props: ['type'],
     methods: {
@@ -42,10 +45,11 @@
           this.$router.push({ path: '/index/list', query: { dirid: data.fcategoryid }});
         }
       },
+      // 先清空节点，若有数据再展开
       nodeExpand(data, node) {
+        node.childNodes = [];//清空节点，否则点击展开关闭再展开，子节点会重复push，数组长度翻倍
         categoryService.getCategory(data.fcategoryid).then(res=>{
           const folderMap = res.tableList.filter(item => item.ffiletype === 1);
-          node.childNodes = [];//清空节点，否则点击展开关闭再展开，子节点会重复push，数组长度翻倍
           if (folderMap.length > 0) {
             folderMap.forEach((item)=>this.$refs.folderTree.append(item, node));
             node.childNodes.forEach((item) => {

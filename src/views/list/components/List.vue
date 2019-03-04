@@ -44,7 +44,7 @@
             render: (h, {props: {row}}) => {
               if (row.isEditor) {
                 return <RenameFile type="List" onCancel-edit={() => this.$emit('cancel-edit')}
-                                   onConfirm-edit={fileName => this.$emit('confirm-edit', fileName)}/>;
+                        onConfirm-edit={fileName => this.$emit('confirm-edit', fileName)} />;
               } else if (row.isBindingDingRobot === '1') {
                 return (
                   <div class="flex">
@@ -75,7 +75,7 @@
             sortable: true,
             sortMethod: sizeSort,
             formatter: row => {
-              if (row.ffiletype !== 1 && row.fsize !== null) {
+              if (row.ffiletype !== 1 && row.fsize !== null && row.fsize) {
                 return formatSize(row.fsize);
               }
               return '';
@@ -99,6 +99,7 @@
       ])
     },
     methods: {
+      // 点击 表格前的复选框
       handleSelectionChange(rows) {
         this.rows = rows;
         if (this.fileList.length > 0) {

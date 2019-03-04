@@ -43,5 +43,16 @@ export default [
     label: '钉钉',
     value: 'dingDing',
     icon: 'iconfont icon-dingding'
-  }
+  },
+  // 新增分配权限和 分享文件按钮 (只有超级管理员才有该权限)
+  {
+    label: '分配权限',
+    value: 'assign',
+    icon: 'el-icon-info'
+  },
+  {
+    label: '分享文件',
+    value: 'share',
+    icon: 'iconfont icon-dingding'
+  },
 ];

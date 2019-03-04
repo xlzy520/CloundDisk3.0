@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Message, MessageBox } from 'element-ui';
 import store from '../store';
 import router from '../router';
+import { removeToken } from '@/utils/auth';
 
 // 创建axios实例
 const service = axios.create({
@@ -10,7 +11,7 @@ const service = axios.create({
 
 // request拦截器
 service.interceptors.request.use(config => {
-   return config;
+  return config;
 }, error => {
   console.log(error); // for debug
   Promise.reject(error);
@@ -53,8 +54,9 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log(error.response);// for debug
+    console.log(error, error.response);// for debug
     error.message = error.message === 'timeout of 5000ms exceeded' ? '连接服务器超时！' : error.message;
+    removeToken()
     Message({
       message: error.message || error.msg,
       type: 'error',

@@ -6,7 +6,9 @@ const user = {
   state: {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: '',
+    utype: '', // 用户操作权限 0 普通用户，无分配权限和钉钉操作权限， 1 普通管理员和超级管理员， 拥有最高权限
+    fcategoryid: '',
   },
 
   mutations: {
@@ -18,7 +20,10 @@ const user = {
     },
     SET_AVATAR: (state, avatar) => {
       state.avatar = avatar;
-    }
+    },
+    SET_UTYPE: (state, utype) => {
+      state.utype = utype;
+    },
   },
 
   actions: {
@@ -31,6 +36,9 @@ const user = {
           const data = response.data;
           setToken(data.token);
           commit('SET_TOKEN', data.token);
+          commit('SET_NAME', data.userName);
+          commit('SET_AVATAR', data.userIco);
+          commit('SET_UTYPE', data.utype);
           resolve();
         }).catch(error => {
           reject(error);
@@ -47,6 +55,7 @@ const user = {
           commit('SET_TOKEN', data.token);
           commit('SET_NAME', data.userName);
           commit('SET_AVATAR', data.userIco);
+          commit('SET_UTYPE', data.utype);
           resolve(response);
         }).catch(error => {
           reject(error);

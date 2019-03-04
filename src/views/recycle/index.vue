@@ -14,7 +14,7 @@
           :page-no="pagination.currentPage"
           :page-size="pagination.size"
           :loading="loading"
-          @change-page="changePage"
+          @change="changePage"
           :selection="'recycle'"
           :table-data="tableData"
           :table-columns="tableColumns"

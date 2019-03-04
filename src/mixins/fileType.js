@@ -12,6 +12,7 @@ const fileType = {
     fileType(row, event) {
       if (event) event.stopPropagation(); //防止点击文件名之后选择该文件,render方式,Vue使用.stop
       let {ffiletype, fcategoryid, fversionsign, fsize, fname, fvsgin, filesgin} = row;
+
       if (ffiletype === undefined) { //在版本列表组件中，没有文件类型
         ffiletype = this.selectedData[0].ffiletype;
         fname = this.selectedData[0].fname;
@@ -21,7 +22,8 @@ const fileType = {
         fversionsign = fvsgin;
       }
       switch (ffiletype) {
-        case 1: //FOLDER
+        case 1: //FOLDER(文件夹)
+        case "1":
           this.$router.push({path: '/index/list', query: {dirid: fcategoryid}});
           break;
         case 2:case 9:case 11: //Text、Markdown
