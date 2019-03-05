@@ -14,12 +14,11 @@
         </ul>
       </base-scrollbar>
     </div>
-    
   </div>
 </template>
 
 <script>
-import bus from '@/plugins/eventBus.js';
+import eventBus from '@/plugins/eventBus.js';
 import baseScrollbar from '@/components/baseScrollbar.vue';
 
 export default {
@@ -51,34 +50,24 @@ export default {
       return this.MemberList.length === 0;
     },
     authList: function() {
-      let arr = [0, 0, 0, 0];
+      let arr = new Array(6).fill(0);
       if (this.checkList.length === 0) {
-        return [0, 0, 0, 0];
+        return new Array(6).fill(0);
       }
-
-      if (this.checkList.includes("0")) {
-        arr[0] = 1;
-      }
-
-      if (this.checkList.includes("1")) {
-        arr[1] = 1;
-      }
-
-      if (this.checkList.includes("2")) {
-        arr[2] = 1;
-      }
-
-      if (this.checkList.includes("3")) {
-        arr[3] = 1;
+      let newArr = new Array(6).fill('').map((item, index) => index + 1);
+      for (let i in newArr) {
+        if (this.checkList.includes(i)) {
+          arr[i] = 1;
+        }
       }
       return arr;
     }
   },
   mounted() {
-    bus.$on("privilege-change", (newVal) => {
+    eventBus.$on("privilege-change", (newVal) => {
       this.checkList = newVal;
     });
-    bus.$on("member-change", (newVal) => {
+    eventBus.$on("member-change", (newVal) => {
       this.MemberList = newVal;
     });
     this.$emit("auth-change", this.authList);
@@ -103,10 +92,9 @@ export default {
       this.$emit("auth-change", this.authList);
     },
     handleCheckedCitiesChange(value) {
-      if (this.checkList.includes("1") || this.checkList.includes("2") || this.checkList.includes("3")) {
-        if (!this.checkList.includes("0")) {
-          this.checkList.push("0");
-        }
+      // 选中查阅外 其他按钮 且  无选中查阅按钮 ; 自动勾选查阅
+      if (this.checkList.filter(v => v > 0).length > 0 && !this.checkList.find(v => v === "0")) {
+        this.checkList.push("0");
       }
       let checkedCount = value.length;
       this.checkAll = checkedCount === this.listData.length;
