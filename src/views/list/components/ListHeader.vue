@@ -105,7 +105,7 @@ export default {
       // 选中的文件夹个数
       const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length;
       // 最终权限
-      //["查阅", "删除", "编辑", "下载"]
+      //["查阅", "删除", "编辑", "下载", "上传", "新建"]
       if (this.selectedData.length === 0) {
         this.limitsArr = [];
       } else {
@@ -138,7 +138,6 @@ export default {
         if (isAdmin && folderCheckedCount === 1) {
           actionArr = actionArr.concat("dingDing");
         }
-
       } else {
         actionArr = [];
       }

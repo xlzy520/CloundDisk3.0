@@ -114,7 +114,7 @@
     },
     methods: {
       handleCurrentChange(val) {
-        this.$emit('change', val);
+        this.$emit('change-page', val);
       },
       // 使用v-bind展开props到组件上
       getComponentBind({row, column, $index}, col) {

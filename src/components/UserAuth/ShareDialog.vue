@@ -1,14 +1,14 @@
 <!--  -->
 <template>
   <div>
-    <base-dialog ref="baseDialog" title="您将分享该目录或者文件给指定分享人" width="40vw" @close="close" @comfirm="Debouncecomfirm" :is-click="isClick">
+    <base-dialog ref="baseDialog" title="权限管理" width="40vw" @close="close" @comfirm="Debouncecomfirm" :is-click="isClick">
       <el-form label-position="left" label-width="80px" class="FormBox">
         <el-form-item label="组织列表">
           <el-select 
-            v-model="OrgID"
+            v-model="GroupNum"
             filterable
             placeholder="请选择" 
-            @change="OrgIdChange" 
+            @change="GroupNumChange" 
             class="pulldown">
             <el-option
               v-for="item in options"
@@ -20,10 +20,9 @@
         </el-form-item>
         <el-form-item label="员工列表">
           <el-select 
-            v-model="MemberID" 
-            filterable 
-            multiple
-            :disabled="!OrgID"
+            v-model="userId" 
+            filterable
+            :disabled="!GroupNum"
             :remote-method="remoteMethod"
             :loading="loading" 
             class="pulldown"
@@ -42,10 +41,9 @@
 </template>
 
 <script>
-import baseDialog from './baseDialog.vue';
+import baseDialog from '../baseDialog.vue';
 import pushService from '@/api/service/push.js';
 import authService from '@/api/service/auth.js';
-import fileService from '@/api/service/fileShare.js';
 import debounce from 'lodash/debounce';
 import { mapState } from 'vuex';
 
@@ -56,8 +54,8 @@ export default {
       list: [],
       options: [],
       options2: [],
-      OrgID: "",
-      MemberID: [],
+      GroupNum: "",
+      userId: "",
     };
   },
   components: {
@@ -76,7 +74,7 @@ export default {
     },
     userList: function() {
       return this.options2.filter(v => {
-        return this.MemberID.indexOf(v.userId) > -1;
+        return this.userId.indexOf(v.userId) > -1;
       }).map(v => {
         return {
           userId: v.userId,
@@ -85,13 +83,12 @@ export default {
       });
     },
     isClick: function() {
-      return !(this.OrgID && this.MemberID.length > 0);
+      return !(this.GroupNum && this.userId.length > 0);
     }
   }),
   mounted() {
     this.getOrgList();
   },
-  watch: {},
   methods: {
     getOrgList() {
       authService.getOrgList().then(res => {
@@ -100,8 +97,8 @@ export default {
         }
       });
     },
-    OrgIdChange(val) {
-      this.MemberID = [];
+    GroupNumChange(val) {
+      this.userId = "";
       pushService.getUserInfoByOrgId(val).then(res => {
         if (res.success) {
           this.options2 = res.data;
@@ -116,23 +113,12 @@ export default {
     }, 500),
     // 点击分享按钮
     comfirm() {
-      const params = {
-        fcategoryid: this.fcateList,
-        userList: this.userList,
-      };
-
-      fileService.shareFile(params).then(res => {
-        if (res.success) {
-          this.$message1000("分享文件成功", 'success');
-          this.close();
-        } else {
-          this.$message1000(res.data.msg, 'error');
-        }
-      });
+      this.$router.push(`/index/userAuth?userId=${this.userId}`);
+      this.close();
     },
     close() {
-      this.OrgID = "";
-      this.MemberID = "";
+      this.GroupNum = "";
+      this.userId = "";
       this.$refs.baseDialog.dialogVisible = false;
     },
     remoteMethod(query) {
