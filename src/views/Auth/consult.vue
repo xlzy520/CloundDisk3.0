@@ -27,7 +27,7 @@
         isShowOrgList: "1",
         listData2: [],
         listData3: [
-          {
+            {
             name: '查阅',
             fID: '0',
           },
@@ -42,6 +42,14 @@
           {
             name: '下载',
             fID: '3',
+          },
+          {
+            name: '上传',
+            fID: '4',
+          },
+          {
+            name: '新建',
+            fID: '5',
           },
         ],
         Auths: [],

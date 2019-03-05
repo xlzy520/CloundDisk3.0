@@ -35,7 +35,7 @@
 </template>
 
 <script>
-import bus from '@/plugins/eventBus.js';
+import eventBus from '@/plugins/eventBus.js';
 import baseScrollbar from '@/components/baseScrollbar.vue';
 import cloneDeep from 'lodash/cloneDeep';
 import authService from '@/api/service/auth.js';
@@ -85,7 +85,7 @@ export default {
     },
   },
   mounted() {
-    bus.$on("GroupNum-change", (val) => {
+    eventBus.$on("GroupNum-change", (val) => {
       this.GroupNum = val;
     });
     this.$emit("member-change", this.checkList);
@@ -98,7 +98,7 @@ export default {
     },
     checkList: function(newVal, oldVal) {
       if (oldVal !== newVal) {
-        bus.$emit("member-change", newVal);
+        eventBus.$emit("member-change", newVal);
         this.$emit("member-change", this.checkList);
         if (this.checkList.length === this.listData.length) {
           this.checkAll = true;
@@ -151,7 +151,7 @@ export default {
             if (isEqual) {
               this.transmit(authArr[0]);
             } else {
-              this.transmit([0, 0, 0, 0]);
+              this.transmit(new Array(6).fill(0));
             }
           }
         }
@@ -164,7 +164,7 @@ export default {
           arr.push(i);
         }
       }
-      bus.$emit("privilege-change", arr);
+      eventBus.$emit("privilege-change", arr);
     }
   }
 };

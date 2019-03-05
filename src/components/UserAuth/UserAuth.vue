@@ -17,7 +17,7 @@
 </template>
 
 <script>
-  import recycleService from '@/api/service/recycle';
+  import categoryService from '@/api/service/category';
   import BaseTable from '@/components/baseTable.vue';
   import BaseScrollbar from '@/components/baseScrollbar.vue';
 
@@ -48,7 +48,7 @@
             render(h, {props: {row}}) {
               return (
                 <div>
-                  <svg-icon iconClass={ row.ffiletype === 1 ? 'tick' : 'cross'}/>
+                  <svg-icon iconClass={ row.flook === "1" ? 'tick' : 'cross'}/>
                 </div>
               );
             }
@@ -60,7 +60,7 @@
             render(h, {props: {row}}) {
               return (
                 <div>
-                  <svg-icon iconClass={ row.ffiletype === 1 ? 'tick' : 'cross'}/>
+                  <svg-icon iconClass={ row.fdel === "1" ? 'tick' : 'cross'}/>
                 </div>
               );
             }
@@ -72,7 +72,7 @@
             render(h, {props: {row}}) {
               return (
                 <div>
-                  <svg-icon iconClass={ row.ffiletype === 1 ? 'tick' : 'cross'}/>
+                  <svg-icon iconClass={ row.fedit === "1" ? 'tick' : 'cross'}/>
                 </div>
               );
             }
@@ -84,7 +84,7 @@
             render(h, {props: {row}}) {
               return (
                 <div>
-                  <svg-icon iconClass={ row.ffiletype === 1 ? 'tick' : 'cross'}/>
+                  <svg-icon iconClass={ row.fdownload === "1" ? 'tick' : 'cross'}/>
                 </div>
               );
             }
@@ -95,7 +95,7 @@
             render(h, {props: {row}}) {
               return (
                 <div>
-                  <svg-icon iconClass={ row.ffiletype === 1 ? 'tick' : 'cross'}/>
+                  <svg-icon iconClass={ row.fupload === "1" ? 'tick' : 'cross'}/>
                 </div>
               );
             }
@@ -106,12 +106,12 @@
             render(h, {props: {row}}) {
               return (
                 <div>
-                  <svg-icon iconClass={ row.ffiletype === 1 ? 'tick' : 'cross'}/>
+                  <svg-icon iconClass={ row.fnew === "1" ? 'tick' : 'cross'}/>
                 </div>
               );
             }
           },
-          {label: '分享来源', prop: 'fupdateor'},
+          {label: '分享来源', prop: 'fusername'},
         ],
         loading: false,
         categoryIds: [],
@@ -129,13 +129,13 @@
     methods: {
       changePage(val) {
         this.pagination.currentPage = val;
-        this.recycleList();
+        this.searchThisUserHavePers();
       },
-      recycleList() {
+      searchThisUserHavePers() {
         this.loading = true;
-        recycleService.getRecycleList(this.pagination.currentPage).then(res => {
-          this.tableData = res.data.result;
-          this.pagination.total = res.data.total;
+        categoryService.searchThisUserHavePers(this.$route.query.userId).then(res => {
+          this.tableData = res.data.list;
+          //this.pagination.total = res.data.total;
         }).catch(() => {
           this.$message1000('获取回收站信息错误', 'error');
         }).finally(() => {
@@ -143,17 +143,12 @@
           this.categoryIds = [];
         });
       },
-      selectChange(select) {
-        this.categoryIds = select.map(item => item.fcategoryid);
-      },
-    },
-    beforeMount() {
-      this.recycleList();
     },
     created() {
       if (!this.$route.query.userId) {
         this.$router.push('/index/list');
       }
+      this.searchThisUserHavePers();
     }
   };
 </script>

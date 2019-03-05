@@ -47,6 +47,14 @@ export default {
           name: '下载',
           fID: '3',
         },
+        {
+          name: '上传',
+          fID: '4',
+        },
+        {
+          name: '新建',
+          fID: '5',
+        },
       ],
       Auths: [],
       Members: []

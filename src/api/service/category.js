@@ -12,4 +12,7 @@ export default {
   deleteCategory(categoryids, fparentid) {
     return categoryService('/deleteCategory.do', {list: categoryids, fparentid: fparentid});
   },
+  searchThisUserHavePers(fuserid) {
+    return categoryService('/searchThisUserHavePers.do', { fuserid });
+  }
 };
