@@ -6,6 +6,7 @@ const getters = {
   utype: state => state.user.utype,
   selectedData: state => state.file.selectedData,
   actionArray: state => state.file.actionArray,
+  authArr: state => state.file.authArr,
   user: state => state.user
 };
 export default getters;

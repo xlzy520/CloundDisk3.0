@@ -3,8 +3,8 @@
     <div class="file-action">
       <div class="list-btn">
         <el-button type="primary" icon="el-icon-refresh" data-action="refresh-tip">刷新</el-button>
-        <el-button type="primary" icon="el-icon-upload" data-action="upload" v-if="isSdbank">上传</el-button>
-        <el-dropdown type="primary" @command="handleCommand">
+        <el-button type="primary" icon="el-icon-upload" data-action="upload" v-if="CurrentAuth[4] == 1">上传</el-button>
+        <el-dropdown type="primary" @command="handleCommand" v-if="CurrentAuth[5] == 1">
           <el-button type="primary" icon="el-icon-plus">新建<i class="el-icon-arrow-down el-icon--right"></i></el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="newFolder">文件夹</el-dropdown-item>
@@ -94,11 +94,12 @@ export default {
   computed: {
     ...mapGetters([
       'selectedData',
-      'user'
+      'user',
+      'authArr'
     ]),
-    // 分享网盘
-    isSdbank: function() {
-      return true;
+    // 当前文件夹权限
+    CurrentAuth: function() {
+      return this.authArr;
     },
     // 计算应显示哪些按钮
     actionArray() {

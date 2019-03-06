@@ -20,6 +20,10 @@
           if (res.common && res.common.length > 0) {
             eventBus.$emit("Category", res.common);
           }
+
+          if (res.auth && res.auth.length > 0) {
+            this.$store.dispatch('SetAuthArr', res.auth);
+          }
         });
       },
     }
