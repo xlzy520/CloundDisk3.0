@@ -42,19 +42,19 @@
         <el-dropdown-menu class="user-dropdown" slot="dropdown">
           <router-link class="inlineBlock" to="/">
             <el-dropdown-item>
-              主页
+              <span class="name">主页</span>
             </el-dropdown-item>
           </router-link>
           <router-link class="inlineBlock" to="/">
             <el-dropdown-item>
-              {{name}}
+              <span class="name">{{name}}</span>
             </el-dropdown-item>
           </router-link>
           <el-dropdown-item divided v-if="isAdmin">
-            <span @click="view">查询权限</span>
+            <span class="name" @click="view">查询权限</span>
           </el-dropdown-item>
           <el-dropdown-item divided>
-            <span @click="logout">注销</span>
+            <span class="name" @click="logout">注销</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -178,7 +178,7 @@ export default {
     position: absolute;
     right: 15%;
     .material-input__component{
-     float: left;
+      float: left;
       width: 225px;
       margin-top: 5px;
     }
@@ -209,6 +209,22 @@ export default {
         font-size: 12px;
       }
     }
+  }
+}
+
+.user-dropdown {
+  line-height: 20px;
+  /deep/ .el-dropdown-menu__item {
+    padding: 0;
+  }
+
+  /deep/ .el-dropdown-menu__item--divided:before {
+    margin: 0;
+  }
+
+  .name {
+    display: block;
+    padding: 0 20px;
   }
 }
 </style>
