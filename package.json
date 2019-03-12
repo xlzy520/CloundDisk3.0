@@ -21,6 +21,7 @@
     "element-ui": "^2.4.5",
     "js-cookie": "2.2.0",
     "jszip": "^3.1.5",
+    "lodash": "^4.17.11",
     "mavon-editor": "^2.6.17",
     "md5": "^2.2.1",
     "normalize.css": "7.0.0",
@@ -59,5 +60,7 @@
   "license": "MIT",
   "main": "index.js",
   "repository": "git@192.168.0.169:lzy/djdm.git",
-  "browserslist": ["chrome 58"]
+  "browserslist": [
+    "chrome 58"
+  ]
 }

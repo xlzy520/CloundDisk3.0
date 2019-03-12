@@ -15,10 +15,11 @@
         type="selection"
         width="55">
       </el-table-column>
-      <el-table-column v-for="col in columns"
-                       v-if="!col.hidden"
-                       :key="col.label"
-                       v-bind="col">
+      <el-table-column 
+        v-for="col in columns"
+        v-if="!col.hidden"
+        :key="col.label"
+        v-bind="col">
         <template slot-scope="scope" v-if="col.component">
           <component :is="col.component" v-bind="getComponentBind(scope, col)">
           </component>
@@ -28,6 +29,7 @@
     <el-pagination
       v-if="total>pageSize"
       class="pagination"
+      background
       @current-change="handleCurrentChange"
       :current-page="pageNo"
       :page-size="pageSize"
@@ -112,7 +114,7 @@
     },
     methods: {
       handleCurrentChange(val) {
-        this.$emit('changePage', val);
+        this.$emit('change-page', val);
       },
       // 使用v-bind展开props到组件上
       getComponentBind({row, column, $index}, col) {

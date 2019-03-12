@@ -1,16 +1,17 @@
 import axios from 'axios';
-import { Message, MessageBox } from 'element-ui';
+import { Message } from 'element-ui';
 import store from '../store';
 import router from '../router';
+import { removeToken } from '@/utils/auth';
 
 // 创建axios实例
 const service = axios.create({
-  timeout: 5000 // 请求超时时间
+  timeout: 20000 // 请求超时时间
 });
 
 // request拦截器
 service.interceptors.request.use(config => {
-   return config;
+  return config;
 }, error => {
   console.log(error); // for debug
   Promise.reject(error);
@@ -21,21 +22,12 @@ service.interceptors.response.use(
   response => {
     const res = response.data;
     if (!res.success) {
-      if (res.code === 100602 || res.msg === 'token已过期') { //exchangeToken接口没有code，只有msg
+      if (res.code === "100602" || res.msg === 'token已过期') { //exchangeToken接口没有code，只有msg
         if (router.history.current.path !== '/login') {
-          MessageBox.confirm('Token 过期了，您可以取消继续留在该页面，或者重新登录', '确定登出', {
-            confirmButtonText: '重新登录',
-            cancelButtonText: '取消',
-            type: 'warning',
-            closeOnClickModal: false,
-            showClose: false,
-            roundButton: true,
-            closeOnPressEscape: false
-          }).then(() => {
-            store.dispatch('FedLogOut').then(() => {
-              router.push('/login');
-              //location.reload();// 为了重新实例化vue-router对象 避免bug
-            });
+          removeToken();
+          store.dispatch('FedLogOut').then(() => {
+            router.push('/login');
+            //location.reload();// 为了重新实例化vue-router对象 避免bug
           });
         }
       } else if (res.msg === '120') {
@@ -53,8 +45,9 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log(error.response);// for debug
+    console.log(error, error.response);// for debug
     error.message = error.message === 'timeout of 5000ms exceeded' ? '连接服务器超时！' : error.message;
+    removeToken();
     Message({
       message: error.message || error.msg,
       type: 'error',

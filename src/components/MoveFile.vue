@@ -5,8 +5,7 @@
     v-if="visible"
     @close="close"
     width="420px"
-    custom-class="move-file"
-  >
+    custom-class="move-file">
     <el-scrollbar class="height100">
       <tree-menu type="copyMove" @getFolderId="getFolderId" ></tree-menu>
     </el-scrollbar>

@@ -15,14 +15,17 @@
     <delete-file ref="delete" @action="dispatchAction"></delete-file>
     <detail ref="detail"></detail>
     <version-list ref="version" @action="dispatchAction"></version-list>
-    <md-editor ref="md"
-               v-if="visible==='mdEditor'"
-               :doc-info="docInfo"
-               @action="dispatchAction"></md-editor>
+    <md-editor 
+      ref="md"
+      v-if="visible==='mdEditor'"
+      :doc-info="docInfo"
+      @action="dispatchAction">
+    </md-editor>
     <move-file ref="move" @action="dispatchAction"></move-file>
     <img-editor ref="img" v-if="visible==='img'" :img-config="imgConfig" @action="dispatchAction"></img-editor>
     <zip-reader ref="zipReader" @action="dispatchAction"></zip-reader>
     <ding-ding ref="dingDing" @action="dispatchAction"></ding-ding>
+    <share ref="share" @action="dispatchAction"></share>
   </div>
 </template>
 
@@ -39,10 +42,26 @@
   import MdEditor from "@/components/MDEditor";
   import ZipReader from '@/components/ZipReader.vue';
   import DingDing from "@/components/DingDing";
+  import Share from '@/components/ShareDialog.vue';
 
   import fileService from '@/api/service/file';
   import request from '@/utils/request';
   import categoryService from '@/api/service/category';
+  import eventBus from '@/plugins/eventBus.js';
+  // 计算权限
+  function combine(a, b) {
+    let c = [];
+    c.length = a.length;
+    c.fill(1);
+    for (let i in a) {
+      if (a[i] === b[i]) {
+        c[i] = a[i];
+      } else {
+        c[i] = Math.min(a[i], b[i]);
+      }
+    }
+    return c;
+  }
   export default {
     name: 'index',
     data() {
@@ -59,7 +78,18 @@
     computed: {
       ...mapGetters([
         'selectedData',
-      ])
+      ]),
+      limitArr: function() {
+        return this.selectedData.length === 1 ? this.selectedData[0].auth : (this.selectedData.length > 1 ? this.selectedData.map(v => { return v.auth; }).reduce(combine) : []);
+      },
+      fcategoryid: {
+        get: function() {
+          return this.selectedData.map(v => {
+            return v.fcategoryid;
+          }).join(",");
+        },
+        set: function() {}
+      },
     },
     components: {
       DingDing,
@@ -74,7 +104,8 @@
       DeleteFile,
       MDEditor: () => import('@/components/MDEditor.vue'),
       MoveFile,
-      ZipReader
+      ZipReader,
+      Share
     },
     methods: {
       dispatchAction(action, values) {
@@ -139,6 +170,14 @@
             break;
           case 'dingDing':
             this.$refs[action].open();
+            break;
+          case 'assign':
+            localStorage.obj = JSON.stringify(this.selectedData);
+            // 点击分配权限按钮时 请求 getAuth接口查询 userList是否为空数组
+            this.$store.dispatch('QueryPermission', this.fcategoryid);
+            break;
+          case 'share':
+            this.$refs[action].openDialog();
             break;
           default:
             break;
@@ -215,13 +254,25 @@
         }
       },
       getCategory(id = this.$route.query.dirid, refresh = false) {
-        if (!id) id = 0;
+        if (!id) id = -1;
         return categoryService.getCategory(id).then(res => {
           if (refresh) {
             this.$message1000('刷新成功', 'success');
           }
           this.tableList = res.tableList;
           this.navList = res.navList;
+
+          if (id === -1 && res.tableList.length === 0) {
+            this.tableList = res.common;
+          }
+
+          if (res.common && res.common.length > 0) {
+            eventBus.$emit("Category", res.common);
+          }
+
+          if (res.auth && res.auth.length > 0) {
+            this.$store.dispatch('SetAuthArr', res.auth);
+          }
         });
       },
       signIn() {

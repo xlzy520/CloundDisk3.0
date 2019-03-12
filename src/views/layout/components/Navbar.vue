@@ -1,79 +1,91 @@
 <template>
-  <el-menu class="navbar" mode="horizontal">
-    <hamburger class="hamburger-container"
-               :toggle-click="toggleSideBar"
-               :is-active="sidebar.opened"
-    title="展开侧边栏">
-    </hamburger>
-    <div class="nav__logo" v-show="!sidebar.opened">
-      <img src="@/assets/logo/logo.png" width="36" height="36" class="nav__logo__img">
-      <span class="nav__logo__title">东经云盘</span>
-    </div>
-    <div class="nav-router">
-      <router-link to="/index/recycle" class="nav-router-text recycle">回收站</router-link>
-      <router-link to="/index/record"  v-if="false" class="nav-router-text record">操作记录</router-link>
-    </div>
-    <div class="search_wrap"  @focus="showSwitch($event)" @blur="showSwitch($event)">
-      <el-switch
-        v-show="inputHover"
-        class="switch-search"
-        v-model="query.full"
-        active-color="#13ce66"
-        active-text="全文搜索">
-      </el-switch>
-      <md-input
-        icon="search"
-        name="search"
-        @focus="showSwitch"
-        @blur="showSwitch"
-        v-model="query.value"
-        title="请输入搜索关键词"
-        placeholder="请输入关键词，回车搜索"
-        :maxlength="maxlength"
-        :key-enter-function="getSearchResult">
-      </md-input>
-    </div>
-    <el-dropdown class="avatar-container" trigger="click">
-      <div class="avatar-wrapper">
-        <img class="user-avatar" :src="'https://oa.djcps.com/DJOA/'+avatar">
-        <i class="el-icon-caret-bottom"></i>
+  <div>
+    <el-menu class="navbar" mode="horizontal">
+      <hamburger class="hamburger-container"
+        :toggle-click="toggleSideBar"
+        :is-active="sidebar.opened"
+        title="展开侧边栏">
+      </hamburger>
+      <div class="nav__logo" v-show="!sidebar.opened">
+        <img src="@/assets/logo/logo.png" width="36" height="36" class="nav__logo__img">
+        <span class="nav__logo__title">东经云盘</span>
       </div>
-      <el-dropdown-menu class="user-dropdown" slot="dropdown">
-        <router-link class="inlineBlock" to="/">
-          <el-dropdown-item>
-            主页
+      <div class="nav-router">
+        <router-link to="/index/recycle" class="nav-router-text recycle">回收站</router-link>
+        <router-link to="/index/record"  v-if="false" class="nav-router-text record">操作记录</router-link>
+      </div>
+      <div class="search_wrap"  @focus="showSwitch($event)" @blur="showSwitch($event)">
+        <el-switch
+          v-show="inputHover"
+          class="switch-search"
+          v-model="query.full"
+          active-color="#13ce66"
+          active-text="全文搜索">
+        </el-switch>
+        <md-input
+          icon="search"
+          name="search"
+          @focus="showSwitch"
+          @blur="showSwitch"
+          v-model="query.value"
+          title="请输入搜索关键词"
+          placeholder="请输入关键词，回车搜索"
+          :maxlength="maxlength"
+          :key-enter-function="getSearchResult">
+        </md-input>
+      </div>
+      <el-dropdown class="avatar-container" trigger="click">
+        <div class="avatar-wrapper">
+          <img class="user-avatar" :src="'https://oa.djcps.com/DJOA/'+avatar">
+          <i class="el-icon-caret-bottom"></i>
+        </div>
+        <el-dropdown-menu class="user-dropdown" slot="dropdown">
+          <router-link class="inlineBlock" to="/">
+            <el-dropdown-item>
+              <span class="name">主页</span>
+            </el-dropdown-item>
+          </router-link>
+          <router-link class="inlineBlock" to="/">
+            <el-dropdown-item>
+              <span class="name">{{name}}</span>
+            </el-dropdown-item>
+          </router-link>
+          <el-dropdown-item divided v-if="isAdmin">
+            <span class="name" @click="view">查询权限</span>
           </el-dropdown-item>
-        </router-link>
-        <router-link class="inlineBlock" to="/">
-          <el-dropdown-item>
-            {{name}}
+          <el-dropdown-item divided>
+            <span class="name" @click="logout">注销</span>
           </el-dropdown-item>
-        </router-link>
-        <el-dropdown-item divided>
-          <span @click="logout">注销</span>
-        </el-dropdown-item>
-      </el-dropdown-menu>
-    </el-dropdown>
-  </el-menu>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </el-menu>
+    <share ref="share"></share>
+  </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import Hamburger from '@/components/Hamburger.vue';
 import MdInput from '@/components/MDinput.vue';
+import Share from '@/components/UserAuth/ShareDialog.vue';
 
 export default {
   name: 'Navbar',
   components: {
     MdInput,
-    Hamburger
+    Hamburger,
+    Share
   },
   computed: {
     ...mapGetters([
       'sidebar',
       'avatar',
-      'name'
-    ])
+      'name',
+      'utype'
+    ]),
+    isAdmin: function() {
+      return this.utype > 0;
+    }
   },
   data() {
     return {
@@ -103,6 +115,9 @@ export default {
         this.$router.push('/login');
         //location.reload(); // 为了重新实例化vue-router对象 避免bug
       });
+    },
+    view() {
+      this.$refs.share.openDialog();
     },
     getSearchResult() {
       const searchQuery = this.query.full ? this.query : {query: this.query.value};
@@ -163,7 +178,7 @@ export default {
     position: absolute;
     right: 15%;
     .material-input__component{
-     float: left;
+      float: left;
       width: 225px;
       margin-top: 5px;
     }
@@ -194,6 +209,22 @@ export default {
         font-size: 12px;
       }
     }
+  }
+}
+
+.user-dropdown {
+  line-height: 20px;
+  /deep/ .el-dropdown-menu__item {
+    padding: 0;
+  }
+
+  /deep/ .el-dropdown-menu__item--divided:before {
+    margin: 0;
+  }
+
+  .name {
+    display: block;
+    padding: 0 20px;
   }
 }
 </style>

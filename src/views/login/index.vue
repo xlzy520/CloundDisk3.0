@@ -3,35 +3,37 @@
     <canvas id="cvs_bg" width="1443" height="596"></canvas>
     <canvas id="cvs_key"></canvas>
     <el-form class="login-form" auto-complete="on" status-icon :model="loginForm" :rules="loginRules" ref="loginForm"
-             label-position="left">
+      label-position="left">
       <h3 class="title">东经云盘</h3>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <i class="fa fa-user"></i>
           <!--<svg-icon icon-class="user" />-->
         </span>
-        <el-input name="username"
-                  type="text"
-                  spellcheck="false"
-                  v-model.trim="loginForm.username"
-                  auto-complete="on"
-                  maxlength="30"
-                  clearable
-                  placeholder="请输入账号"/>
+        <el-input 
+          name="username"
+          type="text"
+          spellcheck="false"
+          v-model.trim="loginForm.username"
+          auto-complete="on"
+          maxlength="30"
+          clearable
+          placeholder="请输入账号" />
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container svg-container_login">
           <i class="fa fa-lock"></i>
         </span>
-        <el-input name="password"
-                  :type="pwdType"
-                  spellcheck="false"
-                  @keyup.enter.native="handleLogin"
-                  v-model.trim="loginForm.password"
-                  maxlength="30"
-                  clearable
-                  auto-complete="on"
-                  placeholder="请输入密码"/>
+        <el-input 
+          name="password"
+          :type="pwdType"
+          spellcheck="false"
+          @keyup.enter.native="handleLogin"
+          v-model.trim="loginForm.password"
+          maxlength="30"
+          clearable
+          auto-complete="on"
+          placeholder="请输入密码" />
         <span class="show-pwd" @click="showPwd"><i :class="['fa',eye]"></i></span>
       </el-form-item>
       <el-form-item>

@@ -38,6 +38,16 @@ export const constantRouterMap = [
         path: 'search',
         component: () => import('@/views/search/index'),
         name: '搜索结果'
+      },
+      {
+        path: 'Auth',
+        component: () => import('@/views/Auth/index'),
+        name: '权限页面'
+      },
+      {
+        path: 'userAuth',
+        component: () => import('@/components/UserAuth/UserAuth'),
+        name: '权限管理'
       }
     ]
   },
