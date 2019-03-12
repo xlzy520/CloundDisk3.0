@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Message, MessageBox } from 'element-ui';
+import { Message } from 'element-ui';
 import store from '../store';
 import router from '../router';
 import { removeToken } from '@/utils/auth';
