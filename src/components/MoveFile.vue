@@ -7,7 +7,7 @@
     width="420px"
     custom-class="move-file">
     <el-scrollbar class="height100">
-      <tree-menu type="copyMove" @getFolderId="getFolderId" ></tree-menu>
+      <tree-menu ref="tree" type="copyMove" @getFolderId="getFolderId"></tree-menu>
     </el-scrollbar>
     <span slot="footer" class="dialog-footer">
     <el-button type="primary" @click="moveFile">确 定</el-button>
@@ -18,6 +18,7 @@
 
 <script>
   import { mapGetters } from 'vuex';
+  import categoryService from '@/api/service/category';
   import treeMenu from '@/components/treeMenu';
   import fileService from '@/api/service/file';
   export default {
@@ -36,7 +37,26 @@
         'selectedData'
       ])
     },
+    watch: {
+      visible: function() {
+        if (this.visible) {
+          this.getCategory();
+        }
+      }
+    },
     methods: {
+      getCategory(id = -1) {
+        return categoryService.getCategory(id).then(res => {
+          // common字段 只在最外层
+          if (res.common && res.common.length > 0) {
+            let Arr = res.common;
+            for (let i in Arr) {
+              Arr[i].childrenFolder = [{}];
+            }
+            this.$refs.tree.data = Arr;
+          }
+        });
+      },
       close() {
         this.visible = false;
       },
