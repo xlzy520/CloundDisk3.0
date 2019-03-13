@@ -145,15 +145,5 @@
 
 </script>
 <style lang="scss" scoped>
-  .flexBox {
-    display: flex;
-  }
-  .scrollbar {
-    width: 1200px;
-    height: 500px;
-  }
 
-  .handlerBox {
-    margin-top: 20px;
-  }
 </style>

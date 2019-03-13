@@ -18,6 +18,7 @@
         return categoryService.getCategory(id).then(res => {
           // common字段 只在最外层
           if (res.common && res.common.length > 0) {
+            //console.log(res.common);
             eventBus.$emit("Category", res.common);
           }
 
