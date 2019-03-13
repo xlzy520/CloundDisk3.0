@@ -3,10 +3,10 @@
   <div class="AuthBox">
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="分配权限" name="1">
-        <allot></allot>
+        <allot class="flexUp"></allot>
       </el-tab-pane>
       <el-tab-pane label="编辑权限" name="2">
-        <consult></consult>
+        <consult class="flexUp"></consult>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -52,10 +52,66 @@ export default {
 };
 
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
   .AuthBox {
     width: 100%;
     box-sizing: border-box;
     padding-left: 20px;
+
+    /deep/ .el-tabs {
+      height: 100%;
+    }
+
+    /deep/ .el-tabs__content {
+      height: calc(100%);
+    }
+
+    /deep/ .el-tab-pane {
+      height: 100%;
+    }
+  }
+
+  .flexUp {
+    height: calc(100% - 40px);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .flexBox {
+    display: flex;
+  }
+  .scrollbar {
+    width: 1200px;
+    flex-grow: 8 !important;
+  }
+
+  .handlerBox {
+    flex: 1 1 12px;
+  }
+
+  .listCheckbox {
+    width: 400px;
+    line-height: 40px;
+
+    .ScrollBox {
+      width: 200px;
+      height: 56vh;
+      border: 1px solid #eee;
+      margin-top: 10px;
+    }
+
+    li {
+
+      &.actived {
+        background-color: blue;
+      }
+
+      .name {
+        width: 100%;
+        box-sizing: border-box;
+        padding-left: 20px;
+        height: 100%;
+      }
+    }
   }
 </style>

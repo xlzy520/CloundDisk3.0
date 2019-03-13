@@ -1,7 +1,6 @@
 <!--  -->
 <template>
-  <div class="">
-    
+  <div>
     <base-scrollbar ref="scrollbar" class="scrollbar">
       <div class="flexBox">
         <list-radio title="组织列表" :list-data="listData" @GroupNum-change="OrgIdChange"></list-radio>
@@ -13,7 +12,6 @@
       <el-button type="primary" @click="save" :disabled="isClick">保存</el-button>
       <el-button type="warning" @click="Quit">取消</el-button>
     </div>
-    
   </div>
 </template>
 
@@ -136,15 +134,5 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-  .flexBox {
-    display: flex;
-  }
-  .scrollbar {
-    width: 1200px;
-    height: 500px;
-  }
-
-  .handlerBox {
-    margin-top: 20px;
-  }
+  
 </style>

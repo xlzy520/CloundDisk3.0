@@ -106,29 +106,5 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-  .listCheckbox {
-    width: 400px;
-    line-height: 40px;
 
-    .ScrollBox {
-      width: 200px;
-      height: 400px;
-      border: 1px solid #eee;
-      margin-top: 10px;
-    }
-
-    li {
-
-      &.actived {
-        background-color: blue;
-      }
-
-      .name {
-        width: 100%;
-        box-sizing: border-box;
-        padding-left: 20px;
-        height: 100%;
-      }
-    }
-  }
 </style>

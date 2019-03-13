@@ -97,7 +97,7 @@ export default {
     line-height: 40px;
 
     .ScrollBox {
-      height: 400px;
+      height: 56vh;
       border: 1px solid #eee;
       margin-top: 10px;
     }

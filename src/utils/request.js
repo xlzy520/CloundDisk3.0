@@ -47,7 +47,7 @@ service.interceptors.response.use(
   error => {
     console.log(error, error.response);// for debug
     error.message = error.message === 'timeout of 5000ms exceeded' ? '连接服务器超时！' : error.message;
-    removeToken();
+    //removeToken();
     Message({
       message: error.message || error.msg,
       type: 'error',
