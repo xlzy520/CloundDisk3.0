@@ -70,7 +70,7 @@ export default {
     eventBus.$on("member-change", (newVal) => {
       this.MemberList = newVal;
     });
-    this.$emit("auth-change", this.authList);
+    
   },
   watch: {
     MemberList: function() {
@@ -82,6 +82,9 @@ export default {
       if (this.checkList.length === this.listData.length) {
         this.checkAll = true;
       }
+    },
+    authList: function() {
+      this.$emit("auth-change", this.authList);
     }
   },
   methods: {

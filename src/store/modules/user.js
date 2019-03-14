@@ -9,6 +9,7 @@ const user = {
     avatar: '',
     utype: '', // 用户操作权限 0 普通用户，无分配权限和钉钉操作权限， 1 普通管理员和超级管理员， 拥有最高权限
     fcategoryid: '',
+    authData: [],
   },
 
   mutations: {
@@ -23,6 +24,9 @@ const user = {
     },
     SET_UTYPE: (state, utype) => {
       state.utype = utype;
+    },
+    SET_DATA: (state, authData) => {
+      state.authData = authData;
     },
   },
 
@@ -83,7 +87,17 @@ const user = {
         removeToken();
         resolve();
       });
-    }
+    },
+
+    // 存储选中的文件夹权限
+    SaveData({ commit }, data) {
+      return new Promise(resolve => {
+        commit('SET_DATA', data);
+        resolve();
+      });
+    },
+
+
   }
 };
 

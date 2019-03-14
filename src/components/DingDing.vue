@@ -142,7 +142,7 @@
       },
       openRobotsList() {
         dingDingPush.getRobotList().then(res=>{
-          this.robotList = res.data;
+          this.robotList = res.data.list;
         });
         this.robotsListVisible = true;
       },

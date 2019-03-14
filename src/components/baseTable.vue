@@ -7,8 +7,11 @@
       :stripe="stripe"
       v-loading="loading"
       @row-click="clickRow"
+      @select="handleSelection"
+      @select-all="selectAll"
       @selection-change="handleSelectionChange"
       @cell-dblclick="dblclickRow"
+      @cell-click="clickCell"
       @row-contextmenu="showMenu">
       <el-table-column
         v-if="selection"
@@ -121,15 +124,15 @@
         return {row, col, column, $index};
       },
       clickRow(row) {
-        if (this.selection === 'list') {
-          this.tableData.forEach(item => {
-            item.fcategoryid === row.fcategoryid
-              ? this.toggleRowSelection(row, true)
-              : this.toggleRowSelection(item, false);
-          });
-        } else {
-          this.toggleRowSelection(row);
-        }
+        // if (this.selection === 'list') {
+        //   this.tableData.forEach(item => {
+        //     item.fcategoryid === row.fcategoryid
+        //       ? this.toggleRowSelection(row, true)
+        //       : this.toggleRowSelection(item, false);
+        //   });
+        // } else {
+        //   this.toggleRowSelection(row);
+        // }
       },
       toggleRowSelection(row, boolean) {
         this.$refs.baseTable.toggleRowSelection(row, boolean);
@@ -140,8 +143,17 @@
       dblclickRow(row) {
         this.$emit('cell-dblclick', row);
       },
+      clickCell(row, column, cell, event) {
+        this.$emit('cellclick', row, column, cell, event);
+      },
       handleSelectionChange(select) {
         this.$emit('selection-change', select);
+      },
+      handleSelection(select) {
+        this.$emit('selectchange', select);
+      },
+      selectAll(select) {
+        this.$emit('selectAll', select);
       }
     }
   };
