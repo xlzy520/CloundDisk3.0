@@ -72,12 +72,6 @@
       ...mapGetters([
         'selectedData',
       ]),
-      limitArr: function() {
-        return this.selectedData.length === 1
-        ? this.selectedData[0].auth
-        : (this.selectedData.length > 1
-          ? this.selectedData.map(v => { return v.auth; }).reduce(combine) : []);
-      },
       fcategoryid: {
         get: function() {
           return this.selectedData.map(v => {
