@@ -36,20 +36,7 @@
 import { mapGetters } from 'vuex';
 import Breadcrumb from '../../../components/Breadcrumb.vue';
 import actionConfig from './ListHeaderConfig.js';
-// 计算权限
-function combine(a, b) {
-  let c = [];
-  c.length = a.length;
-  c.fill(1);
-  for (let i in a) {
-    if (a[i] === b[i]) {
-      c[i] = a[i];
-    } else {
-      c[i] = Math.min(a[i], b[i]);
-    }
-  }
-  return c;
-}
+import { getIntersection } from '@/utils/index';
 
 // 计算按钮显示与否
 function calc(limitsArr, actionArr) {
@@ -112,7 +99,8 @@ export default {
       } else {
         if (this.selectedData[0].hasOwnProperty("auth")) {
           if (this.selectedData.length > 1) {
-            this.limitsArr = this.selectedData.map(v => { return v.auth; }).reduce(combine);
+            this.limitsArr = this.selectedData.map(v => { return v.auth; }).reduce(getIntersection);
+            console.log(this.limitsArr);
           } else {
             this.limitsArr = this.selectedData[0].auth;
           }
@@ -182,6 +170,11 @@ export default {
       .el-button {
         padding: 6px 8px;
       }
+      @media screen and (max-width: 1367px){
+        .el-button {
+          padding: 3px 4px;
+        }
+      }
       .el-dropdown{
         margin: 0 10px;
       }
@@ -202,4 +195,9 @@ export default {
         }
       }
     }
+  @media screen and (max-width: 1367px){
+    .action-wrap {
+      height: 24px;
+    }
+  }
 </style>
