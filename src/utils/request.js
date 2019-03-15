@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { Message } from 'element-ui';
-import store from '../store';
 import router from '../router';
-import { removeToken } from '@/utils/auth';
 
 // 创建axios实例
 const service = axios.create({
@@ -24,11 +22,8 @@ service.interceptors.response.use(
     if (!res.success) {
       if (res.code === "100602" || res.msg === 'token已过期') { //exchangeToken接口没有code，只有msg
         if (router.history.current.path !== '/login') {
-          removeToken();
-          store.dispatch('FedLogOut').then(() => {
-            router.push('/login');
-            //location.reload();// 为了重新实例化vue-router对象 避免bug
-          });
+          router.push('/login');
+          //location.reload();// 为了重新实例化vue-router对象 避免bug
         }
       } else if (res.msg === '120') {
         // 判断来源，如果来自统一登录平台，则根据120跳转，否则跳转到系统本身的登录界面

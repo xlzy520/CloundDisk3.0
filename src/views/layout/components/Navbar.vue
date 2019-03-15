@@ -36,7 +36,7 @@
       </div>
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
-          <img class="user-avatar" :src="'https://oa.djcps.com/DJOA/'+avatar">
+          <img class="user-avatar" :src="'https://oa.djcps.com/DJOA/'+userData.userIco">
           <i class="el-icon-caret-bottom"></i>
         </div>
         <el-dropdown-menu class="user-dropdown" slot="dropdown">
@@ -47,7 +47,7 @@
           </router-link>
           <router-link class="inlineBlock" to="/">
             <el-dropdown-item>
-              <span class="name">{{name}}</span>
+              <span class="name">{{userData.userName}}</span>
             </el-dropdown-item>
           </router-link>
           <el-dropdown-item divided v-if="isAdmin">
@@ -79,12 +79,10 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar',
-      'name',
-      'utype',
+      'userData'
     ]),
     isAdmin: function() {
-      return this.utype > 0;
+      return this.userData.utype > 0;
     },
   },
   data() {
