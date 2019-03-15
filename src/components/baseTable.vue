@@ -18,7 +18,7 @@
         type="selection"
         width="55">
       </el-table-column>
-      <el-table-column 
+      <el-table-column
         v-for="col in columns"
         v-if="!col.hidden"
         :key="col.label"
@@ -134,9 +134,7 @@
         }
         if (this.selection === 'list') {
           this.tableData.forEach(item => {
-            item.fcategoryid === row.fcategoryid
-              ? this.toggleRowSelection(row, true)
-              : this.toggleRowSelection(item, false);
+            this.toggleRowSelection(item, item.fcategoryid === row.fcategoryid);
           });
         } else {
           this.toggleRowSelection(row);

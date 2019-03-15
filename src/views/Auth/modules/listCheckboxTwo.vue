@@ -70,7 +70,6 @@ export default {
     eventBus.$on("member-change", (newVal) => {
       this.MemberList = newVal;
     });
-    
   },
   watch: {
     MemberList: function() {
