@@ -77,7 +77,7 @@ export default {
   computed: {
     ...mapGetters([
       'selectedData',
-      'user',
+      'userData',
       'authArr'
     ]),
     // 计算应显示哪些按钮
