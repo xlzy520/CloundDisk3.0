@@ -10,12 +10,12 @@ const service = axios.create({
 });
 
 // request拦截器
-service.interceptors.request.use(config => {
-  return config;
-}, error => {
-  console.log(error); // for debug
-  Promise.reject(error);
-});
+// service.interceptors.request.use(config => {
+//   return config;
+// }, error => {
+//   console.log(error); // for debug
+//   Promise.reject(error);
+// });
 
 // respone拦截器
 service.interceptors.response.use(
@@ -31,7 +31,8 @@ service.interceptors.response.use(
           });
         }
       } else if (res.msg === '120') {
-        // 报120时，统一登录平台标志
+        // 判断来源，如果来自统一登录平台，则根据120跳转，否则跳转到系统本身的登录界面
+        sessionStorage.getItem('from') ? location.href = res.data.url : router.push('/login');
       } else {
         Message({
           message: res.msg,

@@ -295,11 +295,6 @@
             if (origin === 'search') { //刚挂载时定位搜索结果所在位置
               this.findSearch();
             }
-          }).catch(err => {
-            if (err.msg === "120") {
-              // 判断来源，如果来自统一登录平台，则根据120跳转，否则跳转到系统本身的登录界面
-              sessionStorage.getItem('from') ? location.href = err.data.url : this.$router.push('/login');
-            }
           });
         }
       },
