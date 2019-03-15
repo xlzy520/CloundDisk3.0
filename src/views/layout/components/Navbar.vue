@@ -81,7 +81,7 @@ export default {
       'sidebar',
       'userData'
     ]),
-    isAdmin: function() {
+    isAdmin() {
       return this.userData.utype > 0;
     },
   },
