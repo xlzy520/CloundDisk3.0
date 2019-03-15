@@ -48,7 +48,7 @@
             label: '修改时间',
             prop: 'fupdatetime',
             sortable: true,
-            formatter: (row, col) => parseTime(row[col.prop])
+            formatter: (row) => parseTime(row.fupdatetime)
           },
           {
             label: '大小',

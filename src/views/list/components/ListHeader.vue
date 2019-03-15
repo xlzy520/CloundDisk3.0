@@ -3,8 +3,8 @@
     <div class="file-action">
       <div class="list-btn">
         <el-button type="primary" icon="el-icon-refresh" data-action="refresh-tip">刷新</el-button>
-        <el-button type="primary" icon="el-icon-upload" data-action="upload" v-if="CurrentAuth[4] == 1">上传</el-button>
-        <el-dropdown type="primary" @command="handleCommand" v-if="CurrentAuth[5] == 1">
+        <el-button type="primary" icon="el-icon-upload" data-action="upload" v-if="authArr[4] === '1'">上传</el-button>
+        <el-dropdown type="primary" @command="handleCommand" v-if="authArr[5] === '1'">
           <el-button type="primary" icon="el-icon-plus">新建<i class="el-icon-arrow-down el-icon--right"></i></el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="newFolder">文件夹</el-dropdown-item>
@@ -36,20 +36,6 @@
 import { mapGetters } from 'vuex';
 import Breadcrumb from '../../../components/Breadcrumb.vue';
 import actionConfig from './ListHeaderConfig.js';
-// 计算权限
-function combine(a, b) {
-  let c = [];
-  c.length = a.length;
-  c.fill(1);
-  for (let i in a) {
-    if (a[i] === b[i]) {
-      c[i] = a[i];
-    } else {
-      c[i] = Math.min(a[i], b[i]);
-    }
-  }
-  return c;
-}
 
 // 计算按钮显示与否
 function calc(limitsArr, actionArr) {
@@ -57,19 +43,16 @@ function calc(limitsArr, actionArr) {
     return [];
   }
   switch (limitsArr[1]) {
-    case 0:
     case "0":
       actionArr = actionArr.filter(v => v !== 'delete');
       break;
   }
   switch (limitsArr[2]) {
-    case 0:
     case "0":
       actionArr = actionArr.filter(v => !['copy', 'move', 'rename', 'update'].includes(v));
       break;
   }
   switch (limitsArr[3]) {
-    case 0:
     case "0":
       actionArr = actionArr.filter(v => v !== 'download');
       break;
@@ -97,10 +80,6 @@ export default {
       'user',
       'authArr'
     ]),
-    // 当前文件夹权限
-    CurrentAuth: function() {
-      return this.authArr;
-    },
     // 计算应显示哪些按钮
     actionArray() {
       // 选中的文件夹个数
@@ -112,14 +91,24 @@ export default {
       } else {
         if (this.selectedData[0].hasOwnProperty("auth")) {
           if (this.selectedData.length > 1) {
-            this.limitsArr = this.selectedData.map(v => { return v.auth; }).reduce(combine);
+            this.limitsArr = this.selectedData.map(v => { return v.auth; }).reduce((a, b)=>{
+              /**
+               * 取选择的两个目标文件的权限，如有不同，以无权限代替
+               */
+              return a.map((item, index) => {
+                if (item !== b[index]) {
+                  return '0';
+                }
+                return item;
+              });
+            });
           } else {
             this.limitsArr = this.selectedData[0].auth;
           }
         }
       }
       // 用户是否为管理员
-      const isAdmin = this.user.utype > 0;
+      const isAdmin = this.userData.utype > 0;
       let actionArr;
       // 多个被选中
       if (this.selectedData.length > 1) {
@@ -127,7 +116,7 @@ export default {
         actionArr = calc(this.limitsArr, actionArr);
         if (isAdmin) {
           actionArr = actionArr.concat("assign");
-        };
+        }
       // 单个被选中
       } else if (this.selectedData.length === 1) {
         actionArr = folderCheckedCount === 1 ? ['rename', 'move', 'delete', 'detail', 'share']
@@ -135,7 +124,7 @@ export default {
         actionArr = calc(this.limitsArr, actionArr);
         if (isAdmin) {
           actionArr = actionArr.concat("assign");
-        };
+        }
         if (isAdmin && folderCheckedCount === 1) {
           actionArr = actionArr.concat("dingDing");
         }
@@ -182,6 +171,11 @@ export default {
       .el-button {
         padding: 6px 8px;
       }
+      @media screen and (max-width: 1367px){
+        .el-button {
+          padding: 3px 4px;
+        }
+      }
       .el-dropdown{
         margin: 0 10px;
       }
@@ -202,4 +196,9 @@ export default {
         }
       }
     }
+  @media screen and (max-width: 1367px){
+    .action-wrap {
+      height: 24px;
+    }
+  }
 </style>

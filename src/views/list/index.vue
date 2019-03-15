@@ -15,7 +15,7 @@
     <delete-file ref="delete" @action="dispatchAction"></delete-file>
     <detail ref="detail"></detail>
     <version-list ref="version" @action="dispatchAction"></version-list>
-    <md-editor 
+    <md-editor
       ref="md"
       v-if="visible==='mdEditor'"
       :doc-info="docInfo"
@@ -31,6 +31,7 @@
 
 <script>
   import {mapGetters} from 'vuex';
+  //组件
   import Thumbnail from './components/Thumbnail';
   import List from './components/List';
   import ListHeader from './components/ListHeader';
@@ -44,24 +45,15 @@
   import DingDing from "@/components/DingDing";
   import Share from '@/components/ShareDialog.vue';
 
+  //API
   import fileService from '@/api/service/file';
   import request from '@/utils/request';
   import categoryService from '@/api/service/category';
-  import eventBus from '@/plugins/eventBus.js';
-  // 计算权限
-  function combine(a, b) {
-    let c = [];
-    c.length = a.length;
-    c.fill(1);
-    for (let i in a) {
-      if (a[i] === b[i]) {
-        c[i] = a[i];
-      } else {
-        c[i] = Math.min(a[i], b[i]);
-      }
-    }
-    return c;
-  }
+  import authService from '@/api/service/auth';
+
+  // methods
+  import eventBus from '@/plugins/eventBus';
+
   export default {
     name: 'index',
     data() {
@@ -79,9 +71,6 @@
       ...mapGetters([
         'selectedData',
       ]),
-      limitArr: function() {
-        return this.selectedData.length === 1 ? this.selectedData[0].auth : (this.selectedData.length > 1 ? this.selectedData.map(v => { return v.auth; }).reduce(combine) : []);
-      },
       fcategoryid: {
         get: function() {
           return this.selectedData.map(v => {
@@ -174,7 +163,7 @@
           case 'assign':
             localStorage.obj = JSON.stringify(this.selectedData);
             // 点击分配权限按钮时 请求 getAuth接口查询 userList是否为空数组
-            this.$store.dispatch('QueryPermission', this.fcategoryid);
+            this.QueryPermission(this.fcategoryid);
             break;
           case 'share':
             this.$refs[action].openDialog();
@@ -245,6 +234,12 @@
           });
         }
       },
+      QueryPermission(data) {
+        authService.getAuthListByCategory(data).then(res => {
+          const isEdit = res.data.userList.length > 0 ? 1 : 0;
+          this.$router.push(`/index/auth?isEdit=${isEdit}`);
+        });
+      },
       cancelEdit() {
         if (this.selectedData.length >= 1) {
           this.selectedData[0].isEditor = false;
@@ -299,11 +294,6 @@
             const {origin} = this.$route.query;
             if (origin === 'search') { //刚挂载时定位搜索结果所在位置
               this.findSearch();
-            }
-          }).catch(err => {
-            if (err.msg === "120") {
-              // 判断来源，如果来自统一登录平台，则根据120跳转，否则跳转到系统本身的登录界面
-              sessionStorage.getItem('from') ? location.href = err.data.url : this.$router.push('/login');
             }
           });
         }

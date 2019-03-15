@@ -101,7 +101,7 @@
           {label: '创建人', prop: 'fcreator', width: 70},
           {
             label: '修改时间', prop: 'fupdatetime', width: 145, sortable: true,
-            formatter: (row, col) => parseTime(row[col.prop])
+            formatter: (row) => parseTime(row.fupdatetime)
           },
           {
             label: '文件大小', prop: 'filesize', width: 80,

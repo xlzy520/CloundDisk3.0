@@ -1,31 +1,17 @@
 import loginService from '@/api/service/login';
-import { getToken, setToken, removeToken } from '@/utils/auth';
 import md5 from 'md5';
 
 const user = {
   state: {
-    token: getToken(),
-    name: '',
-    avatar: '',
-    utype: '', // 用户操作权限 0 普通用户，无分配权限和钉钉操作权限， 1 普通管理员和超级管理员， 拥有最高权限
-    fcategoryid: '',
+    userData: {},
     authData: [],
   },
 
   mutations: {
-    SET_TOKEN: (state, token) => {
-      state.token = token;
+    SET_USER_DATA: (state, userData) => {
+      state.userData = userData;
     },
-    SET_NAME: (state, name) => {
-      state.name = name;
-    },
-    SET_AVATAR: (state, avatar) => {
-      state.avatar = avatar;
-    },
-    SET_UTYPE: (state, utype) => {
-      state.utype = utype;
-    },
-    SET_DATA: (state, authData) => {
+    SET_AUTH_DATA: (state, authData) => {
       state.authData = authData;
     },
   },
@@ -38,11 +24,7 @@ const user = {
       return new Promise((resolve, reject) => {
         loginService.login(username, password).then(response => {
           const data = response.data;
-          setToken(data.token);
-          commit('SET_TOKEN', data.token);
-          commit('SET_NAME', data.userName);
-          commit('SET_AVATAR', data.userIco);
-          commit('SET_UTYPE', data.utype);
+          commit('SET_USER_DATA', data);
           resolve();
         }).catch(error => {
           reject(error);
@@ -55,11 +37,7 @@ const user = {
       return new Promise((resolve, reject) => {
         loginService.getInfo(state.token).then(response => {
           const data = response.data;
-          setToken(data.token);
-          commit('SET_TOKEN', data.token);
-          commit('SET_NAME', data.userName);
-          commit('SET_AVATAR', data.userIco);
-          commit('SET_UTYPE', data.utype);
+          commit('SET_USER_DATA', data);
           resolve(response);
         }).catch(error => {
           reject(error);
@@ -68,36 +46,22 @@ const user = {
     },
 
     // 登出
-    LogOut({ commit }) {
+    LogOut() {
       return new Promise((resolve, reject) => {
         loginService.logout().then(() => {
-          commit('SET_TOKEN', '');
-          removeToken();
           resolve();
         }).catch(error => {
           reject(error);
         });
       });
     },
-
-    // 前端 登出
-    FedLogOut({ commit }) {
-      return new Promise(resolve => {
-        commit('SET_TOKEN', '');
-        removeToken();
-        resolve();
-      });
-    },
-
     // 存储选中的文件夹权限
     SaveData({ commit }, data) {
       return new Promise(resolve => {
-        commit('SET_DATA', data);
+        commit('SET_AUTH_DATA', data);
         resolve();
       });
     },
-
-
   }
 };
 

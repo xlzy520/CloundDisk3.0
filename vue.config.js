@@ -23,7 +23,7 @@ module.exports = {
           .rule('svg')
           .exclude.add(resolve('src/icons'))
           .end();
-          
+
           config.module
           .rule('icons')
           .test(/\.svg$/)
@@ -35,7 +35,7 @@ module.exports = {
             symbolId: 'icon-[name]'
           });
     config.resolve.alias
-          .set('@', resolve('src'))
+          .set('@', resolve('src'));
 //TODO 分块
     // config.externals = {
     //   'vue': 'Vue',
