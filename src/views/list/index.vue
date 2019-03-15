@@ -52,7 +52,6 @@
   import authService from '@/api/service/auth';
 
   // methods
-  import { combine } from '@/utils/index';
   import eventBus from '@/plugins/eventBus';
 
   export default {
@@ -236,12 +235,9 @@
         }
       },
       QueryPermission(data) {
-        authService.getAuthListByCategory(data).then(response => {
-          const isEdit = response.data.userList.length > 0 ? 1 : 0;
-          router.push(`/index/auth?isEdit=${isEdit}`);
-          //resolve(response);
-        }).catch(error => {
-          reject(error);
+        authService.getAuthListByCategory(data).then(res => {
+          const isEdit = res.data.userList.length > 0 ? 1 : 0;
+          this.$router.push(`/index/auth?isEdit=${isEdit}`);
         });
       },
       cancelEdit() {
