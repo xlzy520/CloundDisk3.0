@@ -15,7 +15,7 @@
     <delete-file ref="delete" @action="dispatchAction"></delete-file>
     <detail ref="detail"></detail>
     <version-list ref="version" @action="dispatchAction"></version-list>
-    <md-editor 
+    <md-editor
       ref="md"
       v-if="visible==='mdEditor'"
       :doc-info="docInfo"
@@ -31,6 +31,7 @@
 
 <script>
   import {mapGetters} from 'vuex';
+  //组件
   import Thumbnail from './components/Thumbnail';
   import List from './components/List';
   import ListHeader from './components/ListHeader';
@@ -44,24 +45,16 @@
   import DingDing from "@/components/DingDing";
   import Share from '@/components/ShareDialog.vue';
 
+  //API
   import fileService from '@/api/service/file';
   import request from '@/utils/request';
   import categoryService from '@/api/service/category';
-  import eventBus from '@/plugins/eventBus.js';
-  // 计算权限
-  function combine(a, b) {
-    let c = [];
-    c.length = a.length;
-    c.fill(1);
-    for (let i in a) {
-      if (a[i] === b[i]) {
-        c[i] = a[i];
-      } else {
-        c[i] = Math.min(a[i], b[i]);
-      }
-    }
-    return c;
-  }
+  import authService from '@/api/service/auth';
+
+  // methods
+  import { combine } from '@/utils/index';
+  import eventBus from '@/plugins/eventBus';
+
   export default {
     name: 'index',
     data() {
@@ -80,7 +73,10 @@
         'selectedData',
       ]),
       limitArr: function() {
-        return this.selectedData.length === 1 ? this.selectedData[0].auth : (this.selectedData.length > 1 ? this.selectedData.map(v => { return v.auth; }).reduce(combine) : []);
+        return this.selectedData.length === 1
+        ? this.selectedData[0].auth
+        : (this.selectedData.length > 1
+          ? this.selectedData.map(v => { return v.auth; }).reduce(combine) : []);
       },
       fcategoryid: {
         get: function() {
@@ -174,7 +170,7 @@
           case 'assign':
             localStorage.obj = JSON.stringify(this.selectedData);
             // 点击分配权限按钮时 请求 getAuth接口查询 userList是否为空数组
-            this.$store.dispatch('QueryPermission', this.fcategoryid);
+            this.QueryPermission(this.fcategoryid);
             break;
           case 'share':
             this.$refs[action].openDialog();
@@ -244,6 +240,15 @@
             this.tableList.shift();
           });
         }
+      },
+      QueryPermission(data) {
+        authService.getAuthListByCategory(data).then(response => {
+          const isEdit = response.data.userList.length > 0 ? 1 : 0;
+          router.push(`/index/auth?isEdit=${isEdit}`);
+          //resolve(response);
+        }).catch(error => {
+          reject(error);
+        });
       },
       cancelEdit() {
         if (this.selectedData.length >= 1) {

@@ -90,3 +90,25 @@ export function nameSort(a, b) {
     if (a.ffiletype !== 1 && b.ffiletype !== 1 || a.ffiletype === 1 && b.ffiletype === 1) return nameCode_a - nameCode_b;
   }
 }
+
+/***
+ * 计算权限
+ * @param a
+ * @param b
+ * @returns {Array}
+ */
+export function combine(a, b) {
+  let c = [];
+  c.length = a.length;
+  c.fill(1);
+  for (const i in a) {
+    if (a.hasOwnProperty(i)) {
+      if (a[i] === b[i]) {
+        c[i] = a[i];
+      } else {
+        c[i] = Math.min(a[i], b[i]);
+      }
+    }
+  }
+  return c;
+}
