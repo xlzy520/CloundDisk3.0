@@ -18,7 +18,7 @@
         type="selection"
         width="55">
       </el-table-column>
-      <el-table-column 
+      <el-table-column
         v-for="col in columns"
         v-if="!col.hidden"
         :key="col.label"
@@ -124,15 +124,13 @@
         return {row, col, column, $index};
       },
       clickRow(row) {
-        // if (this.selection === 'list') {
-        //   this.tableData.forEach(item => {
-        //     item.fcategoryid === row.fcategoryid
-        //       ? this.toggleRowSelection(row, true)
-        //       : this.toggleRowSelection(item, false);
-        //   });
-        // } else {
-        //   this.toggleRowSelection(row);
-        // }
+        if (this.selection === 'list') {
+          this.tableData.forEach(item => {
+            this.toggleRowSelection(item, item.fcategoryid === row.fcategoryid);
+          });
+        } else {
+          this.toggleRowSelection(row);
+        }
       },
       toggleRowSelection(row, boolean) {
         this.$refs.baseTable.toggleRowSelection(row, boolean);
