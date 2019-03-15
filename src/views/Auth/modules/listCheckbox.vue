@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div class="listCheckbox">
-    <p>{{ title }} 
+    <p>{{ title }}
       <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
       </p>
     <div class="choicebox">
@@ -9,13 +9,11 @@
         v-model="checkList"
         multiple
         filterable
-        remote
         reserve-keyword
         placeholder="请输入关键词"
-        :remote-method="remoteMethod"
         :loading="loading">
         <el-option
-          v-for="item in DupData"
+          v-for="item in listData"
           :key="item.userId"
           :label="item.userName"
           :value="item.userId">
@@ -35,10 +33,9 @@
 </template>
 
 <script>
-import eventBus from '@/plugins/eventBus.js';
+import eventBus from '@/plugins/eventBus';
 import baseScrollbar from '@/components/baseScrollbar.vue';
-import cloneDeep from 'lodash/cloneDeep';
-import authService from '@/api/service/auth.js';
+import authService from '@/api/service/auth';
 
 export default {
   props: {
@@ -58,7 +55,6 @@ export default {
       isIndeterminate: true,
       GroupNum: '',
       loading: false,
-      DupData: []
     };
   },
   components: {
@@ -94,7 +90,7 @@ export default {
     GroupNum: function(newVal, oldVal) {
       if (oldVal !== newVal) {
         this.checkList = [];
-      };
+      }
     },
     checkList: function(newVal, oldVal) {
       if (oldVal !== newVal) {
@@ -106,7 +102,7 @@ export default {
         if (this.checkList.length > 0) {
           this.searchThisCateWhoHavePer(this.checkList);
         }
-      };
+      }
     }
   },
   methods: {
@@ -120,19 +116,6 @@ export default {
       this.checkAll = checkedCount === this.listData.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.listData.length;
       this.$emit("member-change", this.checkList);
-    },
-    remoteMethod(query) {
-      if (query !== '') {
-        this.loading = true;
-        setTimeout(() => {
-          this.loading = false;
-          this.DupData = this.DupData.filter(item => {
-            return item.userName.indexOf(query) > -1;
-          });
-        }, 200);
-      } else {
-        this.DupData = cloneDeep(this.listData);
-      }
     },
     searchThisCateWhoHavePer(val) {
       const params = {
@@ -159,7 +142,7 @@ export default {
     },
     transmit (auth) {
       let arr = [];
-      for (let i in auth) {
+      for (const i of auth) {
         if (auth[i] === "1") {
           arr.push(i);
         }
@@ -172,6 +155,6 @@ export default {
 </script>
 <style lang="scss" scoped>
   .listCheckbox {
-    padding-left: 60px; 
+    padding-left: 60px;
   }
 </style>
