@@ -4,7 +4,7 @@
     :visible.async="true"
     v-if="visible"
     @close="close"
-    width="420px"
+    width="25%"
     custom-class="move-file">
     <el-scrollbar class="height100">
       <tree-menu ref="tree" type="copyMove" @getFolderId="getFolderId"></tree-menu>
@@ -51,7 +51,9 @@
           if (res.common && res.common.length > 0) {
             let Arr = res.common;
             for (let i in Arr) {
-              Arr[i].childrenFolder = [{}];
+              if (Arr[i].fsortorder === 1) {
+                Arr[i].childrenFolder = [{}];
+              }
             }
             this.$refs.tree.data = Arr;
           }
@@ -93,14 +95,13 @@
     height: 100%;
   }
   .move-file{
-    height: 290px;
     padding: 0 12px;
     .el-button {
       padding: 8px 12px;
     }
     .el-dialog__body{
       border: 1px solid #ddd;
-      height: 185px;
+      height: 200px;
     }
     .el-dialog__header {
       padding: 15px 20px 10px;

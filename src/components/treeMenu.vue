@@ -16,25 +16,16 @@
 
 <script>
   import categoryService from '@/api/service/category';
-  import eventBus from '@/plugins/eventBus.js';
   export default {
     data() {
       return {
-        data: [],
+        data: JSON.parse(sessionStorage.sider),
         defaultProps: {
           children: 'childrenFolder',
           label: 'fname'
         },
         list: [],
       };
-    },
-    mounted() {
-      eventBus.$on('Category', (Arr) => {
-        for (let i in Arr) {
-          Arr[i].childrenFolder = [{}];
-        }
-        this.data = Arr;
-      });
     },
     props: ['type'],
     methods: {

@@ -81,11 +81,11 @@ export default {
       'sidebar',
       'avatar',
       'name',
-      'utype'
+      'utype',
     ]),
     isAdmin: function() {
       return this.utype > 0;
-    }
+    },
   },
   data() {
     return {

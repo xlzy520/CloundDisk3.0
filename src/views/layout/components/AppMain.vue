@@ -6,7 +6,6 @@
 
 <script>
   import categoryService from '@/api/service/category';
-  import eventBus from '@/plugins/eventBus.js';
   export default {
     name: 'AppMain',
     mounted() {
@@ -18,8 +17,12 @@
         return categoryService.getCategory(id).then(res => {
           // common字段 只在最外层
           if (res.common && res.common.length > 0) {
-            //console.log(res.common);
-            eventBus.$emit("Category", res.common);
+            for (let i in res.common) {
+              if (res.common[i].fsortorder === 1) {
+                res.common[i].childrenFolder = [{}];
+              }
+            }
+            sessionStorage.sider = JSON.stringify(res.common);
           }
 
           if (res.auth && res.auth.length > 0) {
