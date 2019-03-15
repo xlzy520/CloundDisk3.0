@@ -32,6 +32,7 @@ service.interceptors.response.use(
         }
       } else if (res.msg === '120') {
         // 报120时，统一登录平台标志
+        //location.href = res.data.url;
       } else {
         Message({
           message: res.msg,

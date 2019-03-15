@@ -95,6 +95,10 @@
         type: Number,
         default: 15
       },
+      isExcep: {
+        type: Boolean,
+        default: false,
+      }
     },
     data() {
       return {
@@ -117,6 +121,7 @@
     },
     methods: {
       handleCurrentChange(val) {
+        console.log(val);
         this.$emit('change-page', val);
       },
       // 使用v-bind展开props到组件上
@@ -124,15 +129,18 @@
         return {row, col, column, $index};
       },
       clickRow(row) {
-        // if (this.selection === 'list') {
-        //   this.tableData.forEach(item => {
-        //     item.fcategoryid === row.fcategoryid
-        //       ? this.toggleRowSelection(row, true)
-        //       : this.toggleRowSelection(item, false);
-        //   });
-        // } else {
-        //   this.toggleRowSelection(row);
-        // }
+        if (this.isExcep) {
+          return;
+        }
+        if (this.selection === 'list') {
+          this.tableData.forEach(item => {
+            item.fcategoryid === row.fcategoryid
+              ? this.toggleRowSelection(row, true)
+              : this.toggleRowSelection(item, false);
+          });
+        } else {
+          this.toggleRowSelection(row);
+        }
       },
       toggleRowSelection(row, boolean) {
         this.$refs.baseTable.toggleRowSelection(row, boolean);
