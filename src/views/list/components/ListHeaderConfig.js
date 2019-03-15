@@ -51,8 +51,8 @@ export default [
     icon: 'el-icon-info'
   },
   {
-    label: '分享文件',
+    label: '分享',
     value: 'share',
-    icon: 'iconfont icon-dingding'
+    icon: 'el-icon-share'
   },
 ];
