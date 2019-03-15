@@ -90,13 +90,3 @@ export function nameSort(a, b) {
     if (a.ffiletype !== 1 && b.ffiletype !== 1 || a.ffiletype === 1 && b.ffiletype === 1) return nameCode_a - nameCode_b;
   }
 }
-
-/***
- *
- * @param a (目标文件的权限数组)
- * @param b (目标文件的权限数组)
- * @returns {Array} 返回最终权限数组
- */
-export function getIntersection (a = [], b = []) {
-
-}
