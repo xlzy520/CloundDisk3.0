@@ -92,23 +92,11 @@ export function nameSort(a, b) {
 }
 
 /***
- * 计算权限
- * @param a
- * @param b
- * @returns {Array}
+ *
+ * @param a (目标文件的权限数组)
+ * @param b (目标文件的权限数组)
+ * @returns {Array} 返回最终权限数组
  */
-export function combine(a, b) {
-  let c = [];
-  c.length = a.length;
-  c.fill(1);
-  for (const i in a) {
-    if (a.hasOwnProperty(i)) {
-      if (a[i] === b[i]) {
-        c[i] = a[i];
-      } else {
-        c[i] = Math.min(a[i], b[i]);
-      }
-    }
-  }
-  return c;
+export function getIntersection (a = [], b = []) {
+
 }

@@ -36,7 +36,6 @@
 import { mapGetters } from 'vuex';
 import Breadcrumb from '../../../components/Breadcrumb.vue';
 import actionConfig from './ListHeaderConfig.js';
-import { getIntersection } from '@/utils/index';
 
 // 计算按钮显示与否
 function calc(limitsArr, actionArr) {
@@ -85,7 +84,7 @@ export default {
       'authArr'
     ]),
     // 当前文件夹权限
-    CurrentAuth: function() {
+    CurrentAuth() {
       return this.authArr;
     },
     // 计算应显示哪些按钮
@@ -99,8 +98,17 @@ export default {
       } else {
         if (this.selectedData[0].hasOwnProperty("auth")) {
           if (this.selectedData.length > 1) {
-            this.limitsArr = this.selectedData.map(v => { return v.auth; }).reduce(getIntersection);
-            console.log(this.limitsArr);
+            this.limitsArr = this.selectedData.map(v => { return v.auth; }).reduce((a,b)=>{
+              /**
+               * 取选择的两个目标文件的权限，如有不同，以无权限代替
+               */
+              return a.map((item, index) => {
+                if (item !== b[index]) {
+                  return '0';
+                }
+                return item;
+              });
+            });
           } else {
             this.limitsArr = this.selectedData[0].auth;
           }
