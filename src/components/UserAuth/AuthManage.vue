@@ -94,7 +94,7 @@ export default {
     },
     groupNumChange(val) {
       this.userId = "";
-      pushService.getInfoByOrgId(val).then(res => {
+      pushService.getUserInfoByOrgId(val).then(res => {
         this.employeeList = res.data;
       });
     },
