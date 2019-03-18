@@ -1,24 +1,24 @@
 <!--  -->
 <template>
   <div>
-    <base-dialog 
+    <base-dialog
       ref="baseDialog"
       title="权限管理"
       width="40vw"
       @close="close"
       @comfirm="comfirm"
       :is-click="isClick">
-      <el-form 
+      <el-form
         label-position="left"
         label-width="80px"
         class="FormBox">
         <el-form-item label="组织列表">
-          <el-select v-model="GroupNum"
+          <el-select v-model="groupNum"
             filterable
             placeholder="请选择"
             @change="GroupNumChange"
             class="pulldown">
-            <el-option v-for="item in Grouplist"
+            <el-option v-for="item in groupList"
               :key="item.id"
               :label="item.oname"
               :value="item.id">
@@ -28,11 +28,11 @@
         <el-form-item label="员工列表">
           <el-select v-model="userId"
             filterable
-            :disabled="!GroupNum"
+            :disabled="!groupNum"
             :loading="loading"
             class="pulldown"
             placeholder="请选择">
-            <el-option v-for="(item, index) in Employeelist"
+            <el-option v-for="item in employeeList"
               :key="item.userId"
               :label="item.userName"
               :value="item.userId">
@@ -46,8 +46,8 @@
 
 <script>
 import baseDialog from '../baseDialog.vue';
-import pushService from '@/api/service/push.js';
-import authService from '@/api/service/auth.js';
+import pushService from '@/api/service/push';
+import authService from '@/api/service/auth';
 import { mapState } from 'vuex';
 
 export default {
@@ -55,9 +55,9 @@ export default {
     return {
       loading: false,
       list: [],
-      Grouplist: [],
-      Employeelist: [],
-      GroupNum: "",
+      groupList: [],
+      employeeList: [],
+      groupNum: "",
       userId: "",
     };
   },
@@ -76,7 +76,7 @@ export default {
       });
     },
     userList: function () {
-      return this.Employeelist.filter(v => {
+      return this.employeeList.filter(v => {
         return this.userId.indexOf(v.userId) > -1;
       }).map(v => {
         return {
@@ -95,17 +95,13 @@ export default {
   methods: {
     getOrgList() {
       authService.getOrgList().then(res => {
-        if (res.success) {
-          this.Grouplist = res.data;
-        }
+        this.groupList = res.data;
       });
     },
     GroupNumChange(val) {
       this.userId = "";
       pushService.getUserInfoByOrgId(val).then(res => {
-        if (res.success) {
-          this.Employeelist = res.data;
-        }
+        this.employeeList = res.data;
       });
     },
     openDialog() {
@@ -117,7 +113,7 @@ export default {
       this.close();
     },
     close() {
-      this.GroupNum = "";
+      this.groupNum = "";
       this.userId = "";
       this.$refs.baseDialog.dialogVisible = false;
     },
