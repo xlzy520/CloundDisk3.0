@@ -30,10 +30,9 @@
             filterable
             multiple
             :disabled="!orgId"
-            :loading="loading"
             class="pulldown"
             placeholder="请选择">
-            <el-option v-for="item in Employeelist"
+            <el-option v-for="item in employeeist"
               :key="item.userId"
               :label="item.userName"
               :value="item.userId">
@@ -71,7 +70,7 @@ export default {
       return v.fcategoryid;
     }).join(","),
     userList: function () {
-      return this.Employeelist.filter(v => {
+      return this.employeeist.filter(v => {
         return this.memberId.indexOf(v.userId) > -1;
       }).map(v => {
         return {
@@ -98,9 +97,9 @@ export default {
     },
     orgIdChange(val) {
       this.memberId = [];
-      pushService.getUserInfoByorgId(val).then(res => {
+      pushService.getInfoByOrgId(val).then(res => {
         if (res.success) {
-          this.Employeelist = res.data;
+          this.employeeist = res.data;
         }
       });
     },

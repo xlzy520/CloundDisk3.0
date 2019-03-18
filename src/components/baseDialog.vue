@@ -19,7 +19,7 @@
         <div class="base-dialog-footer" v-if="!notFooterBtn">
           <div class="base-dialog-footer-button">
             <div class="base-dialog-footer-button-ok">
-              <el-button type="primary" @click="handleOk" :disabled="isClick" :loading="isClick">确 定</el-button>
+              <el-button type="primary" @click="handleOk" :disabled="isClick">确 定</el-button>
             </div>
             <div class="base-dialog-footer-button-close">
               <el-button @click="closeDialog">取 消</el-button>
