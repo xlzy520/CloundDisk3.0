@@ -59,7 +59,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </el-menu>
-    <search ref="share"></search>
+    <auth-manage ref="share"></auth-manage>
   </div>
 </template>
 

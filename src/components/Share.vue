@@ -33,7 +33,7 @@
             :loading="loading"
             class="pulldown"
             placeholder="请选择">
-            <el-option v-for="item in Employeelist"
+            <el-option v-for="item in employeeList"
               :key="item.userId"
               :label="item.userName"
               :value="item.userId">
@@ -58,7 +58,7 @@ export default {
       loading: false,
       list: [],
       groupList: [],
-      employeeist: [],
+      employeeList: [],
       orgId: "",
       memberId: [],
     };
@@ -107,7 +107,7 @@ export default {
       this.memberId = [];
       pushService.getUserInfoByorgId(val).then(res => {
         if (res.success) {
-          this.Employeelist = res.data;
+          this.employeeList = res.data;
         }
       });
     },
