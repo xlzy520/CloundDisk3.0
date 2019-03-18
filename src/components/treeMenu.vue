@@ -24,7 +24,6 @@
           children: 'childrenFolder',
           label: 'fname'
         },
-        list: [],
       };
     },
     props: ['type'],
@@ -51,26 +50,22 @@
           }
         });
       },
-      getCategory(id = this.$route.query.dirid) {
-        if (!id) id = -1;
-        return categoryService.getCategory(id).then(res => {
-          // common字段 只在最外层
-          if (res.common && res.common.length > 0) {
-            for (const item of res.common) {
+      getCommonCategory() {
+        categoryService.getCommonCategory().then(res=>{
+          const commonCategory = res.data;
+          if (commonCategory && commonCategory.length > 0) {
+            for (const item of commonCategory) {
               if (item.fsortorder === 1) {
                 item.childrenFolder = [{}];
               }
             }
-            this.treeData = res.common;
-          }
-          if (res.auth && res.auth.length > 0) {
-            this.$store.dispatch('SetAuthArr', res.auth);
+            this.treeData = commonCategory;
           }
         });
-      },
+      }
     },
     mounted() {
-      this.getCategory();
+      this.getCommonCategory();
     }
   };
 </script>

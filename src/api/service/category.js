@@ -14,5 +14,8 @@ export default {
   },
   searchThisUserHavePersByPage(data) {
     return categoryService('/searchThisUserHavePersByPage.do', data);
-  }
+  },
+  getCommonCategory() {
+    return categoryService('/getCommonCategory.do', {}, 'get');
+  },
 };
