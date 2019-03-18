@@ -8,7 +8,7 @@
       </div>
     </base-scrollbar>
     <div class="handlerBox">
-      <el-button type="primary" @click="save" :disabled="isClick">保存</el-button>
+      <el-button type="primary" @click="save" :disabled="isClick" :loading="isloading">保存</el-button>
       <el-button type="warning" @click="Quit">取消</el-button>
     </div>
   </div>
@@ -29,6 +29,7 @@
         Employeeslist: [],
         authTypes: authData.data,
         Auths: [],
+        isloading: false,
       };
     },
     components: {
@@ -98,15 +99,15 @@
           fcategoryid: this.fcategoryid.join(","),
           userList: this.$refs.ListCo.userList
         };
+        this.isloading = true;
 
         authService.giveAuthToUser(params).then(res => {
-          if (res.success) {
-            this.clear();
-            this.$message1000("分配权限成功", 'success');
-            setTimeout(() => {
-              this.Quit();
-            }, 50);
-          }
+          this.isloading = false;
+          this.clear();
+          this.$message1000("分配权限成功", 'success');
+          setTimeout(() => {
+            this.Quit();
+          }, 50);
         });
       },
       clear() {
