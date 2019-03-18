@@ -70,13 +70,6 @@ export default {
     fcategoryid: state => state.file.selectedData.map(v => {
       return v.fcategoryid;
     }).join(","),
-    fcateList: function () {
-      return this.fcategoryid.split(",").map(v => {
-        return {
-          fcategoryid: v
-        };
-      });
-    },
     userList: function () {
       return this.Employeelist.filter(v => {
         return this.memberId.indexOf(v.userId) > -1;
@@ -117,8 +110,12 @@ export default {
     // 点击分享按钮
     comfirm() {
       const params = {
-        fcategoryid: this.fcateList,
         userList: this.userList,
+        fcategoryid: this.fcategoryid.split(",").map(v => {
+          return {
+            fcategoryid: v
+          };
+        })
       };
 
       fileService.shareFile(params).then(res => {
