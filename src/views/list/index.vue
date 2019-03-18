@@ -147,15 +147,13 @@
             this.visible = 'img';
             break;
           case 'dingDing':
+          case 'share':
             this.$refs[action].open();
             break;
           case 'assign':
             localStorage.obj = JSON.stringify(this.selectedData);
             // 点击分配权限按钮时 请求 getAuth接口查询 userList是否为空数组
             this.QueryPermission();
-            break;
-          case 'share':
-            this.$refs[action].openDialog();
             break;
           default:
             break;
