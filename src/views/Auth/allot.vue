@@ -4,7 +4,7 @@
     <base-scrollbar ref="scrollbar" class="scrollbar">
       <div class="flexBox">
         <list-radio title="组织列表" :list-data="Grouplist" @groupnum-change="OrgIdChange"></list-radio>
-        <list-checkbox title="员工列表" ref="ListCo" :list-data="Employeeslist" @member-change="MemberChange"></list-checkbox>
+        <list-checkbox title="员工列表" ref="ListCo" :list-data="Employeeslist"></list-checkbox>
         <list-checkbox-two title="权限类型" ref="ListCt" :list-data="authTypes"></list-checkbox-two>
       </div>
     </base-scrollbar>
@@ -31,7 +31,6 @@ export default {
       Grouplist: [],
       Employeeslist: [],
       authTypes: authData.data,
-      Members: []
     };
   },
   components: {
@@ -61,9 +60,6 @@ export default {
     this.getOrgList();
   },
   methods: {
-    MemberChange(Members) {
-      this.Members = Members;
-    },
     getOrgList() {
       authService.getOrgList().then(res => {
         if (res.success) {
