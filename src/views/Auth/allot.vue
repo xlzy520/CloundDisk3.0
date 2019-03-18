@@ -1,4 +1,3 @@
-<!--  -->
 <template>
   <div>
     <base-scrollbar ref="scrollbar" class="scrollbar">
@@ -109,5 +108,5 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-  
+
 </style>

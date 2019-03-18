@@ -1,21 +1,21 @@
-<!--  -->
+
 <template>
   <div class="listCheckbox">
     <p>{{ title }}
-      <el-checkbox 
+      <el-checkbox
         :indeterminate="isIndeterminate"
         v-model="checkAll"
         @change="handleCheckAllChange">全选</el-checkbox>
     </p>
     <div class="choicebox">
-      <el-select 
+      <el-select
         v-model="checkList"
         multiple
         filterable
         reserve-keyword
         placeholder="请输入关键词"
         :loading="loading">
-        <el-option 
+        <el-option
           v-for="item in listData"
           :key="item.userId"
           :label="item.userName"
@@ -25,14 +25,14 @@
       <div class="staffBox">
         <base-scrollbar class="ScrollBox">
           <ul>
-            <el-checkbox-group 
+            <el-checkbox-group
               v-model="checkList"
               @change="handleCheckedCitiesChange">
-              <li 
+              <li
                 v-for="(item, index) in preData"
                 :key="index"
                 :class="{ actived: item.hasAuth === '1' }">
-                <el-checkbox 
+                <el-checkbox
                   :label="item.userId"
                   :key="item.userId"
                   :id="item.userId"
@@ -45,14 +45,14 @@
         </base-scrollbar>
         <base-scrollbar class="ScrollBox" v-if="supplyData.length > 0">
           <ul>
-            <el-checkbox-group 
+            <el-checkbox-group
               v-model="checkList"
               @change="handleCheckedCitiesChange">
-              <li 
+              <li
                 v-for="(item, index) in supplyData"
                 :key="index"
                 :class="{ actived: item.hasAuth === '1' }">
-                <el-checkbox 
+                <el-checkbox
                   :label="item.userId"
                   :key="item.userId"
                   :id="item.userId"
