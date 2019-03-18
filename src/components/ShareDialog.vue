@@ -13,12 +13,12 @@
         label-width="80px"
         class="FormBox">
         <el-form-item label="组织列表">
-          <el-select v-model="OrgID"
+          <el-select v-model="orgId"
             filterable
             placeholder="请选择"
-            @change="OrgIdChange"
+            @change="orgIdChange"
             class="pulldown">
-            <el-option v-for="item in Grouplist"
+            <el-option v-for="item in groupList"
               :key="item.id"
               :label="item.oname"
               :value="item.id">
@@ -26,10 +26,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="员工列表">
-          <el-select v-model="MemberID"
+          <el-select v-model="memberId"
             filterable
             multiple
-            :disabled="!OrgID"
+            :disabled="!orgId"
             :loading="loading"
             class="pulldown"
             placeholder="请选择">
@@ -57,10 +57,10 @@ export default {
     return {
       loading: false,
       list: [],
-      Grouplist: [],
+      groupList: [],
       Employeelist: [],
-      OrgID: "",
-      MemberID: [],
+      orgId: "",
+      memberId: [],
     };
   },
   components: {
@@ -79,7 +79,7 @@ export default {
     },
     userList: function () {
       return this.Employeelist.filter(v => {
-        return this.MemberID.indexOf(v.userId) > -1;
+        return this.memberId.indexOf(v.userId) > -1;
       }).map(v => {
         return {
           userId: v.userId,
@@ -88,7 +88,7 @@ export default {
       });
     },
     isClick: function () {
-      return !(this.OrgID && this.MemberID.length > 0);
+      return !(this.orgId && this.memberId.length > 0);
     }
   }),
   mounted() {
@@ -99,13 +99,13 @@ export default {
     getOrgList() {
       authService.getOrgList().then(res => {
         if (res.success) {
-          this.Grouplist = res.data;
+          this.groupList = res.data;
         }
       });
     },
-    OrgIdChange(val) {
-      this.MemberID = [];
-      pushService.getUserInfoByOrgId(val).then(res => {
+    orgIdChange(val) {
+      this.memberId = [];
+      pushService.getUserInfoByorgId(val).then(res => {
         if (res.success) {
           this.Employeelist = res.data;
         }
@@ -131,8 +131,8 @@ export default {
       });
     },
     close() {
-      this.OrgID = "";
-      this.MemberID = "";
+      this.orgId = "";
+      this.memberId = "";
       this.$refs.baseDialog.dialogVisible = false;
     },
   }

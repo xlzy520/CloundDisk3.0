@@ -110,6 +110,7 @@
         });
       },
       clear() {
+        this.$store.dispatch('SelectAuth', []);
         this.$refs.ListCt.checkList = [];
         this.$refs.ListCo.checkList = [];
       },
