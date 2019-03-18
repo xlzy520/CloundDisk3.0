@@ -70,15 +70,7 @@
     computed: {
       ...mapGetters([
         'selectedData',
-      ]),
-      fcategoryid: {
-        get: function() {
-          return this.selectedData.map(v => {
-            return v.fcategoryid;
-          }).join(",");
-        },
-        set: function() {}
-      },
+      ])
     },
     components: {
       DingDing,
