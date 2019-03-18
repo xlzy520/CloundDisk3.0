@@ -28,7 +28,6 @@
             filterable
             multiple
             :disabled="!orgId"
-            :loading="loading"
             class="pulldown"
             placeholder="请选择">
             <el-option v-for="item in employeeList"
