@@ -223,17 +223,6 @@
           });
         }
       },
-      QueryPermission() {
-        const params = {
-          fcategoryid: this.selectedData.map(v => {
-            return v.fcategoryid;
-          })
-        };
-        authService.getAuthListByCategory(params).then(res => {
-          const isEdit = res.data.userList.length > 0 ? 1 : 0;
-          this.$router.push(`/index/auth?isEdit=${isEdit}`);
-        });
-      },
       cancelEdit() {
         if (this.selectedData.length >= 1) {
           this.selectedData[0].isEditor = false;
@@ -242,30 +231,33 @@
           this.tableList[0].isEditor = false;
         }
       },
+      QueryPermission() {
+        const fcategoryids = this.selectedData.map(item=> item.fcategoryid);
+        authService.getAuthListByCategory({
+          fcategoryid: fcategoryids
+        }).then(res => {
+          const isEdit = res.data.userList.length > 0 ? 1 : 0;
+          this.$router.push(`/index/auth?isEdit=${isEdit}`);
+        });
+      },
       getCategory(id = this.$route.query.dirid, refresh = false) {
         if (!id) id = -1;
         return categoryService.getCategory(id).then(res => {
           if (refresh) {
             this.$message1000('刷新成功', 'success');
           }
-          this.tableList = res.tableList;
-          this.navList = res.navList;
-
-          if (id === -1 && res.tableList.length === 0) {
-            this.tableList = res.common;
-          }
-
-          if (res.common && res.common.length > 0) {
-            for (const item of res.common) {
+          const {tableList, navList, common, auth} = res;
+          this.tableList = tableList;
+          this.navList = navList;
+          if (common && common.length > 0) {
+            for (const item of common) {
               if (item.fsortorder === 1) {
                 item.childrenFolder = [{}];
               }
             }
-            sessionStorage.sider = JSON.stringify(res.common);
           }
-
-          if (res.auth && res.auth.length > 0) {
-            this.$store.dispatch('SetAuthArr', res.auth);
+          if (auth && auth.length > 0) {
+            this.$store.dispatch('SetAuthArr', auth);
           }
         });
       },

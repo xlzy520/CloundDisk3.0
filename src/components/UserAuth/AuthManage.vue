@@ -26,7 +26,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="员工列表">
-          <el-select 
+          <el-select
             v-model="userId"
             filterable
             :disabled="!groupNum"
@@ -125,7 +125,6 @@ export default {
 <style lang="scss" scoped>
 .FormBox {
   padding: 20px;
-
   .pulldown {
     width: 80%;
   }
