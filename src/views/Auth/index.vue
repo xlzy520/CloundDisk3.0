@@ -81,7 +81,7 @@ export default {
     display: flex;
   }
   .scrollbar {
-    width: 1200px;
+    min-width: 1200px;
     flex-grow: 8 !important;
   }
 
@@ -98,6 +98,7 @@ export default {
       height: 56vh;
       border: 1px solid #eee;
       margin-top: 10px;
+      flex-grow: unset !important;
     }
 
     li {
