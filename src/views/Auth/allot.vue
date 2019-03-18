@@ -3,13 +3,13 @@
   <div>
     <base-scrollbar ref="scrollbar" class="scrollbar">
       <div class="flexBox">
-        <list-radio title="组织列表" :list-data="listData" @GroupNum-change="OrgIdChange"></list-radio>
-        <list-checkbox title="员工列表" ref="listco" :list-data="listData2" @member-change="MemberChange"></list-checkbox>
-        <list-checkbox-two title="权限类型" ref="listct" :list-data="listData3" @auth-change="AuthChange"></list-checkbox-two>
+        <list-radio title="组织列表" :list-data="Grouplist" @groupnum-change="OrgIdChange"></list-radio>
+        <list-checkbox title="员工列表" ref="listco" :list-data="Employeeslist" @member-change="MemberChange"></list-checkbox>
+        <list-checkbox-two title="权限类型" ref="listct" :list-data="authTypes" @auth-change="AuthChange"></list-checkbox-two>
       </div>
     </base-scrollbar>
     <div class="handlerBox">
-      <el-button type="primary" @click="save" :disabled="isClick">保存</el-button>
+      <el-button type="primary" @click="save" :disabled="isClick" :loading="isClick">保存</el-button>
       <el-button type="warning" @click="Quit">取消</el-button>
     </div>
   </div>
@@ -22,38 +22,14 @@ import listCheckbox from './modules/listCheckbox.vue';
 import listCheckboxTwo from './modules/listCheckboxTwo.vue';
 import authService from '@/api/service/auth.js';
 import baseScrollbar from '@/components/baseScrollbar.vue';
+import authData from './modules/authData.js';
 
 export default {
   data () {
     return {
-      listData: [],
-      listData2: [],
-      listData3: [
-        {
-          name: '查阅',
-          fID: '0',
-        },
-        {
-          name: '删除',
-          fID: '1',
-        },
-        {
-          name: '编辑',
-          fID: '2',
-        },
-        {
-          name: '下载',
-          fID: '3',
-        },
-        {
-          name: '上传',
-          fID: '4',
-        },
-        {
-          name: '新建',
-          fID: '5',
-        },
-      ],
+      Grouplist: [],
+      Employeeslist: [],
+      authTypes: authData.data,
       Auths: [],
       Members: []
     };
@@ -90,9 +66,9 @@ export default {
     getOrgList() {
       authService.getOrgList().then(res => {
         if (res.success) {
-          this.listData = res.data;
-          for (let i in this.listData) {
-            this.listData[i]['isSelected'] = false;
+          this.Grouplist = res.data;
+          for (let i in this.Grouplist) {
+            this.Grouplist[i]['isSelected'] = false;
           }
         }
       });
@@ -100,7 +76,7 @@ export default {
     OrgIdChange(val) {
       authService.getExcludeUserInfoByOrgId(val, this.fcategoryid).then(res => {
         if (res.success) {
-          this.listData2 = res.data;
+          this.Employeeslist = res.data;
           this.$refs.listco.DupData = res.data;
         }
       });

@@ -2,17 +2,20 @@
 <template>
   <div class="listCheckbox">
     <p>{{ title }}
-      <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-      </p>
+      <el-checkbox 
+        :indeterminate="isIndeterminate"
+        v-model="checkAll"
+        @change="handleCheckAllChange">全选</el-checkbox>
+    </p>
     <div class="choicebox">
-      <el-select
+      <el-select 
         v-model="checkList"
         multiple
         filterable
         reserve-keyword
         placeholder="请输入关键词"
         :loading="loading">
-        <el-option
+        <el-option 
           v-for="item in listData"
           :key="item.userId"
           :label="item.userName"
@@ -21,9 +24,19 @@
       </el-select>
       <base-scrollbar class="ScrollBox">
         <ul>
-          <el-checkbox-group v-model="checkList" @change="handleCheckedCitiesChange">
-            <li v-for="(item, index) in listData" :key="index" :class="{ actived: item.hasAuth === '1' }">
-              <el-checkbox :label="item.userId" :key="item.userId" :id="item.userId" class="name">{{ item.userName }}</el-checkbox>
+          <el-checkbox-group 
+            v-model="checkList"
+            @change="handleCheckedCitiesChange">
+            <li v-for="(item, index) in listData"
+              :key="index"
+              :class="{ actived: item.hasAuth === '1' }">
+              <el-checkbox 
+                :label="item.userId"
+                :key="item.userId"
+                :id="item.userId"
+                class="name">
+                {{ item.userName }}
+              </el-checkbox>
             </li>
           </el-checkbox-group>
         </ul>
@@ -36,6 +49,7 @@
 import eventBus from '@/plugins/eventBus';
 import baseScrollbar from '@/components/baseScrollbar.vue';
 import authService from '@/api/service/auth';
+import { mapGetters } from "vuex";
 
 export default {
   props: {
@@ -48,12 +62,11 @@ export default {
       default: ""
     }
   },
-  data () {
+  data() {
     return {
       checkList: [],
       checkAll: false,
-      isIndeterminate: true,
-      GroupNum: '',
+      isIndeterminate: false,
       loading: false,
     };
   },
@@ -61,41 +74,46 @@ export default {
     baseScrollbar
   },
   computed: {
-    userList: function() {
-      return this.listData.filter(v => {
-        return this.checkList.indexOf(v.userId) > -1;
-      }).map(v => {
-        return {
-          userId: v.userId,
-          userName: v.userName
-        };
-      });
+    userList: {
+      get: function () {
+        return this.listData.filter(v => {
+          return this.checkList.indexOf(v.userId) > -1;
+        }).map(v => {
+          return {
+            userId: v.userId,
+            userName: v.userName
+          };
+        });
+      },
+      set: function() { }
     },
     fcategoryid: {
-      get: function() {
+      get: function () {
         return JSON.parse(localStorage.obj).map(v => {
           return v.fcategoryid;
         }).join(",");
       },
-      set: function() {}
+      set: function () { }
     },
+    ...mapGetters([
+      'GroupNum'
+    ])
   },
   mounted() {
-    eventBus.$on("GroupNum-change", (val) => {
-      this.GroupNum = val;
-    });
     this.$emit("member-change", this.checkList);
+    this.$store.dispatch('ChooseEmplyoee', this.checkList);
   },
   watch: {
-    GroupNum: function(newVal, oldVal) {
+    GroupNum: function (newVal, oldVal) {
       if (oldVal !== newVal) {
         this.checkList = [];
       }
     },
-    checkList: function(newVal, oldVal) {
+    checkList: function (newVal, oldVal) {
       if (oldVal !== newVal) {
         eventBus.$emit("member-change", newVal);
         this.$emit("member-change", this.checkList);
+        this.$store.dispatch('ChooseEmplyoee', this.checkList);
         if (this.checkList.length === this.listData.length) {
           this.checkAll = true;
         }
@@ -116,6 +134,7 @@ export default {
       this.checkAll = checkedCount === this.listData.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.listData.length;
       this.$emit("member-change", this.checkList);
+      this.$store.dispatch('ChooseEmplyoee', this.checkList);
     },
     searchThisCateWhoHavePer(val) {
       const params = {
@@ -142,19 +161,19 @@ export default {
     },
     transmit (auth) {
       let arr = [];
-      for (const i of auth) {
+      for (let i in auth) {
         if (auth[i] === "1") {
           arr.push(i);
         }
       }
-      eventBus.$emit("privilege-change", arr);
+      this.$store.dispatch('SelectEmplyoee', arr);
     }
   }
 };
 
 </script>
 <style lang="scss" scoped>
-  .listCheckbox {
-    padding-left: 60px;
-  }
+.listCheckbox {
+  padding-left: 60px;
+}
 </style>

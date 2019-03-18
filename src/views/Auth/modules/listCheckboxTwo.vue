@@ -3,12 +3,24 @@
   <div class="listCheckbox">
     <p>{{ title }} </p>
     <div class="choicebox">
-      <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange" :disabled="isClick">全选</el-checkbox>
+      <el-checkbox 
+        :indeterminate="isIndeterminate"
+        v-model="checkAll"
+        @change="handleCheckAllChange"
+        :disabled="isClick">全选</el-checkbox>
       <base-scrollbar class="ScrollBox">
         <ul>
-          <el-checkbox-group v-model="checkList" @change="handleCheckedCitiesChange">
-            <li v-for="(item, index) in listData" :key="index">
-              <el-checkbox class="name" :label="item.fID" :key="item.fID" :id="item.fID" :disabled="isClick">{{ item.name }}</el-checkbox>
+          <el-checkbox-group 
+            v-model="checkList"
+            @change="handleCheckedCitiesChange">
+            <li v-for="(item, index) in listData"
+              :key="index">
+              <el-checkbox 
+                class="name"
+                :label="item.fID"
+                :key="item.fID"
+                :id="item.fID"
+                :disabled="isClick">{{ item.name }}</el-checkbox>
             </li>
           </el-checkbox-group>
         </ul>
@@ -18,8 +30,8 @@
 </template>
 
 <script>
-import eventBus from '@/plugins/eventBus.js';
 import baseScrollbar from '@/components/baseScrollbar.vue';
+import { mapGetters } from "vuex";
 
 export default {
   props: {
@@ -32,12 +44,11 @@ export default {
       default: ""
     }
   },
-  data () {
+  data() {
     return {
-      MemberList: [],
       checkList: [],
-      checkAll: '',
-      isIndeterminate: true,
+      checkAll: "",
+      isIndeterminate: false,
       OrgId: '',
       loading: false,
     };
@@ -46,10 +57,10 @@ export default {
     baseScrollbar
   },
   computed: {
-    isClick: function() {
-      return this.MemberList.length === 0;
+    isClick: function () {
+      return this.EMPLYOEE.length === 0;
     },
-    authList: function() {
+    authList: function () {
       let arr = new Array(6).fill(0);
       if (this.checkList.length === 0) {
         return new Array(6).fill(0);
@@ -61,28 +72,32 @@ export default {
         }
       }
       return arr;
-    }
+    },
+    ...mapGetters([
+      'EMPLYOEE',
+      'EMPLYOEEAUTH'
+    ])
   },
   mounted() {
-    eventBus.$on("privilege-change", (newVal) => {
-      this.checkList = newVal;
-    });
-    eventBus.$on("member-change", (newVal) => {
-      this.MemberList = newVal;
-    });
   },
   watch: {
-    MemberList: function() {
-      if (this.MemberList.length === 0) {
+    EMPLYOEE: function () {
+      if (this.EMPLYOEE.length === 0) {
         this.checkList = [];
       }
     },
-    checkList: function() {
+    EMPLYOEEAUTH: function () {
+      this.checkList = this.EMPLYOEEAUTH;
+      let checkedCount = this.checkList.length;
+      this.checkAll = checkedCount === this.listData.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.listData.length;
+    },
+    checkList: function () {
       if (this.checkList.length === this.listData.length) {
         this.checkAll = true;
       }
     },
-    authList: function() {
+    authList: function () {
       this.$emit("auth-change", this.authList);
     }
   },
@@ -108,5 +123,4 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-
 </style>

@@ -14,5 +14,8 @@ export default {
   },
   searchThisUserHavePers(fuserid) {
     return categoryService('/searchThisUserHavePers.do', { fuserid });
+  },
+  searchThisUserHavePersByPage(data) {
+    return categoryService('/searchThisUserHavePersByPage.do', data);
   }
 };
