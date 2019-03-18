@@ -1,7 +1,7 @@
 <!--  -->
 <template>
   <div>
-    <base-dialog 
+    <base-dialog
       ref="baseDialog"
       title="您将分享该目录或者文件给指定分享人"
       width="40vw"
@@ -33,7 +33,7 @@
             :loading="loading"
             class="pulldown"
             placeholder="请选择">
-            <el-option v-for="(item, index) in Employeelist"
+            <el-option v-for="item in Employeelist"
               :key="item.userId"
               :label="item.userName"
               :value="item.userId">
@@ -58,7 +58,7 @@ export default {
       loading: false,
       list: [],
       groupList: [],
-      Employeelist: [],
+      employeeist: [],
       orgId: "",
       memberId: [],
     };

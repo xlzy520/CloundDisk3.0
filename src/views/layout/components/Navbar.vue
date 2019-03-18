@@ -67,14 +67,14 @@
 import { mapGetters } from 'vuex';
 import Hamburger from '@/components/Hamburger.vue';
 import MdInput from '@/components/MDinput.vue';
-import Search from '@/components/UserAuth/SearchDialog.vue';
+import AuthManage from '@/components/UserAuth/AuthManage.vue';
 
 export default {
   name: 'Navbar',
   components: {
     MdInput,
     Hamburger,
-    Search
+    AuthManage
   },
   computed: {
     ...mapGetters([
