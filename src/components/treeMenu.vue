@@ -53,7 +53,7 @@
       },
       getCategory(id = this.$route.query.dirid) {
         if (!id) id = -1;
-        return categoryService.getCategory(id).then(res => {
+        return categoryService.getCommonCategory().then(res => {
           // common字段 只在最外层
           if (res.common && res.common.length > 0) {
             for (const item of res.common) {

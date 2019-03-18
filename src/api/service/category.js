@@ -1,8 +1,8 @@
 import categoryService from '../base-service/category.js';
 
 export default {
-  getCategory(id) {
-    return categoryService('/getCategory.do', {fcategoryid: id}).then(res => {
+  getCategory(fcategoryid) {
+    return categoryService('/getCategory.do', { fcategoryid }).then(res => {
       return res.data;
     });
   },
@@ -17,5 +17,8 @@ export default {
   },
   searchThisUserHavePersByPage(data) {
     return categoryService('/searchThisUserHavePersByPage.do', data);
+  },
+  getCommonCategory(fcategoryid) {
+    return categoryService('/getCategory.do', { fcategoryid }, 'get');
   }
 };
