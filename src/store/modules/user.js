@@ -5,6 +5,9 @@ const user = {
   state: {
     userData: {},
     authData: [],
+    GroupNum: "",
+    EMPLYOEE: "",
+    EMPLYOEEAUTH: [],
   },
 
   mutations: {
@@ -13,6 +16,15 @@ const user = {
     },
     SET_AUTH_DATA: (state, authData) => {
       state.authData = authData;
+    },
+    SET_GROUP: (state, data) => {
+      state.GroupNum = data;
+    },
+    SET_EMPLYOEE: (state, data) => {
+      state.EMPLYOEE = data;
+    },
+    SET_EMPLYOEEAUTH: (state, data) => {
+      state.EMPLYOEEAUTH = data;
     },
   },
 
@@ -61,6 +73,18 @@ const user = {
         commit('SET_AUTH_DATA', data);
         resolve();
       });
+    },
+    // 选中的组织列表编号
+    ChooseGroup({ commit }, data) {
+      commit('SET_GROUP', data);
+    },
+    // 选中的员工列表
+    ChooseEmplyoee({ commit }, data) {
+      commit('SET_EMPLYOEE', data);
+    },
+    // 选中的员工列表
+    SelectEmplyoee({ commit }, data) {
+      commit('SET_EMPLYOEEAUTH', data);
     },
   }
 };

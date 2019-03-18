@@ -121,7 +121,6 @@
     },
     methods: {
       handleCurrentChange(val) {
-        console.log(val);
         this.$emit('change-page', val);
       },
       // 使用v-bind展开props到组件上

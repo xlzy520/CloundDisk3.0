@@ -14,11 +14,11 @@
           :total="pagination.total"
           :page-no="pagination.currentPage"
           :page-size="pagination.size"
-          :isExcep="true"
+          :is-excep="true"
           :loading="loading"
           @change-page="changePage"
           @cellclick="modify"
-          @selectAll="selectAll"
+          @select-all="selectAll"
           @selectchange="handleSelectionChange"
           :selection="'list'"
           :table-data="tableData"
@@ -147,22 +147,15 @@
         'authData'
       ]),
     },
-    watch: {
-      $route(to, from) {
-        this.searchThisUserHavePersByPage();
-      }
-    },
-    mounted() {
-    },
     methods: {
       changePage(val) {
         this.pagination.currentPage = val;
         this.searchThisUserHavePersByPage();
       },
-      searchThisUserHavePersByPage() {
+      searchThisUserHavePersByPage(id = this.$route.query.userId) {
         this.loading = true;
         const params = {
-          fuserid: this.$route.query.userId
+          fuserid: id
         };
         params.pageSize = this.pagination.size;
         params.pageNum = this.pagination.currentPage;
@@ -279,6 +272,11 @@
         this.$router.push('/index/list');
       }
       this.searchThisUserHavePersByPage();
+    },
+    //  路由参数变化请求不同的文件列表
+    beforeRouteUpdate(to, from, next) {
+      this.searchThisUserHavePersByPage(to.query.userId);
+      next();
     },
     beforeDestroy() {
       this.$store.dispatch("SaveData", []);

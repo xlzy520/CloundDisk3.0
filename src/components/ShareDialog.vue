@@ -1,17 +1,24 @@
 <!--  -->
 <template>
   <div>
-    <base-dialog ref="baseDialog" title="您将分享该目录或者文件给指定分享人" width="40vw" @close="close" @comfirm="Debouncecomfirm" :is-click="isClick">
-      <el-form label-position="left" label-width="80px" class="FormBox">
+    <base-dialog 
+      ref="baseDialog"
+      title="您将分享该目录或者文件给指定分享人"
+      width="40vw"
+      @close="close"
+      @comfirm="comfirm"
+      :is-click="isClick"
+      :loading="isClick">
+      <el-form label-position="left"
+        label-width="80px"
+        class="FormBox">
         <el-form-item label="组织列表">
-          <el-select 
-            v-model="OrgID"
+          <el-select v-model="OrgID"
             filterable
-            placeholder="请选择" 
-            @change="OrgIdChange" 
+            placeholder="请选择"
+            @change="OrgIdChange"
             class="pulldown">
-            <el-option
-              v-for="item in options"
+            <el-option v-for="item in Grouplist"
               :key="item.id"
               :label="item.oname"
               :value="item.id">
@@ -19,17 +26,14 @@
           </el-select>
         </el-form-item>
         <el-form-item label="员工列表">
-          <el-select 
-            v-model="MemberID" 
-            filterable 
+          <el-select v-model="MemberID"
+            filterable
             multiple
             :disabled="!OrgID"
-            :remote-method="remoteMethod"
-            :loading="loading" 
+            :loading="loading"
             class="pulldown"
             placeholder="请选择">
-            <el-option
-              v-for="(item, index) in options2"
+            <el-option v-for="(item, index) in Employeelist"
               :key="item.userId"
               :label="item.userName"
               :value="item.userId">
@@ -46,16 +50,15 @@ import baseDialog from './baseDialog.vue';
 import pushService from '@/api/service/push.js';
 import authService from '@/api/service/auth.js';
 import fileService from '@/api/service/fileShare.js';
-import debounce from 'lodash/debounce';
 import { mapState } from 'vuex';
 
 export default {
-  data () {
+  data() {
     return {
       loading: false,
       list: [],
-      options: [],
-      options2: [],
+      Grouplist: [],
+      Employeelist: [],
       OrgID: "",
       MemberID: [],
     };
@@ -67,15 +70,15 @@ export default {
     fcategoryid: state => state.file.selectedData.map(v => {
       return v.fcategoryid;
     }).join(","),
-    fcateList: function() {
+    fcateList: function () {
       return this.fcategoryid.split(",").map(v => {
         return {
           fcategoryid: v
         };
       });
     },
-    userList: function() {
-      return this.options2.filter(v => {
+    userList: function () {
+      return this.Employeelist.filter(v => {
         return this.MemberID.indexOf(v.userId) > -1;
       }).map(v => {
         return {
@@ -84,7 +87,7 @@ export default {
         };
       });
     },
-    isClick: function() {
+    isClick: function () {
       return !(this.OrgID && this.MemberID.length > 0);
     }
   }),
@@ -96,7 +99,7 @@ export default {
     getOrgList() {
       authService.getOrgList().then(res => {
         if (res.success) {
-          this.options = res.data;
+          this.Grouplist = res.data;
         }
       });
     },
@@ -104,16 +107,13 @@ export default {
       this.MemberID = [];
       pushService.getUserInfoByOrgId(val).then(res => {
         if (res.success) {
-          this.options2 = res.data;
+          this.Employeelist = res.data;
         }
       });
     },
     openDialog() {
       this.$refs.baseDialog.dialogVisible = true;
     },
-    Debouncecomfirm: debounce(function() {
-      this.comfirm();
-    }, 500),
     // 点击分享按钮
     comfirm() {
       const params = {
@@ -135,30 +135,16 @@ export default {
       this.MemberID = "";
       this.$refs.baseDialog.dialogVisible = false;
     },
-    remoteMethod(query) {
-      if (query !== '') {
-        this.loading = true;
-        setTimeout(() => {
-          this.loading = false;
-          this.options2 = this.list.filter(item => {
-            return item.label.toLowerCase()
-              .indexOf(query.toLowerCase()) > -1;
-          });
-        }, 200);
-      } else {
-        this.options2 = [];
-      }
-    },
   }
 };
 
 </script>
 <style lang="scss" scoped>
-  .FormBox {
-    padding: 20px;
-    
-    .pulldown {
-      width: 80%;
-    }
+.FormBox {
+  padding: 20px;
+
+  .pulldown {
+    width: 80%;
   }
+}
 </style>
