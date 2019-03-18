@@ -50,14 +50,17 @@ import authService from '@/api/service/auth.js';
 import fileService from '@/api/service/fileShare.js';
 import { mapGetters } from 'vuex';
 
+class ShareMan {
+  groupList = []
+  employeeList = []
+  orgId = ""
+  memberId = []
+}
 export default {
   data() {
     return {
       loading: false,
-      groupList: [],
-      employeeList: [],
-      orgId: "",
-      memberId: [],
+      ...new ShareMan()
     };
   },
   components: {
@@ -107,8 +110,7 @@ export default {
       });
     },
     close() {
-      this.orgId = "";
-      this.memberId = "";
+      Object.assign(this, new ShareMan());
       this.$refs.baseDialog.dialogVisible = false;
     },
   }
