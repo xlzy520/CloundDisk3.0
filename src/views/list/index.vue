@@ -152,7 +152,7 @@
           case 'assign':
             localStorage.obj = JSON.stringify(this.selectedData);
             // 点击分配权限按钮时 请求 getAuth接口查询 userList是否为空数组
-            this.QueryPermission(this.fcategoryid);
+            this.QueryPermission();
             break;
           case 'share':
             this.$refs[action].openDialog();
@@ -223,9 +223,11 @@
           });
         }
       },
-      QueryPermission(fcategoryid) {
+      QueryPermission() {
         const params = {
-          fcategoryid
+          fcategoryid: this.selectedData.map(v => {
+            return v.fcategoryid;
+          })
         };
         authService.getAuthListByCategory(params).then(res => {
           const isEdit = res.data.userList.length > 0 ? 1 : 0;

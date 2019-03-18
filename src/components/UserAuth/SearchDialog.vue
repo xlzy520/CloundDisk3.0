@@ -13,12 +13,7 @@
         label-width="80px"
         class="FormBox">
         <el-form-item label="组织列表">
-<<<<<<< HEAD:src/components/UserAuth/SearchDialog.vue
-          <el-select 
-            v-model="groupNum"
-=======
           <el-select v-model="groupNum"
->>>>>>> 0741df80819d30ce3e4ac090ff75c992f5130f86:src/components/UserAuth/ShareDialog.vue
             filterable
             placeholder="请选择"
             @change="groupNumChange"
