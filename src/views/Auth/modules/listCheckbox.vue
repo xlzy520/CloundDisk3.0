@@ -22,25 +22,48 @@
           :value="item.userId">
         </el-option>
       </el-select>
-      <base-scrollbar class="ScrollBox">
-        <ul>
-          <el-checkbox-group 
-            v-model="checkList"
-            @change="handleCheckedCitiesChange">
-            <li v-for="(item, index) in listData"
-              :key="index"
-              :class="{ actived: item.hasAuth === '1' }">
-              <el-checkbox 
-                :label="item.userId"
-                :key="item.userId"
-                :id="item.userId"
-                class="name">
-                {{ item.userName }}
-              </el-checkbox>
-            </li>
-          </el-checkbox-group>
-        </ul>
-      </base-scrollbar>
+      <div class="staffBox">
+        <base-scrollbar class="ScrollBox">
+          <ul>
+            <el-checkbox-group 
+              v-model="checkList"
+              @change="handleCheckedCitiesChange">
+              <li 
+                v-for="(item, index) in preData"
+                :key="index"
+                :class="{ actived: item.hasAuth === '1' }">
+                <el-checkbox 
+                  :label="item.userId"
+                  :key="item.userId"
+                  :id="item.userId"
+                  class="name">
+                  {{ item.userName }}
+                </el-checkbox>
+              </li>
+            </el-checkbox-group>
+          </ul>
+        </base-scrollbar>
+        <base-scrollbar class="ScrollBox" v-if="supplyData.length > 0">
+          <ul>
+            <el-checkbox-group 
+              v-model="checkList"
+              @change="handleCheckedCitiesChange">
+              <li 
+                v-for="(item, index) in supplyData"
+                :key="index"
+                :class="{ actived: item.hasAuth === '1' }">
+                <el-checkbox 
+                  :label="item.userId"
+                  :key="item.userId"
+                  :id="item.userId"
+                  class="name">
+                  {{ item.userName }}
+                </el-checkbox>
+              </li>
+            </el-checkbox-group>
+          </ul>
+        </base-scrollbar>
+      </div>
     </div>
   </div>
 </template>
@@ -69,6 +92,9 @@ export default {
       loading: false,
     };
   },
+  mounted() {
+
+  },
   components: {
     baseScrollbar
   },
@@ -85,6 +111,12 @@ export default {
         });
       },
       set: function() { }
+    },
+    preData: function() {
+      return this.listData.length > 30 ? this.listData.slice(0, 30) : this.listData;
+    },
+    supplyData: function() {
+      return this.listData.length > 30 ? this.listData.slice(30, this.listData.length - 1) : [];
     },
     fcategoryid: {
       get: function () {
@@ -168,7 +200,17 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-.listCheckbox {
-  padding-left: 60px;
-}
+  .staffBox {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .listCheckbox {
+    width: 800px;
+    padding-left: 60px;
+
+    /deep/ .el-select {
+      width: 80%;
+    }
+  }
 </style>
