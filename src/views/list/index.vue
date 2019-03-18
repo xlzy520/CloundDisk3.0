@@ -43,7 +43,7 @@
   import MdEditor from "@/components/MDEditor";
   import ZipReader from '@/components/ZipReader.vue';
   import DingDing from "@/components/DingDing";
-  import Share from '@/components/ShareDialog.vue';
+  import Share from '@/components/Share.vue';
 
   //API
   import fileService from '@/api/service/file';

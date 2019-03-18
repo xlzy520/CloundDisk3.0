@@ -32,7 +32,7 @@
             :disabled="!orgId"
             class="pulldown"
             placeholder="请选择">
-            <el-option v-for="item in employeeist"
+            <el-option v-for="item in employeeList"
               :key="item.userId"
               :label="item.userName"
               :value="item.userId">
@@ -57,7 +57,7 @@ export default {
       loading: false,
       list: [],
       groupList: [],
-      employeeist: [],
+      employeeList: [],
       orgId: "",
       memberId: [],
     };
@@ -90,17 +90,13 @@ export default {
   methods: {
     getOrgList() {
       authService.getOrgList().then(res => {
-        if (res.success) {
-          this.groupList = res.data;
-        }
+        this.groupList = res.data;
       });
     },
     orgIdChange(val) {
       this.memberId = [];
       pushService.getInfoByOrgId(val).then(res => {
-        if (res.success) {
-          this.employeeist = res.data;
-        }
+        this.employeeList = res.data;
       });
     },
     openDialog() {
@@ -118,12 +114,8 @@ export default {
       };
 
       fileService.shareFile(params).then(res => {
-        if (res.success) {
-          this.$message1000("分享文件成功", 'success');
-          this.close();
-        } else {
-          this.$message1000(res.data.msg, 'error');
-        }
+        this.$message1000("分享文件成功", 'success');
+        this.close();
       });
     },
     close() {
