@@ -59,7 +59,7 @@
         </el-dropdown-menu>
       </el-dropdown>
     </el-menu>
-    <share ref="share"></share>
+    <search ref="share"></search>
   </div>
 </template>
 
@@ -67,14 +67,14 @@
 import { mapGetters } from 'vuex';
 import Hamburger from '@/components/Hamburger.vue';
 import MdInput from '@/components/MDinput.vue';
-import Share from '@/components/UserAuth/ShareDialog.vue';
+import Search from '@/components/UserAuth/SearchDialog.vue';
 
 export default {
   name: 'Navbar',
   components: {
     MdInput,
     Hamburger,
-    Share
+    Search
   },
   computed: {
     ...mapGetters([

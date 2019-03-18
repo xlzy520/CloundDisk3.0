@@ -8,6 +8,7 @@ const user = {
     GroupNum: "",
     EMPLYOEE: "",
     EMPLYOEEAUTH: [],
+    authList: []
   },
 
   mutations: {
@@ -26,6 +27,9 @@ const user = {
     SET_EMPLYOEEAUTH: (state, data) => {
       state.EMPLYOEEAUTH = data;
     },
+    SET_AUTH: (state, data) => {
+      state.authList = data;
+    }
   },
 
   actions: {
@@ -78,7 +82,7 @@ const user = {
     ChooseGroup({ commit }, data) {
       commit('SET_GROUP', data);
     },
-    // 选中的员工列表
+    // 选中的员工列表权限
     ChooseEmplyoee({ commit }, data) {
       commit('SET_EMPLYOEE', data);
     },
@@ -86,6 +90,10 @@ const user = {
     SelectEmplyoee({ commit }, data) {
       commit('SET_EMPLYOEEAUTH', data);
     },
+    // 选中的权限
+    SelectAuth({ commit }, data) {
+      commit('SET_AUTH', data);
+    }
   }
 };
 

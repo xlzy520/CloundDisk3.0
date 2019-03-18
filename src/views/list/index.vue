@@ -51,9 +51,6 @@
   import categoryService from '@/api/service/category';
   import authService from '@/api/service/auth';
 
-  // methods
-  import eventBus from '@/plugins/eventBus';
-
   export default {
     name: 'index',
     data() {
@@ -75,7 +72,7 @@
         get: function() {
           return this.selectedData.map(v => {
             return v.fcategoryid;
-          }).join(",");
+          });
         },
         set: function() {}
       },
@@ -234,8 +231,11 @@
           });
         }
       },
-      QueryPermission(data) {
-        authService.getAuthListByCategory(data).then(res => {
+      QueryPermission(fcategoryid) {
+        const params = {
+          fcategoryid
+        };
+        authService.getAuthListByCategory(params).then(res => {
           const isEdit = res.data.userList.length > 0 ? 1 : 0;
           this.$router.push(`/index/auth?isEdit=${isEdit}`);
         });
@@ -262,7 +262,12 @@
           }
 
           if (res.common && res.common.length > 0) {
-            eventBus.$emit("Category", res.common);
+            for (const item of res.common) {
+              if (item.fsortorder === 1) {
+                item.childrenFolder = [{}];
+              }
+            }
+            sessionStorage.sider = JSON.stringify(res.common);
           }
 
           if (res.auth && res.auth.length > 0) {

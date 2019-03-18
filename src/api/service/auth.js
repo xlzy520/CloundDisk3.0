@@ -9,8 +9,8 @@ export default {
   getExcludeUserInfoByOrgId(orgId, fcategoryid) {
     return aushService('/getExcludeUserInfoByOrgId.do', { orgId, fcategoryid }, 'get');
   },
-  getAuthListByCategory(fcategoryid) {
-    return aushService('/getAuthListByCategory.do', { fcategoryid }, 'get');
+  getAuthListByCategory(data) {
+    return aushService('/getAuthListByCategory.do', data);
   },
   // 分配权限
   giveAuthToUser(data) {

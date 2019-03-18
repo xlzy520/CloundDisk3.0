@@ -13,10 +13,11 @@
         label-width="80px"
         class="FormBox">
         <el-form-item label="组织列表">
-          <el-select v-model="GroupNum"
+          <el-select 
+            v-model="groupNum"
             filterable
             placeholder="请选择"
-            @change="GroupNumChange"
+            @change="groupNumChange"
             class="pulldown">
             <el-option v-for="item in Grouplist"
               :key="item.id"
@@ -26,9 +27,10 @@
           </el-select>
         </el-form-item>
         <el-form-item label="员工列表">
-          <el-select v-model="userId"
+          <el-select 
+            v-model="userId"
             filterable
-            :disabled="!GroupNum"
+            :disabled="!groupNum"
             :loading="loading"
             class="pulldown"
             placeholder="请选择">
@@ -57,7 +59,7 @@ export default {
       list: [],
       Grouplist: [],
       Employeelist: [],
-      GroupNum: "",
+      groupNum: "",
       userId: "",
     };
   },
@@ -86,7 +88,7 @@ export default {
       });
     },
     isClick: function () {
-      return !(this.GroupNum && this.userId.length > 0);
+      return !(this.groupNum && this.userId.length > 0);
     }
   }),
   mounted() {
@@ -100,7 +102,7 @@ export default {
         }
       });
     },
-    GroupNumChange(val) {
+    groupNumChange(val) {
       this.userId = "";
       pushService.getUserInfoByOrgId(val).then(res => {
         if (res.success) {
@@ -117,7 +119,7 @@ export default {
       this.close();
     },
     close() {
-      this.GroupNum = "";
+      this.groupNum = "";
       this.userId = "";
       this.$refs.baseDialog.dialogVisible = false;
     },

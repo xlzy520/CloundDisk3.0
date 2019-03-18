@@ -17,9 +17,9 @@
         return categoryService.getCategory(id).then(res => {
           // common字段 只在最外层
           if (res.common && res.common.length > 0) {
-            for (let i in res.common) {
-              if (res.common[i].fsortorder === 1) {
-                res.common[i].childrenFolder = [{}];
+            for (const item of res.common) {
+              if (item.fsortorder === 1) {
+                item.childrenFolder = [{}];
               }
             }
             sessionStorage.sider = JSON.stringify(res.common);
