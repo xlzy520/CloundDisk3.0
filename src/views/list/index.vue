@@ -276,9 +276,6 @@
       },
       // 统一登录平台
       ssoLogin() {
-        if (location.search.indexOf('from') !== -1) {
-          sessionStorage.setItem('from', 'sso'); // 如果来自统一登录平台，保存标志
-        }
         if (location.search.indexOf('oncetoken') !== -1) { //如果oncetoken存在，就拿去请求网盘token，然后获取个人信息
           if (this.$store.getters.name.length === 0) {
             const oncetoken = location.search.substring(location.search.indexOf("=") + 1);

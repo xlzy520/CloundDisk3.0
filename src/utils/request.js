@@ -4,7 +4,7 @@ import router from '../router';
 
 // 创建axios实例
 const service = axios.create({
-  timeout: 20000 // 请求超时时间
+  timeout: 10000 // 请求超时时间
 });
 
 // request拦截器
@@ -20,14 +20,9 @@ service.interceptors.response.use(
   response => {
     const res = response.data;
     if (!res.success) {
-      if (res.code === "100602" || res.msg === 'token已过期') { //exchangeToken接口没有code，只有msg
-        if (router.history.current.path !== '/login') {
-          router.push('/login');
-          //location.reload();// 为了重新实例化vue-router对象 避免bug
-        }
-      } else if (res.msg === '120') {
+      if (res.msg === '120') {
+        location.search.indexOf('from') !== -1 ? location.href = res.data.url : router.push('/login');
         // 判断来源，如果来自统一登录平台，则根据120跳转，否则跳转到系统本身的登录界面
-        sessionStorage.getItem('from') ? location.href = res.data.url : router.push('/login');
       } else {
         Message({
           message: res.msg,
@@ -37,15 +32,13 @@ service.interceptors.response.use(
       }
       return Promise.reject(res);
     } else {
-      return response.data;
+      return res;
     }
   },
   error => {
-    console.log(error, error.response);// for debug
-    error.message = error.message === 'timeout of 5000ms exceeded' ? '连接服务器超时！' : error.message;
-    //removeToken();
+    error.message = error.message === 'timeout of 10000ms exceeded' ? '连接服务器超时！' : error.message;
     Message({
-      message: error.message || error.msg,
+      message: error.message,
       type: 'error',
       duration: 1500
     });
