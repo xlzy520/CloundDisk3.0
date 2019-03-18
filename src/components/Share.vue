@@ -6,7 +6,8 @@
       width="40vw"
       @close="close"
       @confirm="confirm"
-      :loading="loading">
+      :submit-disabled="!memberId.length > 0"
+      :submit-loading="loading">
       <el-form label-position="left"
         label-width="80px"
         class="FormBox">
@@ -65,17 +66,7 @@ export default {
   computed: {
     ...mapGetters([
       'selectedData',
-    ]),
-    userList() {
-      return this.employeeList.filter(v => {
-        return this.memberId.indexOf(v.userId) > -1;
-      }).map(v => {
-        return {
-          userId: v.userId,
-          userName: v.userName
-        };
-      });
-    }
+    ])
   },
   methods: {
     getOrgList() {
@@ -97,9 +88,17 @@ export default {
     confirm() {
       this.loading = true;
       const fcategoryIds = this.selectedData.map(item => item.fcategoryid);
+      const userList = this.employeeList.filter(v => {
+        return this.memberId.indexOf(v.userId) > -1;
+      }).map(v => {
+        return {
+          userId: v.userId,
+          userName: v.userName
+        };
+      });
       fileService.shareFile({
         fcategoryids: fcategoryIds,
-        userList: this.userList,
+        userList: userList,
       }).then(() => {
         this.$message1000("分享文件成功", 'success');
       }).finally(()=>{

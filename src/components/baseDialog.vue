@@ -19,7 +19,7 @@
         <div class="base-dialog-footer" v-if="!notFooterBtn">
           <div class="base-dialog-footer-button">
             <div class="base-dialog-footer-button-ok">
-              <el-button type="primary" @click="handleOk">确 定</el-button>
+              <el-button type="primary" @click="handleOk" :loading="submitLoading" :disabled="submitDisabled">确 定</el-button>
             </div>
             <div class="base-dialog-footer-button-close">
               <el-button @click="closeDialog">取 消</el-button>
@@ -46,7 +46,12 @@ export default {
     width: {
       type: String,
       default: 'auto'
-    }
+    },
+    submitLoading: {
+      type: Boolean,
+      default: false
+    },
+    submitDisabled: false
   },
   data() {
     return {
