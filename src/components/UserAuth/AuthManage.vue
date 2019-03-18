@@ -69,13 +69,6 @@ export default {
     fcategoryid: state => state.file.selectedData.map(v => {
       return v.fcategoryid;
     }).join(","),
-    fcateList: function () {
-      return this.fcategoryid.split(",").map(v => {
-        return {
-          fcategoryid: v
-        };
-      });
-    },
     userList: function () {
       return this.employeeList.filter(v => {
         return this.userId.indexOf(v.userId) > -1;
