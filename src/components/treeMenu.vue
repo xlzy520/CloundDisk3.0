@@ -1,6 +1,6 @@
 <template>
   <el-tree
-    :data="data"
+    :data="treeData"
     :props="defaultProps"
     ref="folderTree"
     :indent="10"
@@ -19,7 +19,7 @@
   export default {
     data() {
       return {
-        data: JSON.parse(sessionStorage.sider) || [],
+        treeData: [],
         defaultProps: {
           children: 'childrenFolder',
           label: 'fname'
@@ -50,7 +50,27 @@
             });
           }
         });
-      }
+      },
+      getCategory(id = this.$route.query.dirid) {
+        if (!id) id = -1;
+        return categoryService.getCategory(id).then(res => {
+          // common字段 只在最外层
+          if (res.common && res.common.length > 0) {
+            for (const item of res.common) {
+              if (item.fsortorder === 1) {
+                item.childrenFolder = [{}];
+              }
+            }
+            this.treeData = res.common;
+          }
+          if (res.auth && res.auth.length > 0) {
+            this.$store.dispatch('SetAuthArr', res.auth);
+          }
+        });
+      },
+    },
+    mounted() {
+      this.getCategory();
     }
   };
 </script>
