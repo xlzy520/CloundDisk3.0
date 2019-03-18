@@ -91,22 +91,20 @@ export default {
       let checkedCount = this.checkList.length;
       this.checkAll = checkedCount === this.listData.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.listData.length;
+      this.$store.dispatch('SelectAuth', this.authList);
     },
     checkList: function () {
       if (this.checkList.length === this.listData.length) {
         this.checkAll = true;
       }
     },
-    authList: function () {
-      this.$emit("auth-change", this.authList);
-    }
   },
   methods: {
     handleCheckAllChange(val) {
       this.checkList = val ? this.listData.map(v => v.fID) : [];
       this.$forceUpdate();
       this.isIndeterminate = false;
-      this.$emit("auth-change", this.authList);
+      this.$store.dispatch('SelectAuth', this.authList);
     },
     handleCheckedCitiesChange(value) {
       // 选中查阅外 其他按钮 且  无选中查阅按钮 ; 自动勾选查阅
@@ -116,7 +114,7 @@ export default {
       let checkedCount = value.length;
       this.checkAll = checkedCount === this.listData.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.listData.length;
-      this.$emit("auth-change", this.authList);
+      this.$store.dispatch('SelectAuth', this.authList);
     },
   }
 };

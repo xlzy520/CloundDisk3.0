@@ -4,8 +4,8 @@
     <base-scrollbar ref="scrollbar" class="scrollbar">
       <div class="flexBox">
         <list-radio title="组织列表" :list-data="Grouplist" @groupnum-change="OrgIdChange"></list-radio>
-        <list-checkbox title="员工列表" ref="listco" :list-data="Employeeslist" @member-change="MemberChange"></list-checkbox>
-        <list-checkbox-two title="权限类型" ref="listct" :list-data="authTypes" @auth-change="AuthChange"></list-checkbox-two>
+        <list-checkbox title="员工列表" ref="ListCo" :list-data="Employeeslist" @member-change="MemberChange"></list-checkbox>
+        <list-checkbox-two title="权限类型" ref="ListCt" :list-data="authTypes"></list-checkbox-two>
       </div>
     </base-scrollbar>
     <div class="handlerBox">
@@ -23,6 +23,7 @@ import listCheckboxTwo from './modules/listCheckboxTwo.vue';
 import authService from '@/api/service/auth.js';
 import baseScrollbar from '@/components/baseScrollbar.vue';
 import authData from './modules/authData.js';
+import { mapGetters } from 'vuex';
 
 export default {
   data () {
@@ -30,7 +31,6 @@ export default {
       Grouplist: [],
       Employeeslist: [],
       authTypes: authData.data,
-      Auths: [],
       Members: []
     };
   },
@@ -50,16 +50,17 @@ export default {
       set: function() {}
     },
     isClick: function() {
-      return !(this.Auths.length > 0 && this.Members.length > 0);
-    }
+      return !(this.authList.length > 0 && this.EMPLYOEE.length > 0);
+    },
+    ...mapGetters([
+      'EMPLYOEE',
+      'authList'
+    ])
   },
   mounted() {
     this.getOrgList();
   },
   methods: {
-    AuthChange(Auths) {
-      this.Auths = Auths;
-    },
     MemberChange(Members) {
       this.Members = Members;
     },
@@ -67,8 +68,8 @@ export default {
       authService.getOrgList().then(res => {
         if (res.success) {
           this.Grouplist = res.data;
-          for (let i in this.Grouplist) {
-            this.Grouplist[i]['isSelected'] = false;
+          for (const item of this.Grouplist) {
+            item['isSelected'] = false;
           }
         }
       });
@@ -77,15 +78,15 @@ export default {
       authService.getExcludeUserInfoByOrgId(val, this.fcategoryid).then(res => {
         if (res.success) {
           this.Employeeslist = res.data;
-          this.$refs.listco.DupData = res.data;
+          this.$refs.ListCo.DupData = res.data;
         }
       });
     },
     save() {
       let params = {
-        auth: this.Auths,
+        auth: this.authList,
         fcategoryid: this.fcategoryid,
-        userList: this.$refs.listco.userList
+        userList: this.$refs.ListCo.userList
       };
 
       authService.giveAuthToUser(params).then(res => {
@@ -99,8 +100,8 @@ export default {
       });
     },
     clear() {
-      this.$refs.listco.checkList = [];
-      this.$refs.listct.checkList = [];
+      this.$refs.ListCt.checkList = [];
+      this.$refs.ListCo.checkList = [];
     },
     Quit() {
       this.$router.go(-1);

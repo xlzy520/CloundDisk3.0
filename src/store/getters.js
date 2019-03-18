@@ -8,5 +8,6 @@ const getters = {
   GroupNum: state => state.user.GroupNum,
   EMPLYOEE: state => state.user.EMPLYOEE,
   EMPLYOEEAUTH: state => state.user.EMPLYOEEAUTH,
+  authList: state => state.user.authList
 };
 export default getters;

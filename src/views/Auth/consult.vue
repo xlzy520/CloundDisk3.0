@@ -4,7 +4,7 @@
     <base-scrollbar ref="scrollbar" class="scrollbar">
       <div class="flexBox">
         <list-checkbox title="员工列表" ref="ListCo" :list-data="Employeeslist"></list-checkbox>
-        <list-checkbox-two title="权限类型" ref="ListCt" :list-data="authTypes" @auth-change="AuthChange"></list-checkbox-two>
+        <list-checkbox-two title="权限类型" ref="ListCt" :list-data="authTypes"></list-checkbox-two>
       </div>
     </base-scrollbar>
     <div class="handlerBox">
@@ -19,8 +19,8 @@
   import listCheckboxTwo from './modules/listCheckboxTwo.vue';
   import baseScrollbar from '@/components/baseScrollbar.vue';
   import authService from '@/api/service/auth.js';
-  import cloneDeep from 'lodash/cloneDeep';
   import authData from './modules/authData.js';
+  import { mapGetters } from "vuex";
 
   export default {
     data () {
@@ -41,23 +41,23 @@
         get: function() {
           return JSON.parse(localStorage.obj).map(v => {
             return v.fcategoryid;
-          }).join(",");
+          });
         },
         set: function() {}
       },
       isClick: function() {
-        return !(this.Auths.length > 0 && this.$refs.ListCo.userList.length > 0);
-      }
+        return !(this.authList.length > 0 && this.EMPLYOEE.length > 0);
+      },
+      ...mapGetters([
+        'authList',
+        'EMPLYOEE'
+      ])
     },
     mounted() {
       this.getAuthListByCategory(this.fcategoryid);
     },
     methods: {
-      AuthChange(arr) {
-        this.Auths = arr;
-      },
       assignAuth(auth) {
-        this.Auths = auth;
         for (let i in auth) {
           if (auth[i] === "1") {
             this.$refs.ListCt.checkList.push(i);
@@ -65,11 +65,13 @@
         }
       },
       getAuthListByCategory(fcategoryid) {
-        authService.getAuthListByCategory(fcategoryid).then(res => {
+        const params = {
+          fcategoryid
+        };
+        authService.getAuthListByCategory(params).then(res => {
           if (res.success) {
             this.Employeeslist = res.data.userList;
-            this.$refs.ListCo.DupData = cloneDeep(this.Employeeslist);
-            // console.log(authArr);
+            this.$refs.ListCo.DupData = JSON.parse(JSON.stringify(this.Employeeslist));
             if (this.Employeeslist.length > 0) {
               let authArr = this.Employeeslist.map(v => { return v.auth; });
               this.$refs.ListCo.checkList = this.$refs.ListCo.DupData.map(v => {
@@ -92,8 +94,8 @@
       },
       save() {
         let params = {
-          auth: this.Auths,
-          fcategoryid: this.fcategoryid,
+          auth: this.authList,
+          fcategoryid: this.fcategoryid.join(","),
           userList: this.$refs.ListCo.userList
         };
 
@@ -108,8 +110,8 @@
         });
       },
       clear() {
-        this.$refs.ListCo.checkList = [];
         this.$refs.ListCt.checkList = [];
+        this.$refs.ListCo.checkList = [];
       },
       Quit() {
         this.$router.go(-1);

@@ -46,7 +46,7 @@ export default [
   },
   // 新增分配权限和 分享文件按钮 (只有超级管理员才有该权限)
   {
-    label: '分配权限',
+    label: '权限',
     value: 'assign',
     icon: 'el-icon-info'
   },

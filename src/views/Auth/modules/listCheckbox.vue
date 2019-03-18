@@ -46,7 +46,6 @@
 </template>
 
 <script>
-import eventBus from '@/plugins/eventBus';
 import baseScrollbar from '@/components/baseScrollbar.vue';
 import authService from '@/api/service/auth';
 import { mapGetters } from "vuex";
@@ -100,7 +99,6 @@ export default {
     ])
   },
   mounted() {
-    this.$emit("member-change", this.checkList);
     this.$store.dispatch('ChooseEmplyoee', this.checkList);
   },
   watch: {
@@ -111,8 +109,6 @@ export default {
     },
     checkList: function (newVal, oldVal) {
       if (oldVal !== newVal) {
-        eventBus.$emit("member-change", newVal);
-        this.$emit("member-change", this.checkList);
         this.$store.dispatch('ChooseEmplyoee', this.checkList);
         if (this.checkList.length === this.listData.length) {
           this.checkAll = true;
@@ -133,7 +129,6 @@ export default {
       let checkedCount = value.length;
       this.checkAll = checkedCount === this.listData.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.listData.length;
-      this.$emit("member-change", this.checkList);
       this.$store.dispatch('ChooseEmplyoee', this.checkList);
     },
     searchThisCateWhoHavePer(val) {

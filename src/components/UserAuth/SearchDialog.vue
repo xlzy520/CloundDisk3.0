@@ -13,10 +13,15 @@
         label-width="80px"
         class="FormBox">
         <el-form-item label="组织列表">
+<<<<<<< HEAD:src/components/UserAuth/SearchDialog.vue
+          <el-select 
+            v-model="groupNum"
+=======
           <el-select v-model="groupNum"
+>>>>>>> 0741df80819d30ce3e4ac090ff75c992f5130f86:src/components/UserAuth/ShareDialog.vue
             filterable
             placeholder="请选择"
-            @change="GroupNumChange"
+            @change="groupNumChange"
             class="pulldown">
             <el-option v-for="item in groupList"
               :key="item.id"
@@ -26,7 +31,8 @@
           </el-select>
         </el-form-item>
         <el-form-item label="员工列表">
-          <el-select v-model="userId"
+          <el-select 
+            v-model="userId"
             filterable
             :disabled="!groupNum"
             :loading="loading"
@@ -86,7 +92,7 @@ export default {
       });
     },
     isClick: function () {
-      return !(this.GroupNum && this.userId.length > 0);
+      return !(this.groupNum && this.userId.length > 0);
     }
   }),
   mounted() {
@@ -98,7 +104,7 @@ export default {
         this.groupList = res.data;
       });
     },
-    GroupNumChange(val) {
+    groupNumChange(val) {
       this.userId = "";
       pushService.getUserInfoByOrgId(val).then(res => {
         this.employeeList = res.data;
