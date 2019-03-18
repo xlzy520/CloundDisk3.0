@@ -19,7 +19,7 @@
         <div class="base-dialog-footer" v-if="!notFooterBtn">
           <div class="base-dialog-footer-button">
             <div class="base-dialog-footer-button-ok">
-              <el-button type="primary" @click="handleOk" :disabled="isClick" :loading="isClick">确 定</el-button>
+              <el-button type="primary" @click="handleOk">确 定</el-button>
             </div>
             <div class="base-dialog-footer-button-close">
               <el-button @click="closeDialog">取 消</el-button>
@@ -46,10 +46,6 @@ export default {
     width: {
       type: String,
       default: 'auto'
-    },
-    isClick: {
-      type: Boolean,
-      default: false
     }
   },
   data() {
@@ -62,7 +58,7 @@ export default {
       this.$emit('close');
     },
     handleOk() {
-      this.$emit('comfirm');
+      this.$emit('confirm');
     }
   }
 };
