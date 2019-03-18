@@ -26,6 +26,7 @@ import authData from './modules/authData.js';
 import { mapGetters } from 'vuex';
 
 export default {
+  name: 'allot',
   data () {
     return {
       Grouplist: [],

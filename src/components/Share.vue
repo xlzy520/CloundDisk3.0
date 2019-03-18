@@ -1,14 +1,12 @@
-<!--  -->
 <template>
   <div>
     <base-dialog
       ref="baseDialog"
-      title="您将分享该目录或者文件给指定分享人"
+      title="将分享该目录或者文件给指定人"
       width="40vw"
       @close="close"
-      @comfirm="comfirm"
-      :is-click="isClick"
-      :loading="isClick">
+      @confirm="confirm"
+      :loading="loading">
       <el-form label-position="left"
         label-width="80px"
         class="FormBox">
@@ -46,16 +44,15 @@
 
 <script>
 import baseDialog from './baseDialog.vue';
-import pushService from '@/api/service/push.js';
+import pushService from '@/api/service/push';
 import authService from '@/api/service/auth.js';
 import fileService from '@/api/service/fileShare.js';
-import { mapState } from 'vuex';
+import { mapGetters } from 'vuex';
 
 export default {
   data() {
     return {
       loading: false,
-      list: [],
       groupList: [],
       employeeList: [],
       orgId: "",
@@ -65,12 +62,12 @@ export default {
   components: {
     baseDialog
   },
-  computed: mapState({
-    fcategoryid: state => state.file.selectedData.map(v => {
-      return v.fcategoryid;
-    }).join(","),
-    userList: function () {
-      return this.employeeist.filter(v => {
+  computed: {
+    ...mapGetters([
+      'selectedData',
+    ]),
+    userList() {
+      return this.employeeList.filter(v => {
         return this.memberId.indexOf(v.userId) > -1;
       }).map(v => {
         return {
@@ -78,15 +75,8 @@ export default {
           userName: v.userName
         };
       });
-    },
-    isClick: function () {
-      return !(this.orgId && this.memberId.length > 0);
     }
-  }),
-  mounted() {
-    this.getOrgList();
   },
-  watch: {},
   methods: {
     getOrgList() {
       authService.getOrgList().then(res => {
@@ -95,26 +85,25 @@ export default {
     },
     orgIdChange(val) {
       this.memberId = [];
-      pushService.getInfoByOrgId(val).then(res => {
+      pushService.getUserInfoByOrgId(val).then(res => {
         this.employeeList = res.data;
       });
     },
-    openDialog() {
+    open() {
+      this.getOrgList();
       this.$refs.baseDialog.dialogVisible = true;
     },
     // 点击分享按钮
-    comfirm() {
-      const params = {
+    confirm() {
+      this.loading = true;
+      const fcategoryIds = this.selectedData.map(item => item.fcategoryid);
+      fileService.shareFile({
+        fcategoryids: fcategoryIds,
         userList: this.userList,
-        fcategoryid: this.fcategoryid.split(",").map(v => {
-          return {
-            fcategoryid: v
-          };
-        })
-      };
-
-      fileService.shareFile(params).then(res => {
+      }).then(() => {
         this.$message1000("分享文件成功", 'success');
+      }).finally(()=>{
+        this.loading = false;
         this.close();
       });
     },
