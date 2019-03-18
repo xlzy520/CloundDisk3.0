@@ -5,32 +5,8 @@
 </template>
 
 <script>
-  import categoryService from '@/api/service/category';
   export default {
     name: 'AppMain',
-    mounted() {
-      this.getCategory();
-    },
-    methods: {
-      getCategory(id = this.$route.query.dirid) {
-        if (!id) id = -1;
-        return categoryService.getCategory(id).then(res => {
-          // common字段 只在最外层
-          if (res.common && res.common.length > 0) {
-            for (const item of res.common) {
-              if (item.fsortorder === 1) {
-                item.childrenFolder = [{}];
-              }
-            }
-            sessionStorage.sider = JSON.stringify(res.common);
-          }
-
-          if (res.auth && res.auth.length > 0) {
-            this.$store.dispatch('SetAuthArr', res.auth);
-          }
-        });
-      },
-    }
   };
 </script>
 

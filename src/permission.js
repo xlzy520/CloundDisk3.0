@@ -7,11 +7,9 @@ import 'nprogress/nprogress.css';// Progress 进度条样式
 router.beforeEach((to, from, next) => {
   NProgress.start();
   if (store.getters.userData.name === undefined) {
-    store.dispatch('GetInfo').then(() => { // 拉取用户信息
-      next();
-    }).catch(()=>{
-      next('/login');
-    });
+    if (to.path !== '/login') {
+      store.dispatch('GetInfo');
+    }
   }
   next();
 });

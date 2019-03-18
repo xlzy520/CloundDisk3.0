@@ -30,7 +30,7 @@
           v-model="query.value"
           title="请输入搜索关键词"
           placeholder="请输入关键词，回车搜索"
-          :maxlength="maxlength"
+          :maxlength="30"
           :key-enter-function="getSearchResult">
         </md-input>
       </div>
@@ -91,7 +91,6 @@ export default {
         full: false,
         value: ''
       },
-      maxlength: 30,
       inputHover: false
     };
   },
