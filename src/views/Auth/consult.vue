@@ -8,7 +8,7 @@
       </div>
     </base-scrollbar>
     <div class="handlerBox">
-      <el-button type="primary" @click="save" :disabled="isClick" :loading="isClick">保存</el-button>
+      <el-button type="primary" @click="save" :disabled="isClick">保存</el-button>
       <el-button type="warning" @click="Quit">取消</el-button>
     </div>
   </div>
