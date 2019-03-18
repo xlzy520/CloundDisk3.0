@@ -19,7 +19,7 @@
   export default {
     data() {
       return {
-        data: JSON.parse(sessionStorage.sider),
+        data: JSON.parse(sessionStorage.sider) || [],
         defaultProps: {
           children: 'childrenFolder',
           label: 'fname'

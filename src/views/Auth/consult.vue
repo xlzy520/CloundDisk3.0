@@ -3,12 +3,12 @@
   <div>
     <base-scrollbar ref="scrollbar" class="scrollbar">
       <div class="flexBox">
-        <list-checkbox title="员工列表" ref="ListCo" :list-data="listData2"></list-checkbox>
-        <list-checkbox-two title="权限类型" ref="ListCt" :list-data="listData3" @auth-change="AuthChange"></list-checkbox-two>
+        <list-checkbox title="员工列表" ref="ListCo" :list-data="Employeeslist"></list-checkbox>
+        <list-checkbox-two title="权限类型" ref="ListCt" :list-data="authTypes" @auth-change="AuthChange"></list-checkbox-two>
       </div>
     </base-scrollbar>
     <div class="handlerBox">
-      <el-button type="primary" @click="save" :disabled="isClick">保存</el-button>
+      <el-button type="primary" @click="save" :disabled="isClick" :loading="isClick">保存</el-button>
       <el-button type="warning" @click="Quit">取消</el-button>
     </div>
   </div>
@@ -20,38 +20,14 @@
   import baseScrollbar from '@/components/baseScrollbar.vue';
   import authService from '@/api/service/auth.js';
   import cloneDeep from 'lodash/cloneDeep';
+  import authData from './modules/authData.js';
 
   export default {
     data () {
       return {
         isShowOrgList: "1",
-        listData2: [],
-        listData3: [
-            {
-            name: '查阅',
-            fID: '0',
-          },
-          {
-            name: '删除',
-            fID: '1',
-          },
-          {
-            name: '编辑',
-            fID: '2',
-          },
-          {
-            name: '下载',
-            fID: '3',
-          },
-          {
-            name: '上传',
-            fID: '4',
-          },
-          {
-            name: '新建',
-            fID: '5',
-          },
-        ],
+        Employeeslist: [],
+        authTypes: authData.data,
         Auths: [],
       };
     },
@@ -91,28 +67,26 @@
       getAuthListByCategory(fcategoryid) {
         authService.getAuthListByCategory(fcategoryid).then(res => {
           if (res.success) {
-            this.listData2 = res.data.userList;
-            this.$refs.ListCo.DupData = cloneDeep(this.listData2);
+            this.Employeeslist = res.data.userList;
+            this.$refs.ListCo.DupData = cloneDeep(this.Employeeslist);
             // console.log(authArr);
-            if (this.listData2.length > 0) {
-              let authArr = this.listData2.map(v => { return v.auth; });
+            if (this.Employeeslist.length > 0) {
+              let authArr = this.Employeeslist.map(v => { return v.auth; });
+              this.$refs.ListCo.checkList = this.$refs.ListCo.DupData.map(v => {
+                return v.userId;
+              });
               // 员工列表 只有一人时
-              if (this.listData2.length === 1) {
-                this.$refs.ListCo.checkList = this.$refs.ListCo.DupData.map(v => {
-                  return v.userId;
-                });
+              if (this.Employeeslist.length === 1) {
                 this.assignAuth(authArr[0]);
                 return false;
               }
+              // 判断 auth数组是否存在和第一个元素 不同的元素
+              let isEqual = !authArr.find(v => authArr[0].join() !== v.join());
+              // 只有 所有成员权限一致时
+              if (isEqual) {
+                this.assignAuth(authArr[0]);
+              }
             }
-            //   // 判断 auth数组是否存在和第一个元素 不同的元素
-            //   let isEqual = !authArr.find(v => authArr[0].join() !== v.join());
-            //   console.log(isEqual);
-            //   // 只有 所有成员权限一致时
-            //   if (isEqual) {
-            //     this.assignAuth(authArr[0]);
-            //   }
-            // }
           }
         });
       },

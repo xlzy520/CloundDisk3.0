@@ -95,6 +95,10 @@
         type: Number,
         default: 15
       },
+      isExcep: {
+        type: Boolean,
+        default: false,
+      }
     },
     data() {
       return {
@@ -124,6 +128,9 @@
         return {row, col, column, $index};
       },
       clickRow(row) {
+        if (this.isExcep) {
+          return;
+        }
         if (this.selection === 'list') {
           this.tableData.forEach(item => {
             this.toggleRowSelection(item, item.fcategoryid === row.fcategoryid);
