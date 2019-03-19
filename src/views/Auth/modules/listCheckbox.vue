@@ -92,9 +92,6 @@ export default {
       loading: false,
     };
   },
-  mounted() {
-
-  },
   components: {
     baseScrollbar
   },

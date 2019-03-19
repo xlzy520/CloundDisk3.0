@@ -88,7 +88,7 @@ export default {
       };
       this.isloading = true;
 
-      authService.giveAuthToUser(params).then(res => {
+      authService.giveAuthToUser(params).then(() => {
         this.isloading = false;
         this.clear();
         this.$message1000("分配权限成功", 'success');

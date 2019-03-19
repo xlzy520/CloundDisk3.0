@@ -6,7 +6,9 @@
       title="权限管理"
       width="40vw"
       @close="close"
-      @comfirm="comfirm"
+      @confirm="confirm"
+      :submit-disabled="!userId.length > 0"
+      :submit-loading="loading"
       :is-click="isClick">
       <el-form
         label-position="left"
@@ -30,7 +32,6 @@
             v-model="userId"
             filterable
             :disabled="!groupNum"
-            :loading="loading"
             class="pulldown"
             placeholder="请选择">
             <el-option v-for="item in employeeList"
@@ -101,8 +102,7 @@ export default {
     openDialog() {
       this.$refs.baseDialog.dialogVisible = true;
     },
-    // 点击分享按钮
-    comfirm() {
+    confirm() {
       this.$router.push(`/index/userAuth?userId=${this.userId}`);
       this.close();
     },
