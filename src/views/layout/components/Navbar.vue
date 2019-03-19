@@ -51,7 +51,7 @@
             </el-dropdown-item>
           </router-link>
           <el-dropdown-item divided v-if="isAdmin">
-            <span class="name" @click="view">查询权限</span>
+            <span class="name" @click="viewAuth">查询权限</span>
           </el-dropdown-item>
           <el-dropdown-item divided>
             <span class="name" @click="logout">注销</span>
@@ -113,11 +113,11 @@ export default {
         //location.reload(); // 为了重新实例化vue-router对象 避免bug
       });
     },
-    view() {
+    viewAuth() {
       this.$refs.share.openDialog();
     },
     getSearchResult() {
-      const searchQuery = this.query.full ? this.query : {query: this.query.value};
+      const searchQuery = this.query.full ? this.query : {value: this.query.value};
       this.$router.push({path: '/index/search', query: searchQuery});
     }
   }
