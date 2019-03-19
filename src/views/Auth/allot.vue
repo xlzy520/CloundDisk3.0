@@ -2,8 +2,8 @@
   <div>
     <base-scrollbar ref="scrollbar" class="scroll-bar">
       <div class="flex">
-        <list-radio title="组织列表" :list-data="Grouplist" @groupnum-change="OrgIdChange"></list-radio>
-        <list-checkbox title="员工列表" ref="ListCo" :list-data="Employeeslist"></list-checkbox>
+        <list-radio title="组织列表" :list-data="groupList" @groupnum-change="OrgIdChange"></list-radio>
+        <list-checkbox title="员工列表" ref="ListCo" :list-data="employeesList"></list-checkbox>
         <list-checkbox-two title="权限类型" ref="ListCt" :list-data="authTypes"></list-checkbox-two>
       </div>
     </base-scrollbar>
@@ -28,8 +28,8 @@ export default {
   name: 'allot',
   data () {
     return {
-      Grouplist: [],
-      Employeeslist: [],
+      groupList: [],
+      employeesList: [],
       authTypes: authData.data,
       isloading: false,
     };
@@ -64,8 +64,8 @@ export default {
     getOrgList() {
       authService.getOrgList().then(res => {
         if (res.success) {
-          this.Grouplist = res.data;
-          for (const item of this.Grouplist) {
+          this.groupList = res.data;
+          for (const item of this.groupList) {
             item['isSelected'] = false;
           }
         }
@@ -74,7 +74,7 @@ export default {
     OrgIdChange(val) {
       authService.getExcludeUserInfoByOrgId(val, this.fcategoryid).then(res => {
         if (res.success) {
-          this.Employeeslist = res.data;
+          this.employeesList = res.data;
           this.$refs.ListCo.DupData = res.data;
         }
       });

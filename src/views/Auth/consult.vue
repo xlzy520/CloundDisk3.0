@@ -2,7 +2,7 @@
   <div>
     <base-scrollbar ref="scrollbar" class="scroll-bar">
       <div class="flex">
-        <list-checkbox title="员工列表" ref="ListCo" :list-data="Employeeslist"></list-checkbox>
+        <list-checkbox title="员工列表" ref="ListCo" :list-data="employeesList"></list-checkbox>
         <list-checkbox-two title="权限类型" ref="ListCt" :list-data="authTypes"></list-checkbox-two>
       </div>
     </base-scrollbar>
@@ -25,9 +25,8 @@
     data () {
       return {
         isShowOrgList: "1",
-        Employeeslist: [],
+        employeesList: [],
         authTypes: authData.data,
-        Auths: [],
         isloading: false,
       };
     },
@@ -70,15 +69,15 @@
         };
         authService.getAuthListByCategory(params).then(res => {
           if (res.success) {
-            this.Employeeslist = res.data.userList;
-            this.$refs.ListCo.DupData = JSON.parse(JSON.stringify(this.Employeeslist));
-            if (this.Employeeslist.length > 0) {
-              let authArr = this.Employeeslist.map(v => { return v.auth; });
+            this.employeesList = res.data.userList;
+            this.$refs.ListCo.DupData = JSON.parse(JSON.stringify(this.employeesList));
+            if (this.employeesList.length > 0) {
+              let authArr = this.employeesList.map(v => { return v.auth; });
               this.$refs.ListCo.checkList = this.$refs.ListCo.DupData.map(v => {
                 return v.userId;
               });
               // 员工列表 只有一人时
-              if (this.Employeeslist.length === 1) {
+              if (this.employeesList.length === 1) {
                 this.assignAuth(authArr[0]);
                 return false;
               }
