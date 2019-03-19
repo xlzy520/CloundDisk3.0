@@ -1,4 +1,3 @@
-
 <template>
   <div class="list-checkbox">
     <p>{{ title }}

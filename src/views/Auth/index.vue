@@ -47,7 +47,7 @@
     .scrollbar {
       min-width: 1200px;
     }
-    .listCheckbox {
+    .list-checkbox {
       width: 400px;
       line-height: 40px;
       .scroll-box {
