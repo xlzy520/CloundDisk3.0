@@ -1,14 +1,14 @@
 <template>
   <div>
     <base-scrollbar ref="scrollbar" class="scrollbar">
-      <div class="flexBox">
+      <div class="permission-content flex">
         <list-checkbox title="员工列表" ref="ListCo" :list-data="Employeeslist"></list-checkbox>
         <list-checkbox-two title="权限类型" ref="ListCt" :list-data="authTypes"></list-checkbox-two>
       </div>
     </base-scrollbar>
-    <div class="handlerBox">
+    <div class="handler-box">
       <el-button type="primary" @click="save" :disabled="isClick" :loading="isloading">保存</el-button>
-      <el-button type="warning" @click="Quit">取消</el-button>
+      <el-button type="warning" @click="cancel">取消</el-button>
     </div>
   </div>
 </template>
@@ -22,6 +22,7 @@
   import { mapGetters } from "vuex";
 
   export default {
+    name: 'permission-edit',
     data () {
       return {
         isShowOrgList: "1",
@@ -113,13 +114,13 @@
         this.$refs.ListCt.checkList = [];
         this.$refs.ListCo.checkList = [];
       },
-      Quit() {
+      cancel() {
         this.$router.go(-1);
       }
     }
   };
 
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 
 </style>

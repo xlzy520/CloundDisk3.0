@@ -8,7 +8,7 @@
         v-model="checkAll"
         @change="handleCheckAllChange"
         :disabled="isClick">全选</el-checkbox>
-      <base-scrollbar class="ScrollBox">
+      <base-scrollbar class="scroll-box">
         <ul>
           <el-checkbox-group
             v-model="checkList"

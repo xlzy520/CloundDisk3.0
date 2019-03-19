@@ -23,7 +23,7 @@
         </el-option>
       </el-select>
       <div class="staffBox">
-        <base-scrollbar class="ScrollBox">
+        <base-scrollbar class="scroll-box">
           <ul>
             <el-checkbox-group
               v-model="checkList"
@@ -43,7 +43,7 @@
             </el-checkbox-group>
           </ul>
         </base-scrollbar>
-        <base-scrollbar class="ScrollBox" v-if="supplyData.length > 0">
+        <base-scrollbar class="scroll-box" v-if="supplyData.length > 0">
           <ul>
             <el-checkbox-group
               v-model="checkList"

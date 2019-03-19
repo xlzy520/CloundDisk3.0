@@ -1,15 +1,15 @@
 <template>
   <div>
     <base-scrollbar ref="scrollbar" class="scrollbar">
-      <div class="flexBox">
+      <div class="permission-content flex">
         <list-radio title="组织列表" :list-data="Grouplist" @groupnum-change="OrgIdChange"></list-radio>
         <list-checkbox title="员工列表" ref="ListCo" :list-data="Employeeslist"></list-checkbox>
         <list-checkbox-two title="权限类型" ref="ListCt" :list-data="authTypes"></list-checkbox-two>
       </div>
     </base-scrollbar>
-    <div class="handlerBox">
+    <div class="handler-box">
       <el-button type="primary" @click="save" :disabled="isClick" :loading="isloading">保存</el-button>
-      <el-button type="warning" @click="Quit">取消</el-button>
+      <el-button type="warning" @click="cancel">取消</el-button>
     </div>
   </div>
 </template>
@@ -25,7 +25,7 @@ import authData from './modules/authData.js';
 import { mapGetters } from 'vuex';
 
 export default {
-  name: 'allot',
+  name: 'permission-setting',
   data () {
     return {
       Grouplist: [],
@@ -100,13 +100,13 @@ export default {
       this.$refs.ListCt.checkList = [];
       this.$refs.ListCo.checkList = [];
     },
-    Quit() {
+    cancel() {
       this.$router.go(-1);
     }
   }
 };
 
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 
 </style>
