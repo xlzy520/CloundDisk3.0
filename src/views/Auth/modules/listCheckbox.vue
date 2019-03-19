@@ -1,13 +1,14 @@
 
 <template>
-  <div class="listCheckbox">
+  <div class="list-checkbox">
     <p>{{ title }}
       <el-checkbox
         :indeterminate="isIndeterminate"
         v-model="checkAll"
-        @change="handleCheckAllChange">全选</el-checkbox>
+        @change="handleCheckAllChange"
+        :disabled="isClick">全选</el-checkbox>
     </p>
-    <div class="choicebox">
+    <div class="choice-box">
       <el-select
         v-model="checkList"
         multiple
@@ -22,34 +23,14 @@
           :value="item.userId">
         </el-option>
       </el-select>
-      <div class="staffBox">
-        <base-scrollbar class="scroll-box">
+      <div class="staff-box">
+        <base-scrollbar class="scroll-box" :class="{ 'expand': listData.length > 30 }">
           <ul>
             <el-checkbox-group
               v-model="checkList"
               @change="handleCheckedCitiesChange">
               <li
-                v-for="(item, index) in preData"
-                :key="index"
-                :class="{ active: item.hasAuth === '1' }">
-                <el-checkbox
-                  :label="item.userId"
-                  :key="item.userId"
-                  :id="item.userId"
-                  class="name">
-                  {{ item.userName }}
-                </el-checkbox>
-              </li>
-            </el-checkbox-group>
-          </ul>
-        </base-scrollbar>
-        <base-scrollbar class="scroll-box" v-if="supplyData.length > 0">
-          <ul>
-            <el-checkbox-group
-              v-model="checkList"
-              @change="handleCheckedCitiesChange">
-              <li
-                v-for="(item, index) in supplyData"
+                v-for="(item, index) in listData"
                 :key="index"
                 :class="{ active: item.hasAuth === '1' }">
                 <el-checkbox
@@ -92,9 +73,6 @@ export default {
       loading: false,
     };
   },
-  mounted() {
-
-  },
   components: {
     baseScrollbar
   },
@@ -112,19 +90,8 @@ export default {
       },
       set: function() { }
     },
-    preData: function() {
-      return this.listData.length > 30 ? this.listData.slice(0, 30) : this.listData;
-    },
-    supplyData: function() {
-      return this.listData.length > 30 ? this.listData.slice(30, this.listData.length - 1) : [];
-    },
-    fcategoryid: {
-      get: function () {
-        return JSON.parse(localStorage.obj).map(v => {
-          return v.fcategoryid;
-        }).join(",");
-      },
-      set: function () { }
+    isClick: function () {
+      return this.listData.length === 0;
     },
     ...mapGetters([
       'GroupNum'
@@ -165,7 +132,9 @@ export default {
     },
     searchThisCateWhoHavePer(val) {
       const params = {
-        fcategoryid: this.fcategoryid,
+        fcategoryid: JSON.parse(localStorage.obj).map(v => {
+          return v.fcategoryid;
+        }).join(","),
         fuserList: val,
       };
       authService.searchThisCateWhoHavePer(params).then(res => {
@@ -200,17 +169,40 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-  .staffBox {
+  .staff-box {
     width: 80%;
     display: flex;
     justify-content: space-between;
   }
-  .listCheckbox {
-    width: 800px;
-    padding-left: 60px;
+  .list-checkbox {
+    width: 600px;
+    padding-left: 30px;
 
     /deep/ .el-select {
       width: 80%;
     }
+
+    .scroll-box {
+      width: 50%;
+
+      &.expand {
+        width: 100%;
+
+        ul {
+          width: 100%;
+
+          /deep/ .el-checkbox-group {
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+          }
+        }
+
+        li {
+          width: 50%;
+        }
+      }
+    }
   }
+
 </style>

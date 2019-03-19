@@ -1,8 +1,8 @@
 
 <template>
-  <div class="listCheckbox">
+  <div class="list-checkbox">
     <p>{{ title }} </p>
-    <div class="choicebox">
+    <div class="choice-box">
       <el-checkbox
         :indeterminate="isIndeterminate"
         v-model="checkAll"
@@ -58,7 +58,7 @@ export default {
   },
   computed: {
     isClick: function () {
-      return this.EMPLYOEE.length === 0;
+      return this.emplyoee.length === 0;
     },
     authList: function () {
       let arr = new Array(6).fill(0);
@@ -74,20 +74,20 @@ export default {
       return arr;
     },
     ...mapGetters([
-      'EMPLYOEE',
-      'EMPLYOEEAUTH'
+      'emplyoee',
+      'emplyoeeAuth'
     ])
   },
   mounted() {
   },
   watch: {
-    EMPLYOEE: function () {
-      if (this.EMPLYOEE.length === 0) {
+    emplyoee: function () {
+      if (this.emplyoee.length === 0) {
         this.checkList = [];
       }
     },
-    EMPLYOEEAUTH: function () {
-      this.checkList = this.EMPLYOEEAUTH;
+    emplyoeeAuth: function () {
+      this.checkList = this.emplyoeeAuth;
       let checkedCount = this.checkList.length;
       this.checkAll = checkedCount === this.listData.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.listData.length;

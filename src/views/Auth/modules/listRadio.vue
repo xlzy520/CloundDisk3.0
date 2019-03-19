@@ -1,5 +1,5 @@
 <template>
-  <div class="listRadio">
+  <div class="list-radio">
     <p>{{ title }}</p>
     <el-select
       v-model="GroupNum"
@@ -72,7 +72,7 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-.listRadio {
+.list-radio {
   width: 200px;
   line-height: 40px;
 

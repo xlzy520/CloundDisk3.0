@@ -6,18 +6,20 @@
       title="权限管理"
       width="40vw"
       @close="close"
-      @comfirm="comfirm"
+      @confirm="confirm"
+      :submit-disabled="!userId.length > 0"
+      :submit-loading="loading"
       :is-click="isClick">
       <el-form
         label-position="left"
         label-width="80px"
-        class="FormBox">
+        class="form-box">
         <el-form-item label="组织列表">
           <el-select v-model="groupNum"
             filterable
             placeholder="请选择"
             @change="groupNumChange"
-            class="pulldown">
+            class="pull-down">
             <el-option v-for="item in groupList"
               :key="item.id"
               :label="item.oname"
@@ -30,8 +32,7 @@
             v-model="userId"
             filterable
             :disabled="!groupNum"
-            :loading="loading"
-            class="pulldown"
+            class="pull-down"
             placeholder="请选择">
             <el-option v-for="item in employeeList"
               :key="item.userId"
@@ -51,15 +52,17 @@ import pushService from '@/api/service/push';
 import authService from '@/api/service/auth';
 import { mapState } from 'vuex';
 
+class AuthMan {
+  groupList = []
+  employeeList = []
+  groupNum = ""
+  userId = ""
+}
 export default {
   data() {
     return {
       loading: false,
-      list: [],
-      groupList: [],
-      employeeList: [],
-      groupNum: "",
-      userId: "",
+      ...new AuthMan()
     };
   },
   components: {
@@ -99,16 +102,15 @@ export default {
       });
     },
     openDialog() {
+      this.getOrgList();
       this.$refs.baseDialog.dialogVisible = true;
     },
-    // 点击分享按钮
-    comfirm() {
+    confirm() {
       this.$router.push(`/index/userAuth?userId=${this.userId}`);
       this.close();
     },
     close() {
-      this.groupNum = "";
-      this.userId = "";
+      Object.assign(this, new AuthMan());
       this.$refs.baseDialog.dialogVisible = false;
     },
   }
@@ -116,9 +118,9 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-.FormBox {
+.form-box {
   padding: 20px;
-  .pulldown {
+  .pull-down {
     width: 80%;
   }
 }
