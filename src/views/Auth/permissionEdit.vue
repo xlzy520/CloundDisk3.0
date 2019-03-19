@@ -39,11 +39,11 @@
     },
     computed: {
       isClick: function() {
-        return !(this.authList.length > 0 && this.EMPLYOEE.length > 0);
+        return !(this.authList.length > 0 && this.employee.length > 0);
       },
       ...mapGetters([
         'authList',
-        'EMPLYOEE'
+        'employee'
       ])
     },
     methods: {

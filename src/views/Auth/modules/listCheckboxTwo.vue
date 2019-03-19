@@ -58,7 +58,7 @@ export default {
   },
   computed: {
     isClick: function () {
-      return this.emplyoee.length === 0;
+      return this.employee.length === 0;
     },
     authList: function () {
       let arr = new Array(6).fill(0);
@@ -74,20 +74,20 @@ export default {
       return arr;
     },
     ...mapGetters([
-      'emplyoee',
-      'emplyoeeAuth'
+      'employee',
+      'employeeAuth'
     ])
   },
   mounted() {
   },
   watch: {
-    emplyoee: function () {
-      if (this.emplyoee.length === 0) {
+    employee: function () {
+      if (this.employee.length === 0) {
         this.checkList = [];
       }
     },
-    emplyoeeAuth: function () {
-      this.checkList = this.emplyoeeAuth;
+    employeeAuth: function () {
+      this.checkList = this.employeeAuth;
       let checkedCount = this.checkList.length;
       this.checkAll = checkedCount === this.listData.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.listData.length;

@@ -50,10 +50,10 @@ export default {
       set: function() {}
     },
     isClick: function() {
-      return !(this.authList.length > 0 && this.EMPLYOEE.length > 0);
+      return !(this.authList.length > 0 && this.employee.length > 0);
     },
     ...mapGetters([
-      'EMPLYOEE',
+      'employee',
       'authList'
     ])
   },

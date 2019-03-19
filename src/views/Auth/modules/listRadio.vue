@@ -2,7 +2,7 @@
   <div class="list-radio">
     <p>{{ title }}</p>
     <el-select
-      v-model="GroupNum"
+      v-model="groupNum"
       filterable
       remote
       reserve-keyword
@@ -19,7 +19,7 @@
     <base-scrollbar class="scroll-box">
       <ul>
         <el-radio-group
-          v-model="GroupNum"
+          v-model="groupNum"
           class="group"
           @change="choice">
           <li
@@ -54,7 +54,7 @@ export default {
   },
   data() {
     return {
-      GroupNum: '',
+      groupNum: '',
       loading: false,
     };
   },
@@ -63,9 +63,9 @@ export default {
   },
   methods: {
     choice(id) {
-      this.GroupNum = id;
-      this.$store.dispatch('ChooseGroup', this.GroupNum);
-      this.$emit("groupnum-change", this.GroupNum);
+      this.groupNum = id;
+      this.$store.dispatch('ChooseGroup', this.groupNum);
+      this.$emit("groupnum-change", this.groupNum);
     },
   }
 };

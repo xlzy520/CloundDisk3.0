@@ -94,21 +94,21 @@ export default {
       return this.listData.length === 0;
     },
     ...mapGetters([
-      'GroupNum'
+      'groupNum'
     ])
   },
   mounted() {
-    this.$store.dispatch('ChooseEmplyoee', this.checkList);
+    this.$store.dispatch('ChooseEmployee', this.checkList);
   },
   watch: {
-    GroupNum: function (newVal, oldVal) {
+    groupNum: function (newVal, oldVal) {
       if (oldVal !== newVal) {
         this.checkList = [];
       }
     },
     checkList: function (newVal, oldVal) {
       if (oldVal !== newVal) {
-        this.$store.dispatch('ChooseEmplyoee', this.checkList);
+        this.$store.dispatch('ChooseEmployee', this.checkList);
         if (this.checkList.length === this.listData.length) {
           this.checkAll = true;
         }
@@ -128,7 +128,7 @@ export default {
       let checkedCount = value.length;
       this.checkAll = checkedCount === this.listData.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.listData.length;
-      this.$store.dispatch('ChooseEmplyoee', this.checkList);
+      this.$store.dispatch('ChooseEmployee', this.checkList);
     },
     searchThisCateWhoHavePer(val) {
       const params = {
@@ -162,7 +162,7 @@ export default {
           arr.push(i);
         }
       }
-      this.$store.dispatch('SelectEmplyoee', arr);
+      this.$store.dispatch('SelectEmployee', arr);
     }
   }
 };
