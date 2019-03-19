@@ -56,7 +56,7 @@ class AuthMan {
   groupList = []
   employeeList = []
   groupNum = ""
-  userId = []
+  userId = ""
 }
 export default {
   data() {
@@ -102,6 +102,7 @@ export default {
       });
     },
     openDialog() {
+      this.getOrgList();
       this.$refs.baseDialog.dialogVisible = true;
     },
     confirm() {
