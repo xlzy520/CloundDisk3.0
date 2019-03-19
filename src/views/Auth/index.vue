@@ -1,4 +1,3 @@
-<!--  -->
 <template>
   <div class="AuthBox">
     <el-tabs v-model="activeName" @tab-click="handleClick">

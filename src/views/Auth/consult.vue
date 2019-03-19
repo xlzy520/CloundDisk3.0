@@ -1,4 +1,3 @@
-<!--  -->
 <template>
   <div>
     <base-scrollbar ref="scrollbar" class="scrollbar">

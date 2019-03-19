@@ -1,4 +1,4 @@
-<!--  -->
+
 <template>
   <div>
     <base-dialog

@@ -1,21 +1,21 @@
-<!--  -->
+
 <template>
   <div class="listCheckbox">
     <p>{{ title }} </p>
     <div class="choicebox">
-      <el-checkbox 
+      <el-checkbox
         :indeterminate="isIndeterminate"
         v-model="checkAll"
         @change="handleCheckAllChange"
         :disabled="isClick">全选</el-checkbox>
       <base-scrollbar class="ScrollBox">
         <ul>
-          <el-checkbox-group 
+          <el-checkbox-group
             v-model="checkList"
             @change="handleCheckedCitiesChange">
             <li v-for="(item, index) in listData"
               :key="index">
-              <el-checkbox 
+              <el-checkbox
                 class="name"
                 :label="item.fID"
                 :key="item.fID"
