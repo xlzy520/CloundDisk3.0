@@ -5,7 +5,8 @@
       <el-checkbox 
         :indeterminate="isIndeterminate"
         v-model="checkAll"
-        @change="handleCheckAllChange">全选</el-checkbox>
+        @change="handleCheckAllChange"
+        :disabled="isClick">全选</el-checkbox>
     </p>
     <div class="choicebox">
       <el-select 
@@ -115,13 +116,8 @@ export default {
     supplyData: function() {
       return this.listData.length > 30 ? this.listData.slice(30, this.listData.length - 1) : [];
     },
-    fcategoryid: {
-      get: function () {
-        return JSON.parse(localStorage.obj).map(v => {
-          return v.fcategoryid;
-        }).join(",");
-      },
-      set: function () { }
+    isClick: function () {
+      return this.listData.length === 0;
     },
     ...mapGetters([
       'GroupNum'
@@ -162,7 +158,9 @@ export default {
     },
     searchThisCateWhoHavePer(val) {
       const params = {
-        fcategoryid: this.fcategoryid,
+        fcategoryid: JSON.parse(localStorage.obj).map(v => {
+          return v.fcategoryid;
+        }).join(","),
         fuserList: val,
       };
       authService.searchThisCateWhoHavePer(params).then(res => {
