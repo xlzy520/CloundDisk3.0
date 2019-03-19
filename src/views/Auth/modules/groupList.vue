@@ -1,5 +1,5 @@
 <template>
-  <div class="list-radio">
+  <div class="group-list">
     <p>组织列表</p>
     <el-select
       v-model="groupNum"
@@ -46,10 +46,6 @@ export default {
     listData: {
       type: Array,
       default: []
-    },
-    title: {
-      type: String,
-      default: ""
     }
   },
   data() {
@@ -71,8 +67,8 @@ export default {
 };
 
 </script>
-<style lang="scss" scoped>
-.list-radio {
+<style lang="scss">
+.group-list {
   width: 200px;
   line-height: 40px;
 

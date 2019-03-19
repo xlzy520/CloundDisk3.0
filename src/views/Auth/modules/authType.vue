@@ -1,4 +1,3 @@
-
 <template>
   <div class="list-checkbox">
     <p>权限类型 </p>
@@ -116,5 +115,6 @@ export default {
 };
 
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+
 </style>

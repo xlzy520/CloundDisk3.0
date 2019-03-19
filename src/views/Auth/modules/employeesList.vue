@@ -72,19 +72,6 @@ export default {
     baseScrollbar
   },
   computed: {
-    userList: {
-      get: function () {
-        return this.listData.filter(v => {
-          return this.checkList.indexOf(v.userId) > -1;
-        }).map(v => {
-          return {
-            userId: v.userId,
-            userName: v.userName
-          };
-        });
-      },
-      set: function() { }
-    },
     isClick: function () {
       return this.listData.length === 0;
     },
