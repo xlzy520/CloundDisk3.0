@@ -31,7 +31,7 @@
               <li
                 v-for="(item, index) in preData"
                 :key="index"
-                :class="{ actived: item.hasAuth === '1' }">
+                :class="{ active: item.hasAuth === '1' }">
                 <el-checkbox
                   :label="item.userId"
                   :key="item.userId"
@@ -51,7 +51,7 @@
               <li
                 v-for="(item, index) in supplyData"
                 :key="index"
-                :class="{ actived: item.hasAuth === '1' }">
+                :class="{ active: item.hasAuth === '1' }">
                 <el-checkbox
                   :label="item.userId"
                   :key="item.userId"

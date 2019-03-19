@@ -2,12 +2,12 @@
   <div>
     <base-scrollbar ref="scrollbar" class="scrollbar">
       <div class="permission-content flex">
-        <list-checkbox title="员工列表" ref="ListCo" :list-data="Employeeslist"></list-checkbox>
+        <list-checkbox title="员工列表" ref="ListCo" :list-data="employeesList"></list-checkbox>
         <list-checkbox-two title="权限类型" ref="ListCt" :list-data="authTypes"></list-checkbox-two>
       </div>
     </base-scrollbar>
     <div class="handler-box">
-      <el-button type="primary" @click="save" :disabled="isClick" :loading="isloading">保存</el-button>
+      <el-button type="primary" @click="save" :disabled="isClick" :loading="loading">保存</el-button>
       <el-button type="warning" @click="cancel">取消</el-button>
     </div>
   </div>
@@ -17,7 +17,7 @@
   import listCheckbox from './modules/listCheckbox.vue';
   import listCheckboxTwo from './modules/listCheckboxTwo.vue';
   import baseScrollbar from '@/components/baseScrollbar.vue';
-  import authService from '@/api/service/auth.js';
+  import authService from '@/api/service/auth';
   import authData from './modules/authData.js';
   import { mapGetters } from "vuex";
 
@@ -26,10 +26,10 @@
     data () {
       return {
         isShowOrgList: "1",
-        Employeeslist: [],
+        employeesList: [],
         authTypes: authData.data,
         Auths: [],
-        isloading: false,
+        loading: false,
       };
     },
     components: {
@@ -38,14 +38,6 @@
       baseScrollbar
     },
     computed: {
-      fcategoryid: {
-        get: function() {
-          return JSON.parse(localStorage.obj).map(v => {
-            return v.fcategoryid;
-          });
-        },
-        set: function() {}
-      },
       isClick: function() {
         return !(this.authList.length > 0 && this.EMPLYOEE.length > 0);
       },
@@ -54,32 +46,27 @@
         'EMPLYOEE'
       ])
     },
-    mounted() {
-      this.getAuthListByCategory(this.fcategoryid);
-    },
     methods: {
+      getfcategoryids() {
+        return JSON.parse(localStorage.obj).map(v => v.fcategoryid);
+      },
       assignAuth(auth) {
-        for (let i in auth) {
-          if (auth[i] === "1") {
-            this.$refs.ListCt.checkList.push(i);
-          }
-        }
+        this.$refs.ListCt.checkList.push(auth.filter(item=> item === '1'));
       },
       getAuthListByCategory(fcategoryid) {
-        const params = {
+        authService.getAuthListByCategory({
           fcategoryid
-        };
-        authService.getAuthListByCategory(params).then(res => {
+        }).then(res => {
           if (res.success) {
-            this.Employeeslist = res.data.userList;
-            this.$refs.ListCo.DupData = JSON.parse(JSON.stringify(this.Employeeslist));
-            if (this.Employeeslist.length > 0) {
-              let authArr = this.Employeeslist.map(v => { return v.auth; });
+            this.employeesList = res.data.userList;
+            this.$refs.ListCo.DupData = JSON.parse(JSON.stringify(this.employeesList));
+            if (this.employeesList.length > 0) {
+              let authArr = this.employeesList.map(v => { return v.auth; });
               this.$refs.ListCo.checkList = this.$refs.ListCo.DupData.map(v => {
                 return v.userId;
               });
               // 员工列表 只有一人时
-              if (this.Employeeslist.length === 1) {
+              if (this.employeesList.length === 1) {
                 this.assignAuth(authArr[0]);
                 return false;
               }
@@ -94,20 +81,18 @@
         });
       },
       save() {
-        let params = {
+        this.loading = true;
+        const params = {
           auth: this.authList,
-          fcategoryid: this.fcategoryid.join(","),
+          fcategoryid: this.getfcategoryids(),
           userList: this.$refs.ListCo.userList
         };
-        this.isloading = true;
-
-        authService.giveAuthToUser(params).then(res => {
-          this.isloading = false;
-          this.clear();
+        authService.giveAuthToUser(params).then(() => {
           this.$message1000("分配权限成功", 'success');
-          setTimeout(() => {
-            this.Quit();
-          }, 50);
+        }).finally(()=>{
+          this.loading = false;
+          this.clear();
+          this.cancel();
         });
       },
       clear() {
@@ -115,9 +100,12 @@
         this.$refs.ListCo.checkList = [];
       },
       cancel() {
-        this.$router.go(-1);
+        this.$router.back();
       }
-    }
+    },
+    mounted() {
+      this.getAuthListByCategory(this.getfcategoryids());
+    },
   };
 
 </script>

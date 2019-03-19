@@ -59,16 +59,12 @@
       }
       li {
         border: 1px solid #fff;
-        &.actived {
+        &.active {
           background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);
           border-radius: 10px;
         }
-
         .name {
-          width: 100%;
-          box-sizing: border-box;
           padding-left: 20px;
-          height: 100%;
         }
       }
     }
