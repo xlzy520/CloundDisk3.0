@@ -1,7 +1,7 @@
 
 <template>
   <div class="list-checkbox">
-    <p>{{ title }} </p>
+    <p>权限类型 </p>
     <div class="choice-box">
       <el-checkbox
         :indeterminate="isIndeterminate"
@@ -38,10 +38,6 @@ export default {
     listData: {
       type: Array,
       default: []
-    },
-    title: {
-      type: String,
-      default: ""
     }
   },
   data() {

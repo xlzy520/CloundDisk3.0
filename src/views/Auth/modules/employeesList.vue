@@ -1,6 +1,6 @@
 <template>
   <div class="list-checkbox">
-    <p>{{ title }}
+    <p>员工列表
       <el-checkbox
         :indeterminate="isIndeterminate"
         v-model="checkAll"
@@ -58,10 +58,6 @@ export default {
     listData: {
       type: Array,
       default: []
-    },
-    title: {
-      type: String,
-      default: ""
     }
   },
   data() {

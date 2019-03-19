@@ -2,13 +2,13 @@
   <div>
     <base-scrollbar ref="scrollbar" class="scrollbar">
       <div class="permission-content flex">
-        <list-radio title="组织列表" :list-data="Grouplist" @groupnum-change="OrgIdChange"></list-radio>
-        <list-checkbox title="员工列表" ref="ListCo" :list-data="Employeeslist"></list-checkbox>
-        <list-checkbox-two title="权限类型" ref="ListCt" :list-data="authTypes"></list-checkbox-two>
+        <group-list :list-data="groupList" @groupnum-change="OrgIdChange"></group-list>
+        <employees-list ref="employeesList" :list-data="employeesList"></employees-list>
+        <auth-type ref="authTypes" :list-data="authTypes"></auth-type>
       </div>
     </base-scrollbar>
     <div class="handler-box">
-      <el-button type="primary" @click="save" :disabled="isClick" :loading="isloading">保存</el-button>
+      <el-button type="primary" @click="save" :disabled="isClick" :loading="loading">保存</el-button>
       <el-button type="warning" @click="cancel">取消</el-button>
     </div>
   </div>
@@ -16,10 +16,10 @@
 
 <script>
 
-import listRadio from './modules/listRadio.vue';
-import listCheckbox from './modules/listCheckbox.vue';
-import listCheckboxTwo from './modules/listCheckboxTwo.vue';
-import authService from '@/api/service/auth.js';
+import groupList from './modules/groupList.vue';
+import employeesList from './modules/employeesList.vue';
+import authType from './modules/authType.vue';
+import authService from '@/api/service/auth';
 import baseScrollbar from '@/components/baseScrollbar.vue';
 import authData from './modules/authData.js';
 import { mapGetters } from 'vuex';
@@ -28,16 +28,16 @@ export default {
   name: 'permission-setting',
   data () {
     return {
-      Grouplist: [],
-      Employeeslist: [],
+      groupList: [],
+      employeesList: [],
       authTypes: authData.data,
-      isloading: false,
+      loading: false,
     };
   },
   components: {
-    listRadio,
-    listCheckbox,
-    listCheckboxTwo,
+    groupList,
+    employeesList,
+    authType,
     baseScrollbar
   },
   computed: {
@@ -64,8 +64,8 @@ export default {
     getOrgList() {
       authService.getOrgList().then(res => {
         if (res.success) {
-          this.Grouplist = res.data;
-          for (const item of this.Grouplist) {
+          this.groupList = res.data;
+          for (const item of this.groupList) {
             item['isSelected'] = false;
           }
         }
@@ -74,8 +74,8 @@ export default {
     OrgIdChange(val) {
       authService.getExcludeUserInfoByOrgId(val, this.fcategoryid).then(res => {
         if (res.success) {
-          this.Employeeslist = res.data;
-          this.$refs.ListCo.DupData = res.data;
+          this.employeesList = res.data;
+          this.$refs.employeesList.DupData = res.data;
         }
       });
     },
@@ -83,12 +83,12 @@ export default {
       let params = {
         auth: this.authList,
         fcategoryid: this.fcategoryid,
-        userList: this.$refs.ListCo.userList
+        userList: this.$refs.employeesList.userList
       };
-      this.isloading = true;
+      this.loading = true;
 
       authService.giveAuthToUser(params).then(res => {
-        this.isloading = false;
+        this.loading = false;
         this.clear();
         this.$message1000("分配权限成功", 'success');
         setTimeout(() => {
@@ -97,8 +97,8 @@ export default {
       });
     },
     clear() {
-      this.$refs.ListCt.checkList = [];
-      this.$refs.ListCo.checkList = [];
+      this.$refs.authTypes.checkList = [];
+      this.$refs.employeesList.checkList = [];
     },
     cancel() {
       this.$router.go(-1);

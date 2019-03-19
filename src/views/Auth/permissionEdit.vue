@@ -2,8 +2,8 @@
   <div>
     <base-scrollbar ref="scrollbar" class="scrollbar">
       <div class="permission-content flex">
-        <list-checkbox title="员工列表" ref="ListCo" :list-data="employeesList"></list-checkbox>
-        <list-checkbox-two title="权限类型" ref="ListCt" :list-data="authTypes"></list-checkbox-two>
+        <employees-list ref="employeesList" :list-data="employeesList"></employees-list>
+        <auth-type ref="authTypes" :list-data="authTypes"></auth-type>
       </div>
     </base-scrollbar>
     <div class="handler-box">
@@ -14,8 +14,8 @@
 </template>
 
 <script>
-  import listCheckbox from './modules/listCheckbox.vue';
-  import listCheckboxTwo from './modules/listCheckboxTwo.vue';
+  import employeesList from './modules/employeesList.vue';
+  import authType from './modules/authType.vue';
   import baseScrollbar from '@/components/baseScrollbar.vue';
   import authService from '@/api/service/auth';
   import authData from './modules/authData.js';
@@ -33,8 +33,8 @@
       };
     },
     components: {
-      listCheckboxTwo,
-      listCheckbox,
+      employeesList,
+      authType,
       baseScrollbar
     },
     computed: {
@@ -51,7 +51,7 @@
         return JSON.parse(localStorage.obj).map(v => v.fcategoryid);
       },
       assignAuth(auth) {
-        this.$refs.ListCt.checkList.push(auth.filter(item=> item === '1'));
+        this.$refs.authTypes.checkList.push(auth.filter(item=> item === '1'));
       },
       getAuthListByCategory(fcategoryid) {
         authService.getAuthListByCategory({
@@ -59,10 +59,10 @@
         }).then(res => {
           if (res.success) {
             this.employeesList = res.data.userList;
-            this.$refs.ListCo.DupData = JSON.parse(JSON.stringify(this.employeesList));
+            this.$refs.employeesList.DupData = JSON.parse(JSON.stringify(this.employeesList));
             if (this.employeesList.length > 0) {
               let authArr = this.employeesList.map(v => { return v.auth; });
-              this.$refs.ListCo.checkList = this.$refs.ListCo.DupData.map(v => {
+              this.$refs.employeesList.checkList = this.$refs.employeesList.DupData.map(v => {
                 return v.userId;
               });
               // 员工列表 只有一人时
@@ -85,7 +85,7 @@
         const params = {
           auth: this.authList,
           fcategoryid: this.getfcategoryids(),
-          userList: this.$refs.ListCo.userList
+          userList: this.$refs.employeesList.userList
         };
         authService.giveAuthToUser(params).then(() => {
           this.$message1000("分配权限成功", 'success');
@@ -96,8 +96,8 @@
         });
       },
       clear() {
-        this.$refs.ListCt.checkList = [];
-        this.$refs.ListCo.checkList = [];
+        this.$refs.authTypes.checkList = [];
+        this.$refs.employeesList.checkList = [];
       },
       cancel() {
         this.$router.back();

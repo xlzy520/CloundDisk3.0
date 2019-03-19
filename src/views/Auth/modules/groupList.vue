@@ -1,6 +1,6 @@
 <template>
   <div class="list-radio">
-    <p>{{ title }}</p>
+    <p>组织列表</p>
     <el-select
       v-model="groupNum"
       filterable
