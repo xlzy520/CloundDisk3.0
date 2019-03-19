@@ -44,10 +44,10 @@
       display: flex;
       flex-direction: column;
     }
-    .scrollbar {
+    .scroll-bar {
       min-width: 1200px;
     }
-    .listCheckbox {
+    .list-checkbox {
       width: 400px;
       line-height: 40px;
       .scroll-box {

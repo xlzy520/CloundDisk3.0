@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-scrollbar ref="scrollbar" class="scrollbar">
+    <base-scrollbar ref="scrollbar" class="scroll-bar">
       <div class="permission-content flex">
         <list-radio title="组织列表" :list-data="Grouplist" @groupnum-change="OrgIdChange"></list-radio>
         <list-checkbox title="员工列表" ref="ListCo" :list-data="Employeeslist"></list-checkbox>
@@ -50,10 +50,10 @@ export default {
       set: function() {}
     },
     isClick: function() {
-      return !(this.authList.length > 0 && this.EMPLYOEE.length > 0);
+      return !(this.authList.length > 0 && this.emplyoee.length > 0);
     },
     ...mapGetters([
-      'EMPLYOEE',
+      'emplyoee',
       'authList'
     ])
   },
@@ -87,7 +87,7 @@ export default {
       };
       this.isloading = true;
 
-      authService.giveAuthToUser(params).then(res => {
+      authService.giveAuthToUser(params).then(() => {
         this.isloading = false;
         this.clear();
         this.$message1000("分配权限成功", 'success');
