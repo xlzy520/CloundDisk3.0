@@ -1,12 +1,12 @@
 <template>
   <div>
-    <base-scrollbar ref="scrollbar" class="scrollbar">
-      <div class="flexBox">
+    <base-scrollbar ref="scrollbar" class="scroll-bar">
+      <div class="flex">
         <list-checkbox title="员工列表" ref="ListCo" :list-data="Employeeslist"></list-checkbox>
         <list-checkbox-two title="权限类型" ref="ListCt" :list-data="authTypes"></list-checkbox-two>
       </div>
     </base-scrollbar>
-    <div class="handlerBox">
+    <div class="handler-box">
       <el-button type="primary" @click="save" :disabled="isClick" :loading="isloading">保存</el-button>
       <el-button type="warning" @click="Quit">取消</el-button>
     </div>
@@ -46,11 +46,11 @@
         set: function() {}
       },
       isClick: function() {
-        return !(this.authList.length > 0 && this.EMPLYOEE.length > 0);
+        return !(this.authList.length > 0 && this.emplyoee.length > 0);
       },
       ...mapGetters([
         'authList',
-        'EMPLYOEE'
+        'emplyoee'
       ])
     },
     mounted() {

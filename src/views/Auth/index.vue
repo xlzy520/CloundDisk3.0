@@ -1,11 +1,11 @@
 <template>
-  <div class="AuthBox">
+  <div class="auth-box">
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="分配权限" name="1">
-        <allot class="flexUp"></allot>
+        <allot class="flex-up"></allot>
       </el-tab-pane>
       <el-tab-pane label="编辑权限" name="2">
-        <consult class="flexUp"></consult>
+        <consult class="flex-up"></consult>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -33,16 +33,6 @@ export default {
   beforeDestroy() {
     localStorage.obj = "";
   },
-  computed: {
-    fcategoryid: {
-      get: function() {
-        return JSON.parse(localStorage.obj).map(v => {
-          return v.fcategoryid;
-        }).join(",");
-      },
-      set: function() {}
-    },
-  },
   methods: {
     handleClick(tab, event) {
       console.log(tab, event);
@@ -52,7 +42,7 @@ export default {
 
 </script>
 <style lang="scss">
-  .AuthBox {
+  .auth-box {
     width: 100%;
     box-sizing: border-box;
     padding-left: 20px;
@@ -70,29 +60,26 @@ export default {
     }
   }
 
-  .flexUp {
-    height: calc(100% - 40px);
+  .flex-up {
+    height: calc(100% - 60px);
     display: flex;
     flex-direction: column;
   }
 
-  .flexBox {
-    display: flex;
-  }
-  .scrollbar {
+  .scroll-bar {
     min-width: 1200px;
     flex-grow: 8 !important;
   }
 
-  .handlerBox {
+  .handler-box {
     flex: 1 1 12px;
   }
 
-  .listCheckbox {
-    width: 400px;
+  .list-checkbox {
+    width: 300px;
     line-height: 40px;
 
-    .ScrollBox {
+    .scroll-box {
       width: 200px;
       height: 56vh;
       border: 1px solid #eee;

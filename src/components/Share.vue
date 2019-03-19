@@ -10,13 +10,13 @@
       :submit-loading="loading">
       <el-form label-position="left"
         label-width="80px"
-        class="FormBox">
+        class="form-box">
         <el-form-item label="组织列表">
           <el-select v-model="orgId"
             filterable
             placeholder="请选择"
             @change="orgIdChange"
-            class="pulldown">
+            class="pull-down">
             <el-option v-for="item in groupList"
               :key="item.id"
               :label="item.oname"
@@ -29,7 +29,7 @@
             filterable
             multiple
             :disabled="!orgId"
-            class="pulldown"
+            class="pull-down"
             placeholder="请选择">
             <el-option v-for="item in employeeList"
               :key="item.userId"
@@ -118,10 +118,10 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-.FormBox {
+.form-box {
   padding: 20px;
 
-  .pulldown {
+  .pull-down {
     width: 80%;
   }
 }

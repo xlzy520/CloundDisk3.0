@@ -1,5 +1,5 @@
 <template>
-  <div class="listRadio">
+  <div class="list-radio">
     <p>{{ title }}</p>
     <el-select 
       v-model="GroupNum"
@@ -16,7 +16,7 @@
         :value="item.id">
       </el-option>
     </el-select>
-    <base-scrollbar class="ScrollBox">
+    <base-scrollbar class="scroll-box">
       <ul>
         <el-radio-group 
           v-model="GroupNum"
@@ -72,11 +72,11 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-.listRadio {
+.list-radio {
   width: 200px;
   line-height: 40px;
 
-  .ScrollBox {
+  .scroll-box {
     height: 56vh;
     border: 1px solid #eee;
     margin-top: 10px;
