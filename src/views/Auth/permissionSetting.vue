@@ -1,8 +1,8 @@
 <template>
   <div>
-    <base-scrollbar ref="scrollbar" class="scrollbar">
+    <base-scrollbar ref="scrollbar" class="scrollbar" v-loading="orgLoading">
       <div class="permission-content flex">
-        <group-list :list-data="groupList" @groupnum-change="OrgIdChange"></group-list>
+        <group-list :list-data="groupList" @group-change="OrgIdChange"></group-list>
         <employees-list ref="employeesList" :list-data="employeesList"></employees-list>
         <auth-type ref="authTypes" :list-data="authTypes"></auth-type>
       </div>
@@ -32,6 +32,7 @@ export default {
       employeesList: [],
       authTypes: authData.data,
       loading: false,
+      orgLoading: false
     };
   },
   components: {
@@ -63,20 +64,19 @@ export default {
   methods: {
     getOrgList() {
       authService.getOrgList().then(res => {
-        if (res.success) {
-          this.groupList = res.data;
-          for (const item of this.groupList) {
-            item['isSelected'] = false;
-          }
+        this.groupList = res.data;
+        for (const item of this.groupList) {
+          item['isSelected'] = false;
         }
       });
     },
     OrgIdChange(val) {
+      this.orgLoading = true;
       authService.getExcludeUserInfoByOrgId(val, this.fcategoryid).then(res => {
-        if (res.success) {
-          this.employeesList = res.data;
-          this.$refs.employeesList.DupData = res.data;
-        }
+        this.employeesList = res.data;
+        this.$refs.employeesList.DupData = res.data;
+      }).finally(()=>{
+        this.orgLoading = false;
       });
     },
     save() {
@@ -86,14 +86,12 @@ export default {
         userList: this.$refs.employeesList.userList
       };
       this.loading = true;
-
-      authService.giveAuthToUser(params).then(res => {
+      authService.giveAuthToUser(params).then(() => {
         this.loading = false;
         this.clear();
         this.$message1000("分配权限成功", 'success');
-        setTimeout(() => {
-          this.Quit();
-        }, 50);
+      }).finally(()=>{
+        this.cancel();
       });
     },
     clear() {
@@ -101,7 +99,7 @@ export default {
       this.$refs.employeesList.checkList = [];
     },
     cancel() {
-      this.$router.go(-1);
+      this.$router.back();
     }
   }
 };

@@ -1,13 +1,33 @@
 <template>
-  <div class="list-checkbox">
-    <p>员工列表
-      <el-checkbox
-        :indeterminate="isIndeterminate"
-        v-model="checkAll"
-        @change="handleCheckAllChange"
-        :disabled="isClick">全选</el-checkbox>
-    </p>
+  <div class="list-checkbox flex">
     <div class="choice-box">
+      <div class="list-checkbox-header">
+        <span class="list-checkbox-title">员工列表</span>
+        <el-checkbox
+          :indeterminate="isIndeterminate"
+          v-model="checkAll"
+          @change="handleCheckAllChange"
+          :disabled="isClick">全选</el-checkbox>
+      </div>
+      <div class="staff-box">
+        <base-scrollbar class="scroll-box" :class="{ 'expand': listData.length > 30 }">
+          <el-checkbox-group
+            v-model="checkList"
+            @change="handleCheckedCitiesChange">
+            <el-checkbox
+              v-for="item in listData"
+              :class="{ active: item.hasAuth === '1' }"
+              :label="item.userId"
+              :key="item.userId"
+              class="org-radio">
+              {{ item.userName }}
+            </el-checkbox>
+          </el-checkbox-group>
+        </base-scrollbar>
+      </div>
+    </div>
+    <div class="employee-selected">
+      <span>已选择员工：</span>
       <el-select
         v-model="checkList"
         multiple
@@ -22,28 +42,6 @@
           :value="item.userId">
         </el-option>
       </el-select>
-      <div class="staff-box">
-        <base-scrollbar class="scroll-box" :class="{ 'expand': listData.length > 30 }">
-          <ul>
-            <el-checkbox-group
-              v-model="checkList"
-              @change="handleCheckedCitiesChange">
-              <li
-                v-for="(item, index) in listData"
-                :key="index"
-                :class="{ active: item.hasAuth === '1' }">
-                <el-checkbox
-                  :label="item.userId"
-                  :key="item.userId"
-                  :id="item.userId"
-                  class="name">
-                  {{ item.userName }}
-                </el-checkbox>
-              </li>
-            </el-checkbox-group>
-          </ul>
-        </base-scrollbar>
-      </div>
     </div>
   </div>
 </template>
@@ -52,7 +50,7 @@
 import baseScrollbar from '@/components/baseScrollbar.vue';
 import authService from '@/api/service/auth';
 import { mapGetters } from "vuex";
-
+// Todo 选择组织时，给员工列表增加loading
 export default {
   props: {
     listData: {
@@ -151,40 +149,34 @@ export default {
 
 </script>
 <style lang="scss" scoped>
+  .list-checkbox{
+    width: 49vw;
+  }
+  .employee-selected{
+    width: (300/650)* 49vw;
+    display: flex;
+    flex-direction: column;
+  }
+  .choice-box{
+    width: (240/650)* 49vw;
+    @extend .employee-selected
+  }
   .staff-box {
-    width: 80%;
     display: flex;
     justify-content: space-between;
-  }
-  .list-checkbox {
-    width: 600px;
-    padding-left: 30px;
-
-    /deep/ .el-select {
-      width: 80%;
-    }
-
     .scroll-box {
-      width: 50%;
-
-      &.expand {
+      width: 100%;
+      .el-checkbox-group {
         width: 100%;
-
-        ul {
-          width: 100%;
-
-          /deep/ .el-checkbox-group {
-            width: 100%;
-            display: flex;
-            flex-wrap: wrap;
-          }
-        }
-
-        li {
-          width: 50%;
-        }
+        display: flex;
+        flex-wrap: wrap;
+      }
+      .org-radio {
+        width: 50%;
       }
     }
   }
-
+  /deep/ .el-select {
+    margin-top: 10px;
+  }
 </style>

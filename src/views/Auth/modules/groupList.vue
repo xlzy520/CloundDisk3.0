@@ -1,39 +1,17 @@
 <template>
   <div class="group-list">
     <p>组织列表</p>
-    <el-select
-      v-model="groupNum"
-      filterable
-      remote
-      reserve-keyword
-      placeholder="请输入关键词"
-      @change="choice"
-      :loading="loading">
-      <el-option
-        v-for="item in listData"
-        :key="item.id"
-        :label="item.oname"
-        :value="item.id">
-      </el-option>
-    </el-select>
     <base-scrollbar class="scroll-box">
-      <ul>
-        <el-radio-group
-          v-model="groupNum"
-          class="group"
-          @change="choice">
-          <li
-            v-for="(item, index) in listData"
-            :key="index">
-            <el-radio :label="item.id"
-              :key="item.id"
-              :id="item.id"
-              class="name">
-              {{ item.oname }}
-            </el-radio>
-          </li>
-        </el-radio-group>
-      </ul>
+      <el-radio-group
+        v-model="groupNum"
+        class="group"
+        @change="choice">
+        <el-radio v-for="(item, index) in listData"
+                  :key="index"
+                  :tabindex="false"
+                  :label="item.id"
+                  class="org-radio">{{ item.oname }}</el-radio>
+      </el-radio-group>
     </base-scrollbar>
   </div>
 </template>
@@ -51,7 +29,6 @@ export default {
   data() {
     return {
       groupNum: '',
-      loading: false,
     };
   },
   components: {
@@ -61,7 +38,7 @@ export default {
     choice(id) {
       this.groupNum = id;
       this.$store.dispatch('ChooseGroup', this.groupNum);
-      this.$emit("groupnum-change", this.groupNum);
+      this.$emit("group-change", this.groupNum);
     },
   }
 };
@@ -69,38 +46,18 @@ export default {
 </script>
 <style lang="scss">
 .group-list {
-  width: 200px;
+  width: 210px;
   line-height: 40px;
-
   .scroll-box {
-    height: 56vh;
+    height: 64vh;
     border: 1px solid #eee;
     margin-top: 10px;
   }
-
-  li {
+  .org-radio {
+    width: 100%;
     line-height: 40px;
-
-    &.el-radio__input {
-      display: none !important;
-    }
-
-    &.is-checked {
-      color: #fff;
-      background-color: #409eff;
-    }
-
-    &.isSelected {
-      color: #fff;
-      background-color: #409eff;
-    }
-
-    .name {
-      width: 100%;
-      box-sizing: border-box;
-      padding-left: 20px;
-      height: 100%;
-    }
+    padding-left: 30px;
+    margin-left: 0;
   }
 }
 </style>

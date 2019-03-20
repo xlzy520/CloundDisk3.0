@@ -1,28 +1,21 @@
 <template>
   <div class="list-checkbox">
-    <p>权限类型 </p>
-    <div class="choice-box">
+    <div class="list-checkbox-header">
+      <span class="list-checkbox-header-title">权限类型</span>
       <el-checkbox
         :indeterminate="isIndeterminate"
         v-model="checkAll"
         @change="handleCheckAllChange"
         :disabled="isClick">全选</el-checkbox>
+    </div>
+    <div class="choice-box">
       <base-scrollbar class="scroll-box">
-        <ul>
-          <el-checkbox-group
-            v-model="checkList"
-            @change="handleCheckedCitiesChange">
-            <li v-for="(item, index) in listData"
-              :key="index">
-              <el-checkbox
-                class="name"
-                :label="item.fID"
-                :key="item.fID"
-                :id="item.fID"
-                :disabled="isClick">{{ item.name }}</el-checkbox>
-            </li>
-          </el-checkbox-group>
-        </ul>
+        <el-checkbox-group
+          v-model="checkList"
+          @change="handleCheckedCitiesChange">
+          <el-checkbox v-for="(item, index) in listData" :key="index"
+            class="org-radio" :label="item.fID" :disabled="isClick">{{ item.name }}</el-checkbox>
+        </el-checkbox-group>
       </base-scrollbar>
     </div>
   </div>
@@ -115,6 +108,11 @@ export default {
 };
 
 </script>
-<style lang="scss">
-
+<style lang="scss" scoped>
+  .list-checkbox{
+    width: 240px;
+  }
+  .org-radio{
+    width: 100%;
+  }
 </style>

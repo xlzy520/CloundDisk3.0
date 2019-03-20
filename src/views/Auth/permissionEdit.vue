@@ -19,11 +19,11 @@
   import baseScrollbar from '@/components/baseScrollbar.vue';
   import authService from '@/api/service/auth';
   import authData from './modules/authData.js';
-  import { mapGetters } from "vuex";
+  import {mapGetters} from "vuex";
 
   export default {
     name: 'permission-edit',
-    data () {
+    data() {
       return {
         isShowOrgList: "1",
         employeesList: [],
@@ -38,7 +38,7 @@
       baseScrollbar
     },
     computed: {
-      isClick: function() {
+      isClick: function () {
         return !(this.authList.length > 0 && this.employee.length > 0);
       },
       ...mapGetters([
@@ -51,7 +51,7 @@
         return JSON.parse(localStorage.obj).map(v => v.fcategoryid);
       },
       assignAuth(auth) {
-        this.$refs.authTypes.checkList.push(auth.filter(item=> item === '1'));
+        this.$refs.authTypes.checkList.push(auth.filter(item => item === '1'));
       },
       getAuthListByCategory(fcategoryid) {
         authService.getAuthListByCategory({
@@ -61,7 +61,9 @@
             this.employeesList = res.data.userList;
             this.$refs.employeesList.DupData = JSON.parse(JSON.stringify(this.employeesList));
             if (this.employeesList.length > 0) {
-              let authArr = this.employeesList.map(v => { return v.auth; });
+              let authArr = this.employeesList.map(v => {
+                return v.auth;
+              });
               this.$refs.employeesList.checkList = this.$refs.employeesList.DupData.map(v => {
                 return v.userId;
               });
@@ -89,7 +91,7 @@
         };
         authService.giveAuthToUser(params).then(() => {
           this.$message1000("分配权限成功", 'success');
-        }).finally(()=>{
+        }).finally(() => {
           this.loading = false;
           this.clear();
           this.cancel();
@@ -110,5 +112,11 @@
 
 </script>
 <style lang="scss">
-
+  .permission-content {
+    justify-content: flex-start;
+  }
+  .handler-box{
+    text-align: center;
+    margin: 0 50px 20px 0;
+  }
 </style>
