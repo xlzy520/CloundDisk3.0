@@ -26,18 +26,37 @@ import baseScrollbar from '@/components/baseScrollbar.vue';
 import { mapGetters } from "vuex";
 
 export default {
-  props: {
-    listData: {
-      type: Array,
-      default: []
-    }
-  },
   data() {
     return {
+      listData: [
+        {
+          name: '查阅',
+          fID: '0',
+        },
+        {
+          name: '删除',
+          fID: '1',
+        },
+        {
+          name: '编辑',
+          fID: '2',
+        },
+        {
+          name: '下载',
+          fID: '3',
+        },
+        {
+          name: '上传',
+          fID: '4',
+        },
+        {
+          name: '新建',
+          fID: '5',
+        },
+      ],
       checkList: [],
-      checkAll: "",
+      checkAll: false,
       isIndeterminate: false,
-      OrgId: '',
       loading: false,
     };
   },

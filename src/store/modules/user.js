@@ -5,7 +5,6 @@ const user = {
   state: {
     userData: {},
     authData: [],
-    groupNum: "",
     employee: "",
     employeeAuth: [],
     authList: []
@@ -17,9 +16,6 @@ const user = {
     },
     SET_AUTH_DATA: (state, authData) => {
       state.authData = authData;
-    },
-    SET_GROUP_NUM: (state, data) => {
-      state.groupNum = data;
     },
     SET_EMPLOYEE: (state, data) => {
       state.employee = data;
@@ -77,10 +73,6 @@ const user = {
         commit('SET_AUTH_DATA', data);
         resolve();
       });
-    },
-    // 选中的组织列表编号
-    ChooseGroup({ commit }, data) {
-      commit('SET_GROUP_NUM', data);
     },
     // 选中的员工列表权限
     ChooseEmployee({ commit }, data) {

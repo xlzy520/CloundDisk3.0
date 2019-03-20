@@ -31,7 +31,7 @@
       }
     },
     beforeDestroy() {
-      localStorage.obj = "";
+      sessionStorage.obj = "";
     }
   };
 </script>

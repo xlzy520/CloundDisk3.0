@@ -2,9 +2,9 @@
   <div>
     <base-scrollbar ref="scrollbar" class="scrollbar" v-loading="orgLoading">
       <div class="permission-content flex">
-        <group-list :list-data="groupList" @group-change="OrgIdChange"></group-list>
+        <org-list :list-data="orgList" @org-change="orgChange"></org-list>
         <employees-list ref="employeesList" :list-data="employeesList"></employees-list>
-        <auth-type ref="authTypes" :list-data="authTypes"></auth-type>
+        <auth-type ref="authTypes"></auth-type>
       </div>
     </base-scrollbar>
     <div class="handler-box">
@@ -16,40 +16,30 @@
 
 <script>
 
-import groupList from './modules/groupList.vue';
+import orgList from './modules/orgList.vue';
 import employeesList from './modules/employeesList.vue';
 import authType from './modules/authType.vue';
 import authService from '@/api/service/auth';
 import baseScrollbar from '@/components/baseScrollbar.vue';
-import authData from './modules/authData.js';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'permission-setting',
   data () {
     return {
-      groupList: [],
+      orgList: [],
       employeesList: [],
-      authTypes: authData.data,
       loading: false,
       orgLoading: false
     };
   },
   components: {
-    groupList,
+    orgList,
     employeesList,
     authType,
     baseScrollbar
   },
   computed: {
-    fcategoryid: {
-      get: function() {
-        return JSON.parse(localStorage.obj).map(v => {
-          return v.fcategoryid;
-        }).join(",");
-      },
-      set: function() {}
-    },
     isClick: function() {
       return !(this.authList.length > 0 && this.employee.length > 0);
     },
@@ -62,19 +52,19 @@ export default {
     this.getOrgList();
   },
   methods: {
+    getfcategoryid() {
+      return JSON.parse(sessionStorage.obj);
+    },
     getOrgList() {
       authService.getOrgList().then(res => {
-        this.groupList = res.data;
-        for (const item of this.groupList) {
-          item['isSelected'] = false;
-        }
+        this.orgList = res.data;
       });
     },
-    OrgIdChange(val) {
+    orgChange(orgId) {
       this.orgLoading = true;
-      authService.getExcludeUserInfoByOrgId(val, this.fcategoryid).then(res => {
+      authService.getExcludeUserInfoByOrgId(orgId, this.getfcategoryid()).then(res => {
         this.employeesList = res.data;
-        this.$refs.employeesList.DupData = res.data;
+        // this.$refs.employeesList.DupData = res.data;
       }).finally(()=>{
         this.orgLoading = false;
       });
@@ -82,7 +72,7 @@ export default {
     save() {
       let params = {
         auth: this.authList,
-        fcategoryid: this.fcategoryid,
+        fcategoryid: this.getfcategoryid(),
         userList: this.$refs.employeesList.userList
       };
       this.loading = true;

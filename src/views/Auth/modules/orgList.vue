@@ -1,11 +1,10 @@
 <template>
-  <div class="group-list">
+  <div class="org-list">
     <p>组织列表</p>
     <base-scrollbar class="scroll-box">
       <el-radio-group
-        v-model="groupNum"
-        class="group"
-        @change="choice">
+        v-model="orgId"
+        @change="selectOrg">
         <el-radio v-for="(item, index) in listData"
                   :key="index"
                   :tabindex="false"
@@ -28,24 +27,22 @@ export default {
   },
   data() {
     return {
-      groupNum: '',
+      orgId: '',
     };
   },
   components: {
     baseScrollbar
   },
   methods: {
-    choice(id) {
-      this.groupNum = id;
-      this.$store.dispatch('ChooseGroup', this.groupNum);
-      this.$emit("group-change", this.groupNum);
+    selectOrg() {
+      this.$emit("org-change", this.orgId);
     },
   }
 };
 
 </script>
 <style lang="scss">
-.group-list {
+.org-list {
   width: 210px;
   line-height: 40px;
   .scroll-box {

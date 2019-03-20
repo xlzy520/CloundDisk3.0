@@ -4,7 +4,6 @@ const getters = {
   actionArray: state => state.file.actionArray,
   userData: state => state.user.userData,
   authData: state => state.user.authData,
-  groupNum: state => state.user.groupNum,
   employee: state => state.user.employee,
   employeeAuth: state => state.user.employeeAuth,
   authList: state => state.user.authList

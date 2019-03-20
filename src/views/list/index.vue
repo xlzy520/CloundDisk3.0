@@ -153,7 +153,7 @@
             this.$refs[action].open();
             break;
           case 'assign':
-            localStorage.obj = JSON.stringify(this.selectedData);
+            sessionStorage.obj = JSON.stringify(this.selectedData.map(v=> v.fcategoryid));
             // 点击分配权限按钮时 请求 getAuth接口查询 userList是否为空数组
             this.QueryPermission();
             break;

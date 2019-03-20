@@ -5,8 +5,8 @@ export default {
     return authService('/getOrgList.do', {}, 'get');
   },
   // 分配权限目录获取组织人员
-  getExcludeUserInfoByOrgId(orgId, fcategoryid) {
-    return authService('/getExcludeUserInfoByOrgId.do', { orgId, fcategoryid }, 'get');
+  getExcludeUserInfoByOrgId(orgId, fcategoryids) {
+    return authService('/getExcludeUserInfoByOrgId.do', { orgId, fcategoryids });
   },
   getAuthListByCategory(data) {
     return authService('/getAuthListByCategory.do', data);

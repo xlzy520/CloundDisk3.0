@@ -7,13 +7,13 @@
           :indeterminate="isIndeterminate"
           v-model="checkAll"
           @change="handleCheckAllChange"
-          :disabled="isClick">全选</el-checkbox>
+          :disabled="checkAllDisabled">全选</el-checkbox>
       </div>
       <div class="staff-box">
-        <base-scrollbar class="scroll-box" :class="{ 'expand': listData.length > 30 }">
+        <base-scrollbar class="scroll-box">
           <el-checkbox-group
             v-model="checkList"
-            @change="handleCheckedCitiesChange">
+            @change="employeesChange">
             <el-checkbox
               v-for="item in listData"
               :class="{ active: item.hasAuth === '1' }"
@@ -33,7 +33,7 @@
         multiple
         filterable
         reserve-keyword
-        placeholder="请输入关键词"
+        placeholder="请输入姓名"
         :loading="loading">
         <el-option
           v-for="item in listData"
@@ -49,8 +49,8 @@
 <script>
 import baseScrollbar from '@/components/baseScrollbar.vue';
 import authService from '@/api/service/auth';
-import { mapGetters } from "vuex";
-// Todo 选择组织时，给员工列表增加loading
+// import { mapGetters } from "vuex";
+
 export default {
   props: {
     listData: {
@@ -70,33 +70,12 @@ export default {
     baseScrollbar
   },
   computed: {
-    isClick: function () {
+    checkAllDisabled: function () {
       return this.listData.length === 0;
-    },
-    ...mapGetters([
-      'groupNum'
-    ])
+    }
   },
   mounted() {
-    this.$store.dispatch('ChooseEmployee', this.checkList);
-  },
-  watch: {
-    groupNum: function (newVal, oldVal) {
-      if (oldVal !== newVal) {
-        this.checkList = [];
-      }
-    },
-    checkList: function (newVal, oldVal) {
-      if (oldVal !== newVal) {
-        this.$store.dispatch('ChooseEmployee', this.checkList);
-        if (this.checkList.length === this.listData.length) {
-          this.checkAll = true;
-        }
-        if (this.checkList.length > 0) {
-          this.searchThisCateWhoHavePer(this.checkList);
-        }
-      }
-    }
+
   },
   methods: {
     handleCheckAllChange(val) {
@@ -104,17 +83,18 @@ export default {
       this.$forceUpdate();
       this.isIndeterminate = false;
     },
-    handleCheckedCitiesChange(value) {
-      let checkedCount = value.length;
+    employeesChange(val) {
+      const checkedCount = val.length;
+      if (checkedCount === 1) {
+        this.searchThisCateWhoHavePer(this.checkList);
+      }
       this.checkAll = checkedCount === this.listData.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.listData.length;
-      this.$store.dispatch('ChooseEmployee', this.checkList);
+      this.$emit('select-change', this.checkList);
     },
     searchThisCateWhoHavePer(val) {
       const params = {
-        fcategoryid: JSON.parse(localStorage.obj).map(v => {
-          return v.fcategoryid;
-        }).join(","),
+        fcategoryids: JSON.parse(sessionStorage.obj),
         fuserList: val,
       };
       authService.searchThisCateWhoHavePer(params).then(res => {
