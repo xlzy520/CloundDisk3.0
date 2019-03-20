@@ -3,8 +3,8 @@
     <div class="file-action">
       <div class="list-btn">
         <el-button type="primary" icon="el-icon-refresh" data-action="refresh-tip">刷新</el-button>
-        <el-button type="primary" icon="el-icon-upload" data-action="upload" v-if="authArr[4] === '1'">上传</el-button>
-        <el-dropdown type="primary" @command="handleCommand" v-if="authArr[5] === '1'">
+        <el-button type="primary" icon="el-icon-upload" data-action="upload" v-if="authListHeader[4] === '1'">上传</el-button>
+        <el-dropdown type="primary" @command="handleCommand" v-if="authListHeader[5] === '1'">
           <el-button type="primary" icon="el-icon-plus">新建<i class="el-icon-arrow-down el-icon--right"></i></el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="newFolder">文件夹</el-dropdown-item>
@@ -66,6 +66,9 @@ export default {
   props: {
     navList: {
       type: Array
+    },
+    authListHeader: {
+      type: Array,
     }
   },
   data () {
@@ -77,8 +80,7 @@ export default {
   computed: {
     ...mapGetters([
       'selectedData',
-      'userData',
-      'authArr'
+      'userData'
     ]),
     // 计算应显示哪些按钮
     actionArray() {
