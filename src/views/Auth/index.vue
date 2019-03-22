@@ -30,9 +30,6 @@
         this.activeName = "edit";
       }
     },
-    beforeDestroy() {
-      sessionStorage.obj = "";
-    }
   };
 </script>
 

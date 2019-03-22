@@ -1,5 +1,5 @@
 <template>
-  <div class="list-checkbox flex">
+  <div class="list-checkbox flex" v-loading="loading">
     <div class="choice-box">
       <div class="list-checkbox-header">
         <span class="list-checkbox-title">员工列表</span>
@@ -12,7 +12,7 @@
       <div class="staff-box">
         <base-scrollbar class="scroll-box">
           <el-checkbox-group
-            v-model="checkList"
+            v-model="checkedEmployeesList"
             @change="employeesChange">
             <el-checkbox
               v-for="item in listData"
@@ -29,12 +29,12 @@
     <div class="employee-selected">
       <span>已选择员工：</span>
       <el-select
-        v-model="checkList"
+        v-model="checkedEmployeesList"
         multiple
         filterable
         reserve-keyword
-        placeholder="请输入姓名"
-        :loading="loading">
+        @change="employeesChange"
+        placeholder="请输入姓名">
         <el-option
           v-for="item in listData"
           :key="item.userId"
@@ -49,7 +49,6 @@
 <script>
 import baseScrollbar from '@/components/baseScrollbar.vue';
 import authService from '@/api/service/auth';
-// import { mapGetters } from "vuex";
 
 export default {
   props: {
@@ -60,7 +59,7 @@ export default {
   },
   data() {
     return {
-      checkList: [],
+      checkedEmployeesList: [],
       checkAll: false,
       isIndeterminate: false,
       loading: false,
@@ -70,60 +69,39 @@ export default {
     baseScrollbar
   },
   computed: {
-    checkAllDisabled: function () {
+    checkAllDisabled() {
       return this.listData.length === 0;
     }
   },
-  mounted() {
-
-  },
   methods: {
-    handleCheckAllChange(val) {
-      this.checkList = val ? this.listData.map(v => v.userId) : [];
-      this.$forceUpdate();
+    handleCheckAllChange(checkAll) {
+      this.checkedEmployeesList = checkAll ? this.listData : [];
+      if (this.checkedEmployeesList.length === 1) {
+        this.searchThisCateWhoHavePer(this.checkedEmployeesList);
+      }
       this.isIndeterminate = false;
+      this.$emit('select-change', this.checkedEmployeesList);
     },
     employeesChange(val) {
-      const checkedCount = val.length;
-      if (checkedCount === 1) {
-        this.searchThisCateWhoHavePer(this.checkList);
+      const { length } = val;
+      if (length === 1) {
+        this.searchThisCateWhoHavePer(this.checkedEmployeesList);
       }
-      this.checkAll = checkedCount === this.listData.length;
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.listData.length;
-      this.$emit('select-change', this.checkList);
+      this.checkAll = length === this.listData.length;
+      this.isIndeterminate = length > 0 && length < this.listData.length;
+      this.$emit('select-change', this.checkedEmployeesList);
     },
-    searchThisCateWhoHavePer(val) {
-      const params = {
-        fcategoryids: JSON.parse(sessionStorage.obj),
-        fuserList: val,
-      };
-      authService.searchThisCateWhoHavePer(params).then(res => {
-        if (res.success) {
-          if (res.data.length > 0) {
-            // 搜索单个
-            let authArr = res.data.map(v => {
-              return v.auth;
-            });
-            // 判断二维数组中 是否有元素和第一个元素不相同，存在就为false，若只有一个元素，则true
-            let isEqual = !authArr.find(v => authArr[0].join() !== v.join());
-            if (isEqual) {
-              this.transmit(authArr[0]);
-            } else {
-              this.transmit(new Array(6).fill(0));
-            }
-          }
-        }
+    searchThisCateWhoHavePer(userList) {
+      this.loading = true;
+      authService.searchThisCateWhoHavePer({
+        fcategoryid: JSON.parse(sessionStorage.obj),
+        fuserList: userList,
+      }).then(res => {
+        this.$emit('post-auth', res.data.auth);
+      }).finally(()=>{
+        this.loading = false;
       });
     },
-    transmit (auth) {
-      let arr = [];
-      for (let i in auth) {
-        if (auth[i] === "1") {
-          arr.push(i);
-        }
-      }
-      this.$store.dispatch('SelectEmployee', arr);
-    }
   }
 };
 

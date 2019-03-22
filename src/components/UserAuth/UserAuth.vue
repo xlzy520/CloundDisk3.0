@@ -1,24 +1,25 @@
 <template>
   <div class="recycle-container">
     <div class="recycle-container-header">
-      <div v-show="authData.length > 0">
-        <el-button size="medium" type="success" @click="save" icon="el-icon-refresh">保存</el-button>
-        <el-button size="medium" type="warning" @click="cancel" icon="el-icon-delete">取消</el-button>
-        <el-button size="medium" type="danger" @click="Delete" icon="el-icon-delete">删除</el-button>
+      <user-select ref="authManage" @post-userId="setUserId"></user-select>
+      <div v-show="selectedAuthData.length > 0">
+        <el-button size="medium" type="success" @click="save">保存</el-button>
+        <el-button size="medium" type="warning" @click="cancel">取消</el-button>
+        <el-button size="medium" type="danger" @click="deleteAuth">删除</el-button>
       </div>
     </div>
     <div class="recycle-container-content">
       <base-scrollbar>
         <base-table
-          ref="WTable"
+          ref="authTable"
           :total="pagination.total"
           :page-no="pagination.currentPage"
           :page-size="pagination.size"
           :is-excep="true"
           :loading="loading"
           @change-page="changePage"
-          @cellclick="modify"
-          @select-all="selectAll"
+          @cellclick="modifyAuth"
+          @select-all="handleSelectionChange"
           @selectchange="handleSelectionChange"
           :selection="'list'"
           :table-data="tableData"
@@ -34,7 +35,7 @@
   import authService from '@/api/service/auth';
   import BaseTable from '@/components/baseTable.vue';
   import BaseScrollbar from '@/components/baseScrollbar.vue';
-  import { mapGetters } from 'vuex';
+  import userSelect from '@/components/UserAuth/userSelect.vue';
 
   export default {
     name: 'userAuth',
@@ -59,7 +60,6 @@
           {
             label: '查看',
             prop: 'flook',
-            sortable: true,
             render(h, {props: {row}}) {
               return (
                 <div>
@@ -71,7 +71,6 @@
           {
             label: '删除',
             prop: 'fdel',
-            sortable: true,
             render(h, {props: {row}}) {
               return (
                 <div>
@@ -83,7 +82,6 @@
           {
             label: '编辑',
             prop: 'fedit',
-            sortable: true,
             render(h, {props: {row}}) {
               return (
                 <div>
@@ -95,7 +93,6 @@
           {
             label: '下载',
             prop: 'fdownload',
-            sortable: true,
             render(h, {props: {row}}) {
               return (
                 <div>
@@ -129,81 +126,61 @@
           {label: '分享来源', prop: 'fusername'},
         ],
         loading: false,
-        categoryIds: [],
         pagination: {
           currentPage: 1,
           total: 0,
-          size: 40
+          size: 10
         },
-        tmpData: [],
+        selectedAuthData: [],
+        userId: ''
       };
     },
     components: {
       BaseTable,
-      BaseScrollbar
-    },
-    computed: {
-      ...mapGetters([
-        'authData'
-      ]),
+      BaseScrollbar,
+      userSelect
     },
     methods: {
+      setUserId(val) {
+        this.pagination.currentPage = 1;
+        this.userId = val;
+        this.getAuthTable();
+      },
       changePage(val) {
         this.pagination.currentPage = val;
-        this.searchThisUserHavePersByPage();
+        this.getAuthTable();
       },
-      searchThisUserHavePersByPage(id = this.$route.query.userId) {
+      getAuthTable() {
         this.loading = true;
-        const params = {
-          fuserid: id
-        };
-        params.pageSize = this.pagination.size;
-        params.pageNum = this.pagination.currentPage;
-        categoryService.searchThisUserHavePersByPage(params).then(res => {
-          this.tableData = res.data.list;
-          this.tmpData = JSON.parse(JSON.stringify(this.tableData));
-          this.pagination.total = +res.data.total;
+        categoryService.searchThisUserHavePersByPage({
+          fuserid: this.userId,
+          pageSize: this.pagination.size,
+          pageNum: this.pagination.currentPage
+        }).then(res => {
+          const { list, total } = res.data;
+          this.tableData = list;
+          this.pagination.total = Number(total);
         }).catch(() => {
           this.$message1000('获取信息错误', 'error');
         }).finally(() => {
           this.loading = false;
-          this.categoryIds = [];
         });
       },
       // 点击 表格前的复选框
       handleSelectionChange(rows) {
-        this.$store.dispatch("SaveData", rows);
-        if (rows.length === 0) {
-          this.tableData = JSON.parse(JSON.stringify(this.tmpData));
-        }
+        this.selectedAuthData = rows;
       },
-      // 手动勾选全选
-      selectAll(rows) {
-        this.$store.dispatch("SaveData", rows);
-        if (rows.length === 0) {
-          this.tableData = JSON.parse(JSON.stringify(this.tmpData));
-        }
-      },
-      modify(row, column) {
-        if (this.authData.length > 0) {
-          let arr = this.authData.map(v => {
-            return v.fcategoryid;
-          });
-
-          if (arr.indexOf(row.fcategoryid) > -1) {
-            let elem = this.tableData.filter(v => {
-              return v.fcategoryid === row.fcategoryid;
-            })[0];
-            let tmp = elem[column.property];
-
-            elem[column.property] = tmp === "1" ? "0" : "1";
-            console.log(elem);
-            if (elem.fdel === "1" || elem.fedit === "1" || elem.fdownload === "1" || elem.fnew === "1" || elem.fupload === "1") {
-              elem.flook = "1";
+      modifyAuth(row, column) {
+        if (this.selectedAuthData.length > 0) {
+          const arr = this.selectedAuthData.map(v => v.fcategoryid);
+          if (arr.includes(row.fcategoryid)) {
+            row[column.property] = row[column.property] === "1" ? "0" : "1";
+            const authMap = ['fdel', 'fedit', 'fdownload', 'fnew', 'fupload'];
+            if (authMap.some(v => row[v] === '1')) {
+              row.flook = "1";
             }
-
-            if (elem.fdel === "0" && elem.fedit === "0" && elem.fdownload === "0" && elem.fnew === "0" && elem.fupload === "0") {
-              elem.flook = "0";
+            if (authMap.every(v => row[v] === '0')) {
+              row.flook = "0";
             }
           }
         }
@@ -212,7 +189,7 @@
         const params = {
           fuserid: this.$route.query.userId
         };
-        params.authList = this.authData.map(v => {
+        params.authList = this.selectedAuthData.map(v => {
           v.auth = new Array(6).fill(0);
           if (v.flook === "1") {
             v.auth[0] = 1;
@@ -237,49 +214,27 @@
             fcategoryid: v.fcategoryid
           };
         });
-        console.log(params);
         authService.updateUserAuth(params).then(res => {
-          if (res.success) {
-            this.$store.dispatch("SaveData", []);
-            this.$refs.WTable.$children[0].clearSelection();
-            this.searchThisUserHavePersByPage();
-          }
+          this.selectedAuthData = [];
+          this.$refs.authTable.$children[0].clearSelection();
+          this.getAuthTable();
         });
       },
-      Delete() {
-        const params = {
-          fuserid: this.$route.query.userId
-        };
-        params.fcategoryid = this.authData.map(v => {
-          return v.fcategoryid;
-        }).join(",");
-        authService.delUserAuth(params).then(res => {
-          if (res.success) {
-            this.$store.dispatch("SaveData", []);
-            this.$refs.WTable.$children[0].clearSelection();
-            this.searchThisUserHavePersByPage();
-          }
+      deleteAuth() {
+        authService.delUserAuth({
+          fuserid: this.$route.query.userId,
+          fcategoryid: this.selectedAuthData.map(v => v.fcategoryid)
+        }).then(() => {
+          this.selectedAuthData = [];
+          this.$refs.authTable.$children[0].clearSelection();
+          this.getAuthTable();
         });
       },
       cancel() {
-        this.$refs.WTable.$children[0].clearSelection();
-        this.tableData = JSON.parse(JSON.stringify(this.tmpData));
-        this.$store.dispatch("SaveData", []);
+        this.$refs.authTable.$children[0].clearSelection();
+        this.selectedAuthData = [];
+        this.getAuthTable();
       },
-    },
-    created() {
-      if (!this.$route.query.userId) {
-        this.$router.push('/index/list');
-      }
-      this.searchThisUserHavePersByPage();
-    },
-    //  路由参数变化请求不同的文件列表
-    beforeRouteUpdate(to, from, next) {
-      this.searchThisUserHavePersByPage(to.query.userId);
-      next();
-    },
-    beforeDestroy() {
-      this.$store.dispatch("SaveData", []);
     }
   };
 </script>

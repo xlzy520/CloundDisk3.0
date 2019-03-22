@@ -12,6 +12,7 @@
       </div>
       <div class="nav-router">
         <router-link to="/index/recycle" class="nav-router-text recycle">回收站</router-link>
+        <router-link to="/index/userAuth" class="nav-router-text auth" v-if="isAdmin">权限管理</router-link>
         <router-link to="/index/record"  v-if="false" class="nav-router-text record">操作记录</router-link>
       </div>
       <div class="search_wrap"  @focus="showSwitch($event)" @blur="showSwitch($event)">
@@ -50,16 +51,13 @@
               <span class="name">{{userData.userName}}</span>
             </el-dropdown-item>
           </router-link>
-          <el-dropdown-item divided v-if="isAdmin">
-            <span class="name" @click="viewAuth">查询权限</span>
-          </el-dropdown-item>
           <el-dropdown-item divided>
             <span class="name" @click="logout">注销</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-menu>
-    <auth-manage ref="share"></auth-manage>
+
   </div>
 </template>
 
@@ -67,14 +65,12 @@
 import { mapGetters } from 'vuex';
 import Hamburger from '@/components/Hamburger.vue';
 import MdInput from '@/components/MDinput.vue';
-import AuthManage from '@/components/UserAuth/AuthManage.vue';
 
 export default {
   name: 'Navbar',
   components: {
     MdInput,
     Hamburger,
-    AuthManage
   },
   computed: {
     ...mapGetters([
@@ -112,9 +108,6 @@ export default {
         this.$router.push('/login');
         //location.reload(); // 为了重新实例化vue-router对象 避免bug
       });
-    },
-    viewAuth() {
-      this.$refs.share.openDialog();
     },
     getSearchResult() {
       const searchQuery = this.query.full ? this.query : {value: this.query.value};
