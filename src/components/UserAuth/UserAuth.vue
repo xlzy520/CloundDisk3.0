@@ -194,23 +194,20 @@
             fcategoryid: v.fcategoryid
           };
         });
-        const params = {
+        authService.updateUserAuth({
           fuserid: this.userId,
           authList: authList
-        };
-        authService.updateUserAuth(params).then(() => {
+        }).then(() => {
           this.selectedAuthData = [];
-          this.$refs.authTable.$children[0].clearSelection();
           this.getAuthTable();
         });
       },
       deleteAuth() {
         authService.delUserAuth({
-          fuserid: this.$route.query.userId,
+          fuserid: this.userId,
           fcategoryid: this.selectedAuthData.map(v => v.fcategoryid)
         }).then(() => {
           this.selectedAuthData = [];
-          this.$refs.authTable.$children[0].clearSelection();
           this.getAuthTable();
         });
       },
