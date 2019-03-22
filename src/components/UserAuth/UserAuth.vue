@@ -186,35 +186,19 @@
         }
       },
       save () {
-        const params = {
-          fuserid: this.$route.query.userId
-        };
-        params.authList = this.selectedAuthData.map(v => {
-          v.auth = new Array(6).fill(0);
-          if (v.flook === "1") {
-            v.auth[0] = 1;
-          }
-          if (v.fdel === "1") {
-            v.auth[1] = 1;
-          }
-          if (v.fedit === "1") {
-            v.auth[2] = 1;
-          }
-          if (v.fdownload === "1") {
-            v.auth[3] = 1;
-          }
-          if (v.fnew === "1") {
-            v.auth[4] = 1;
-          }
-          if (v.fupload === "1") {
-            v.auth[5] = 1;
-          }
+        const authMap = ['flook', 'fdel', 'fedit', 'fdownload', 'fnew', 'fupload'];
+        const authList = this.selectedAuthData.map(v => {
+          const auth = authMap.map(authType=> v[authType].toString());
           return {
-            auth: v.auth,
+            auth: auth,
             fcategoryid: v.fcategoryid
           };
         });
-        authService.updateUserAuth(params).then(res => {
+        const params = {
+          fuserid: this.userId,
+          authList: authList
+        };
+        authService.updateUserAuth(params).then(() => {
           this.selectedAuthData = [];
           this.$refs.authTable.$children[0].clearSelection();
           this.getAuthTable();
