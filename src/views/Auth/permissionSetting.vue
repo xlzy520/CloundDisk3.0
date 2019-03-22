@@ -1,14 +1,14 @@
 <template>
   <div>
-    <base-scrollbar ref="scrollbar" class="scroll-bar">
+    <base-scrollbar ref="scrollbar" class="scrollbar" v-loading="orgLoading">
       <div class="permission-content flex">
-        <list-radio title="组织列表" :list-data="Grouplist" @groupnum-change="OrgIdChange"></list-radio>
-        <list-checkbox title="员工列表" ref="ListCo" :list-data="Employeeslist"></list-checkbox>
-        <list-checkbox-two title="权限类型" ref="ListCt" :list-data="authTypes"></list-checkbox-two>
+        <org-list :list-data="orgList" @org-change="orgChange"></org-list>
+        <employees-list ref="employeesList" :list-data="employeesList"></employees-list>
+        <auth-type ref="authTypes"></auth-type>
       </div>
     </base-scrollbar>
     <div class="handler-box">
-      <el-button type="primary" @click="save" :disabled="isClick" :loading="isloading">保存</el-button>
+      <el-button type="primary" @click="save" :disabled="isClick" :loading="loading">保存</el-button>
       <el-button type="warning" @click="cancel">取消</el-button>
     </div>
   </div>
@@ -16,44 +16,35 @@
 
 <script>
 
-import listRadio from './modules/listRadio.vue';
-import listCheckbox from './modules/listCheckbox.vue';
-import listCheckboxTwo from './modules/listCheckboxTwo.vue';
-import authService from '@/api/service/auth.js';
+import orgList from './modules/orgList.vue';
+import employeesList from './modules/employeesList.vue';
+import authType from './modules/authType.vue';
+import authService from '@/api/service/auth';
 import baseScrollbar from '@/components/baseScrollbar.vue';
-import authData from './modules/authData.js';
 import { mapGetters } from 'vuex';
 
 export default {
   name: 'permission-setting',
   data () {
     return {
-      Grouplist: [],
-      Employeeslist: [],
-      authTypes: authData.data,
-      isloading: false,
+      orgList: [],
+      employeesList: [],
+      loading: false,
+      orgLoading: false
     };
   },
   components: {
-    listRadio,
-    listCheckbox,
-    listCheckboxTwo,
+    orgList,
+    employeesList,
+    authType,
     baseScrollbar
   },
   computed: {
-    fcategoryid: {
-      get: function() {
-        return JSON.parse(localStorage.obj).map(v => {
-          return v.fcategoryid;
-        }).join(",");
-      },
-      set: function() {}
-    },
     isClick: function() {
-      return !(this.authList.length > 0 && this.emplyoee.length > 0);
+      return !(this.authList.length > 0 && this.employee.length > 0);
     },
     ...mapGetters([
-      'emplyoee',
+      'employee',
       'authList'
     ])
   },
@@ -61,47 +52,44 @@ export default {
     this.getOrgList();
   },
   methods: {
+    getfcategoryid() {
+      return JSON.parse(sessionStorage.obj);
+    },
     getOrgList() {
       authService.getOrgList().then(res => {
-        if (res.success) {
-          this.Grouplist = res.data;
-          for (const item of this.Grouplist) {
-            item['isSelected'] = false;
-          }
-        }
+        this.orgList = res.data;
       });
     },
-    OrgIdChange(val) {
-      authService.getExcludeUserInfoByOrgId(val, this.fcategoryid).then(res => {
-        if (res.success) {
-          this.Employeeslist = res.data;
-          this.$refs.ListCo.DupData = res.data;
-        }
+    orgChange(orgId) {
+      this.orgLoading = true;
+      authService.getExcludeUserInfoByOrgId(orgId, this.getfcategoryid()).then(res => {
+        this.employeesList = res.data;
+        // this.$refs.employeesList.DupData = res.data;
+      }).finally(()=>{
+        this.orgLoading = false;
       });
     },
     save() {
       let params = {
         auth: this.authList,
-        fcategoryid: this.fcategoryid,
-        userList: this.$refs.ListCo.userList
+        fcategoryid: this.getfcategoryid(),
+        userList: this.$refs.employeesList.userList
       };
-      this.isloading = true;
-
+      this.loading = true;
       authService.giveAuthToUser(params).then(() => {
-        this.isloading = false;
+        this.loading = false;
         this.clear();
         this.$message1000("分配权限成功", 'success');
-        setTimeout(() => {
-          this.Quit();
-        }, 50);
+      }).finally(()=>{
+        this.cancel();
       });
     },
     clear() {
-      this.$refs.ListCt.checkList = [];
-      this.$refs.ListCo.checkList = [];
+      this.$refs.authTypes.checkList = [];
+      this.$refs.employeesList.checkList = [];
     },
     cancel() {
-      this.$router.go(-1);
+      this.$router.back();
     }
   }
 };

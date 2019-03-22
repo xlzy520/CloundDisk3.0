@@ -5,9 +5,8 @@ const user = {
   state: {
     userData: {},
     authData: [],
-    GroupNum: "",
-    EMPLYOEE: "",
-    EMPLYOEEAUTH: [],
+    employee: "",
+    employeeAuth: [],
     authList: []
   },
 
@@ -18,14 +17,11 @@ const user = {
     SET_AUTH_DATA: (state, authData) => {
       state.authData = authData;
     },
-    SET_GROUP: (state, data) => {
-      state.GroupNum = data;
+    SET_EMPLOYEE: (state, data) => {
+      state.employee = data;
     },
-    SET_EMPLYOEE: (state, data) => {
-      state.EMPLYOEE = data;
-    },
-    SET_EMPLYOEEAUTH: (state, data) => {
-      state.EMPLYOEEAUTH = data;
+    SET_EMPLOYEE_AUTH: (state, data) => {
+      state.employeeAuth = data;
     },
     SET_AUTH: (state, data) => {
       state.authList = data;
@@ -78,17 +74,13 @@ const user = {
         resolve();
       });
     },
-    // 选中的组织列表编号
-    ChooseGroup({ commit }, data) {
-      commit('SET_GROUP', data);
-    },
     // 选中的员工列表权限
-    ChooseEmplyoee({ commit }, data) {
-      commit('SET_EMPLYOEE', data);
+    ChooseEmployee({ commit }, data) {
+      commit('SET_EMPLOYEE', data);
     },
     // 选中的员工列表
-    SelectEmplyoee({ commit }, data) {
-      commit('SET_EMPLYOEEAUTH', data);
+    SelectEmployee({ commit }, data) {
+      commit('SET_EMPLOYEE_AUTH', data);
     },
     // 选中的权限
     SelectAuth({ commit }, data) {

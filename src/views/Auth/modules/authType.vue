@@ -1,29 +1,21 @@
-
 <template>
   <div class="list-checkbox">
-    <p>{{ title }} </p>
-    <div class="choice-box">
+    <div class="list-checkbox-header">
+      <span class="list-checkbox-header-title">权限类型</span>
       <el-checkbox
         :indeterminate="isIndeterminate"
         v-model="checkAll"
         @change="handleCheckAllChange"
         :disabled="isClick">全选</el-checkbox>
+    </div>
+    <div class="choice-box">
       <base-scrollbar class="scroll-box">
-        <ul>
-          <el-checkbox-group
-            v-model="checkList"
-            @change="handleCheckedCitiesChange">
-            <li v-for="(item, index) in listData"
-              :key="index">
-              <el-checkbox
-                class="name"
-                :label="item.fID"
-                :key="item.fID"
-                :id="item.fID"
-                :disabled="isClick">{{ item.name }}</el-checkbox>
-            </li>
-          </el-checkbox-group>
-        </ul>
+        <el-checkbox-group
+          v-model="checkList"
+          @change="handleCheckedCitiesChange">
+          <el-checkbox v-for="(item, index) in listData" :key="index"
+            class="org-radio" :label="item.fID" :disabled="isClick">{{ item.name }}</el-checkbox>
+        </el-checkbox-group>
       </base-scrollbar>
     </div>
   </div>
@@ -34,22 +26,37 @@ import baseScrollbar from '@/components/baseScrollbar.vue';
 import { mapGetters } from "vuex";
 
 export default {
-  props: {
-    listData: {
-      type: Array,
-      default: []
-    },
-    title: {
-      type: String,
-      default: ""
-    }
-  },
   data() {
     return {
+      listData: [
+        {
+          name: '查阅',
+          fID: '0',
+        },
+        {
+          name: '删除',
+          fID: '1',
+        },
+        {
+          name: '编辑',
+          fID: '2',
+        },
+        {
+          name: '下载',
+          fID: '3',
+        },
+        {
+          name: '上传',
+          fID: '4',
+        },
+        {
+          name: '新建',
+          fID: '5',
+        },
+      ],
       checkList: [],
-      checkAll: "",
+      checkAll: false,
       isIndeterminate: false,
-      OrgId: '',
       loading: false,
     };
   },
@@ -58,7 +65,7 @@ export default {
   },
   computed: {
     isClick: function () {
-      return this.emplyoee.length === 0;
+      return this.employee.length === 0;
     },
     authList: function () {
       let arr = new Array(6).fill(0);
@@ -74,20 +81,20 @@ export default {
       return arr;
     },
     ...mapGetters([
-      'emplyoee',
-      'emplyoeeAuth'
+      'employee',
+      'employeeAuth'
     ])
   },
   mounted() {
   },
   watch: {
-    emplyoee: function () {
-      if (this.emplyoee.length === 0) {
+    employee: function () {
+      if (this.employee.length === 0) {
         this.checkList = [];
       }
     },
-    emplyoeeAuth: function () {
-      this.checkList = this.emplyoeeAuth;
+    employeeAuth: function () {
+      this.checkList = this.employeeAuth;
       let checkedCount = this.checkList.length;
       this.checkAll = checkedCount === this.listData.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.listData.length;
@@ -121,4 +128,10 @@ export default {
 
 </script>
 <style lang="scss" scoped>
+  .list-checkbox{
+    width: 240px;
+  }
+  .org-radio{
+    width: 100%;
+  }
 </style>

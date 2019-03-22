@@ -3,6 +3,7 @@
     <list-header
       class="admin-list-header"
       @action="dispatchAction"
+      :auth-list-header="authListHeader"
       :nav-list="navList"></list-header>
     <component
       ref="fileList"
@@ -61,6 +62,7 @@
         docInfo: {}, //markdown文件预览信息
         tableList: [],
         navList: [],
+        authListHeader: [],
         fullScreenLoading: false
       };
     },
@@ -151,7 +153,7 @@
             this.$refs[action].open();
             break;
           case 'assign':
-            localStorage.obj = JSON.stringify(this.selectedData);
+            sessionStorage.obj = JSON.stringify(this.selectedData.map(v=> v.fcategoryid));
             // 点击分配权限按钮时 请求 getAuth接口查询 userList是否为空数组
             this.QueryPermission();
             break;
@@ -244,19 +246,10 @@
           if (refresh) {
             this.$message1000('刷新成功', 'success');
           }
-          const {tableList, navList, common, auth} = res;
+          const {tableList, navList, auth} = res;
           this.tableList = tableList;
           this.navList = navList;
-          if (common && common.length > 0) {
-            for (const item of common) {
-              if (item.fsortorder === 1) {
-                item.childrenFolder = [{}];
-              }
-            }
-          }
-          if (auth && auth.length > 0) {
-            this.$store.dispatch('SetAuthArr', auth);
-          }
+          this.authListHeader = auth;
         });
       },
       signIn() {
