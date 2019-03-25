@@ -84,7 +84,7 @@ export default {
       this.unTransform();
     },
     handleCheckedItemsChange(val) {
-      if (val.some(item=>item !== '编辑')) {
+      if (val.length > 0 && !val.includes("查阅")) {
         this.checkedAuthList.push('查阅');
       }
       const checkedCount = val.length;

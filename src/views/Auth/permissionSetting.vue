@@ -8,8 +8,8 @@
                         @select-change="selectedEmployeesList"
                         :list-data="employeesList"></employees-list>
         <auth-type ref="authTypes"
-                   @update-auth="updateAuth"
-                   :checkedEmployeesList="checkedEmployeesList"></auth-type>
+                  @update-auth="updateAuth"
+                  :checkedEmployeesList="checkedEmployeesList"></auth-type>
       </div>
     </base-scrollbar>
     <div class="handler-box">
@@ -76,6 +76,11 @@ export default {
       this.orgLoading = true;
       authService.getExcludeUserInfoByOrgId(orgId, this.getfcategoryid()).then(res => {
         this.employeesList = res.data;
+        this.clear();
+        this.$refs.employeesList.checkAll = false;
+        this.$refs.employeesList.isIndeterminate = false;
+        this.$refs.authTypes.checkAll = false;
+        this.$refs.authTypes.isIndeterminate = false;
       }).finally(()=>{
         this.orgLoading = false;
       });

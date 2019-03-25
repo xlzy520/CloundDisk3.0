@@ -8,8 +8,8 @@
           @post-auth="getAuthByOne"
           @select-change="selectedEmployeesList"></employees-list>
         <auth-type ref="authTypes"
-                   @update-auth="updateAuth"
-                   :checkedEmployeesList="checkedEmployeesList"></auth-type>
+                  @update-auth="updateAuth"
+                  :checkedEmployeesList="checkedEmployeesList"></auth-type>
       </div>
     </base-scrollbar>
     <div class="handler-box">

@@ -75,7 +75,7 @@ export default {
   },
   methods: {
     handleCheckAllChange(checkAll) {
-      this.checkedEmployeesList = checkAll ? this.listData : [];
+      this.checkedEmployeesList = checkAll ? this.listData.map(v => { return v.userId; }) : [];
       if (this.checkedEmployeesList.length === 1) {
         this.searchThisCateWhoHavePer(this.checkedEmployeesList);
       }
