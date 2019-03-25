@@ -26,7 +26,7 @@
       permissionEditTab
     },
     created() {
-      if (this.$route.query.isEdit === "1") {
+      if (this.$route.query.authHasConfigured === "1") {
         this.activeName = "edit";
       }
     },

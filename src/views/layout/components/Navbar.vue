@@ -12,7 +12,7 @@
       </div>
       <div class="nav-router">
         <router-link to="/index/recycle" class="nav-router-text recycle">回收站</router-link>
-        <router-link to="/index/userAuth" class="nav-router-text auth" v-if="isAdmin">权限管理</router-link>
+        <router-link to="/index/userManagement" class="nav-router-text auth" v-if="isAdmin">权限管理</router-link>
         <router-link to="/index/record"  v-if="false" class="nav-router-text record">操作记录</router-link>
       </div>
       <div class="search_wrap"  @focus="showSwitch($event)" @blur="showSwitch($event)">
