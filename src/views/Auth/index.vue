@@ -42,7 +42,7 @@
       display: flex;
       flex-direction: column;
     }
-    .scrollbar {
+    .scroll-bar {
       min-width: 1200px;
     }
   }

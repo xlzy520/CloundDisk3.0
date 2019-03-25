@@ -1,6 +1,6 @@
 <template>
   <div>
-    <base-scrollbar ref="scrollbar" class="scrollbar">
+    <base-scrollbar ref="scrollbar" class="scroll-bar">
       <div class="permission-content flex">
         <employees-list
           ref="employeesList"
@@ -8,8 +8,8 @@
           @post-auth="getAuthByOne"
           @select-change="selectedEmployeesList"></employees-list>
         <auth-type ref="authTypes"
-                   @update-auth="updateAuth"
-                   :checkedEmployeesList="checkedEmployeesList"></auth-type>
+                  @update-auth="updateAuth"
+                  :checkedEmployeesList="checkedEmployeesList"></auth-type>
       </div>
     </base-scrollbar>
     <div class="handler-box">

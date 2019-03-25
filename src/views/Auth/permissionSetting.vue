@@ -8,8 +8,8 @@
                         @select-change="selectedEmployeesList"
                         :list-data="employeesList"></employees-list>
         <auth-type ref="authTypes"
-                   @update-auth="updateAuth"
-                   :checkedEmployeesList="checkedEmployeesList"></auth-type>
+                  @update-auth="updateAuth"
+                  :checkedEmployeesList="checkedEmployeesList"></auth-type>
       </div>
     </base-scrollbar>
     <div class="handler-box">
@@ -78,6 +78,7 @@ export default {
         this.employeesList = res.data;
       }).finally(()=>{
         this.$refs.employeesList.reset();
+        this.$refs.authTypes.reset();
         this.orgLoading = false;
       });
     },
