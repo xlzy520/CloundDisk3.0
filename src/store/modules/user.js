@@ -42,12 +42,14 @@ const user = {
     },
 
     // 登出
-    LogOut() {
+    LogOut({commit}) {
       return new Promise((resolve, reject) => {
         loginService.logout().then(() => {
           resolve();
         }).catch(error => {
           reject(error);
+        }).finally(()=>{
+          commit('SET_USER_DATA', {});
         });
       });
     },
