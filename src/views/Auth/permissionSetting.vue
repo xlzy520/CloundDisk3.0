@@ -76,13 +76,9 @@ export default {
       this.orgLoading = true;
       authService.getExcludeUserInfoByOrgId(orgId, this.getfcategoryid()).then(res => {
         this.employeesList = res.data;
-        this.clear();
-        this.$refs.employeesList.checkAll = false;
-        this.$refs.employeesList.isIndeterminate = false;
-        this.$refs.authTypes.checkAll = false;
-        this.$refs.authTypes.isIndeterminate = false;
       }).finally(()=>{
         this.$refs.employeesList.reset();
+        this.$refs.authTypes.reset();
         this.orgLoading = false;
       });
     },

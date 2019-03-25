@@ -95,6 +95,7 @@ export default {
     reset() {
       this.checkedAuthList = [];
       this.checkAll = false;
+      this.isIndeterminate = false;
     }
   }
 };
