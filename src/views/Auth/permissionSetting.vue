@@ -77,6 +77,7 @@ export default {
       authService.getExcludeUserInfoByOrgId(orgId, this.getfcategoryid()).then(res => {
         this.employeesList = res.data;
       }).finally(()=>{
+        this.$refs.employeesList.reset();
         this.orgLoading = false;
       });
     },
