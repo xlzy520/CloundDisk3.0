@@ -82,6 +82,7 @@ export default {
         this.$refs.authTypes.checkAll = false;
         this.$refs.authTypes.isIndeterminate = false;
       }).finally(()=>{
+        this.$refs.employeesList.reset();
         this.orgLoading = false;
       });
     },

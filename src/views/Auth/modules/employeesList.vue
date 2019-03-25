@@ -102,6 +102,11 @@ export default {
         this.loading = false;
       });
     },
+    reset() {
+      this.checkedEmployeesList = [];
+      this.checkAll = false;
+      this.isIndeterminate = false;
+    }
   }
 };
 
