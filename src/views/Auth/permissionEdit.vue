@@ -5,12 +5,15 @@
         <employees-list
           ref="employeesList"
           :list-data="employeesList"
-          @selct-change="selectedEmployeesList"></employees-list>
-        <auth-type ref="authTypes"></auth-type>
+          @post-auth="getAuthByOne"
+          @select-change="selectedEmployeesList"></employees-list>
+        <auth-type ref="authTypes"
+                   @update-auth="updateAuth"
+                   :checkedEmployeesList="checkedEmployeesList"></auth-type>
       </div>
     </base-scrollbar>
     <div class="handler-box">
-      <el-button type="primary" @click="save" :disabled="isClick" :loading="loading">保存</el-button>
+      <el-button type="primary" @click="save" :disabled="saveDisabled" :loading="loading">保存</el-button>
       <el-button type="warning" @click="cancel">取消</el-button>
     </div>
   </div>
@@ -21,7 +24,6 @@
   import authType from './modules/authType.vue';
   import baseScrollbar from '@/components/baseScrollbar.vue';
   import authService from '@/api/service/auth';
-  import {mapGetters} from "vuex";
 
   export default {
     name: 'permission-edit',
@@ -30,6 +32,7 @@
         checkedEmployeesList: [],
         employeesList: [],
         loading: false,
+        authList: []
       };
     },
     components: {
@@ -38,22 +41,22 @@
       baseScrollbar
     },
     computed: {
-      isClick: function () {
-        return !(this.authList.length > 0 && this.employee.length > 0);
-      },
-      ...mapGetters([
-        'authList',
-        'employee'
-      ])
+      saveDisabled() {
+        return this.authList.length === 0;
+      }
     },
     methods: {
+      updateAuth(auth) {
+        this.authList = auth;
+      },
+      getAuthByOne(auth) {
+        this.authList = auth;
+        this.$refs.authTypes.transform(auth);
+      },
       getfcategoryids() {
         return JSON.parse(sessionStorage.obj);
       },
-      assignAuth(auth) {
-        this.$refs.authTypes.checkList.push(auth.filter(item => item === '1'));
-      },
-      getAuthListByCategory(fcategoryid) {
+      getUserListByCategory(fcategoryid) {
         authService.getAuthListByCategory({fcategoryid}).then(res => {
           this.employeesList = res.data.userList;
         });
@@ -63,12 +66,18 @@
       },
       save() {
         this.loading = true;
-        const params = {
+        const userList = this.checkedEmployeesList.map(item=> {
+          for (const _item of this.employeesList) {
+            if (item === _item.userId) {
+              return _item;
+            }
+          }
+        });
+        authService.giveAuthToUser({
           auth: this.authList,
           fcategoryid: this.getfcategoryids(),
-          userList: this.employeesList
-        };
-        authService.giveAuthToUser(params).then(() => {
+          userList: userList
+      }).then(() => {
           this.$message1000("分配权限成功", 'success');
         }).finally(() => {
           this.loading = false;
@@ -77,15 +86,15 @@
         });
       },
       clear() {
-        this.$refs.authTypes.checkList = [];
-        this.$refs.employeesList.checkList = [];
+        this.$refs.authTypes.checkedAuthList = [];
+        this.$refs.employeesList.checkedEmployeesList = [];
       },
       cancel() {
         this.$router.back();
       }
     },
     mounted() {
-      this.getAuthListByCategory(this.getfcategoryids());
+      this.getUserListByCategory(this.getfcategoryids());
     },
   };
 

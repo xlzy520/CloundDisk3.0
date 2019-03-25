@@ -6,15 +6,15 @@
         :indeterminate="isIndeterminate"
         v-model="checkAll"
         @change="handleCheckAllChange"
-        :disabled="isClick">全选</el-checkbox>
+        :disabled="radioDisabled">全选</el-checkbox>
     </div>
     <div class="choice-box">
       <base-scrollbar class="scroll-box">
         <el-checkbox-group
-          v-model="checkList"
-          @change="handleCheckedCitiesChange">
+          v-model="checkedAuthList"
+          @change="handleCheckedItemsChange">
           <el-checkbox v-for="(item, index) in listData" :key="index"
-            class="org-radio" :label="item.fID" :disabled="isClick">{{ item.name }}</el-checkbox>
+            class="org-radio" :label="item" :disabled="radioDisabled">{{ item }}</el-checkbox>
         </el-checkbox-group>
       </base-scrollbar>
     </div>
@@ -23,106 +23,79 @@
 
 <script>
 import baseScrollbar from '@/components/baseScrollbar.vue';
-import { mapGetters } from "vuex";
 
 export default {
+  props: {
+    checkedEmployeesList: {
+      type: Array,
+      default: ()=>[]
+    }
+  },
   data() {
     return {
-      listData: [
-        {
-          name: '查阅',
-          fID: '0',
-        },
-        {
-          name: '删除',
-          fID: '1',
-        },
-        {
-          name: '编辑',
-          fID: '2',
-        },
-        {
-          name: '下载',
-          fID: '3',
-        },
-        {
-          name: '上传',
-          fID: '4',
-        },
-        {
-          name: '新建',
-          fID: '5',
-        },
-      ],
-      checkList: [],
+      listData: ['查阅', '删除', '编辑', '下载', '上传', '新建'],
+      checkedAuthList: [],
       checkAll: false,
       isIndeterminate: false,
-      loading: false,
+      loading: false
     };
   },
   components: {
     baseScrollbar
   },
   computed: {
-    isClick: function () {
-      return this.employee.length === 0;
-    },
-    authList: function () {
-      let arr = new Array(6).fill(0);
-      if (this.checkList.length === 0) {
-        return new Array(6).fill(0);
+    radioDisabled() {
+      const {length} = this.checkedEmployeesList;
+      if (length === 0 || length > 1) {
+        this.reset();
       }
-      let newArr = new Array(6).fill('').map((item, index) => index + 1);
-      for (let i in newArr) {
-        if (this.checkList.includes(i)) {
-          arr[i] = 1;
-        }
-      }
-      return arr;
-    },
-    ...mapGetters([
-      'employee',
-      'employeeAuth'
-    ])
-  },
-  mounted() {
-  },
-  watch: {
-    employee: function () {
-      if (this.employee.length === 0) {
-        this.checkList = [];
-      }
-    },
-    employeeAuth: function () {
-      this.checkList = this.employeeAuth;
-      let checkedCount = this.checkList.length;
-      this.checkAll = checkedCount === this.listData.length;
-      this.isIndeterminate = checkedCount > 0 && checkedCount < this.listData.length;
-      this.$store.dispatch('SelectAuth', this.authList);
-    },
-    checkList: function () {
-      if (this.checkList.length === this.listData.length) {
-        this.checkAll = true;
-      }
-    },
+      return length === 0;
+    }
   },
   methods: {
-    handleCheckAllChange(val) {
-      this.checkList = val ? this.listData.map(v => v.fID) : [];
-      this.$forceUpdate();
-      this.isIndeterminate = false;
-      this.$store.dispatch('SelectAuth', this.authList);
+    /**
+     * 将[1,1,1]转换为['查阅', '删除']
+     * @param auth
+     */
+    transform(auth) {
+      auth.forEach((item, index)=>{
+        if (item === '1') {
+          this.checkedAuthList.push(this.listData[index]);
+        }
+      });
+      this.checkAll = this.checkedAuthList.length === this.listData.length;
     },
-    handleCheckedCitiesChange(value) {
-      // 选中查阅外 其他按钮 且  无选中查阅按钮 ; 自动勾选查阅
-      if (this.checkList.filter(v => v > 0).length > 0 && !this.checkList.find(v => v === "0")) {
-        this.checkList.push("0");
+    /**
+     * 将['查阅', '删除']转换为[1,1,0]，并emit
+     */
+    unTransform() {
+      const authListTransform = this.listData.map(v=>{
+        const index = this.checkedAuthList.findIndex(item => v === item);
+        if (index !== -1) {
+          return '1';
+        }
+        return '0';
+      });
+      this.$emit('update-auth', authListTransform);
+    },
+    handleCheckAllChange(checkAll) {
+      this.checkedAuthList = checkAll ? this.listData : [];
+      this.isIndeterminate = false;
+      this.unTransform();
+    },
+    handleCheckedItemsChange(val) {
+      if (val.some(item=>item !== '编辑')) {
+        this.checkedAuthList.push('查阅');
       }
-      let checkedCount = value.length;
+      const checkedCount = val.length;
       this.checkAll = checkedCount === this.listData.length;
       this.isIndeterminate = checkedCount > 0 && checkedCount < this.listData.length;
-      this.$store.dispatch('SelectAuth', this.authList);
+      this.unTransform();
     },
+    reset() {
+      this.checkedAuthList = [];
+      this.checkAll = false;
+    }
   }
 };
 

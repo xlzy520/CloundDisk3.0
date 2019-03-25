@@ -3,12 +3,17 @@
     <base-scrollbar ref="scrollbar" class="scrollbar" v-loading="orgLoading">
       <div class="permission-content flex">
         <org-list :list-data="orgList" @org-change="orgChange"></org-list>
-        <employees-list ref="employeesList" :list-data="employeesList"></employees-list>
-        <auth-type ref="authTypes"></auth-type>
+        <employees-list ref="employeesList"
+                        @post-auth="getAuthByOne"
+                        @select-change="selectedEmployeesList"
+                        :list-data="employeesList"></employees-list>
+        <auth-type ref="authTypes"
+                   @update-auth="updateAuth"
+                   :checkedEmployeesList="checkedEmployeesList"></auth-type>
       </div>
     </base-scrollbar>
     <div class="handler-box">
-      <el-button type="primary" @click="save" :disabled="isClick" :loading="loading">保存</el-button>
+      <el-button type="primary" @click="save" :disabled="saveDisabled" :loading="loading">保存</el-button>
       <el-button type="warning" @click="cancel">取消</el-button>
     </div>
   </div>
@@ -21,7 +26,6 @@ import employeesList from './modules/employeesList.vue';
 import authType from './modules/authType.vue';
 import authService from '@/api/service/auth';
 import baseScrollbar from '@/components/baseScrollbar.vue';
-import { mapGetters } from 'vuex';
 
 export default {
   name: 'permission-setting',
@@ -29,6 +33,8 @@ export default {
     return {
       orgList: [],
       employeesList: [],
+      checkedEmployeesList: [],
+      authList: [],
       loading: false,
       orgLoading: false
     };
@@ -40,18 +46,24 @@ export default {
     baseScrollbar
   },
   computed: {
-    isClick: function() {
-      return !(this.authList.length > 0 && this.employee.length > 0);
-    },
-    ...mapGetters([
-      'employee',
-      'authList'
-    ])
+    saveDisabled() {
+      return this.checkedEmployeesList.length === 0;
+    }
   },
   mounted() {
     this.getOrgList();
   },
   methods: {
+    updateAuth(auth) {
+      this.authList = auth;
+    },
+    getAuthByOne(auth) {
+      this.authList = auth;
+      this.$refs.authTypes.transform(auth);
+    },
+    selectedEmployeesList(list) {
+      this.checkedEmployeesList = list;
+    },
     getfcategoryid() {
       return JSON.parse(sessionStorage.obj);
     },
@@ -64,16 +76,22 @@ export default {
       this.orgLoading = true;
       authService.getExcludeUserInfoByOrgId(orgId, this.getfcategoryid()).then(res => {
         this.employeesList = res.data;
-        // this.$refs.employeesList.DupData = res.data;
       }).finally(()=>{
         this.orgLoading = false;
       });
     },
     save() {
+      const userList = this.checkedEmployeesList.map(item=> {
+        for (const _item of this.employeesList) {
+          if (item === _item.userId) {
+            return _item;
+          }
+        }
+      });
       let params = {
         auth: this.authList,
         fcategoryid: this.getfcategoryid(),
-        userList: this.$refs.employeesList.userList
+        userList: userList
       };
       this.loading = true;
       authService.giveAuthToUser(params).then(() => {
@@ -85,8 +103,8 @@ export default {
       });
     },
     clear() {
-      this.$refs.authTypes.checkList = [];
-      this.$refs.employeesList.checkList = [];
+      this.$refs.authTypes.checkedAuthList = [];
+      this.$refs.employeesList.checkedEmployeesList = [];
     },
     cancel() {
       this.$router.back();
