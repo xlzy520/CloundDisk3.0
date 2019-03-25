@@ -28,8 +28,8 @@
 <script>
   import recycleService from '@/api/service/recycle';
   import {formatSize, sizeSort} from '@/utils/index';
-  import BaseTable from '@/components/baseTable.vue';
-  import BaseScrollbar from '@/components/baseScrollbar.vue';
+  import BaseTable from '@/components/base/baseTable.vue';
+  import BaseScrollbar from '@/components/base/baseScrollbar.vue';
 
   export default {
     name: 'Recycle',

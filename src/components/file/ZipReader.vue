@@ -23,8 +23,8 @@
   </div>
 </template>
 <script>
-  import baseDialog from './baseDialog.vue';
-  import baseScrollbar from './baseScrollbar.vue';
+  import baseDialog from '../base/baseDialog.vue';
+  import baseScrollbar from '../base/baseScrollbar.vue';
   export default {
     name: 'zip-reader',
     data() {

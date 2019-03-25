@@ -20,13 +20,13 @@
 </template>
 
 <script>
-  import employeesList from './modules/employeesList.vue';
-  import authType from './modules/authType.vue';
-  import baseScrollbar from '@/components/baseScrollbar.vue';
+  import employeesList from '../modules/employeesList.vue';
+  import authType from '../modules/authType.vue';
+  import baseScrollbar from '@/components/base/baseScrollbar.vue';
   import authService from '@/api/service/auth';
 
   export default {
-    name: 'permission-edit',
+    name: 'permission-edit-tab',
     data() {
       return {
         checkedEmployeesList: [],

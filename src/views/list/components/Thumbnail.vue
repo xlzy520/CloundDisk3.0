@@ -44,8 +44,8 @@
 </template>
 
 <script>
-  import RenameFile from '@/components/RenameFile.vue';
-  import baseScrollbar from '@/components/baseScrollbar.vue';
+  import RenameFile from '@/components/file/RenameFile.vue';
+  import baseScrollbar from '@/components/base/baseScrollbar.vue';
   import fileType from '@/mixins/fileType';
   export default {
     mixins: [ fileType ],

@@ -15,12 +15,12 @@
 </template>
 
 <script>
-  import RenameFile from '@/components/RenameFile.vue';
+  import RenameFile from '@/components/file/RenameFile.vue';
   import {mapGetters} from 'vuex';
   import fileType from '@/mixins/fileType';
   import {formatSize, parseTime, sizeSort, nameSort} from '@/utils/index';
-  import baseTable from '@/components/baseTable.vue';
-  import baseScrollbar from '@/components/baseScrollbar.vue';
+  import baseTable from '@/components/base/baseTable.vue';
+  import baseScrollbar from '@/components/base/baseScrollbar.vue';
 
   export default {
     name: 'List',

@@ -78,7 +78,7 @@
 </template>
 
 <script>
-  import BaseTable from "./baseTable";
+  import BaseTable from "../base/baseTable";
   import dingDingPush from '@/api/service/DDPush';
 
   class DDConfig {

@@ -73,8 +73,8 @@
   import {mapGetters} from 'vuex';
   import fileService from '@/api/service/file';
   import {formatSize, parseTime} from '@/utils/index';
-  import CodeDiff from '@/components/CodeDiff.vue';
-  import baseTable from '@/components/baseTable.vue';
+  import CodeDiff from '@/components/file/CodeDiff.vue';
+  import baseTable from '@/components/base/baseTable.vue';
   import fileType from '@/mixins/fileType';
 
   export default {

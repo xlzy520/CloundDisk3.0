@@ -36,15 +36,15 @@
   import Thumbnail from './components/Thumbnail';
   import List from './components/List';
   import ListHeader from './components/ListHeader';
-  import UploadFile from '@/components/UploadFile.vue';
-  import DeleteFile from '@/components/DeleteFile.vue';
-  import Detail from '@/components/Detail.vue';
-  import VersionList from '@/components/VersionList.vue';
-  import MoveFile from '@/components/MoveFile.vue';
-  import MdEditor from "@/components/MDEditor";
-  import ZipReader from '@/components/ZipReader.vue';
-  import DingDing from "@/components/DingDing";
-  import Share from '@/components/Share.vue';
+  import UploadFile from '@/components/file/UploadFile.vue';
+  import DeleteFile from '@/components/file/DeleteFile.vue';
+  import Detail from '@/components/file/Detail.vue';
+  import VersionList from '@/components/file/VersionList.vue';
+  import MoveFile from '@/components/file/MoveFile.vue';
+  import MdEditor from "@/components/file/MDEditor";
+  import ZipReader from '@/components/file/ZipReader.vue';
+  import DingDing from "@/components/file/DingDing";
+  import Share from '@/components/file/Share.vue';
 
   //API
   import fileService from '@/api/service/file';
@@ -69,12 +69,13 @@
     computed: {
       ...mapGetters([
         'selectedData',
+        'userData'
       ])
     },
     components: {
       DingDing,
       MdEditor,
-      ImgEditor: () => import('@/components/imgEditor/index.vue'),
+      ImgEditor: () => import('@/components/file/imgEditor/index.vue'),
       VersionList,
       Detail,
       UploadFile,
@@ -82,7 +83,7 @@
       List,
       ListHeader,
       DeleteFile,
-      MDEditor: () => import('@/components/MDEditor.vue'),
+      MDEditor: () => import('@/components/file/MDEditor.vue'),
       MoveFile,
       ZipReader,
       Share
@@ -259,7 +260,7 @@
       // 统一登录平台
       ssoLogin() {
         if (location.search.indexOf('oncetoken') !== -1) { //如果oncetoken存在，就拿去请求网盘token，然后获取个人信息
-          if (this.$store.getters.userData.token.length === 0) {
+          if (this.userData.length === undefined) {
             const oncetoken = location.search.substring(location.search.indexOf("=") + 1);
             request.get(`/djcpsdocument/sso/exchangeToken.do?oncetoken=${oncetoken}`)
             .then(() => {

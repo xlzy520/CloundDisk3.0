@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import baseScrollbar from '@/components/baseScrollbar.vue';
+import baseScrollbar from '@/components/base/baseScrollbar.vue';
 
 export default {
   props: {

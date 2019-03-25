@@ -12,7 +12,7 @@
 
 <script>
   import TreeMenu from '@/components/treeMenu';
-  import BaseScrollbar from "@/components/baseScrollbar";
+  import BaseScrollbar from "@/components/base/baseScrollbar";
 
   export default {
     name: 'Sidebar',

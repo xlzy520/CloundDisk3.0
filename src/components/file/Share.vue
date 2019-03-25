@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import baseDialog from './baseDialog.vue';
+import baseDialog from '../base/baseDialog.vue';
 import pushService from '@/api/service/push';
 import authService from '@/api/service/auth.js';
 import fileService from '@/api/service/fileShare.js';

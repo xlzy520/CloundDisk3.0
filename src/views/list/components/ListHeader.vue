@@ -66,7 +66,6 @@ export default {
       // 最终权限
       //["查阅", "删除", "编辑", "下载", "上传", "新建"]
       const ownerAuth = this.getOwnerAuth(selectedLength); //根据选择文件数量设置当前拥有的权限
-      console.log(ownerAuth);
       const isAdmin = this.userData.utype > 0; //用户是否为管理员
       let actionArr;
       // 多个被选中

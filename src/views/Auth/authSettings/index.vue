@@ -2,18 +2,18 @@
   <div class="auth-box">
     <el-tabs v-model="activeName">
       <el-tab-pane label="分配权限" name="set">
-        <permission-setting class="tab-content-item"></permission-setting>
+        <permission-setting-tab class="tab-content-item"></permission-setting-tab>
       </el-tab-pane>
       <el-tab-pane label="编辑权限" name="edit">
-        <permission-edit class="tab-content-item"></permission-edit>
+        <permission-edit-tab class="tab-content-item"></permission-edit-tab>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-  import permissionSetting from './permissionSetting.vue';
-  import permissionEdit from './permissionEdit.vue';
+  import permissionSettingTab from './permissionSettingTab.vue';
+  import permissionEditTab from './permissionEditTab.vue';
 
   export default {
     data() {
@@ -22,8 +22,8 @@
       };
     },
     components: {
-      permissionSetting,
-      permissionEdit
+      permissionSettingTab,
+      permissionEditTab
     },
     created() {
       if (this.$route.query.isEdit === "1") {

@@ -64,7 +64,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import Hamburger from '@/components/Hamburger.vue';
-import MdInput from '@/components/MDinput.vue';
+import MdInput from '@/components/file/MDinput.vue';
 
 export default {
   name: 'Navbar',

@@ -17,8 +17,8 @@
 
 <script>
   import { formatSize, parseTime, sizeSort, nameSort} from '@/utils/index';
-  import baseTable from '../../components/baseTable.vue';
-  import baseScrollbar from '../../components/baseScrollbar.vue';
+  import baseTable from '../../components/base/baseTable.vue';
+  import baseScrollbar from '../../components/base/baseScrollbar.vue';
   import fileType from '@/mixins/fileType';
   import fileService from '@/api/service/file';
 

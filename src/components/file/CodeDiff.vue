@@ -7,7 +7,7 @@
 <script>
   import {createPatch} from 'diff';
   import {Diff2Html} from 'diff2html';
-  import '../../public/highlight/highlight.min.js';
+  import '../../../public/highlight/highlight.min.js';
   import 'highlight.js/styles/googlecode.css';
   import 'diff2html/dist/diff2html.css';
 

@@ -10,7 +10,7 @@
           <i class="fa fa-user"></i>
           <!--<svg-icon icon-class="user" />-->
         </span>
-        <el-input 
+        <el-input
           name="username"
           type="text"
           spellcheck="false"
@@ -24,7 +24,7 @@
         <span class="svg-container svg-container_login">
           <i class="fa fa-lock"></i>
         </span>
-        <el-input 
+        <el-input
           name="password"
           :type="pwdType"
           spellcheck="false"
@@ -46,8 +46,6 @@
 </template>
 
 <script>
-  // TODO  修复注销后，背景特效不加载的BUG
-  // TODO  修复登录后，背景特效内存释放
   import {autoRun} from '@/utils/keyDown';
   import {CanvasAnimate} from '@/utils/canvasLogin';
   export default {

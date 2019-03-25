@@ -21,14 +21,14 @@
 
 <script>
 
-import orgList from './modules/orgList.vue';
-import employeesList from './modules/employeesList.vue';
-import authType from './modules/authType.vue';
+import orgList from '../modules/orgList.vue';
+import employeesList from '../modules/employeesList.vue';
+import authType from '../modules/authType.vue';
 import authService from '@/api/service/auth';
-import baseScrollbar from '@/components/baseScrollbar.vue';
+import baseScrollbar from '@/components/base/baseScrollbar.vue';
 
 export default {
-  name: 'permission-setting',
+  name: 'permission-setting-tab',
   data () {
     return {
       orgList: [],
