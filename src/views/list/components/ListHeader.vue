@@ -37,29 +37,6 @@ import { mapGetters } from 'vuex';
 import Breadcrumb from '../../../components/Breadcrumb.vue';
 import actionConfig from './ListHeaderConfig.js';
 
-// 计算按钮显示与否
-function calc(limitsArr, actionArr) {
-  if (limitsArr.length === 0) {
-    return [];
-  }
-  switch (limitsArr[1]) {
-    case "0":
-      actionArr = actionArr.filter(v => v !== 'delete');
-      break;
-  }
-  switch (limitsArr[2]) {
-    case "0":
-      actionArr = actionArr.filter(v => !['copy', 'move', 'rename', 'update'].includes(v));
-      break;
-  }
-  switch (limitsArr[3]) {
-    case "0":
-      actionArr = actionArr.filter(v => v !== 'download');
-      break;
-  }
-  return actionArr;
-}
-
 export default {
   name: 'ListHeader',
   components: { Breadcrumb },
@@ -74,7 +51,6 @@ export default {
   data () {
     return {
       actionConfig: actionConfig,
-      limitsArr: []
     };
   },
   computed: {
@@ -85,51 +61,27 @@ export default {
     // 计算应显示哪些按钮
     actionArray() {
       // 选中的文件夹个数
-      const folderCheckedCount = this.selectedData.filter(item => item.ffiletype === 1).length;
+      const {length: folderCheckedCount } = this.selectedData.filter(item => item.ffiletype === 1);
+      const {length: selectedLength } = this.selectedData;
       // 最终权限
       //["查阅", "删除", "编辑", "下载", "上传", "新建"]
-      if (this.selectedData.length === 0) {
-        this.limitsArr = [];
-      } else {
-        if (this.selectedData[0].hasOwnProperty("auth")) {
-          if (this.selectedData.length > 1) {
-            this.limitsArr = this.selectedData.map(v => { return v.auth; }).reduce((a, b)=>{
-              /**
-               * 取选择的两个目标文件的权限，如有不同，以无权限代替
-               */
-              return a.map((item, index) => {
-                if (item !== b[index]) {
-                  return '0';
-                }
-                return item;
-              });
-            });
-          } else {
-            this.limitsArr = this.selectedData[0].auth;
-          }
-        }
-      }
-      // 用户是否为管理员
-      const isAdmin = this.userData.utype > 0;
+      const ownerAuth = this.getOwnerAuth(selectedLength); //根据选择文件数量设置当前拥有的权限
+      console.log(ownerAuth);
+      const isAdmin = this.userData.utype > 0; //用户是否为管理员
       let actionArr;
       // 多个被选中
-      if (this.selectedData.length > 1) {
-        actionArr = folderCheckedCount === 0 ? ['copy', 'move', 'delete', 'download', 'share'] : ['move', 'delete', 'share'];
-        actionArr = calc(this.limitsArr, actionArr);
-        if (isAdmin) {
-          actionArr = actionArr.concat("assign");
+      if (selectedLength > 0) {
+        if (selectedLength === 1) {
+          actionArr = folderCheckedCount === 1 ? ['rename', 'move', 'delete', 'detail', 'share']
+            : ['rename', 'copy', 'move', 'download', 'update', 'version', 'delete', 'detail', 'share'];
+          if (isAdmin && folderCheckedCount === 1) {
+            actionArr.push("dingDing");
+          }
+        } else {
+          actionArr = folderCheckedCount === 0 ? ['copy', 'move', 'delete', 'download', 'share'] : ['move', 'delete', 'share'];
         }
-      // 单个被选中
-      } else if (this.selectedData.length === 1) {
-        actionArr = folderCheckedCount === 1 ? ['rename', 'move', 'delete', 'detail', 'share']
-          : ['rename', 'copy', 'move', 'download', 'update', 'version', 'delete', 'detail', 'share'];
-        actionArr = calc(this.limitsArr, actionArr);
-        if (isAdmin) {
-          actionArr = actionArr.concat("assign");
-        }
-        if (isAdmin && folderCheckedCount === 1) {
-          actionArr = actionArr.concat("dingDing");
-        }
+        actionArr = this.calcAuth(ownerAuth, actionArr);
+        if (isAdmin) actionArr.push("assign");
       } else {
         actionArr = [];
       }
@@ -156,6 +108,37 @@ export default {
           break;
         default: return false;
       }
+    },
+    getOwnerAuth(length) {
+      if (length === 0) {
+         return [];
+      } else if (length === 1) {
+        return this.selectedData[0].auth;
+      } else {
+        return this.selectedData.map(v => v.auth).reduce((a, b)=>{
+          return a.map((item, index) => {
+            if (item !== b[index]) { //取选择的两个目标文件的权限，如有不同，以无权限代替
+              return '0';
+            }
+            return item;
+          });
+        });
+      }
+    },
+    calcAuth(ownerAuth, actionArr) {
+      if (ownerAuth.length === 0) {
+        return [];
+      }
+      if (ownerAuth[1] === '0') {
+        actionArr = actionArr.filter(v => v !== 'delete');
+      }
+      if (ownerAuth[2] === '0') {
+        actionArr = actionArr.filter(v => !['copy', 'move', 'rename', 'update'].includes(v));
+      }
+      if (ownerAuth[3] === '0') {
+        actionArr = actionArr.filter(v => v !== 'download');
+      }
+      return actionArr;
     }
   }
 };
