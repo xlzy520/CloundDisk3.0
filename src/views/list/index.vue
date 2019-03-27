@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-list" v-loading.fullscreen.lock="fullScreenLoading">
+  <div class="admin-list">
     <list-header
       class="admin-list-header"
       @action="dispatchAction"
@@ -62,8 +62,7 @@
         docInfo: {}, //markdown文件预览信息
         tableList: [],
         navList: [],
-        authListHeader: [],
-        fullScreenLoading: false
+        authListHeader: []
       };
     },
     computed: {
@@ -184,27 +183,34 @@
           this.visible = 'mdEditor';
         });
       },
-      async downloadFile() {
-        this.fullScreenLoading = true;
-        let download = document.createElement('a');
+      createDownloadLink(filename, href){
+        const download = document.createElement('a');
         download.style.display = 'none';
         document.body.appendChild(download);
+        download.download = filename;
+        download.href = href;
+        download.click();
+        document.body.removeChild(download);
+      },
+      async downloadFile() {
         const idList = this.selectedData.map(item => item.fcategoryid);
         if (idList.length === 1) { //单文件下载
-          download.download = this.selectedData[0].fname;
-          download.href = `/djcpsdocument/fileManager/downloadFile.do?id=${idList[0]}`;
+          const href = `/djcpsdocument/fileManager/downloadFile.do?id=${idList[0]}`;
+          this.createDownloadLink(this.selectedData[0].fname, href)
         } else { //多文件压缩下载
-          download.download = this.selectedData[0].fname + '等多个文件.zip';
           const res = await fileService.downloadZip(idList);
-          const zipUrl = URL.createObjectURL(res);
-          download.href = zipUrl;
-          setTimeout(()=>{
-            URL.revokeObjectURL(zipUrl); //释放文件对象内存地址，使用0延迟完成异步释放
-          }, 0);
+          console.log(res);
+          if (res.size === 62) {
+            this.$message1000('文件下载失败，存在一个文件或多个文件不存在', 'error')
+          } else {
+            const filename = this.selectedData[0].fname + '等多个文件.zip';
+            const zipUrl = URL.createObjectURL(res);
+            this.createDownloadLink(filename, zipUrl);
+            setTimeout(()=>{
+              URL.revokeObjectURL(zipUrl); //释放文件对象内存地址，使用0延迟完成异步释放
+            }, 0);
+          }
         }
-        download.click();
-        this.fullScreenLoading = false;
-        document.body.removeChild(download);
       },
       confirmEdit(fileName) {
         const row = this.selectedData;

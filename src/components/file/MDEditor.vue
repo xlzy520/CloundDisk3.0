@@ -5,6 +5,7 @@
       :show-close="false"
       :close-on-press-escape="false"
       :close-on-click-modal="false"
+      v-loading.fullscreen.lock="fullscreenLoading"
       width="80vw">
       <div class="previewFile">
         <el-button @click="closeMDEditor" class="close-md-editor">关闭</el-button>
@@ -51,6 +52,7 @@
       return {
         content: '',
         disabled: false,
+        fullscreenLoading: false,
         isField: true, // 是否双栏
         barsFlag: true, // 是否显示工具栏
         isEditMk: false,
@@ -120,12 +122,15 @@
             center: true,
             inputErrorMessage: '文件名中不能为空或包含/:*?"<>|等特殊字符'
           }).then(({ value }) => {
+            this.fullscreenLoading = true;
             const markdownFile = new File([this.content], value + '.md');
             markdownData.append('file', markdownFile);
             fileService.updateMarkdown(markdownData).then(() => {
               this.$message1000('文档新建成功。', 'success');
               this.closeMDEditor();
               this.$emit('action', 'textEdit');
+            }).finally(()=>{
+              this.fullscreenLoading = false;
             });
           }).catch(() => {});
         } else {
@@ -140,6 +145,7 @@
             inputPattern: /^[^ ]+$/,
             inputErrorMessage: '更新描述不能为空'
           }).then(({ value }) => {
+            this.fullscreenLoading = true;
             value = value === null ? '' : value;
             markdownData.append('fremarks', value);
             fileService.updateMarkdown(markdownData).then(() => {
@@ -148,6 +154,8 @@
               this.$emit('action', 'textEdit');
             }).catch(() => {
               this.$message1000('文档更新失败。', 'error');
+            }).finally(()=>{
+              this.fullscreenLoading = false;
             });
           }).catch(() => {});
         }
