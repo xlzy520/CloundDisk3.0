@@ -117,7 +117,7 @@
           }
         }
       },
-      showMenu({row, event}) {
+      showMenu(row, column, event) {
         event.preventDefault();
         this.$refs.baseTable.clickRow(row);
         let contextMenu = document.querySelector('.djcd-right-menu');
