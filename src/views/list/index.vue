@@ -155,7 +155,7 @@
           case 'assign':
             sessionStorage.obj = JSON.stringify(this.selectedData.map(v=> v.fcategoryid));
             // 点击分配权限按钮时 请求 getAuth接口查询 userList是否为空数组
-            this.QueryPermission();
+            this.queryPermission();
             break;
           default:
             break;
@@ -199,7 +199,6 @@
           this.createDownloadLink(this.selectedData[0].fname, href)
         } else { //多文件压缩下载
           const res = await fileService.downloadZip(idList);
-          console.log(res);
           if (res.size === 62) {
             this.$message1000('文件下载失败，存在一个文件或多个文件不存在', 'error')
           } else {
@@ -238,7 +237,7 @@
           this.tableList[0].isEditor = false;
         }
       },
-      QueryPermission() {
+      queryPermission() {
         const fcategoryids = this.selectedData.map(item=> item.fcategoryid);
         authService.getAuthListByCategory({
           fcategoryid: fcategoryids
@@ -259,23 +258,27 @@
           this.authListHeader = auth;
         });
       },
-      signIn() {
-        this.$store.dispatch('GetInfo');
-        this.getCategory();
-      },
-      // 统一登录平台
+      // 统一登录门户登录
       ssoLogin() {
-        if (location.search.indexOf('oncetoken') !== -1) { //如果oncetoken存在，就拿去请求网盘token，然后获取个人信息
-          if (this.userData.length === undefined) {
+        if (this.userData.length === undefined) {
+          if (location.search.indexOf('oncetoken') !== -1){
             const oncetoken = location.search.substring(location.search.indexOf("=") + 1);
-            request.get(`/djcpsdocument/sso/exchangeToken.do?oncetoken=${oncetoken}`)
-            .then(() => {
-              this.signIn();
+            request.get(`/djcpsdocument/sso/exchangeToken.do?oncetoken=${oncetoken}`).then(() => {
+              location.search = ''  //移除url中携带的oncetoken和from
             });
           } else {
-            this.signIn();
+            // sso登录时第一次触发
+            if (location.search.indexOf('from=sso')!== -1) {
+              sessionStorage.setItem('from', 'sso')
+              this.$store.dispatch('GetInfo')
+            } else {
+              //刷新时触发
+              this.$store.dispatch('GetInfo')
+              this.getCategory();
+            }
           }
         } else {
+          // 路由切换时触发，直接请求文件目录
           this.getCategory().then(() => {
             const {origin} = this.$route.query;
             if (origin === 'search') { //刚挂载时定位搜索结果所在位置
@@ -301,10 +304,6 @@
     },
     mounted() {
       this.ssoLogin();
-      // 监听浏览器后退前进功能
-      // window.addEventListener('popstate', () => {
-      //   if (this.$route.query.dirid) this.getCategory();
-      // }, false);
     },
     //  路由参数变化请求不同的文件列表
     beforeRouteUpdate(to, from, next) {

@@ -20,10 +20,7 @@ service.interceptors.response.use(
   response => {
     const res = response.data;
     if (!res.success) {
-      if (res.msg === '120') {
-        location.search.indexOf('from=sso') !== -1 ? location.href = res.data.url : router.push('/login');
-        // 判断来源，如果来自统一登录平台，则根据120跳转，否则跳转到系统本身的登录界面
-      } else if (res.code === '70106002') {
+      if (res.code === '70106002') {
         MessageBox.confirm('Token 过期了，您可以取消继续留在该页面，或者重新登录', '确定登出', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
@@ -32,11 +29,13 @@ service.interceptors.response.use(
           router.push('/login');
         });
       } else {
-        Message({
-          message: res.msg,
-          type: 'error',
-          duration: 1500
-        });
+        if (res.msg !== '120') {
+          Message({
+            message: res.msg,
+            type: 'error',
+            duration: 1500
+          });
+        }
       }
       return Promise.reject(res);
     } else {

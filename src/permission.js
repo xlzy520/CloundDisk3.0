@@ -7,7 +7,7 @@ import 'nprogress/nprogress.css';// Progress 进度条样式
 router.beforeEach((to, from, next) => {
   NProgress.start();
   if (store.getters.userData.userName === undefined) {
-    if (to.path !== '/login') {
+    if (to.path !== '/login' && to.path !== '/index/list') {
       store.dispatch('GetInfo');
     }
   }

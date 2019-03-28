@@ -65,7 +65,10 @@
       }
     },
     mounted() {
-      this.getCommonCategory();
+      if (location.search.indexOf('from=sso') === -1 && location.search.indexOf('oncetoken') === -1){
+        //此判断为统一登录过程中，页面跳转所带的标志，尽量减少跳转过程中请求不必要的接口
+        this.getCommonCategory();
+      }
     }
   };
 </script>
