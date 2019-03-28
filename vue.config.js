@@ -38,15 +38,12 @@ module.exports = {
     config.resolve.alias
           .set('@', resolve('src'));
 //TODO 分块
-    // config.externals = {
-    //   'vue': 'Vue',
-    //   'element-ui': 'ELEMENT',
-    //   'vue-router': 'VueRouter',
-    //   'vuex': 'Vuex',
-    //   'axios': 'axios'
-    // };
   },
   configureWebpack: {
+    externals: {
+      vue: 'Vue',
+      'element-ui': 'ELEMENT',
+    },
     optimization: {
       splitChunks: {
         chunks: 'all',
@@ -65,7 +62,7 @@ module.exports = {
         }
       },
       runtimeChunk: 'single',
-    }
+    },
   },
   pwa: {
     name: '东经云盘'
