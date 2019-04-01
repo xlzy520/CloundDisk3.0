@@ -114,13 +114,15 @@
         const {id, fversionsign, name} = this.docInfo;
         const markdownData = new FormData();
         markdownData.append('fparentid', this.$route.query.dirid || 0);
+        const input = document.querySelector('.el-message-box__input .el-input input')
         if (!this.docInfo.name) {
+          input.maxLength = 50;
           this.$prompt('请输入文件名', '文件名', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             inputPattern: /^[^\\\\\\/:*?\s\\"<>|]+$/,
             center: true,
-            inputErrorMessage: '文件名中不能为空或包含/:*?"<>|等特殊字符'
+            inputErrorMessage: '文件名中不能为空或包含/:*?"<>|等特殊字符',
           }).then(({ value }) => {
             this.fullscreenLoading = true;
             const markdownFile = new File([this.content], value + '.md');
@@ -138,6 +140,7 @@
           markdownData.append('file', markdownFile);
           markdownData.append('fcategoryid', id);
           markdownData.append('fversionsign', fversionsign);
+          input.maxLength = 500;
           this.$prompt('请输入更新描述', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',

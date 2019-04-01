@@ -1,13 +1,14 @@
 <template>
   <div
     class="rename-edit"
-    @click.stop="() => {}"
-    @dblclick.stop="()=>{}"
-    @contextmenu.stop="()=>{}"
-    :class="{thumbEdit:!(type === 'List')}">
+    @click.stop.prevent
+    @dblclick.stop.prevent
+    @contextmenu.stop.prevent
+    :class="{thumbEdit:type !== 'List'}">
     <el-input size="small"
               spellcheck="false"
               v-model="fileName"
+              maxlength="50"
               @keyup.native="correctVal"
               placeholder="请输入内容"
               :style="{width:(type==='List'?'350px':'120px')}"
@@ -45,7 +46,7 @@
       correctVal() {
         this.correct = this.fileName.length === 0 ? false : (/^[^\\\\\\/:*?\s\\"<>|]+$/).test(this.fileName);
       },
-      async confirmEdit() {
+      confirmEdit() {
         if (!(/^[^\\\\\\/:*?\s\\"<>|]+$/).test(this.fileName)) { //判断输入是否合法
           this.$message1000('文件名中不能包含空格/:*?"<>|等特殊字符', 'error');
           return false;
