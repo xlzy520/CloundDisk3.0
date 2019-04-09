@@ -200,7 +200,7 @@ export default {
   }
   .avatar-container {
     position: absolute;
-    right: 35px;
+    right: 60px;
     .avatar-wrapper {
       cursor: pointer;
       .user-avatar {
