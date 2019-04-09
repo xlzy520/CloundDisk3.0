@@ -114,7 +114,7 @@
         const {id, fversionsign, name} = this.docInfo;
         const markdownData = new FormData();
         markdownData.append('fparentid', this.$route.query.dirid || 0);
-        const input = document.querySelector('.el-message-box__input .el-input input')
+        const input = document.querySelector('.el-message-box__input .el-input input');
         if (!this.docInfo.name) {
           input.maxLength = 50;
           this.$prompt('请输入文件名', '文件名', {
@@ -145,7 +145,9 @@
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             center: true,
-            inputPattern: /^[^ ]+$/,
+            inputValidator: function(val) {
+
+            },
             inputErrorMessage: '更新描述不能为空'
           }).then(({ value }) => {
             this.fullscreenLoading = true;

@@ -183,7 +183,7 @@
           this.visible = 'mdEditor';
         });
       },
-      createDownloadLink(filename, href){
+      createDownloadLink(filename, href) {
         const download = document.createElement('a');
         download.style.display = 'none';
         document.body.appendChild(download);
@@ -196,11 +196,11 @@
         const idList = this.selectedData.map(item => item.fcategoryid);
         if (idList.length === 1) { //单文件下载
           const href = `/djcpsdocument/fileManager/downloadFile.do?id=${idList[0]}`;
-          this.createDownloadLink(this.selectedData[0].fname, href)
+          this.createDownloadLink(this.selectedData[0].fname, href);
         } else { //多文件压缩下载
           const res = await fileService.downloadZip(idList);
           if (res.size === 62) {
-            this.$message1000('文件下载失败，存在一个文件或多个文件不存在', 'error')
+            this.$message1000('文件下载失败，存在一个文件或多个文件不存在', 'error');
           } else {
             const filename = this.selectedData[0].fname + '等多个文件.zip';
             const zipUrl = URL.createObjectURL(res);
@@ -261,19 +261,19 @@
       // 统一登录门户登录
       ssoLogin() {
         if (this.userData.length === undefined) {
-          if (location.search.indexOf('oncetoken') !== -1){
+          if (location.search.indexOf('oncetoken') !== -1) {
             const oncetoken = location.search.substring(location.search.indexOf("=") + 1);
             request.get(`/djcpsdocument/sso/exchangeToken.do?oncetoken=${oncetoken}`).then(() => {
-              location.search = ''  //移除url中携带的oncetoken和from
+              location.search = ''; //移除url中携带的oncetoken和from
             });
           } else {
             // sso登录时第一次触发
-            if (location.search.indexOf('from=sso')!== -1) {
-              sessionStorage.setItem('from', 'sso')
-              this.$store.dispatch('GetInfo')
+            if (location.search.indexOf('from=sso') !== -1) {
+              sessionStorage.setItem('from', 'sso');
+              this.$store.dispatch('GetInfo');
             } else {
               //刷新时触发
-              this.$store.dispatch('GetInfo')
+              this.$store.dispatch('GetInfo');
               this.getCategory();
             }
           }
