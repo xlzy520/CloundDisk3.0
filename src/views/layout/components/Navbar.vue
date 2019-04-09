@@ -19,9 +19,8 @@
         <i class="fa fa-search search-replace-icon" title="搜索"></i>
       </div>
       <transition name="slide-fade">
-        <div class="search-wrap" v-if="searchVisible" @focus="showSwitch($event)" @blur="showSwitch($event)">
+        <div class="search-wrap" v-if="searchVisible">
           <el-switch
-            v-show="inputHover"
             class="switch-search"
             v-model="query.full"
             active-color="#13ce66"
@@ -91,20 +90,12 @@ export default {
         full: false,
         value: ''
       },
-      inputHover: false,
       searchVisible: false
     };
   },
   methods: {
     searchDisplay() {
       this.searchVisible = true;
-    },
-    showSwitch(event) {
-      if (event.type === 'focus') {
-        this.inputHover = event.target.className === 'material-input' || event.target.className === 'search-wrap';
-      } else {
-        this.inputHover = !(event.target.className === 'material-input' || event.target.className === 'search-wrap');
-      }
     },
     toggleSideBar() {
       this.$store.dispatch('ToggleSideBar');
@@ -127,11 +118,10 @@ export default {
 
 <style lang="scss">
 .navbar {
+  display: flex;
   height: 50px;
   line-height: 50px;
-  border-radius: 0 !important;
   .hamburger-container {
-    float: left;
     padding: 0 10px;
     &:hover{
       animation: hamburger-spin infinite 1s linear;
@@ -145,21 +135,18 @@ export default {
     }
   }
   .nav__logo{
-    float: left;
+    display: flex;
+    align-items: center;
     &__img{
-      float: left;
-      margin-top: 5px;
       margin-right: 5px;
     }
     &__title{
-      float: right;
       font-size: 20px;
     }
   }
   .nav-router{
     color: #9e9e9e;
     font-size: 18px;
-    float: left;
     cursor: pointer;
     .nav-router-text{
       margin-left: 30px;
@@ -186,15 +173,14 @@ export default {
     }
   }
   .search-wrap{
+    display: flex;
     position: absolute;
     right: 15%;
     .material-input__component{
-      float: left;
       width: 225px;
       margin-top: 5px;
     }
     .switch-search{
-      float: left;
       margin-top: 15px;
     }
   }
