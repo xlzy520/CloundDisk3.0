@@ -16,12 +16,12 @@
     <delete-file ref="delete" @action="dispatchAction"></delete-file>
     <detail ref="detail"></detail>
     <version-list ref="version" @action="dispatchAction"></version-list>
-    <md-editor
+    <markdown-editor
       ref="md"
       v-if="visible==='mdEditor'"
       :doc-info="docInfo"
       @action="dispatchAction">
-    </md-editor>
+    </markdown-editor>
     <move-file ref="move" @action="dispatchAction"></move-file>
     <img-editor ref="img" v-if="visible==='img'" :img-config="imgConfig" @action="dispatchAction"></img-editor>
     <zip-reader ref="zipReader" @action="dispatchAction"></zip-reader>
@@ -41,7 +41,7 @@
   import Detail from '@/components/file/Detail.vue';
   import VersionList from '@/components/file/VersionList.vue';
   import MoveFile from '@/components/file/MoveFile.vue';
-  import MdEditor from "@/components/file/MDEditor";
+  import MarkdownEditor from "@/components/file/MarkdownEditor";
   import ZipReader from '@/components/file/ZipReader.vue';
   import DingDing from "@/components/file/DingDing";
   import Share from '@/components/file/Share.vue';
@@ -73,7 +73,7 @@
     },
     components: {
       DingDing,
-      MdEditor,
+      MarkdownEditor,
       ImgEditor: () => import('@/components/file/imgEditor/index.vue'),
       VersionList,
       Detail,
@@ -82,7 +82,7 @@
       List,
       ListHeader,
       DeleteFile,
-      MDEditor: () => import('@/components/file/MDEditor.vue'),
+      MDEditor: () => import('@/components/file/MarkdownEditor.vue'),
       MoveFile,
       ZipReader,
       Share
