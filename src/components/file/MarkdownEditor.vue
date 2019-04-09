@@ -146,7 +146,7 @@
             cancelButtonText: '取消',
             center: true,
             inputValidator: function(val) {
-
+              if (val === '') return false;
             },
             inputErrorMessage: '更新描述不能为空'
           }).then(({ value }) => {
