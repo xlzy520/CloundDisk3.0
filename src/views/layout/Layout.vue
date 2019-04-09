@@ -63,7 +63,7 @@ export default {
       flex-shrink: 1;
       overflow: hidden;
     }
-    &-context-menu {
+    .context-menu {
       position: absolute;
       display: none;
     }
