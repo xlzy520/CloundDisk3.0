@@ -160,6 +160,9 @@
           const { list, total } = res.data;
           this.tableData = list;
           this.pagination.total = Number(total);
+          if (list.length === 0) {
+            this.$message1000('数据为空', 'info');
+          }
         }).catch(() => {
           this.$message1000('获取信息错误', 'error');
         }).finally(() => {
