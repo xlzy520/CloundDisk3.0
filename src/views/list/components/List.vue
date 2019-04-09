@@ -120,14 +120,14 @@
       showMenu(row, column, event) {
         event.preventDefault();
         this.$refs.baseTable.clickRow(row);
-        let contextMenu = document.querySelector('.djcd-right-menu');
+        let contextMenu = document.querySelector('.context-menu');
         contextMenu.style.display = 'block';
         contextMenu.style.top = `${event.y > window.innerHeight * 2 / 3 ? event.y - contextMenu.clientHeight : event.y}px`;
         contextMenu.style.left = `${event.x}px`;
       },
       closeMenu(event) {
-        let contextMenu = document.querySelector('.djcd-right-menu');
-        if (contextMenu && event.target.className !== 'right-menu-button') {
+        let contextMenu = document.querySelector('.context-menu');
+        if (contextMenu && event.target.className !== 'context-menu-button') {
           contextMenu.style.display = 'none';
         }
       },

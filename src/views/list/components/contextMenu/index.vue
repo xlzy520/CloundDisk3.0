@@ -1,6 +1,6 @@
 <template>
-  <div class="right-menu" @click="click">
-    <ul class="right-menu-button">
+  <div class="context-menu" @click="click">
+    <ul class="context-menu-button">
       <li v-for="item in config"
           :key="item.value"
           :class="{ disabled: actionArray.findIndex(key => key === item.value)<0 }"
@@ -39,7 +39,7 @@
 </script>
 
 <style lang="scss" scoped>
-  .right-menu {
+  .context-menu {
     &-button {
       list-style: none;
       background: #fbfcff;
