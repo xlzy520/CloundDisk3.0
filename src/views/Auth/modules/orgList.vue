@@ -7,7 +7,6 @@
         @change="selectOrg">
         <el-radio v-for="(item, index) in listData"
                   :key="index"
-                  :tabindex="false"
                   :label="item.id"
                   class="org-radio">{{ item.oname }}</el-radio>
       </el-radio-group>
