@@ -31,6 +31,8 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex';
+
   import categoryService from '@/api/service/category';
   import authService from '@/api/service/auth';
   import BaseTable from '@/components/base/baseTable.vue';
@@ -135,6 +137,11 @@
         userId: ''
       };
     },
+    computed: {
+      ...mapGetters([
+        'userData'
+      ]),
+    },
     components: {
       BaseTable,
       BaseScrollbar,
@@ -219,6 +226,11 @@
         this.selectedAuthData = [];
         this.getAuthTable();
       },
+    },
+    mounted() {
+      if (!this.userData.utype > 0) {
+        this.$router.push('404');
+      }
     }
   };
 </script>
