@@ -7,18 +7,18 @@ import 'nprogress/nprogress.css';// Progress 进度条样式
 const authList = ['/index/authSettings', '/index/userManagement'];
 router.beforeEach((to, from, next) => {
   NProgress.start();
-  if (store.getters.userData.userName === undefined) {
+  const {userName, utype} = store.getters.userData;
+  if (userName === undefined) {
     if (to.path !== '/login' && to.path !== '/index/list') {
       store.dispatch('GetInfo');
     }
   }
-  if (store.getters.userData.utype > 0) {
-    next();
-  } else if (authList.includes(to.path)) {
-    next('404');
-  } else {
-    next();
+  if (utype === '0') {
+    if (authList.includes(to.path)) {
+      next('404');
+    }
   }
+  next();
 });
 
 router.afterEach(() => {
