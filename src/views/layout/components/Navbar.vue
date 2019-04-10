@@ -29,8 +29,6 @@
           <md-input
             icon="search"
             name="search"
-            @focus="showSwitch"
-            @blur="showSwitch"
             v-model="query.value"
             title="请输入搜索关键词"
             placeholder="请输入关键词，回车搜索"
@@ -39,25 +37,19 @@
           </md-input>
         </div>
       </transition>
-      <el-dropdown class="avatar-container" trigger="click">
+      <el-dropdown class="avatar-container" trigger="click"  @command="handleDropDownCommand">
         <div class="avatar-wrapper">
           <img class="user-avatar" :src="'https://oa.djcps.com/DJOA/'+userData.userIco">
           <i class="el-icon-caret-bottom"></i>
         </div>
         <el-dropdown-menu class="user-dropdown" slot="dropdown">
-          <router-link class="inlineBlock" to="/">
-            <el-dropdown-item>
-              <span class="name">主页</span>
-            </el-dropdown-item>
+          <router-link to="/">
+            <el-dropdown-item>主页</el-dropdown-item>
           </router-link>
-          <router-link class="inlineBlock" to="/">
-            <el-dropdown-item>
-              <span class="name">{{userData.userName}}</span>
-            </el-dropdown-item>
+          <router-link to="/">
+            <el-dropdown-item>{{userData.userName}}</el-dropdown-item>
           </router-link>
-          <el-dropdown-item divided>
-            <span class="name" @click="logout">注销</span>
-          </el-dropdown-item>
+          <el-dropdown-item divided command="logout">注销</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-menu>
@@ -99,6 +91,9 @@ export default {
     },
     toggleSideBar() {
       this.$store.dispatch('ToggleSideBar');
+    },
+    handleDropDownCommand(cmd) {
+      if (cmd === 'logout') this.logout();
     },
     logout() {
       this.$store.dispatch('LogOut').then(()=>{
