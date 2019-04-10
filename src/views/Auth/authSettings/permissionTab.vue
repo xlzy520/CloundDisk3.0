@@ -85,11 +85,10 @@ export default {
     },
     orgChange(orgId) {
       this.orgLoading = true;
-      authService.getExcludeUserInfoByOrgId(orgId, this.getfcategoryid()).then(res => {
+      authService.getExcludeUserInfoByOrgId(orgId, this.getfcategoryids()).then(res => {
         this.employeesList = res.data;
       }).finally(()=>{
-        this.$refs.employeesList.reset();
-        this.$refs.authTypes.reset();
+        this.clear();
         this.orgLoading = false;
       });
     },
@@ -115,27 +114,36 @@ export default {
       });
     },
     clear() {
-      this.$refs.authTypes.checkedAuthList = [];
-      this.$refs.employeesList.checkedEmployeesList = [];
+      this.$refs.employeesList.reset();
+      this.$refs.authTypes.reset();
     },
     cancel() {
       this.$router.back();
     },
+    init() {
+      this.$nextTick(()=>{
+        if (this.type === 'edit') {
+          this.getUserListByCategory(this.getfcategoryids());
+        } else {
+          this.getOrgList();
+        }
+      });
+    },
+    resetData() {
+      this.clear();
+      this.employeesList = [];
+      this.checkedEmployeesList = [];
+      this.authList = [];
+      this.init();
+    }
   },
   mounted() {
-    if (this.type === 'edit') {
-      this.getUserListByCategory(this.getfcategoryids());
-    } else {
-      this.getOrgList();
-    }
+   this.init();
   },
 };
 
 </script>
 <style lang="scss">
-  .permission-content {
-    justify-content: flex-start;
-  }
   .handler-box{
     text-align: center;
     margin: 0 50px 20px 0;
