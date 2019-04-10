@@ -242,8 +242,8 @@
         authService.getAuthListByCategory({
           fcategoryid: fcategoryids
         }).then(res => {
-          const authHasConfigured = res.data.userList.length > 0 ? 1 : 0;
-          this.$router.push(`/index/authSettings?authHasConfigured=${authHasConfigured}`);
+          const isConfigured = res.data.userList.length > 0 ? 1 : 0;
+          this.$router.push(`/index/authSettings?isConfigured=${isConfigured}`);
         });
       },
       getCategory(id = this.$route.query.dirid, refresh = false) {

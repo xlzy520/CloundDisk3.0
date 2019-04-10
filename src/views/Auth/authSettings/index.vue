@@ -1,12 +1,9 @@
 <template>
   <div class="auth-box">
-    <el-tabs v-model="activeName">
-      <el-tab-pane label="分配权限" name="set">
-        <permission-tab class="tab-content-item" type="set"></permission-tab>
-      </el-tab-pane>
-      <el-tab-pane label="编辑权限" name="edit">
-        <permission-tab class="tab-content-item" type="edit"></permission-tab>
-      </el-tab-pane>
+    <el-tabs v-model="activeName" @tab-click="setTabType">
+      <el-tab-pane label="分配权限" name="set"></el-tab-pane>
+      <el-tab-pane label="编辑权限" name="edit"></el-tab-pane>
+      <permission-tab ref="permission" class="tab-content-item" :type="activeName"></permission-tab>
     </el-tabs>
   </div>
 </template>
@@ -15,17 +12,25 @@
   import permissionTab from './permissionTab.vue';
 
   export default {
+    name: 'AuthSettings',
     data() {
       return {
-        activeName: 'set',
+        activeName: 'edit',
       };
     },
     components: {
       permissionTab
     },
+    methods: {
+      setTabType() {
+        this.$refs.permission.resetData();
+      }
+    },
     created() {
-      if (this.$route.query.authHasConfigured === "1") {
+      if (this.$route.query.isConfigured === "1") {
         this.activeName = "edit";
+      } else {
+        this.activeName = "set";
       }
     },
   };
