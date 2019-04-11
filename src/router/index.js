@@ -40,12 +40,12 @@ export const constantRouterMap = [
         name: '搜索结果'
       },
       {
-        path: 'authSettings',
+        path: 'auth-settings',
         component: () => import('@/views/auth/authSettings/index'),
         name: '权限配置'
       },
       {
-        path: 'userManagement',
+        path: 'user-management',
         component: () => import('@/views/auth/userManagement/index'),
         name: '权限管理'
       }
