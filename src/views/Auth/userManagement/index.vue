@@ -38,7 +38,7 @@
   import userSelect from './userSelect.vue';
 
   export default {
-    name: 'userAuth',
+    name: 'UserManagement',
     data() {
       return {
         tableData: [],
