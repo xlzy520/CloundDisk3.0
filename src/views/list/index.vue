@@ -263,7 +263,7 @@
         if (this.userData.length === undefined) {
           if (location.search.indexOf('oncetoken') !== -1) {
             const oncetoken = location.search.substring(location.search.indexOf("=") + 1);
-            request.get(`/djcpsdocument/sso/exchangeToken.do?oncetoken=${oncetoken}`).then(() => {
+            request.get(`/sso/exchangeToken.do?oncetoken=${oncetoken}`).then(() => {
               location.search = ''; //移除url中携带的oncetoken和from
             });
           } else {
