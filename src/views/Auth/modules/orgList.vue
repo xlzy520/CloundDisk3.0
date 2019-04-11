@@ -7,8 +7,9 @@
         @change="selectOrg">
         <el-radio v-for="(item, index) in listData"
                   :key="index"
-                  :label="item.id"
-                  class="org-radio">{{ item.oname }}</el-radio>
+                  :label="item.id">
+          {{ item.oname }}
+        </el-radio>
       </el-radio-group>
     </base-scrollbar>
   </div>
@@ -42,18 +43,18 @@ export default {
 </script>
 <style lang="scss">
 .org-list {
-  width: 210px;
+  width: 220px;
   line-height: 40px;
   .scroll-box {
     height: 64vh;
     border: 1px solid #eee;
     margin-top: 10px;
   }
-  .org-radio {
+  .el-radio {
     width: 100%;
     line-height: 40px;
-    padding-left: 30px;
-    margin-left: 0;
+    padding-left: 20px;
+    margin-right: 0;
   }
 }
 </style>

@@ -10,6 +10,8 @@ module.exports = {
         // target: 'https://www.easy-mock.com/mock/5c47cda4f513860f4ceef676/', //mock
         // target: 'http://192.168.2.21:8888/', //朱诚
         // target: 'http://192.168.2.21:8016/', //朱诚
+        //target: 'http://192.168.12.197:8016/', //朱诚
+        // target: 'http://192.168.2.21:8016/', //朱诚
         target: 'http://192.168.25.218:8016/', //预发布环境
         //target: 'http://192.168.2.171:8888/', //弘权
         //target: 'http://192.168.2.65:8082/', //弘权
