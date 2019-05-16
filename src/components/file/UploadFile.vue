@@ -79,7 +79,7 @@ export default {
       return tip;
     },
     isRp() {
-      return this.selectedData.length === 1 && this.selectedData[0].fname.split('.')[1] === 'rp' && this.type === 'relevance'
+      return this.selectedData.length === 1 && this.selectedData[0].fname.split('.')[1] === 'rp' && this.type === 'relevance';
     },
     url() {
       return this.isRp ? '/djcpsdocument/fileManager/zipFileUpload.do' : '/djcpsdocument/category/fileUpload.do';

@@ -63,7 +63,6 @@ export default {
       // 选中的文件夹个数
       const {length: folderCheckedCount } = this.selectedData.filter(item => item.ffiletype === 1);
       const {length: selectedLength } = this.selectedData;
-      
       // 最终权限
       //["查阅", "删除", "编辑", "下载", "上传", "新建"]
       const ownerAuth = this.getOwnerAuth(selectedLength); //根据选择文件数量设置当前拥有的权限
