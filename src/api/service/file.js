@@ -64,7 +64,7 @@ export default {
   previewRpDocument(fcategoryId) {
     return fileManagerService('/previewRpDocument.do', { fcategoryId }, 'get');
   },
-  updateRpDocumentPreviewUrl(fcategoryId) {
-    return fileManagerService('/previewRpDocument.do', { fcategoryId });
+  updateRpDocumentPreviewUrl(params) {
+    return fileManagerService('/updateRpDocumentPreviewUrl.do', params);
   }
 };

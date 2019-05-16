@@ -18,6 +18,7 @@
   import RenameFile from '@/components/file/RenameFile.vue';
   import {mapGetters} from 'vuex';
   import fileType from '@/mixins/fileType';
+  import fileService from '@/api/service/file';
   import {formatSize, parseTime, sizeSort, nameSort} from '@/utils/index';
   import baseTable from '@/components/base/baseTable.vue';
   import baseScrollbar from '@/components/base/baseScrollbar.vue';
@@ -84,6 +85,18 @@
           {
             label: '创建者',
             prop: 'foperator',
+            render: (h, {props: {row}}) => {
+              if (row.ffiletype === 12 && row.fsize.slice(0, -1) < 6 * 1024 * 1024) {
+                return (
+                  <div>
+                    <span>{ row.foperator }</span>
+                    <el-button onClick={ () => this.rebuild(row.fcategoryid) } type="danger" size="mini" style="width: 130px; margin-left: 10px">重新生成预览链接</el-button>
+                  </div>
+                );
+              } else {
+                return <span>{ row.foperator }</span>;
+              }
+            }
           }
         ],
       };
@@ -131,6 +144,11 @@
           contextMenu.style.display = 'none';
         }
       },
+      rebuild(fcategoryId) {
+        fileService.updateRpDocumentPreviewUrl({ fcategoryId }).then(res => {
+          window.open(res.data.previewUrl, "_blank");
+        });
+      }
     },
     destroyed() {
       window.removeEventListener('mousemove', this.closeMenu);

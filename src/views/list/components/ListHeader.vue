@@ -77,7 +77,7 @@ export default {
             actionArr.push("dingDing");
           }
           // 选中单个rp文件
-          if (this.selectedData[0].fname.split('.')[1] === 'rp') {
+          if (this.selectedData[0].ffiletype === 12) {
             actionArr.push("relevance");
           }
         } else {
