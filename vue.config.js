@@ -1,4 +1,6 @@
 const path = require('path');
+const FileMangeerPlugin = require('filemanager-webpack-plugin')
+
 function resolve(dir) {
   return path.join(__dirname, '.', dir);
 }
@@ -64,6 +66,18 @@ module.exports = {
       },
       runtimeChunk: 'single',
     },
+    plugins: [
+      new FileMangeerPlugin({
+        onEnd: {
+          delete: [
+            './dist.zip'
+          ],
+          archive: [
+            { source: './dist', destination: './dist.zip' }
+          ]
+        }
+      })
+    ],
   },
   pwa: {
     name: '东经云盘'
