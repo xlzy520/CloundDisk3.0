@@ -142,8 +142,8 @@
       toggleRowSelection(row, boolean) {
         this.$refs.baseTable.toggleRowSelection(row, boolean);
       },
-      showMenu(row, event) {
-        this.$emit('row-contextmenu', {row, event});
+      showMenu(row, column, event) {
+        this.$emit('row-contextmenu', row, column, event);
       },
       dblclickRow(row) {
         this.$emit('cell-dblclick', row);

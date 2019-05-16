@@ -1,5 +1,6 @@
 import loginService from '@/api/service/login';
 import md5 from 'md5';
+import router from "../../router";
 
 const user = {
   state: {
@@ -29,14 +30,24 @@ const user = {
     },
 
     // 获取用户信息
-    GetInfo({ commit, state }) {
+    GetInfo({ commit }) {
       return new Promise((resolve, reject) => {
-        loginService.getInfo(state.token).then(response => {
+        loginService.getInfo().then(response => {
           const data = response.data;
           commit('SET_USER_DATA', data);
           resolve(response);
         }).catch(error => {
-          reject(error);
+          if (error.msg === '120') {
+            // 判断来源，如果来自统一登录平台，则根据120跳转，否则跳转到系统本身的登录界面
+            // 来自统一登录门户
+            if (sessionStorage.getItem('from') === 'sso') {
+              location.href = error.data.url;
+            } else {
+              // 直接进入云盘首页
+              router.push('/login');
+            }
+          }
+            reject(error);
         });
       });
     },

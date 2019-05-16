@@ -1,23 +1,21 @@
 <template>
-  <div class="list-checkbox">
-    <div class="list-checkbox-header">
-      <span class="list-checkbox-header-title">权限类型</span>
+  <div class="list-check flex-column">
+    <div class="list-check-header">
+      <span>权限类型</span>
       <el-checkbox
         :indeterminate="isIndeterminate"
         v-model="checkAll"
         @change="handleCheckAllChange"
         :disabled="radioDisabled">全选</el-checkbox>
     </div>
-    <div class="choice-box">
-      <base-scrollbar class="scroll-box">
-        <el-checkbox-group
-          v-model="checkedAuthList"
-          @change="handleCheckedItemsChange">
-          <el-checkbox v-for="(item, index) in listData" :key="index"
-            class="org-radio" :label="item" :disabled="radioDisabled">{{ item }}</el-checkbox>
-        </el-checkbox-group>
-      </base-scrollbar>
-    </div>
+    <base-scrollbar class="scroll-box">
+      <el-checkbox-group
+        v-model="checkedAuthList"
+        @change="handleCheckedItemsChange">
+        <el-checkbox v-for="(item, index) in listData" :key="index"
+                     class="org-radio" :label="item" :disabled="radioDisabled">{{ item }}</el-checkbox>
+      </el-checkbox-group>
+    </base-scrollbar>
   </div>
 </template>
 
@@ -102,10 +100,10 @@ export default {
 
 </script>
 <style lang="scss" scoped>
-  .list-checkbox{
+  .list-check{
     width: 240px;
   }
   .org-radio{
-    width: 100%;
+    width: calc(100% - 30px);
   }
 </style>

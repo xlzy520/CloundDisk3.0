@@ -7,7 +7,7 @@
       <navbar></navbar>
       <app-main ref="appMain"></app-main>
     </div>
-    <div class="djcd-right-menu">
+    <div class="context-menu">
       <context-menu @action="dispatchAction"></context-menu>
     </div>
   </div>
@@ -63,7 +63,7 @@ export default {
       flex-shrink: 1;
       overflow: hidden;
     }
-    &-right-menu {
+    .context-menu {
       position: absolute;
       display: none;
     }

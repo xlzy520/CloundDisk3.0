@@ -65,7 +65,11 @@
       }
     },
     mounted() {
-      this.getCommonCategory();
+      // todo 通过标志判断减少不必要的一次请求，当已经登录，又通过统一登录平台登录，会带上from=sso，导致跳转时多请求一次
+      if (location.search.indexOf('oncetoken') === -1){
+        //此判断为统一登录过程中，页面跳转所带的标志，尽量减少跳转过程中请求不必要的接口
+        this.getCommonCategory();
+      }
     }
   };
 </script>

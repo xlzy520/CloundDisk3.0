@@ -1,32 +1,30 @@
 <template>
-  <div class="list-checkbox flex" v-loading="loading">
-    <div class="choice-box">
-      <div class="list-checkbox-header">
-        <span class="list-checkbox-title">员工列表</span>
+  <div class="list-check employee-list" v-loading="loading">
+    <div class="employee-wrap flex-column">
+      <div class="list-check-header">
+        <span>员工列表</span>
         <el-checkbox
           :indeterminate="isIndeterminate"
           v-model="checkAll"
           @change="handleCheckAllChange"
           :disabled="checkAllDisabled">全选</el-checkbox>
       </div>
-      <div class="staff-box">
-        <base-scrollbar class="scroll-box">
-          <el-checkbox-group
-            v-model="checkedEmployeesList"
-            @change="employeesChange">
-            <el-checkbox
-              v-for="item in listData"
-              :class="{ active: item.hasAuth === '1' }"
-              :label="item.userId"
-              :key="item.userId"
-              class="org-radio">
-              {{ item.userName }}
-            </el-checkbox>
-          </el-checkbox-group>
-        </base-scrollbar>
-      </div>
+      <base-scrollbar class="scroll-box">
+        <el-checkbox-group
+          v-model="checkedEmployeesList"
+          @change="employeesChange">
+          <el-checkbox
+            v-for="item in listData"
+            :class="{ active: item.hasAuth === '1' }"
+            :label="item.userId"
+            :key="item.userId"
+            class="org-radio">
+            {{ item.userName }}
+          </el-checkbox>
+        </el-checkbox-group>
+      </base-scrollbar>
     </div>
-    <div class="employee-selected">
+    <div class="employee-selected flex-column">
       <span>已选择员工：</span>
       <el-select
         v-model="checkedEmployeesList"
@@ -111,32 +109,28 @@ export default {
 };
 
 </script>
-<style lang="scss" scoped>
-  .list-checkbox{
+<style lang="scss">
+  .list-check{
     width: 49vw;
   }
   .employee-selected{
     width: (300/650)* 49vw;
-    display: flex;
-    flex-direction: column;
   }
-  .choice-box{
+  .employee-wrap{
     width: (240/650)* 49vw;
-    @extend .employee-selected
   }
-  .staff-box {
+  .scroll-box {
     display: flex;
     justify-content: space-between;
-    .scroll-box {
+    width: 100%;
+    box-shadow: 3px 2px 7px 0 #e1e8e8;
+    .el-checkbox-group {
       width: 100%;
-      .el-checkbox-group {
-        width: 100%;
-        display: flex;
-        flex-wrap: wrap;
-      }
-      .org-radio {
-        width: 50%;
-      }
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .org-radio {
+      width: 40%;
     }
   }
   /deep/ .el-select {

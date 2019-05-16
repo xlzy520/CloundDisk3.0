@@ -71,7 +71,9 @@ a:hover {
     height: 0;
   }
 }
-
+img{
+  vertical-align: middle;
+}
 //main-container全局样式
 // .app-main{
 //   min-height: 100%
@@ -82,4 +84,8 @@ a:hover {
 }
 .flex{
   display: flex;
+}
+.flex-column{
+  display: flex;
+  flex-direction: column;
 }

@@ -2,7 +2,7 @@
   <div>
     <base-scrollbar ref="scrollbar" class="scrollbar" v-loading="orgLoading">
       <div class="permission-content flex">
-        <org-list :list-data="orgList" @org-change="orgChange"></org-list>
+        <org-list :list-data="orgList" @org-change="orgChange" v-if="type === 'set'"></org-list>
         <employees-list ref="employeesList"
                         @post-auth="getAuthByOne"
                         @select-change="selectedEmployeesList"
@@ -14,7 +14,7 @@
     </base-scrollbar>
     <div class="handler-box">
       <el-button type="primary" @click="save" :disabled="saveDisabled" :loading="loading">保存</el-button>
-      <el-button type="warning" @click="cancel">取消</el-button>
+      <el-button type="warning" @click="cancel">返回</el-button>
     </div>
   </div>
 </template>
@@ -28,7 +28,13 @@ import authService from '@/api/service/auth';
 import baseScrollbar from '@/components/base/baseScrollbar.vue';
 
 export default {
-  name: 'permission-setting-tab',
+  name: 'permission-tab',
+  props: {
+    type: {
+      type: String,
+      default: 'edit' // 'edit' 'set'
+    }
+  },
   data () {
     return {
       orgList: [],
@@ -47,11 +53,11 @@ export default {
   },
   computed: {
     saveDisabled() {
+      if (this.type === 'edit') {
+        return this.authList.length === 0;
+      }
       return this.checkedEmployeesList.length === 0;
     }
-  },
-  mounted() {
-    this.getOrgList();
   },
   methods: {
     updateAuth(auth) {
@@ -64,7 +70,12 @@ export default {
     selectedEmployeesList(list) {
       this.checkedEmployeesList = list;
     },
-    getfcategoryid() {
+    getUserListByCategory(fcategoryid) {
+      authService.getAuthListByCategory({fcategoryid}).then(res => {
+        this.employeesList = res.data.userList;
+      });
+    },
+    getfcategoryids() {
       return JSON.parse(sessionStorage.obj);
     },
     getOrgList() {
@@ -74,15 +85,15 @@ export default {
     },
     orgChange(orgId) {
       this.orgLoading = true;
-      authService.getExcludeUserInfoByOrgId(orgId, this.getfcategoryid()).then(res => {
+      authService.getExcludeUserInfoByOrgId(orgId, this.getfcategoryids()).then(res => {
         this.employeesList = res.data;
       }).finally(()=>{
-        this.$refs.employeesList.reset();
-        this.$refs.authTypes.reset();
+        this.clear();
         this.orgLoading = false;
       });
     },
     save() {
+      this.loading = true;
       const userList = this.checkedEmployeesList.map(item=> {
         for (const _item of this.employeesList) {
           if (item === _item.userId) {
@@ -90,31 +101,51 @@ export default {
           }
         }
       });
-      let params = {
+      authService.giveAuthToUser({
         auth: this.authList,
-        fcategoryid: this.getfcategoryid(),
+        fcategoryid: this.getfcategoryids(),
         userList: userList
-      };
-      this.loading = true;
-      authService.giveAuthToUser(params).then(() => {
-        this.loading = false;
-        this.clear();
+      }).then(() => {
         this.$message1000("分配权限成功", 'success');
       }).finally(()=>{
+        this.loading = false;
+        this.clear();
         this.cancel();
       });
     },
     clear() {
-      this.$refs.authTypes.checkedAuthList = [];
-      this.$refs.employeesList.checkedEmployeesList = [];
+      this.$refs.employeesList.reset();
+      this.$refs.authTypes.reset();
     },
     cancel() {
       this.$router.back();
+    },
+    init() {
+      this.$nextTick(()=>{
+        if (this.type === 'edit') {
+          this.getUserListByCategory(this.getfcategoryids());
+        } else {
+          this.getOrgList();
+        }
+      });
+    },
+    resetData() {
+      this.clear();
+      this.employeesList = [];
+      this.checkedEmployeesList = [];
+      this.authList = [];
+      this.init();
     }
-  }
+  },
+  mounted() {
+   this.init();
+  },
 };
 
 </script>
 <style lang="scss">
-
+  .handler-box{
+    text-align: center;
+    margin: 0 50px 20px 0;
+  }
 </style>
