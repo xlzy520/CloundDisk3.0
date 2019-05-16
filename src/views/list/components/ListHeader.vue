@@ -63,6 +63,7 @@ export default {
       // 选中的文件夹个数
       const {length: folderCheckedCount } = this.selectedData.filter(item => item.ffiletype === 1);
       const {length: selectedLength } = this.selectedData;
+      
       // 最终权限
       //["查阅", "删除", "编辑", "下载", "上传", "新建"]
       const ownerAuth = this.getOwnerAuth(selectedLength); //根据选择文件数量设置当前拥有的权限
@@ -75,6 +76,10 @@ export default {
             : ['rename', 'copy', 'move', 'download', 'update', 'version', 'delete', 'detail', 'share'];
           if (isAdmin && folderCheckedCount === 1) {
             actionArr.push("dingDing");
+          }
+          // 选中单个rp文件
+          if (this.selectedData[0].fname.split('.')[1] === 'rp') {
+            actionArr.push("relevance");
           }
         } else {
           actionArr = folderCheckedCount === 0 ? ['copy', 'move', 'delete', 'download', 'share'] : ['move', 'delete', 'share'];
@@ -110,7 +115,7 @@ export default {
     },
     getOwnerAuth(length) {
       if (length === 0) {
-         return [];
+        return [];
       } else if (length === 1) {
         return this.selectedData[0].auth;
       } else {

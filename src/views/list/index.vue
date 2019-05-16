@@ -118,6 +118,7 @@
             break;
           case 'upload':
           case 'update':
+          case 'relevance':
             this.$refs.upload.visible = true;
             this.$refs.upload.type = action;
             break;

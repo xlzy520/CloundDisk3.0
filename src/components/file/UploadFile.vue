@@ -8,7 +8,7 @@
     <el-upload
       ref="upload"
       drag
-      action="/djcpsdocument/category/fileUpload.do"
+      :action="url"
       :on-success="uploadOk"
       :data="uploadData"
       :on-change="onFileChange"
@@ -27,6 +27,9 @@
     <div v-if="type==='update'">
       <div class="change_log">更新内容：</div>
       <el-input type="textarea" v-model="changeLog"></el-input>
+    </div>
+    <div v-if="type==='relevance'">
+      <div class="change_log">请上传对应的zip文件</div>
     </div>
     <span slot="footer" class="dialog-footer">
       <el-button size="small"  type="primary" @click="submitUpload" :disabled="btDisable">开始{{title}}</el-button>
@@ -74,6 +77,12 @@ export default {
         return tip + ' / ' + this.selectedData[0].fname;
       }
       return tip;
+    },
+    isRp() {
+      return this.selectedData.length === 1 && this.selectedData[0].fname.split('.')[1] === 'rp' && this.type === 'relevance'
+    },
+    url() {
+      return this.isRp ? '/djcpsdocument/fileManager/zipFileUpload.do' : '/djcpsdocument/category/fileUpload.do';
     }
   },
   methods: {
@@ -146,9 +155,15 @@ export default {
       if (file.status === 'ready') {
         this.btDisable = false;
         this.currentFile = file;
-        this.uploadData = {
-          fparentid: this.$route.query.dirid || 0
-        };
+        if (this.isRp) {
+          this.uploadData = {
+            fcategoryid: this.selectedData[0].fcategoryid
+          };
+        } else {
+          this.uploadData = {
+            fparentid: this.$route.query.dirid || 0
+          };
+        }
         if (this.selectedData.length === 1 && this.type === 'update') {
           this.uploadData = {
             fparentid: this.$route.query.dirid || 0,
