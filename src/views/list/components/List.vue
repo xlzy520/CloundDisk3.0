@@ -130,7 +130,7 @@
           }
         }
       },
-      showMenu(row, column, event) {
+      showMenu(row, event) {
         event.preventDefault();
         this.$refs.baseTable.clickRow(row);
         let contextMenu = document.querySelector('.context-menu');
