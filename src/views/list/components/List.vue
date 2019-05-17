@@ -18,7 +18,6 @@
   import RenameFile from '@/components/file/RenameFile.vue';
   import {mapGetters} from 'vuex';
   import fileType from '@/mixins/fileType';
-  import fileService from '@/api/service/file';
   import {formatSize, parseTime, sizeSort, nameSort} from '@/utils/index';
   import baseTable from '@/components/base/baseTable.vue';
   import baseScrollbar from '@/components/base/baseScrollbar.vue';
@@ -131,7 +130,7 @@
         if (contextMenu && event.target.className !== 'context-menu-button') {
           contextMenu.style.display = 'none';
         }
-      } 
+      }
     },
     destroyed() {
       window.removeEventListener('mousemove', this.closeMenu);

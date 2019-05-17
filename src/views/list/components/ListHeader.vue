@@ -19,7 +19,7 @@
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="relevance">关联HTML</el-dropdown-item>
             <el-dropdown-item divided command="rebuild" v-show="isEnableBuild">
-              <tag type="danger">重新生成预览地址</tag>
+              重新生成预览地址
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
