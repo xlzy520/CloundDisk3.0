@@ -1,5 +1,6 @@
 const path = require('path');
-const FileMangeerPlugin = require('filemanager-webpack-plugin')
+const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
+const FileMangeerPlugin = require('filemanager-webpack-plugin');
 
 function resolve(dir) {
   return path.join(__dirname, '.', dir);
@@ -42,12 +43,12 @@ module.exports = {
           .set('@', resolve('src'));
 //TODO 分块
   },
-  configureWebpack: {
-    externals: {
+  configureWebpack: config => {
+    config.externals = {
       vue: 'Vue',
       'element-ui': 'ELEMENT',
-    },
-    optimization: {
+    };
+    config.optimization = {
       splitChunks: {
         chunks: 'all',
         cacheGroups: {
@@ -65,19 +66,23 @@ module.exports = {
         }
       },
       runtimeChunk: 'single',
-    },
-    plugins: [
-      new FileMangeerPlugin({
-        onEnd: {
-          delete: [
-            './dist.zip'
-          ],
-          archive: [
-            { source: './dist', destination: './dist.zip' }
-          ]
-        }
-      })
-    ],
+    };
+    if (IS_PROD) {
+      const plugins = [];
+      plugins.push(
+        new FileMangeerPlugin({
+          onEnd: {
+            delete: [
+              './dist.zip'
+            ],
+            archive: [
+              { source: './dist', destination: './dist.zip' }
+            ]
+          }
+        })
+      );
+      config.plugins = [...config.plugins, ...plugins];
+    }
   },
   pwa: {
     name: '东经云盘'

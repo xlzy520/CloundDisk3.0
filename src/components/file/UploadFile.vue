@@ -29,7 +29,13 @@
       <el-input type="textarea" v-model="changeLog"></el-input>
     </div>
     <div v-if="type==='relevance'">
-      <div class="change_log">请上传对应的zip文件</div>
+      <div class="change_log">
+        操作提示<br />
+        1. 用Axure软件打开对应的RP文档<br />
+        2. 选择工具栏的【发布(P) - 生成原型文件 - 复制"生成HTML文件的目标文件夹"地址】<br />
+        3. 进入到上述地址文件夹，将该目录所有文件打包成zip格式的压缩包<br />
+        4. 选择对应的压缩包文件，完成上传操作<br />
+      </div>
     </div>
     <span slot="footer" class="dialog-footer">
       <el-button size="small"  type="primary" @click="submitUpload" :disabled="btDisable">开始{{title}}</el-button>
@@ -123,6 +129,18 @@ export default {
         this.$refs.upload.clearFiles();
         this.visible = false;
         this.$emit('action', 'refresh');
+        if (this.isRp) {
+          var a = document.createElement("a"); //创建a标签
+          let intime = +new Date();
+          a.id = intime;
+          a.setAttribute("href", res.data.previewUrl);
+          a.setAttribute("target", "_blank");
+          document.body.appendChild(a);
+          a.click(); //执行当前对象
+          setTimeout(() => {
+            document.body.removeChild(document.getElementById(intime));
+          }, 500);
+        }
       } else {
         let msg = res.msg;
         if (msg == null || msg === '') {
