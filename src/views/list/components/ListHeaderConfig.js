@@ -54,11 +54,5 @@ export default [
     label: '分享',
     value: 'share',
     icon: 'el-icon-share'
-  },
-  // 关联HTML按钮，仅限选中单个rp文件(无需具备上传权限)
-  {
-    label: '关联HTML',
-    value: 'relevance',
-    icon: 'el-icon-setting'
-  },
+  }
 ];

@@ -158,9 +158,22 @@
             // 点击分配权限按钮时 请求 getAuth接口查询 userList是否为空数组
             this.queryPermission();
             break;
+          case 'rebuild':
+            this.rebuild(this.selectedData[0].fcategoryid);
+            break;
           default:
             break;
         }
+      },
+      // 重新生成rp预览地址
+      rebuild(fcategoryId) {
+        fileService.updateRpDocumentPreviewUrl({ fcategoryId }).then(res => {
+          var a = document.createElement("a"); //创建a标签
+          a.setAttribute("href", res.data.previewUrl);
+          a.setAttribute("target", "_blank");
+          document.body.appendChild(a);
+          a.click(); //执行当前对象
+        });
       },
       newFolder() {
         this.tableList.unshift({

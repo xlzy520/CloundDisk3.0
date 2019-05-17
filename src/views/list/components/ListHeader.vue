@@ -14,6 +14,15 @@
         <template v-for="item in actionConfig">
           <el-button type="primary" v-if="actionArray.find(key => key === item.value)" :icon="item.icon" :data-action="item.value">{{ item.label }}</el-button>
         </template>
+        <el-dropdown type="primary" @command="handleCommand" v-if="isRpShow">
+          <el-button type="primary">RP操作<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item command="relevance">关联HTML</el-dropdown-item>
+            <el-dropdown-item divided command="rebuild" v-show="isEnableBuild">
+              <tag type="danger">重新生成预览地址</tag>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
     </div>
     <div class="action-wrap">
@@ -58,6 +67,12 @@ export default {
       'selectedData',
       'userData'
     ]),
+    isRpShow() {
+      return this.selectedData.length === 1 && this.selectedData[0].ffiletype === 12;
+    },
+    isEnableBuild() {
+      return this.selectedData[0].fsize.slice(0, -1) < 6 * 1024 * 1024;
+    },
     // 计算应显示哪些按钮
     actionArray() {
       // 选中的文件夹个数
@@ -75,10 +90,6 @@ export default {
             : ['rename', 'copy', 'move', 'download', 'update', 'version', 'delete', 'detail', 'share'];
           if (isAdmin && folderCheckedCount === 1) {
             actionArr.push("dingDing");
-          }
-          // 选中单个rp文件
-          if (this.selectedData[0].ffiletype === 12) {
-            actionArr.push("relevance");
           }
         } else {
           actionArr = folderCheckedCount === 0 ? ['copy', 'move', 'delete', 'download', 'share'] : ['move', 'delete', 'share'];
@@ -108,6 +119,12 @@ export default {
           break;
         case 'newMarkdown':
           this.$emit('action', 'newMD');
+          break;
+        case 'relevance':
+          this.$emit('action', 'relevance');
+          break;
+        case 'rebuild':
+          this.$emit('action', 'rebuild');
           break;
         default: return false;
       }
