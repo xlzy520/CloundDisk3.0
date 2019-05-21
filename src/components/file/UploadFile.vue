@@ -17,6 +17,7 @@
       :show-file-list="true"
       :on-error="onError"
       :on-progress="onProgress"
+      :accept="mold"
       multiple
     >
       <i class="el-icon-upload"></i>
@@ -89,6 +90,9 @@ export default {
     },
     url() {
       return this.isRp ? '/djcpsdocument/fileManager/zipFileUpload.do' : '/djcpsdocument/category/fileUpload.do';
+    },
+    mold() {
+      return this.isRp ? '.zip' : '';
     }
   },
   methods: {

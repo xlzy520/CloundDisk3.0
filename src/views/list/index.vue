@@ -169,16 +169,20 @@ import { setTimeout } from 'timers';
       // 重新生成rp预览地址
       rebuild(fcategoryId) {
         fileService.updateRpDocumentPreviewUrl({ fcategoryId }).then(res => {
-          var a = document.createElement("a"); //创建a标签
-          let intime = +new Date();
-          a.id = intime;
-          a.setAttribute("href", res.data.previewUrl);
-          a.setAttribute("target", "_blank");
-          document.body.appendChild(a);
-          a.click(); //执行当前对象
-          setTimeout(() => {
-            document.body.removeChild(document.getElementById(intime));
-          }, 500);
+          if (res.success) {
+            var a = document.createElement("a"); //创建a标签
+            let intime = +new Date();
+            a.id = intime;
+            a.setAttribute("href", res.data.previewUrl);
+            a.setAttribute("target", "_blank");
+            document.body.appendChild(a);
+            a.click(); //执行当前对象
+            setTimeout(() => {
+              document.body.removeChild(document.getElementById(intime));
+            }, 500);
+          } else {
+            this.$message1000(res.msg, 'error');
+          }
         });
       },
       newFolder() {
@@ -330,6 +334,7 @@ import { setTimeout } from 'timers';
       this.getCategory(to.query.dirid || 0).then(() => {
         next();
       });
+      this.$store.dispatch('SetSelectedData', []);
     }
   };
 </script>

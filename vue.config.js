@@ -44,10 +44,6 @@ module.exports = {
 //TODO 分块
   },
   configureWebpack: config => {
-    config.externals = {
-      vue: 'Vue',
-      'element-ui': 'ELEMENT',
-    };
     config.optimization = {
       splitChunks: {
         chunks: 'all',

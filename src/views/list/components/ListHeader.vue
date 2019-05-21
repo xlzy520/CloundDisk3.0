@@ -14,7 +14,7 @@
         <template v-for="item in actionConfig">
           <el-button type="primary" v-if="actionArray.find(key => key === item.value)" :icon="item.icon" :data-action="item.value">{{ item.label }}</el-button>
         </template>
-        <el-dropdown type="primary" @command="handleCommand" v-if="isRpShow">
+        <el-dropdown type="primary" @command="handleCommand" v-if="isRpShow" trigger="click">
           <el-button type="primary">RP操作<i class="el-icon-arrow-down el-icon--right"></i></el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="relevance">关联HTML</el-dropdown-item>
