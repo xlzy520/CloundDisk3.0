@@ -1,4 +1,7 @@
 const path = require('path');
+const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
+const FileMangeerPlugin = require('filemanager-webpack-plugin');
+
 function resolve(dir) {
   return path.join(__dirname, '.', dir);
 }
@@ -8,13 +11,11 @@ module.exports = {
       '/djcpsdocument': {
         //target: 'http://192.168.2.181:8081/', //德煌
         // target: 'https://www.easy-mock.com/mock/5c47cda4f513860f4ceef676/', //mock
-        // target: 'http://192.168.2.21:8888/', //朱诚
-        // target: 'http://192.168.2.21:8016/', //朱诚
-        //target: 'http://192.168.12.197:8016/', //朱诚
-        // target: 'http://192.168.2.21:8016/', //朱诚
-        target: 'http://192.168.25.218:8016/', //预发布环境
+        //target: 'http://192.168.2.21:8888/', //朱诚
         //target: 'http://192.168.2.171:8888/', //弘权
         //target: 'http://192.168.2.65:8082/', //弘权
+        target: 'http://192.168.23.179:8016/', // 开发环境!!
+        // target: 'http://192.168.25.218:8016/', // 预开发环境
         changeOrigin: true,
       }
     },
@@ -41,16 +42,13 @@ module.exports = {
     config.resolve.alias
           .set('@', resolve('src'));
 //TODO 分块
-    // config.externals = {
-    //   'vue': 'Vue',
-    //   'element-ui': 'ELEMENT',
-    //   'vue-router': 'VueRouter',
-    //   'vuex': 'Vuex',
-    //   'axios': 'axios'
-    // };
   },
-  configureWebpack: {
-    optimization: {
+  configureWebpack: config => {
+    config.externals = {
+      vue: 'Vue',
+      'element-ui': 'ELEMENT',
+    };
+    config.optimization = {
       splitChunks: {
         chunks: 'all',
         cacheGroups: {
@@ -68,6 +66,22 @@ module.exports = {
         }
       },
       runtimeChunk: 'single',
+    };
+    if (IS_PROD) {
+      const plugins = [];
+      plugins.push(
+        new FileMangeerPlugin({
+          onEnd: {
+            delete: [
+              './dist.zip'
+            ],
+            archive: [
+              { source: './dist', destination: './dist.zip' }
+            ]
+          }
+        })
+      );
+      config.plugins = [...config.plugins, ...plugins];
     }
   },
   pwa: {

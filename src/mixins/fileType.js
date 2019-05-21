@@ -66,6 +66,14 @@ const fileType = {
             this.fullLoading = false;
           });
           break;
+        case 12: //rp
+          this.fullLoading = true;
+          fileService.previewRpDocument(fcategoryid).then(res => {
+            window.open(res.data.previewUrl, "_blank");
+          }).finally(()=>{
+            this.fullLoading = false;
+          });
+          break;
         default:
           break;
       }

@@ -60,5 +60,11 @@ export default {
   //office
   getOffice(params) {
     return fileManagerService('/getFileInfo.do', { ...params }, 'get');
+  },
+  previewRpDocument(fcategoryId) {
+    return fileManagerService('/previewRpDocument.do', { fcategoryId }, 'get');
+  },
+  updateRpDocumentPreviewUrl(params) {
+    return fileManagerService('/updateRpDocumentPreviewUrl.do', params);
   }
 };

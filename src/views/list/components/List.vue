@@ -83,7 +83,7 @@
           },
           {
             label: '创建者',
-            prop: 'foperator',
+            prop: 'foperator'
           }
         ],
       };
@@ -117,7 +117,7 @@
           }
         }
       },
-      showMenu(row, column, event) {
+      showMenu(row, event) {
         event.preventDefault();
         this.$refs.baseTable.clickRow(row);
         let contextMenu = document.querySelector('.context-menu');
@@ -130,7 +130,7 @@
         if (contextMenu && event.target.className !== 'context-menu-button') {
           contextMenu.style.display = 'none';
         }
-      },
+      }
     },
     destroyed() {
       window.removeEventListener('mousemove', this.closeMenu);

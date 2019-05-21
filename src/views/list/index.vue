@@ -51,6 +51,7 @@
   import request from '@/utils/request';
   import categoryService from '@/api/service/category';
   import authService from '@/api/service/auth';
+import { setTimeout } from 'timers';
 
   export default {
     name: 'index',
@@ -117,6 +118,7 @@
             break;
           case 'upload':
           case 'update':
+          case 'relevance':
             this.$refs.upload.visible = true;
             this.$refs.upload.type = action;
             break;
@@ -157,9 +159,27 @@
             // 点击分配权限按钮时 请求 getAuth接口查询 userList是否为空数组
             this.queryPermission();
             break;
+          case 'rebuild':
+            this.rebuild(this.selectedData[0].fcategoryid);
+            break;
           default:
             break;
         }
+      },
+      // 重新生成rp预览地址
+      rebuild(fcategoryId) {
+        fileService.updateRpDocumentPreviewUrl({ fcategoryId }).then(res => {
+          var a = document.createElement("a"); //创建a标签
+          let intime = +new Date();
+          a.id = intime;
+          a.setAttribute("href", res.data.previewUrl);
+          a.setAttribute("target", "_blank");
+          document.body.appendChild(a);
+          a.click(); //执行当前对象
+          setTimeout(() => {
+            document.body.removeChild(document.getElementById(intime));
+          }, 500);
+        });
       },
       newFolder() {
         this.tableList.unshift({

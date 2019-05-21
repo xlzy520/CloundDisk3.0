@@ -54,5 +54,5 @@ export default [
     label: '分享',
     value: 'share',
     icon: 'el-icon-share'
-  },
+  }
 ];
