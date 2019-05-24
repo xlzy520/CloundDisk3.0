@@ -51,7 +51,6 @@
   import request from '@/utils/request';
   import categoryService from '@/api/service/category';
   import authService from '@/api/service/auth';
-import { setTimeout } from 'timers';
 
   export default {
     name: 'index',
