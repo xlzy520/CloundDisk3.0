@@ -117,16 +117,17 @@
           }
         }
       },
-      showMenu(row, event) {
+      // 注意element 版本
+      showMenu(row, column, event) {
         event.preventDefault();
         this.$refs.baseTable.clickRow(row);
-        let contextMenu = document.querySelector('.context-menu');
+        let contextMenu = document.querySelector('.context-container');
         contextMenu.style.display = 'block';
         contextMenu.style.top = `${event.y > window.innerHeight * 2 / 3 ? event.y - contextMenu.clientHeight : event.y}px`;
         contextMenu.style.left = `${event.x}px`;
       },
       closeMenu(event) {
-        let contextMenu = document.querySelector('.context-menu');
+        let contextMenu = document.querySelector('.context-container');
         if (contextMenu && event.target.className !== 'context-menu-button') {
           contextMenu.style.display = 'none';
         }

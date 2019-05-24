@@ -69,7 +69,11 @@ const fileType = {
         case 12: //rp
           this.fullLoading = true;
           fileService.previewRpDocument(fcategoryid).then(res => {
-            window.open(res.data.previewUrl, "_blank");
+            if (res.success) {
+              window.open(res.data.previewUrl, "_blank");
+            } else {
+              this.$message1000(res.msg, 'error');
+            }
           }).finally(()=>{
             this.fullLoading = false;
           });

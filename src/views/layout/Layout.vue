@@ -7,7 +7,7 @@
       <navbar></navbar>
       <app-main ref="appMain"></app-main>
     </div>
-    <div class="context-menu">
+    <div class="context-container">
       <context-menu @action="dispatchAction"></context-menu>
     </div>
   </div>
@@ -63,7 +63,7 @@ export default {
       flex-shrink: 1;
       overflow: hidden;
     }
-    .context-menu {
+    .context-container {
       position: absolute;
       display: none;
     }

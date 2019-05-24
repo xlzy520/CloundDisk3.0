@@ -42,7 +42,7 @@ export default {
     return axios.get('/djcpsdocument/fileManager/downloadFile.do', {
       params: {id: id},
       responseType: responseType
-     }).then(res => {
+    }).then(res => {
       return res.request.response;
     }).catch(err=>{
       return new Error(err);
@@ -62,9 +62,21 @@ export default {
     return fileManagerService('/getFileInfo.do', { ...params }, 'get');
   },
   previewRpDocument(fcategoryId) {
-    return fileManagerService('/previewRpDocument.do', { fcategoryId }, 'get');
+    //return fileManagerService('/previewRpDocument.do', { fcategoryId }, 'get');
+    return axios.get('/djcpsdocument/fileManager/previewRpDocument.do', {
+      params: { fcategoryId },
+    }).then(res => {
+      return res.data;
+    }).catch(err=>{
+      return new Error(err);
+    });
   },
   updateRpDocumentPreviewUrl(params) {
-    return fileManagerService('/updateRpDocumentPreviewUrl.do', params);
+    //return fileManagerService('/updateRpDocumentPreviewUrl.do', params);
+    return axios.post('/djcpsdocument/fileManager/updateRpDocumentPreviewUrl.do', params).then(res => {
+      return res.data;
+    }).catch(err=>{
+      return new Error(err);
+    });
   }
 };
