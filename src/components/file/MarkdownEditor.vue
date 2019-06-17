@@ -23,7 +23,7 @@
               :subfield="isField"
               default-open="preview"
               :toolbars-flag="barsFlag"
-              @img-add="imgAdd"
+              @imgAdd="imgAdd"
             />
           </div>
         </div>
@@ -170,7 +170,9 @@
         const formData = new FormData();
         formData.append('file', $file);
         formData.append('fparentid', '1');
+        console.log(2);
         const imgInfo = await fileService.updateMarkdown(formData);
+        console.log(imgInfo, 'imgInfo ===========>');
         this.$refs.md.$img2Url(pos, '/djcpsdocument/fileManager/downloadFile.do?id=' + imgInfo.data.id);
       }
     },
