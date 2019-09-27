@@ -67,7 +67,6 @@
   &-logo {
     margin: 15px auto;
     &-img {
-      width: 36px;
       height: 36px;
       margin-right: 5px;
       vertical-align: middle;
