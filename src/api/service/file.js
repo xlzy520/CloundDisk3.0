@@ -31,11 +31,11 @@ export default {
     return versionService('/versionBack.do', {oldDisplayFileSgin: oldVer, newDisplayFileSgin: newVer});
   },
   // search
-  getSearchResult(queryString) {
-    return searchService('/list.do', {queryString: queryString, sort: 1, curPage: 1});
+  getSearchResult(queryString, pageNo) {
+    return searchService('/list.do', {queryString: queryString, sort: 1, curPage: pageNo});
   },
-  getFullTextSearchResult(queryString) {
-    return searchService('/fullList.do', {queryString: queryString, sort: 1, curPage: 1});
+  getFullTextSearchResult(queryString, pageNo) {
+    return searchService('/fullList.do', {queryString: queryString, sort: 1, curPage: pageNo});
   },
   downloadFile(id, responseType = '') {
     // 跳过统一接口请求错误处理

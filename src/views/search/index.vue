@@ -104,9 +104,11 @@
         query = query ? query : this.$route.query;
         this.fullLoading = true;
         const {value, full} = query;
+        const { currentPage } = this.pagination;
         try {
-          const searchList = full ? await fileService.getFullTextSearchResult(value) : await fileService.getSearchResult(value);
-          console.log(searchList);
+          const searchList = full
+            ? await fileService.getFullTextSearchResult(value, currentPage)
+              : await fileService.getSearchResult(value, currentPage);
           this.pagination = {
             currentPage: searchList.data.curPage,
             total: searchList.data.recordCount,
