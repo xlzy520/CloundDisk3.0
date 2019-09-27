@@ -105,6 +105,7 @@ export default {
     },
     getSearchResult() {
       const searchQuery = this.query.full ? this.query : {value: this.query.value};
+      searchQuery.time = Date.now();
       this.$router.push({path: '/index/search', query: searchQuery});
     }
   }

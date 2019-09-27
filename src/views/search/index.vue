@@ -48,7 +48,12 @@
             label: '修改时间',
             prop: 'fupdatetime',
             sortable: true,
-            formatter: (row) => parseTime(row.fupdatetime)
+            formatter: (row) => {
+              if (row.fupdatetime) {
+                return parseTime(row.fupdatetime);
+              }
+              return '';
+            }
           },
           {
             label: '大小',
@@ -95,11 +100,13 @@
         this.pagination.currentPage = val;
         this.getSearchList();
       },
-      async getSearchList() {
+      async getSearchList(query) {
+        query = query ? query : this.$route.query;
         this.fullLoading = true;
-        const {value, full} = this.$route.query;
+        const {value, full} = query;
         try {
           const searchList = full ? await fileService.getFullTextSearchResult(value) : await fileService.getSearchResult(value);
+          console.log(searchList);
           this.pagination = {
             currentPage: searchList.data.curPage,
             total: searchList.data.recordCount,
@@ -124,8 +131,10 @@
       this.getSearchList();
     },
     beforeRouteUpdate(to, from, next) {
-      this.getSearchList().then(()=>{
-        next();
+      this.$nextTick(() => {
+        this.getSearchList(to.query).then(()=>{
+          next();
+        });
       });
     }
   };
