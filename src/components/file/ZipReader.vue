@@ -116,7 +116,7 @@
           white-space: nowrap;
         }
         &-button {
-          position: absolute;
+          position: relative;
           right: 15px;
           height: 100%;
           button {
