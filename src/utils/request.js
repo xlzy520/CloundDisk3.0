@@ -7,7 +7,7 @@ const service = axios.create({
   baseURL: '/djcpsdocument',
   timeout: 10000 // 请求超时时间
 });
-
+let flag = 0;//防止登录失效出现三次弹窗
 // request拦截器
 // service.interceptors.request.use(config => {
 //   return config;
@@ -22,13 +22,18 @@ service.interceptors.response.use(
     const res = response.data;
     if (!res.success) {
       if (res.code === '70106002') {
-        MessageBox.confirm('Token 过期了，您可以取消继续留在该页面，或者重新登录', '确定登出', {
-          confirmButtonText: '重新登录',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          router.push('/login');
-        });
+        flag++;
+        if (flag < 2) {
+          const redirect = router.history.current.fullPath;
+          MessageBox.confirm('Token 过期了，您可以取消继续留在该页面，或者重新登录', '确定登出', {
+            confirmButtonText: '重新登录',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            flag = 0;
+            router.push('/login?redirect=' + redirect);
+          });
+        }
       } else {
         if (res.msg !== '120') {
           Message({

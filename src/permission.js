@@ -9,16 +9,24 @@ router.beforeEach((to, from, next) => {
   NProgress.start();
   const {userName, utype} = store.getters.userData;
   if (userName === undefined) {
-    if (to.path !== '/login' && to.path !== '/index/list') {
-      store.dispatch('GetInfo');
+    if (to.path !== '/login') {
+      if (to.path !== '/index/list') {
+        store.dispatch('GetInfo', to.path);
+      } else {
+        next();
+      }
+    } else {
+      next();
     }
-  }
-  if (utype === '0') {
-    if (authList.includes(to.path)) {
-      next('404');
+  } else {
+    if (utype === '0') {
+      if (authList.includes(to.path)) {
+        next('404');
+      }
     }
+    next();
   }
-  next();
+
 });
 
 router.afterEach(() => {

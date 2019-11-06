@@ -291,12 +291,14 @@
             });
           } else {
             // sso登录时第一次触发
+            let redirect = this.$route.fullPath;
+            console.log(this.$route);
             if (location.search.indexOf('from=sso') !== -1) {
               sessionStorage.setItem('from', 'sso');
-              this.$store.dispatch('GetInfo');
+              this.$store.dispatch('GetInfo', redirect);
             } else {
               //刷新时触发
-              this.$store.dispatch('GetInfo');
+              this.$store.dispatch('GetInfo', redirect);
               this.getCategory();
             }
           }

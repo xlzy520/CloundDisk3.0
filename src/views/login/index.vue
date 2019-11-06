@@ -68,7 +68,8 @@
         },
         loading: false,
         eye: 'fa-eye-slash',
-        pwdType: 'password'
+        pwdType: 'password',
+        redirect: undefined
       };
     },
     methods: {
@@ -87,7 +88,7 @@
             this.loading = true;
             this.$store.dispatch('Login', this.loginForm).then(() => {
               this.loading = false;
-              this.$router.push('/index/list');
+              this.$router.push({ path: this.redirect || '/index/list' });
               this.$message1000('登录成功', 'success');
             }).catch(() => {
               this.loading = false;
@@ -98,6 +99,14 @@
             return false;
           }
         });
+      }
+    },
+    watch: {
+      $route: {
+        handler: function(route) {
+          this.redirect = route.query.redirect;
+        },
+        immediate: true
       }
     },
     mounted() {

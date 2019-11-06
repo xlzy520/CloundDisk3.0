@@ -30,7 +30,7 @@ const user = {
     },
 
     // 获取用户信息
-    GetInfo({ commit }) {
+    GetInfo({ commit }, redirect) {
       return new Promise((resolve, reject) => {
         loginService.getInfo().then(response => {
           const data = response.data;
@@ -44,10 +44,11 @@ const user = {
               location.href = error.data.url;
             } else {
               // 直接进入云盘首页
-              router.push('/login');
+              router.push('/login?redirect=' + redirect);
             }
-          }
+          } else {
             reject(error);
+          }
         });
       });
     },
