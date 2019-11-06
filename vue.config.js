@@ -1,6 +1,4 @@
 const path = require('path');
-const IS_PROD = ['production', 'prod'].includes(process.env.NODE_ENV);
-const FileMangeerPlugin = require('filemanager-webpack-plugin');
 
 function resolve(dir) {
   return path.join(__dirname, '.', dir);
@@ -14,8 +12,10 @@ module.exports = {
         //target: 'http://192.168.2.21:8888/', //朱诚
         //target: 'http://192.168.2.171:8888/', //弘权
         //target: 'http://192.168.2.65:8082/', //弘权
-        target: 'http://192.168.23.179:8016/', // 开发环境!!
+        // target: 'http://192.168.23.179:8016/', // 开发环境!!
+        target: 'http://192.168.23.172', // 线上环境
         // target: 'http://192.168.25.218:8016/', // 预开发环境
+        // target: 'http://localhost:8081/', // 预开发环境
         changeOrigin: true,
       }
     },
@@ -63,22 +63,6 @@ module.exports = {
       },
       runtimeChunk: 'single',
     };
-    if (IS_PROD) {
-      const plugins = [];
-      plugins.push(
-        new FileMangeerPlugin({
-          onEnd: {
-            delete: [
-              './dist.zip'
-            ],
-            archive: [
-              { source: './dist', destination: './dist.zip' }
-            ]
-          }
-        })
-      );
-      config.plugins = [...config.plugins, ...plugins];
-    }
   },
   pwa: {
     name: '东经云盘'

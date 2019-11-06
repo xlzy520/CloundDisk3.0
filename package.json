@@ -19,7 +19,6 @@
     "diff": "^4.0.1",
     "diff2html": "^2.5.0",
     "element-ui": "^2.6.3",
-    "filemanager-webpack-plugin": "^2.0.5",
     "js-cookie": "^2.2.0",
     "jszip": "^3.2.1",
     "mavon-editor": "^2.7.2",
